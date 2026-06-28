@@ -86,13 +86,18 @@ def _jcs(obj) -> bytes:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
-def _suite(state, code, detail, mechanism=None):
+def _suite(state, code, detail, mechanism=None, key_source=None):
     # state: pass|fail|pending|not_provided|not_assessable|unverified_here
     # mechanism (anchoring suites only): WHICH external clock satisfied the axis — e.g. "Bitcoin OTS",
     # "on-chain (Arbitrum)" — so the board shows that one invariant survives across mechanisms.
+    # key_source (admission only): HOW the verification key(s) were obtained / how complete the signer
+    # set is from the fixture alone — e.g. "embedded", "1/2 keys in fixture" — so a multi-signer claim
+    # never overclaims fixture-completeness (rpelevin, autogen#7353).
     s = {"state": state, "code": code, "detail": detail}
     if mechanism:
         s["mechanism"] = mechanism
+    if key_source:
+        s["key_source"] = key_source
     return s
 
 
@@ -219,6 +224,46 @@ def run(mapping: dict) -> dict:
                                               "not recomputed (expose the canonical claim to enable this check)")
 
     # admission_invariant: independent identity signed the envelope hash
+    # ── key-source transparency (rpelevin, autogen#7353) ────────────────────────────────────────
+    # Make explicit how complete the signer set is FROM THE FIXTURE ALONE: the primary key is embedded
+    # (it came from the governance block / event and we verified the signature over it). For a multi-
+    # signer claim, count how many co-signers also expose their verification key in the fixture, so the
+    # board never displays an N-signer row as fully recomputable when only the primary is. Generalizes:
+    # single embedded key -> "embedded"; N-signer with a missing co-signer key -> "k/N keys in fixture".
+    # Honesty bar: count signatures the referee ACTUALLY RE-VERIFIED, not keys merely present — claiming
+    # "2 keys embedded" off an unverified co-signer would itself be the multisig_overclaim rpelevin warns
+    # about. The primary verified below; for each co-signer we re-verify its signature over the same
+    # envelope hash with a supported scheme. A co-signer whose key is embedded but whose signature rides a
+    # different signing input (e.g. a JWS signing-input we don't reconstruct) is reported embedded-but-not-
+    # re-verified-here, not silently counted.
+    co = _dig(gov, fields.get("co_signers", "co_signers"))
+    co = co if isinstance(co, list) else []
+    total_signers = 1 + len(co)
+    co_embedded = sum(1 for c in co if isinstance(c, dict) and (c.get("pubkey") or c.get("public_key")))
+    co_verified = 0
+    for c in co:
+        if not isinstance(c, dict):
+            continue
+        cpk = c.get("pubkey") or c.get("public_key")
+        csig = c.get("jws_signature") or c.get("signature")
+        if cpk and csig:
+            ok, _ = _verify_admission(c.get("sig_scheme") or scheme, envelope_hash, cpk, csig, None)
+            if ok:
+                co_verified += 1
+    verified = 1 + co_verified  # primary verified just below
+    if total_signers == 1:
+        key_source, multisig_gap = "embedded", None
+    elif verified == total_signers:
+        key_source, multisig_gap = f"{total_signers} signers verified", None
+    else:
+        key_source = f"{verified}/{total_signers} signers verified"
+        absent = total_signers - 1 - co_embedded
+        gap_reason = (f"{absent} co-signer key(s) absent (missing_cosigner_key)" if absent
+                      else f"{total_signers - verified} co-signer signature(s) embedded but on a signing input "
+                           "this adapter does not reconstruct, so not independently re-verified here")
+        multisig_gap = (f"; admission passes on the independent primary signer, but the {total_signers}-signer "
+                        f"property is not fully recomputable from the fixture ({gap_reason})")
+
     sig_valid, sig_detail = _verify_admission(scheme, envelope_hash, pubkey, signature, event)
     if sig_valid is None:
         suites["admission_invariant"] = _suite("unverified_here", "scheme_not_verifiable_here", sig_detail)
@@ -226,12 +271,15 @@ def run(mapping: dict) -> dict:
         suites["admission_invariant"] = _suite("fail", "admission_signature_invalid", sig_detail)
     elif trust and pubkey not in trust:
         suites["admission_invariant"] = _suite("fail", "key_different_but_identity_unproven",
-                                              "signature valid, but signer pubkey is not in the declared independent set")
+                                              "signature valid, but signer pubkey is not in the declared independent set",
+                                              key_source=key_source)
     elif actor_pubkey and pubkey == actor_pubkey:
-        suites["admission_invariant"] = _suite("fail", "admission_not_independent", "signer is the actor")
+        suites["admission_invariant"] = _suite("fail", "admission_not_independent", "signer is the actor",
+                                              key_source=key_source)
     else:
         suites["admission_invariant"] = _suite("pass", None,
-                                              f"{sig_detail}; signer resolves to a declared-independent identity")
+                                              f"{sig_detail}; signer resolves to a declared-independent identity"
+                                              + (multisig_gap or ""), key_source=key_source)
 
     # ── anchoring, split into existence vs precedence (rpelevin, autogen#7353) ──────────────────
     # A confirmed anchor can prove a commitment EXISTED by some external point; that is not the same as
