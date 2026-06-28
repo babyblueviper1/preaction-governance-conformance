@@ -18,6 +18,7 @@
   },
   "fields": {
     "envelope_hash": "envelope_hash",
+    "canonical_bytes": "canonical_bytes_utf8",
     "pubkey": "verifier_pubkey",
     "signature": "signature",
     "sig_scheme": "sig_scheme",

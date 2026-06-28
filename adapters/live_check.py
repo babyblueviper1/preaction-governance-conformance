@@ -124,14 +124,26 @@ def run(mapping: dict) -> dict:
     scheme = _dig(gov, fields.get("sig_scheme")) or mapping.get("sig_scheme")
     event = _dig(gov, fields.get("event")) if fields.get("event") else None
     anchor_ep = _dig(gov, fields.get("anchor_endpoint"))
+    canonical_bytes = _dig(gov, fields.get("canonical_bytes")) if fields.get("canonical_bytes") else None
     trust = mapping.get("trust_policy", {}).get("independent_verifier_pubkeys", [])
     actor_pubkey = mapping.get("actor_pubkey")
     raw_claim = mapping.get("raw_claim")
 
     suites = {}
 
-    # canonical_envelope: recompute SHA-256(JCS(claim)) == declared hash, if the raw claim is available
-    if raw_claim is not None:
+    # canonical_envelope: recompute SHA-256(canonical bytes) == declared hash.
+    # Preferred path: the endpoint exposes its EXACT canonical UTF-8 bytes (e.g. SafeAgent's
+    # canonical_bytes_utf8) — we hash those bytes verbatim, making the binding implementation-independent
+    # (no assumption that our JCS matches the issuer's). Fallback: re-canonicalize a returned raw claim.
+    if canonical_bytes is not None:
+        raw = canonical_bytes.encode("utf-8") if isinstance(canonical_bytes, str) else _jcs(canonical_bytes)
+        recomputed = hashlib.sha256(raw).hexdigest()
+        ok = recomputed == envelope_hash
+        suites["canonical_envelope"] = _suite("pass" if ok else "fail",
+                                              None if ok else "envelope_hash_mismatch",
+                                              f"recomputed SHA-256 of declared canonical bytes {recomputed[:16]} "
+                                              f"vs declared {str(envelope_hash)[:16]}")
+    elif raw_claim is not None:
         recomputed = hashlib.sha256(_jcs(raw_claim)).hexdigest()
         ok = recomputed == envelope_hash
         suites["canonical_envelope"] = _suite("pass" if ok else "fail",
@@ -165,7 +177,10 @@ def run(mapping: dict) -> dict:
             astate = _http("GET", anchor_ep) if isinstance(anchor_ep, str) and anchor_ep.startswith("http") else anchor_ep
         except Exception as e:  # noqa: BLE001
             astate = {"status": f"unreachable: {e}"}
-        st = str(astate.get("status", "")).lower()
+        # accept either a bare `status` or an explicit `anchor_status` (submitted/confirmed distinction)
+        raw_status = astate.get("anchor_status") or astate.get("status", "")
+        st = str(raw_status).lower()
+        ordering_assertable = astate.get("ordering_assertable")
         block_time = astate.get("bitcoin_block_time") or astate.get("accepted_anchor_point", {}).get("block_time") \
             if isinstance(astate.get("accepted_anchor_point"), dict) else astate.get("bitcoin_block_time")
         outcome_time = mapping.get("terminal_outcome_time")
@@ -178,9 +193,12 @@ def run(mapping: dict) -> dict:
             suites["anchoring_invariant"] = _suite("pass", None,
                                                   "anchor Bitcoin-confirmed; provide terminal_outcome_time to check ordering")
         else:
-            suites["anchoring_invariant"] = _suite("pending", "anchor_submitted_not_confirmed",
-                                                  f"anchor state: {astate.get('status')} — submitted, not yet "
-                                                  "Bitcoin-confirmed, so 'ordered' is not yet assertable")
+            # submitted/not_submitted — the anchor exists as a commitment but ordering is not yet assertable.
+            # This is a correct, honest state (PENDING), not a failure: 'ordered' becomes assertable only on
+            # Bitcoin confirmation. The endpoint correctly reports ordering_assertable=false here.
+            suites["anchoring_invariant"] = _suite("pending", "anchor_not_yet_confirmed",
+                                                  f"anchor_status={raw_status!r}, ordering_assertable={ordering_assertable} — "
+                                                  "not yet Bitcoin-confirmed, so 'ordered' is correctly not yet assertable")
 
     overall = "pass" if all(s["state"] == "pass" for s in suites.values()) else \
         ("fail" if any(s["state"] == "fail" for s in suites.values()) else "partial")
