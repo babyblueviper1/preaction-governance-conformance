@@ -310,6 +310,41 @@ def run(mapping: dict) -> dict:
         multisig_gap = (f"; admission passes on the independent primary signer, but the {total_signers}-signer "
                         f"property is not fully recomputable from the fixture ({gap_reason})")
 
+    # ── audit-grade record behind the green cell (rpelevin, autogen#7353) ───────────────────────
+    # embedded-key tamper check: when a signer DECLARES a pubkey_hash, sha256(its pubkey bytes) must
+    # match it, else the disclosed key isn't the one the hash commits to (embedded_key_hash_mismatch).
+    # General — any verifier that publishes pubkey_hash gets this for free.
+    _hash_candidates = co + ([{"pubkey": pubkey, "pubkey_hash": _dig(gov, fields["pubkey_hash"])}]
+                             if fields.get("pubkey_hash") else [])
+    kh_checked = kh_mismatch = 0
+    for _c in _hash_candidates:
+        if not isinstance(_c, dict):
+            continue
+        _ph, _pk = _c.get("pubkey_hash"), (_c.get("pubkey") or _c.get("public_key"))
+        if _ph and _pk:
+            kh_checked += 1
+            try:
+                if hashlib.sha256(bytes.fromhex(_pk)).hexdigest() != _ph:
+                    kh_mismatch += 1
+            except Exception:  # noqa: BLE001 — malformed hex counts as a mismatch
+                kh_mismatch += 1
+    key_hash = "verified" if kh_checked and not kh_mismatch else ("mismatch" if kh_mismatch else "n/a")
+    if kh_mismatch:
+        multisig_gap = (multisig_gap or "") + (f"; {kh_mismatch} embedded key(s) do not hash to the declared "
+                                               "pubkey_hash (embedded_key_hash_mismatch)")
+    # board_claim_level: the HIGHEST claim the referee actually earned (rpelevin's three-level cut)
+    claim_level = ("admission_multisig_recomputable" if total_signers > 1 and verified >= total_signers
+                   else "admission_independent")
+    # the compact, machine-readable record that backs the sub-label: exactly what was reconstructed/checked
+    admission_audit = {
+        "board_claim_level": claim_level,
+        "verified_signers": verified,
+        "declared_signers": total_signers,
+        "signing_input_reconstructed": "jws_general_serialization" if used_jws else "over_envelope_hash",
+        "payload_bound_to_canonical": True if used_jws else None,  # JWS payload decoded to the canonical bytes
+        "embedded_key_hash": key_hash,
+    }
+
     sig_valid, sig_detail = _verify_admission(scheme, envelope_hash, pubkey, signature, event)
     if sig_valid is None:
         suites["admission_invariant"] = _suite("unverified_here", "scheme_not_verifiable_here", sig_detail)
@@ -326,6 +361,9 @@ def run(mapping: dict) -> dict:
         suites["admission_invariant"] = _suite("pass", None,
                                               f"{sig_detail}; signer resolves to a declared-independent identity"
                                               + (multisig_gap or ""), key_source=key_source)
+    # attach the audit record behind the cell (sub-label stays compact; /conformance.json carries the trail)
+    if suites["admission_invariant"]["state"] in ("pass", "fail"):
+        suites["admission_invariant"]["audit"] = admission_audit
 
     # ── anchoring, split into existence vs precedence (rpelevin, autogen#7353) ──────────────────
     # A confirmed anchor can prove a commitment EXISTED by some external point; that is not the same as
