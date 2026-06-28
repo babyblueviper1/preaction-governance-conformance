@@ -296,7 +296,8 @@ def run(mapping: dict) -> dict:
         _tag = (f" [method={method}]" if method else "") + (f" [tier={tier}]" if tier else "")
         # mechanism: WHICH external clock this anchor uses, surfaced as a first-class result field so the
         # board shows that one invariant survives across mechanisms (Bitcoin OTS vs on-chain L2 vs CT-log).
-        _src = " ".join(str(x) for x in (method, tier, astate.get("source"), _ap.get("source"), _anchor_kind) if x).lower()
+        _src = " ".join(str(x) for x in (method, tier, astate.get("source"), _ap.get("source"),
+                                         astate.get("recompute_cmd"), _anchor_kind) if x).lower()
         # existence requires a clock EXTERNAL to the signer. An internal arbitration point with a self-minted
         # timestamp (e.g. PMI's same-key arbiter-anchor) is NOT existence — only an external mechanism counts.
         _external_mech = any(w in _src for w in ("bitcoin", "ots", "opentimestamps", "on-chain", "onchain",
