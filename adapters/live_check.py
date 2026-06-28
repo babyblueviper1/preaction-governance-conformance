@@ -45,28 +45,32 @@ def _verify_jws_legs(jws, canonical_bytes, candidate_pubkeys):
     certified envelope). Returns (verified_legs, total_legs, payload_ok). General by construction — any
     multi-signer verifier using JWS general serialization (e.g. AgentOracle's AgentTrust+AO composition)
     is scored on its STRONGER read instead of being under-credited because we didn't reconstruct the JWS
-    signing input. ed25519 only (nacl); zero-dep otherwise."""
+    signing input. ed25519 only (nacl); zero-dep otherwise.
+    Returns (verified_legs, total_legs, payload_ok, verified_pubkeys) — verified_pubkeys lets the caller
+    name which signers passed (and by elimination which failed/were unavailable) for the audit record."""
     try:
         from nacl.signing import VerifyKey
     except ImportError:
-        return 0, 0, None
+        return 0, 0, None, []
     sigs = jws.get("signatures") or []
     payload_b64 = jws.get("payload", "")
     payload_ok = bool(payload_b64) and _b64u(payload_b64) == (
         canonical_bytes.encode("utf-8") if isinstance(canonical_bytes, str) else canonical_bytes)
-    keys = [bytes.fromhex(k) for k in candidate_pubkeys if k]
+    keys = [(k, bytes.fromhex(k)) for k in candidate_pubkeys if k]
     verified = 0
+    verified_pubkeys = []
     for s in sigs:
         si = ((s.get("protected", "") + "." + payload_b64)).encode()
         raw = _b64u(s.get("signature", ""))
-        for kb in keys:
+        for khex, kb in keys:
             try:
                 VerifyKey(kb).verify(si, raw)
                 verified += 1
+                verified_pubkeys.append(khex)
                 break
             except Exception:  # noqa: BLE001 — try the next candidate key
                 continue
-    return verified, len(sigs), payload_ok
+    return verified, len(sigs), payload_ok, verified_pubkeys
 
 
 def _dig(obj, path):
@@ -282,9 +286,10 @@ def run(mapping: dict) -> dict:
     # not under-counted for a signing input we'd otherwise skip. Falls back to per-co-signer over-the-hash.
     used_jws, verified, total_signers = False, None, 1 + len(co)
     jws = resp.get(mapping.get("jws_path", "jws")) if isinstance(resp, dict) else None
+    verified_pubkeys, jws_payload_ok = [], None
     if isinstance(jws, dict) and jws.get("signatures"):
-        v, n, payload_ok = _verify_jws_legs(jws, canonical_bytes, [pubkey] + co_pubkeys)
-        if payload_ok and n:
+        v, n, jws_payload_ok, verified_pubkeys = _verify_jws_legs(jws, canonical_bytes, [pubkey] + co_pubkeys)
+        if jws_payload_ok and n:
             verified, total_signers, used_jws = v, n, True
     if not used_jws:
         co_verified = 0
@@ -335,14 +340,47 @@ def run(mapping: dict) -> dict:
     # board_claim_level: the HIGHEST claim the referee actually earned (rpelevin's three-level cut)
     claim_level = ("admission_multisig_recomputable" if total_signers > 1 and verified >= total_signers
                    else "admission_independent")
-    # the compact, machine-readable record that backs the sub-label: exactly what was reconstructed/checked
+    # name the signers that did NOT verify fixture-alone (failed leg or key unavailable), for the record.
+    # JWS path: a co-signer whose key is not among verified_pubkeys; identify it by issuer/kid.
+    def _sid(c):
+        return c.get("issuer") or c.get("kid") or (c.get("pubkey") or c.get("public_key") or "?")[:16]
+    failed_or_unavailable = []
+    if used_jws:
+        for c in co:
+            cpk = (c.get("pubkey") or c.get("public_key")) if isinstance(c, dict) else None
+            if not cpk or cpk not in verified_pubkeys:
+                failed_or_unavailable.append(_sid(c) if isinstance(c, dict) else "?")
+    elif verified < total_signers:
+        failed_or_unavailable = [_sid(c) for c in co if isinstance(c, dict)
+                                 and not (c.get("pubkey") or c.get("public_key"))]
+    # the machine-readable record behind the compact sub-label: precise enough that another verifier can
+    # reproduce WHY the level was earned (rpelevin). Hashes make it reproducible; key_evidence is explicit
+    # ('embedded_fixture' = proven fixture-alone, no external fetch) so ABSENCE is meaningful, not a null.
+    _cb = canonical_bytes.encode("utf-8") if isinstance(canonical_bytes, str) else canonical_bytes
     admission_audit = {
         "board_claim_level": claim_level,
-        "verified_signers": verified,
-        "declared_signers": total_signers,
-        "signing_input_reconstructed": "jws_general_serialization" if used_jws else "over_envelope_hash",
-        "payload_bound_to_canonical": True if used_jws else None,  # JWS payload decoded to the canonical bytes
-        "embedded_key_hash": key_hash,
+        "signer_count": {"verified": verified, "declared": total_signers,
+                         "failed_or_unavailable_signer_ids": failed_or_unavailable},
+        "signature_input": {
+            "encoding": "jws_general_serialization" if used_jws
+                        else f"{(scheme or 'sig').replace('-', '_')}_over_envelope_hash",
+            "payload_decodes_to_canonical": True if used_jws else None,
+        },
+        "payload_binding": {
+            "canonical_bytes_hash": hashlib.sha256(_cb).hexdigest() if _cb else None,
+            "envelope_hash": envelope_hash,
+        },
+        "key_material": {
+            "primary_public_key_hash": hashlib.sha256(bytes.fromhex(pubkey)).hexdigest() if pubkey else None,
+            "embedded_key_hash_check": key_hash,  # verified | mismatch | n/a
+            "co_signers": [{"signer": _sid(c), "key_source": c.get("key_source"),
+                            "pubkey_hash": c.get("pubkey_hash")}
+                           for c in co if isinstance(c, dict)],
+        },
+        # absence is meaningful: every current row proves its key(s) fixture-alone, so no external fetch was
+        # needed. external_resolution/pinned_registry + evidence_hash/resolution_time appear ONLY if/when a
+        # row actually resolves a key out-of-band (rpelevin: no external fields => no fetch, not unknown).
+        "key_evidence": "embedded_fixture",
     }
 
     sig_valid, sig_detail = _verify_admission(scheme, envelope_hash, pubkey, signature, event)
