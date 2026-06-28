@@ -27,10 +27,46 @@ import hashlib
 import json
 import sys
 import urllib.request
+import base64
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from _bip340_nostr import nostr_event_id, schnorr_verify  # vendored, zero-dep
+
+
+def _b64u(s: str) -> bytes:
+    return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
+
+
+def _verify_jws_legs(jws, canonical_bytes, candidate_pubkeys):
+    """Verify a JWS general serialization (RFC 7515) fixture-alone: each signature leg is checked over
+    its signing input `BASE64URL(protected) + "." + BASE64URL(payload)` under a known Ed25519 key, and
+    the payload must decode to the canonical envelope bytes (else the legs sign something other than the
+    certified envelope). Returns (verified_legs, total_legs, payload_ok). General by construction — any
+    multi-signer verifier using JWS general serialization (e.g. AgentOracle's AgentTrust+AO composition)
+    is scored on its STRONGER read instead of being under-credited because we didn't reconstruct the JWS
+    signing input. ed25519 only (nacl); zero-dep otherwise."""
+    try:
+        from nacl.signing import VerifyKey
+    except ImportError:
+        return 0, 0, None
+    sigs = jws.get("signatures") or []
+    payload_b64 = jws.get("payload", "")
+    payload_ok = bool(payload_b64) and _b64u(payload_b64) == (
+        canonical_bytes.encode("utf-8") if isinstance(canonical_bytes, str) else canonical_bytes)
+    keys = [bytes.fromhex(k) for k in candidate_pubkeys if k]
+    verified = 0
+    for s in sigs:
+        si = ((s.get("protected", "") + "." + payload_b64)).encode()
+        raw = _b64u(s.get("signature", ""))
+        for kb in keys:
+            try:
+                VerifyKey(kb).verify(si, raw)
+                verified += 1
+                break
+            except Exception:  # noqa: BLE001 — try the next candidate key
+                continue
+    return verified, len(sigs), payload_ok
 
 
 def _dig(obj, path):
@@ -238,29 +274,39 @@ def run(mapping: dict) -> dict:
     # re-verified-here, not silently counted.
     co = _dig(gov, fields.get("co_signers", "co_signers"))
     co = co if isinstance(co, list) else []
-    total_signers = 1 + len(co)
-    co_embedded = sum(1 for c in co if isinstance(c, dict) and (c.get("pubkey") or c.get("public_key")))
-    co_verified = 0
-    for c in co:
-        if not isinstance(c, dict):
-            continue
-        cpk = c.get("pubkey") or c.get("public_key")
-        csig = c.get("jws_signature") or c.get("signature")
-        if cpk and csig:
-            ok, _ = _verify_admission(c.get("sig_scheme") or scheme, envelope_hash, cpk, csig, None)
-            if ok:
-                co_verified += 1
-    verified = 1 + co_verified  # primary verified just below
-    if total_signers == 1:
+    co_pubkeys = [c.get("pubkey") or c.get("public_key") for c in co if isinstance(c, dict)]
+    co_embedded = sum(1 for k in co_pubkeys if k)
+    # JWS general-serialization path (RFC 7515): if the response carries a top-level `jws` (payload +
+    # signatures) AND the payload decodes to the canonical bytes, verify every leg over its signing input
+    # so a multi-signer composition is credited on its STRONGER read (all signers fixture-verifiable),
+    # not under-counted for a signing input we'd otherwise skip. Falls back to per-co-signer over-the-hash.
+    used_jws, verified, total_signers = False, None, 1 + len(co)
+    jws = resp.get(mapping.get("jws_path", "jws")) if isinstance(resp, dict) else None
+    if isinstance(jws, dict) and jws.get("signatures"):
+        v, n, payload_ok = _verify_jws_legs(jws, canonical_bytes, [pubkey] + co_pubkeys)
+        if payload_ok and n:
+            verified, total_signers, used_jws = v, n, True
+    if not used_jws:
+        co_verified = 0
+        for c in co:
+            if not isinstance(c, dict):
+                continue
+            cpk = c.get("pubkey") or c.get("public_key")
+            csig = c.get("jws_signature") or c.get("signature")
+            if cpk and csig:
+                ok, _ = _verify_admission(c.get("sig_scheme") or scheme, envelope_hash, cpk, csig, None)
+                if ok:
+                    co_verified += 1
+        verified = 1 + co_verified  # primary verified just below
+    if total_signers <= 1:
         key_source, multisig_gap = "embedded", None
-    elif verified == total_signers:
+    elif verified >= total_signers:
         key_source, multisig_gap = f"{total_signers} signers verified", None
     else:
         key_source = f"{verified}/{total_signers} signers verified"
         absent = total_signers - 1 - co_embedded
-        gap_reason = (f"{absent} co-signer key(s) absent (missing_cosigner_key)" if absent
-                      else f"{total_signers - verified} co-signer signature(s) embedded but on a signing input "
-                           "this adapter does not reconstruct, so not independently re-verified here")
+        gap_reason = (f"{absent} co-signer key(s) absent (missing_cosigner_key)" if absent > 0
+                      else f"{total_signers - verified} co-signer signature(s) not independently re-verified here")
         multisig_gap = (f"; admission passes on the independent primary signer, but the {total_signers}-signer "
                         f"property is not fully recomputable from the fixture ({gap_reason})")
 
