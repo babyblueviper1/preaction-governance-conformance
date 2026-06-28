@@ -59,9 +59,22 @@ def _inject_nonce(body):
 
 def _http(method, url, headers=None, body=None, timeout=25):
     data = json.dumps(body).encode() if body is not None else None
-    req = urllib.request.Request(url, data=data, headers=headers or {}, method=method)
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.loads(r.read().decode())
+    hdrs = dict(headers or {})
+    # default User-Agent: some hosts UA-filter and 403 a bare urllib client (e.g. PMI/sixu-ai)
+    hdrs.setdefault("User-Agent", "preaction-governance-conformance/referee")
+    req = urllib.request.Request(url, data=data, headers=hdrs, method=method)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return json.loads(r.read().decode())
+    except urllib.error.HTTPError as e:
+        # Governance endpoints commonly embed the SIGNED governance block in a non-2xx body (e.g. PMI
+        # serves it with HTTP 400 "agent_did is required"). Parse the error body so the invariants can
+        # still be checked; re-raise only if there's no JSON body to read.
+        raw = e.read().decode() if e.fp else ""
+        try:
+            return json.loads(raw)
+        except Exception:
+            raise e from None
 
 
 def _jcs(obj) -> bytes:
@@ -91,10 +104,22 @@ def _verify_admission(scheme, envelope_hash, pubkey, signature, event):
         if s.startswith("ed25519"):
             try:
                 from nacl.signing import VerifyKey  # optional
-                VerifyKey(bytes.fromhex(pubkey)).verify(bytes.fromhex(envelope_hash), bytes.fromhex(signature))
-                return True, "Ed25519 over canonical bytes (via PyNaCl)"
             except ImportError:
                 return None, "ed25519-jcs recognized; needs an ed25519 verifier (e.g. PyNaCl) to check here"
+            vk = VerifyKey(bytes.fromhex(pubkey))
+            sig_b = bytes.fromhex(signature)
+            # Implementations differ on what message the hash-signature covers: the RAW 32 bytes of the
+            # envelope hash, or the 64-char HEX STRING of it (e.g. PMI/moyan signs the hex string). Both
+            # are a deterministic commitment to the same hash, so accept either and report which matched —
+            # the adapter accommodates the convention so implementers need no local patch.
+            for enc_label, msg in (("raw hash bytes", bytes.fromhex(envelope_hash)),
+                                   ("hex-string of the hash", envelope_hash.encode("utf-8"))):
+                try:
+                    vk.verify(msg, sig_b)
+                    return True, f"Ed25519 over the {enc_label} (via PyNaCl)"
+                except Exception:  # noqa: BLE001 — try the next encoding
+                    continue
+            return False, "Ed25519 signature did not verify over the raw hash bytes or its hex string"
         return False, f"unknown sig_scheme: {scheme}"
     except Exception as e:  # noqa: BLE001
         return False, f"signature check error: {e}"
@@ -128,6 +153,9 @@ def run(mapping: dict) -> dict:
     trust = mapping.get("trust_policy", {}).get("independent_verifier_pubkeys", [])
     actor_pubkey = mapping.get("actor_pubkey")
     raw_claim = mapping.get("raw_claim")
+    # Some endpoints commit to the whole response MINUS the signature/governance block (e.g. PMI/moyan:
+    # envelope_hash = sha256(JCS(response excluding `governance`)) — excluding it avoids self-reference).
+    exclude = mapping.get("envelope_excludes")
 
     suites = {}
 
@@ -135,7 +163,16 @@ def run(mapping: dict) -> dict:
     # Preferred path: the endpoint exposes its EXACT canonical UTF-8 bytes (e.g. SafeAgent's
     # canonical_bytes_utf8) — we hash those bytes verbatim, making the binding implementation-independent
     # (no assumption that our JCS matches the issuer's). Fallback: re-canonicalize a returned raw claim.
-    if canonical_bytes is not None:
+    if exclude is not None and isinstance(resp, dict):
+        # commitment over the response with the named keys removed, JCS-canonicalized
+        reduced = {k: v for k, v in resp.items() if k not in exclude}
+        recomputed = hashlib.sha256(_jcs(reduced)).hexdigest()
+        ok = recomputed == envelope_hash
+        suites["canonical_envelope"] = _suite("pass" if ok else "fail",
+                                              None if ok else "envelope_hash_mismatch",
+                                              f"SHA-256(JCS(response excluding {exclude})) {recomputed[:16]} "
+                                              f"vs declared {str(envelope_hash)[:16]}")
+    elif canonical_bytes is not None:
         raw = canonical_bytes.encode("utf-8") if isinstance(canonical_bytes, str) else _jcs(canonical_bytes)
         recomputed = hashlib.sha256(raw).hexdigest()
         ok = recomputed == envelope_hash
@@ -186,6 +223,11 @@ def run(mapping: dict) -> dict:
     if not anchor_ep:
         suites["anchoring_invariant"] = _suite("fail", "ordering_unanchored", "no external anchor referenced")
     else:
+        # resolve a relative anchor path (e.g. PMI returns "/api/arbiter/anchor") against the fetch origin
+        if isinstance(anchor_ep, str) and anchor_ep.startswith("/") and "fetch" in mapping:
+            from urllib.parse import urlsplit
+            sp = urlsplit(mapping["fetch"]["url"])
+            anchor_ep = f"{sp.scheme}://{sp.netloc}{anchor_ep}"
         try:
             astate = _http("GET", anchor_ep) if isinstance(anchor_ep, str) and anchor_ep.startswith("http") else anchor_ep
         except Exception as e:  # noqa: BLE001
@@ -238,7 +280,8 @@ def run(mapping: dict) -> dict:
             # Bitcoin confirmation. The endpoint correctly reports ordering_assertable=false here.
             suites["anchoring_invariant"] = _suite("pending", "anchor_not_yet_confirmed",
                                                   f"anchor_status={raw_status!r}, ordering_assertable={ordering_assertable} — "
-                                                  "not yet Bitcoin-confirmed, so 'ordered' is correctly not yet assertable")
+                                                  "not yet confirmed by an external clock independent of the signer, so "
+                                                  "'committed before the outcome' is correctly not yet assertable")
 
     overall = "pass" if all(s["state"] == "pass" for s in suites.values()) else \
         ("fail" if any(s["state"] == "fail" for s in suites.values()) else "partial")
