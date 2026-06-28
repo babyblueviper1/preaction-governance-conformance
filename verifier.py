@@ -8,11 +8,17 @@ hash, the signed binding, and the signer identity from the signed event itself).
 back to the runtime that generated the fixtures. Zero third-party deps — the BIP-340 / NIP-01 core is
 vendored in _bip340_nostr.py (pure stdlib).
 
-Four layers, three joined invariants:
-  canonical_envelope  — recompute sha256(canonical bytes) == declared envelope hash
-  chain_invariant     — pre-action and terminal join on that same envelope hash
-  admission_invariant — an INDEPENDENT identity signed that same hash (sig valid + binding + identity)
-  anchoring_invariant — the commitment is anchored, bound to the admission, before the terminal outcome
+Five reported invariants (anchoring split into existence vs precedence per rpelevin, autogen#7353):
+  canonical_envelope   — recompute sha256(canonical bytes) == declared envelope hash
+  admission_invariant  — an INDEPENDENT identity signed that same hash (sig valid + binding + identity)
+  anchoring_existence  — the commitment is externally anchored & bound to the admission (it provably exists)
+  anchoring_precedence — the accepted anchor point provably precedes the terminal outcome (it was made first)
+  chain_invariant      — pre-action and terminal join on that same envelope hash / action ref
+
+Existence and precedence are kept separate so a confirmed-but-backfilled anchor (proves a commitment
+EXISTS, but not that it was made BEFORE the outcome) can never pass as ordering. precedence is only
+assessable once existence holds; otherwise it is reported `not_assessable` (pass=None), not a second
+failure — one broken join, not two.
 
 A second verifier should reach the SAME verdict from these bytes alone.
 """
@@ -90,21 +96,40 @@ def verify_fixture(fx: dict) -> dict:
                 "signer differs from actor but is not a declared-independent identity"
     suites["admission_invariant"] = _suite(code is None, code, detail)
 
-    # ---- anchoring_invariant: anchored, bound to this admission, before the terminal outcome ----
+    # ---- anchoring, split into existence vs precedence (rpelevin, autogen#7353) ----
+    # existence: the commitment is externally anchored and the anchor commits to THIS admission.
+    # precedence: the accepted anchor point provably precedes the terminal outcome. precedence is only
+    # assessable once existence holds; otherwise it is `not_assessable` (pass=None), not a 2nd failure.
     anc = fx.get("anchor")
     if anc is None:
-        suites["anchoring_invariant"] = _suite(False, "ordering_unanchored",
+        suites["anchoring_existence"] = _suite(False, "ordering_unanchored",
                                                "no external existence proof — internal ordering only")
+        suites["anchoring_precedence"] = {"pass": None, "code": "not_assessable",
+                                          "detail": "no anchor, so pre-outcome ordering cannot be established"}
+    elif anc["commitment_digest"] != ev["id"]:
+        suites["anchoring_existence"] = _suite(False, "anchor_commitment_mismatch",
+                                               "anchor does not commit to this admission")
+        suites["anchoring_precedence"] = {"pass": None, "code": "not_assessable",
+                                          "detail": "anchor does not bind this admission, so ordering is not assessable"}
     else:
-        a_code, a_detail = None, "commitment anchored before the terminal outcome"
-        if anc["commitment_digest"] != ev["id"]:
-            a_code, a_detail = "anchor_commitment_mismatch", "anchor does not commit to this admission"
+        suites["anchoring_existence"] = _suite(True, None,
+                                               "commitment externally anchored and bound to this admission")
+        if anc.get("precedence") is False:
+            # confirmed anchor, but no forward (pre-outcome) commitment — proves existence, not ordering
+            suites["anchoring_precedence"] = _suite(False, "existence_only_anchor",
+                                                    "anchor proves the commitment exists, but carries no pre-outcome "
+                                                    "(forward) stamp, so it does not establish it was made first")
         elif anc["accepted_anchor_point"]["block_time"] >= anc["terminal_outcome_time"]:
-            a_code, a_detail = "late_commitment", "anchor accepted at/after the terminal outcome"
-        suites["anchoring_invariant"] = _suite(a_code is None, a_code, a_detail)
+            suites["anchoring_precedence"] = _suite(False, "late_commitment",
+                                                    "anchor accepted at/after the terminal outcome")
+        else:
+            suites["anchoring_precedence"] = _suite(True, None,
+                                                    "accepted anchor point strictly precedes the terminal outcome")
 
-    overall = all(s["pass"] for s in suites.values())
-    first_fail = next((s["code"] for s in suites.values() if not s["pass"]), None)
+    # `not_assessable` (pass=None) is neither a pass nor a counted break — overall and first_fail key
+    # on hard False only, so a single unmet axis stays exactly one broken join.
+    overall = all(s["pass"] is True for s in suites.values())
+    first_fail = next((s["code"] for s in suites.values() if s["pass"] is False), None)
     return {"overall_pass": overall, "failure_reason": first_fail, "suites": suites,
             "envelope_hash": envelope_hash}
 

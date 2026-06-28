@@ -1,6 +1,6 @@
 {
   "name": "agentoracle",
-  "_doc": "AgentOracle /v1/compose multi-issuer composed verification envelope (TKCollective/agentoracle-receipt-spec, autogen#7353). The response returns a JWS general serialization with TWO signatures (AgentTrust + AgentOracle) over byte-identical RFC 8785 JCS canonical bytes; admission is by construction across multiple independent issuers, not one. The governance block reports AO's signature as the primary admission signer; co_signers discloses the second issuer (AT). canonical_bytes_utf8 is the exact JCS-canonicalized payload — SHA-256 of those bytes recomputes to envelope_hash, no re-canonicalization needed. Scheme ed25519-jcs (over raw 32-byte envelope hash). Anchoring is the honest gap — no Bitcoin OTS anchor today; the spec reserves a mycelium_trail_id sibling pointer for trail anchors with absent-not-null grammar, not yet populated in production envelopes.",
+  "_doc": "AgentOracle /v1/compose multi-issuer composed verification envelope (TKCollective/agentoracle-receipt-spec, autogen#7353). The response returns a JWS general serialization with TWO signatures (AgentTrust + AgentOracle) over byte-identical RFC 8785 JCS canonical bytes; admission is by construction across multiple independent issuers, not one. The governance block reports AO's signature as the primary admission signer; co_signers discloses the second issuer (AT). canonical_bytes_utf8 is the exact JCS-canonicalized payload — SHA-256 of those bytes recomputes to envelope_hash, no re-canonicalization needed. Scheme ed25519-jcs (over raw 32-byte envelope hash). ANCHORING (S210): /v1/compose now submits a Mycelium NEXUS trail synchronously and polls Arbitrum confirmation inline, populating governance.anchor with {method:on-chain, tier:on-chain, reference (trail_id), tx_hash, anchor_block_time, outcome_ts, precedence:true (strict block_time*1000 < outcome_ts_ms), recompute_cmd}. The anchor uses absent-not-null grammar: it populates only for fully-signed calls (valid screen_ref with issuer/verdict/screen), so a bare referee probe returns governance.anchor=null and the row reads anchoring_existence/precedence PENDING (anchor_absent_this_call), NOT certified — honest, since the referee cannot mint a valid screen_ref. The board flips to existence-pass/precedence-pass via on-chain (Arbitrum) the moment a referee-reachable call returns the anchor sibling. The first anchored envelope (trail b4377bcd-7342-4f7d-bdb3-daf41201bd47) was independently recomputed by the referee on 2026-06-28: verify_chain returns valid:true and precedence holds by a 599s margin — the first non-Bitcoin precedence anchor on the board.",
   "fetch": {
     "method": "POST",
     "url": "https://agentoracle.co/v1/compose",
@@ -23,7 +23,8 @@
     "canonical_bytes": "canonical_bytes_utf8",
     "pubkey": "verifier_pubkey",
     "signature": "signature",
-    "sig_scheme": "sig_scheme"
+    "sig_scheme": "sig_scheme",
+    "anchor_endpoint": "anchor"
   },
   "trust_policy": {
     "independent_verifier_pubkeys": [

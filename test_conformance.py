@@ -21,7 +21,7 @@ def test_fixture_meets_declared_expectation(path):
         assert not r["overall_pass"], f"{path.name} should fail"
         assert r["failure_reason"] == fx["expected_failure_reason"], \
             f"{path.name}: got {r['failure_reason']}, expected {fx['expected_failure_reason']}"
-        broken = [n for n, s in r["suites"].items() if not s["pass"]]
+        broken = [n for n, s in r["suites"].items() if s["pass"] is False]
         assert len(broken) == 1, f"{path.name}: expected exactly one broken join, got {broken}"
 
 

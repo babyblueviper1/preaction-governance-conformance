@@ -2,9 +2,12 @@
 """
 live_check.py — run the pre-action governance conformance invariants against a LIVE endpoint.
 
-The fixture verifier (../verifier.py) checks portable static fixtures. This runs the same three
-invariants against a real governance response, so an implementer can point the suite at a running
-endpoint and see where the invariants hold and where gaps remain.
+The fixture verifier (../verifier.py) checks portable static fixtures. This runs the same invariants
+against a real governance response, so an implementer can point the suite at a running endpoint and see
+where the invariants hold and where gaps remain. Reported invariants: canonical_envelope,
+admission_invariant, anchoring_existence, anchoring_precedence, chain_invariant — anchoring is split
+into existence (the commitment provably exists) vs precedence (it was provably made before the outcome)
+so a confirmed-but-backfilled anchor can never pass as ordering (rpelevin, autogen#7353).
 
 Mapping-driven and implementation-independent: a small mapping JSON says how to obtain the governance
 block and where each field lives. The crypto is the vendored, zero-dep BIP-340 core (and NIP-01 for
@@ -83,8 +86,14 @@ def _jcs(obj) -> bytes:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
-def _suite(state, code, detail):
-    return {"state": state, "code": code, "detail": detail}  # state: pass|fail|pending|not_provided|unverified_here
+def _suite(state, code, detail, mechanism=None):
+    # state: pass|fail|pending|not_provided|not_assessable|unverified_here
+    # mechanism (anchoring suites only): WHICH external clock satisfied the axis — e.g. "Bitcoin OTS",
+    # "on-chain (Arbitrum)" — so the board shows that one invariant survives across mechanisms.
+    s = {"state": state, "code": code, "detail": detail}
+    if mechanism:
+        s["mechanism"] = mechanism
+    return s
 
 
 def _verify_admission(scheme, envelope_hash, pubkey, signature, event):
@@ -148,7 +157,12 @@ def run(mapping: dict) -> dict:
     signature = _dig(gov, fields.get("signature"))
     scheme = (_dig(gov, fields["sig_scheme"]) if fields.get("sig_scheme") else None) or mapping.get("sig_scheme")
     event = _dig(gov, fields.get("event")) if fields.get("event") else None
-    anchor_ep = _dig(gov, fields.get("anchor_endpoint"))
+    # `anchor_declared` = the mapping names an anchor slot at all. Distinguishes a verifier with no
+    # anchoring concept (existence FAIL) from one whose anchor sibling exists in-schema but is absent on
+    # this particular call (existence PENDING — AgentOracle's "absent-not-null" grammar: the on-chain
+    # anchor only populates for fully-signed calls, not bare referee probes).
+    anchor_declared = "anchor_endpoint" in fields
+    anchor_ep = _dig(gov, fields.get("anchor_endpoint")) if anchor_declared else None
     canonical_bytes = _dig(gov, fields.get("canonical_bytes")) if fields.get("canonical_bytes") else None
     trust = mapping.get("trust_policy", {}).get("independent_verifier_pubkeys", [])
     actor_pubkey = mapping.get("actor_pubkey")
@@ -219,9 +233,26 @@ def run(mapping: dict) -> dict:
         suites["admission_invariant"] = _suite("pass", None,
                                               f"{sig_detail}; signer resolves to a declared-independent identity")
 
-    # anchoring_invariant: anchored, and the accepted point precedes the terminal outcome
+    # ── anchoring, split into existence vs precedence (rpelevin, autogen#7353) ──────────────────
+    # A confirmed anchor can prove a commitment EXISTED by some external point; that is not the same as
+    # proving it was made BEFORE the outcome. The board reports the two as separate results so existence
+    # can never masquerade as ordering:
+    #   anchoring_existence  — the commitment is externally confirmed by the declared mechanism
+    #   anchoring_precedence — the accepted anchor point provably precedes the terminal outcome
+    # precedence is only assessable once existence holds; otherwise it is `not_assessable`, not a 2nd fail.
+    outcome_time = mapping.get("terminal_outcome_time")
     if not anchor_ep:
-        suites["anchoring_invariant"] = _suite("fail", "ordering_unanchored", "no external anchor referenced")
+        if anchor_declared:
+            # anchor sibling exists in-schema but is absent on this call (not populated for a bare probe)
+            suites["anchoring_existence"] = _suite("pending", "anchor_absent_this_call",
+                                                  "anchor sibling declared in-schema but not populated on this call "
+                                                  "(absent-not-null) — needs a fully-signed request to anchor")
+            suites["anchoring_precedence"] = _suite("pending", "existence_not_yet_established",
+                                                   "no anchor populated on this call, so pre-outcome ordering is not assertable here")
+        else:
+            suites["anchoring_existence"] = _suite("fail", "ordering_unanchored", "no external anchor referenced")
+            suites["anchoring_precedence"] = _suite("not_assessable", "no_anchor",
+                                                   "no external anchor, so pre-outcome ordering cannot be established")
     else:
         # resolve a relative anchor path (e.g. PMI returns "/api/arbiter/anchor") against the fetch origin
         if isinstance(anchor_ep, str) and anchor_ep.startswith("/") and "fetch" in mapping:
@@ -241,8 +272,10 @@ def run(mapping: dict) -> dict:
             astate = astate["commitment_proof"]
         # descend into the anchor sub-block, mechanism-agnostic: ots_anchor (Bitcoin), or the convergent
         # `anchor` / `timestamp_anchor` sibling (on-chain L2 / CT-log / OTS all use the same shape).
+        _anchor_kind = None
         for _sub in ("ots_anchor", "timestamp_anchor", "anchor"):
             if isinstance(astate.get(_sub), dict):
+                _anchor_kind = _sub
                 astate = astate[_sub]
                 break
         # accept either a bare `status` or an explicit `anchor_status` (submitted/confirmed distinction)
@@ -251,46 +284,96 @@ def run(mapping: dict) -> dict:
         ordering_assertable = astate.get("ordering_assertable")
         method = astate.get("method") or astate.get("mechanism") or ""
         tier = astate.get("tier")
-        # precedence: an anchor can be CONFIRMED (the commitment provably existed by some block) yet NOT
-        # prove it was made BEFORE the outcome — e.g. an integrity backfill stamped after the fact.
-        # `precedence=True` means a forward commitment (made before the outcome was known) — the property
-        # anchoring_invariant actually asserts. Mechanism-agnostic: Bitcoin OTS, on-chain L2 block time,
-        # or a CT-style log all carry the same flag. (None = endpoint doesn't distinguish; confirm-only.)
+        # precedence flag: True = a forward commitment (made before the outcome was known); False = a
+        # confirm-only / backfilled stamp (existence proven, ordering not). Mechanism-agnostic — Bitcoin
+        # OTS, on-chain L2 block time, or a CT-style log all carry the same flag. (None = unspecified.)
         precedence = astate.get("precedence")
         # block time of the external anchor, under any standard field name (Bitcoin or on-chain L2)
         _ap = astate.get("accepted_anchor_point") if isinstance(astate.get("accepted_anchor_point"), dict) else {}
-        block_time = (astate.get("bitcoin_block_time") or astate.get("block_time")
-                      or astate.get("block_timestamp") or astate.get("timestamp") or _ap.get("block_time"))
+        block_time = (astate.get("bitcoin_block_time") or astate.get("anchor_block_time")
+                      or astate.get("block_time") or astate.get("block_timestamp")
+                      or astate.get("timestamp") or _ap.get("block_time"))
         _tag = (f" [method={method}]" if method else "") + (f" [tier={tier}]" if tier else "")
-        outcome_time = mapping.get("terminal_outcome_time")
-        if "confirmed" in st and precedence is False:
-            # Confirmed for INTEGRITY, but the stamp does not establish pre-outcome ordering (e.g. a
-            # post-hoc backfill). Honest middle state: anchored + confirmed, ordering not asserted.
-            suites["anchoring_invariant"] = _suite("pending", "anchored_integrity_only_no_precedence",
-                                                  f"externally confirmed (block_time {block_time}){_tag} but precedence=false — "
-                                                  "the commitment's existence is proven, but it is not established as "
-                                                  "made BEFORE the outcome (no forward stamp yet), so 'ordered' is not asserted")
-        elif "confirmed" in st and block_time and outcome_time:
-            ok = block_time < outcome_time
-            suites["anchoring_invariant"] = _suite("pass" if ok else "fail",
-                                                  None if ok else "late_commitment",
-                                                  f"anchor block_time {block_time} strictly-< outcome {outcome_time}{_tag}"
-                                                  + ("; precedence=true" if precedence else ""))
-        elif "confirmed" in st and precedence:
-            suites["anchoring_invariant"] = _suite("pass", None,
-                                                  f"confirmed forward stamp (precedence=true, block_time {block_time}){_tag} — "
-                                                  "committed before the outcome")
-        elif "confirmed" in st:
-            suites["anchoring_invariant"] = _suite("pass", None,
-                                                  f"anchor externally confirmed{_tag}; provide terminal_outcome_time to check ordering")
+        # mechanism: WHICH external clock this anchor uses, surfaced as a first-class result field so the
+        # board shows that one invariant survives across mechanisms (Bitcoin OTS vs on-chain L2 vs CT-log).
+        _src = " ".join(str(x) for x in (method, tier, astate.get("source"), _ap.get("source"), _anchor_kind) if x).lower()
+        # existence requires a clock EXTERNAL to the signer. An internal arbitration point with a self-minted
+        # timestamp (e.g. PMI's same-key arbiter-anchor) is NOT existence — only an external mechanism counts.
+        _external_mech = any(w in _src for w in ("bitcoin", "ots", "opentimestamps", "on-chain", "onchain",
+                                                 "arbitrum", "mycelium", "ct-log", "transparency", "l2", "ethereum"))
+        if "bitcoin" in _src or "ots" in _src or "opentimestamps" in _src:
+            mechanism = "Bitcoin OTS"
+        elif "arbitrum" in _src or "mycelium" in _src or "on-chain" in _src or "onchain" in _src:
+            chain = "Arbitrum" if "arbitrum" in _src or "mycelium" in _src else None
+            mechanism = f"on-chain ({chain})" if chain else "on-chain"
+        elif method or tier:
+            mechanism = method or tier
         else:
-            # submitted/not_submitted — the anchor exists as a commitment but ordering is not yet assertable.
-            # This is a correct, honest state (PENDING), not a failure: 'ordered' becomes assertable only on
-            # Bitcoin confirmation. The endpoint correctly reports ordering_assertable=false here.
-            suites["anchoring_invariant"] = _suite("pending", "anchor_not_yet_confirmed",
+            mechanism = None
+
+        # existence is confirmed when the mechanism says so explicitly ("confirmed"), OR when a real
+        # EXTERNAL block time is populated and no status word marks it still in flight. On-chain anchors
+        # (Arbitrum/Mycelium) populate a tx + block_time on confirmation without ever emitting the word
+        # "confirmed" — a present block_time from an external clock IS the confirmation. An internal
+        # arbitration timestamp (no external mechanism) is deliberately NOT enough. (S210)
+        _in_flight = any(w in st for w in ("submitted", "pending", "not_submitted", "unconfirmed", "unreachable"))
+        confirmed = ("confirmed" in st) or (block_time is not None and not _in_flight and _external_mech)
+
+        # existence: is the commitment externally confirmed by the declared mechanism?
+        if confirmed:
+            suites["anchoring_existence"] = _suite("pass", None,
+                                                  f"externally confirmed{_tag}"
+                                                  + (f", block_time {block_time}" if block_time else ""), mechanism)
+        else:
+            suites["anchoring_existence"] = _suite("pending", "anchor_not_yet_confirmed",
                                                   f"anchor_status={raw_status!r}, ordering_assertable={ordering_assertable} — "
-                                                  "not yet confirmed by an external clock independent of the signer, so "
-                                                  "'committed before the outcome' is correctly not yet assertable")
+                                                  "submitted but not yet confirmed by an external clock independent of the signer",
+                                                  mechanism)
+
+        # precedence: does the accepted anchor point provably precede the terminal outcome?
+        if not confirmed:
+            suites["anchoring_precedence"] = _suite("pending", "existence_not_yet_established",
+                                                   "anchor not yet confirmed, so 'committed before the outcome' is correctly "
+                                                   "not yet assertable", mechanism)
+        elif precedence is False:
+            # confirmed for INTEGRITY, but no forward stamp — proves existence, not ordering
+            suites["anchoring_precedence"] = _suite("fail", "existence_only_anchor",
+                                                   f"externally confirmed (block_time {block_time}){_tag} but precedence=false — "
+                                                   "the commitment's existence is proven, but it is not established as made "
+                                                   "BEFORE the outcome (no forward stamp), so 'ordered' is not asserted", mechanism)
+        elif block_time and outcome_time:
+            ok = block_time < outcome_time
+            suites["anchoring_precedence"] = _suite("pass" if ok else "fail",
+                                                   None if ok else "late_commitment",
+                                                   f"anchor block_time {block_time} strictly-< outcome {outcome_time}{_tag}"
+                                                   + ("; precedence=true" if precedence else ""), mechanism)
+        elif precedence:
+            suites["anchoring_precedence"] = _suite("pass", None,
+                                                   f"confirmed forward stamp (precedence=true, block_time {block_time}){_tag} — "
+                                                   "committed before the outcome", mechanism)
+        else:
+            suites["anchoring_precedence"] = _suite("pending", "precedence_not_determinable",
+                                                   f"anchor confirmed (existence proven){_tag} but no forward-stamp flag or "
+                                                   "terminal_outcome_time to establish pre-outcome ordering", mechanism)
+
+    # ── chain_invariant: the terminal record joins back to the same proposed action ─────────────
+    # Reported explicitly (rpelevin): pass when the endpoint exposes a terminal action ref equal to the
+    # proposed one; fail when they diverge; not_provided where the endpoint is pre-action only and exposes
+    # no terminal join — honest by design (the board publishes which invariants each mechanism satisfies).
+    proposed_ref = _dig(gov, fields.get("proposed_action_ref")) if fields.get("proposed_action_ref") else None
+    terminal_ref = _dig(gov, fields.get("terminal_action_ref")) if fields.get("terminal_action_ref") else None
+    if proposed_ref is None and terminal_ref is None:
+        suites["chain_invariant"] = _suite("not_provided", None,
+                                          "endpoint is pre-action only; no terminal record exposed to join back to the "
+                                          "proposed action (existence/precedence/admission are the assertable axes here)")
+    elif proposed_ref is not None and terminal_ref is not None:
+        ok = proposed_ref == terminal_ref
+        suites["chain_invariant"] = _suite("pass" if ok else "fail",
+                                          None if ok else "chain_join_broken",
+                                          f"terminal action ref {'==' if ok else '!='} proposed action ref")
+    else:
+        suites["chain_invariant"] = _suite("not_provided", None,
+                                          "only one side of the action chain exposed; cannot recompute the join")
 
     overall = "pass" if all(s["state"] == "pass" for s in suites.values()) else \
         ("fail" if any(s["state"] == "fail" for s in suites.values()) else "partial")
@@ -308,7 +391,8 @@ def main(argv=None) -> int:
     if r["overall"] == "no_governance_block":
         print(f"{r['endpoint']}: NO GOVERNANCE BLOCK — {r.get('detail')} (status={r.get('raw_status')})")
         return 2
-    icon = {"pass": "✓", "fail": "✗", "pending": "⏳", "not_provided": "—", "unverified_here": "?", "partial": "◑"}
+    icon = {"pass": "✓", "fail": "✗", "pending": "⏳", "not_provided": "—", "not_assessable": "·",
+            "unverified_here": "?", "partial": "◑"}
     print(f"{r['endpoint']}: {r['overall'].upper()}  (signer {str(r['signer_pubkey'])[:16]}…, scheme {r['sig_scheme']})")
     for name, s in r["suites"].items():
         print(f"  {icon.get(s['state'],'?')} {name}: {s['state']} — {s['detail']}")

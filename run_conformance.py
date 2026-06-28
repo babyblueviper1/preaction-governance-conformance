@@ -45,8 +45,8 @@ def main() -> int:
         if r["failure_reason"] != exp_reason:
             failures.append(f"{path.name}: failed with {r['failure_reason']!r}, expected {exp_reason!r}")
             continue
-        # 3) exactly ONE broken join (every other suite passes)
-        broken = [name for name, s in r["suites"].items() if not s["pass"]]
+        # 3) exactly ONE broken join (every other suite passes; not_assessable is a skip, not a break)
+        broken = [name for name, s in r["suites"].items() if s["pass"] is False]
         if len(broken) != 1:
             failures.append(f"{path.name}: {len(broken)} broken suites {broken}, expected exactly 1")
             continue
@@ -59,7 +59,7 @@ def main() -> int:
             print(f"    ✗ {f}")
         return 1
     print(f"CONFORMANCE BAR MET — {len(fixtures)} fixtures verify to their declared expectations.")
-    print("Positive proves the three-suite join end to end; each negative fails for exactly one reason.")
+    print("Positive proves the five-invariant join end to end; each negative fails for exactly one reason.")
     return 0
 
 
