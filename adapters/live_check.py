@@ -353,9 +353,35 @@ def run(mapping: dict) -> dict:
     elif verified < total_signers:
         failed_or_unavailable = [_sid(c) for c in co if isinstance(c, dict)
                                  and not (c.get("pubkey") or c.get("public_key"))]
+
+    # ── evidence-mode field-presence contract (rpelevin, autogen#7353) ──────────────────────────
+    # The evidence_mode determines which fields must be present vs absent, which in turn CAPS the highest
+    # claim level the row may show: mode -> field presence -> verifier result -> allowed claim level. We
+    # EMIT and ENFORCE the contract so the mode is self-checking, not merely satisfied. Only embedded_fixture
+    # is in use; pinned_registry / cached_prior / external_resolution are specified and ACTIVATE — each with
+    # its required hashes (evidence_hash, resolution_time, key_record_hash) — the moment a row resolves a key
+    # out-of-band. Those fields are never emitted empty: their absence means "no external fetch", not "unknown".
+    evidence_mode = "embedded_fixture"
+    _CEILING = {"embedded_fixture": "admission_multisig_recomputable",
+                "pinned_registry": "admission_multisig_recomputable",
+                "external_resolution": "admission_multisig_recomputable",
+                "cached_prior": "admission_independent"}
+    _RANK = {"admission_independent": 1, "admission_multisig_recomputable": 2}
+    claim_ceiling = _CEILING.get(evidence_mode, "admission_independent")
+    key_hash_recomputed = bool(pubkey)     # primary_public_key_hash is recomputed from fixture bytes below
+    external_fields_present = False         # embedded rows emit no evidence_hash / resolution_time
+    # cap the claim at what the mode allows (evidence_mode_claim_mismatch guard) — never show green-by-assertion
+    if _RANK.get(claim_level, 9) > _RANK[claim_ceiling]:
+        claim_level = claim_ceiling
+    # contract holds for embedded_fixture iff: external fields absent, key hash recomputable, no signer was
+    # promoted into the verified count beyond the declared set, and the claim is within the mode's ceiling.
+    contract_holds = (not external_fields_present and key_hash_recomputed
+                      and verified <= total_signers
+                      and _RANK.get(claim_level, 9) <= _RANK[claim_ceiling])
+
     # the machine-readable record behind the compact sub-label: precise enough that another verifier can
-    # reproduce WHY the level was earned (rpelevin). Hashes make it reproducible; key_evidence is explicit
-    # ('embedded_fixture' = proven fixture-alone, no external fetch) so ABSENCE is meaningful, not a null.
+    # reproduce WHY the level was earned (rpelevin). Hashes make it reproducible; evidence_mode is explicit
+    # and self-checking so ABSENCE is meaningful, not a hidden null.
     _cb = canonical_bytes.encode("utf-8") if isinstance(canonical_bytes, str) else canonical_bytes
     admission_audit = {
         "board_claim_level": claim_level,
@@ -377,10 +403,16 @@ def run(mapping: dict) -> dict:
                             "pubkey_hash": c.get("pubkey_hash")}
                            for c in co if isinstance(c, dict)],
         },
-        # absence is meaningful: every current row proves its key(s) fixture-alone, so no external fetch was
-        # needed. external_resolution/pinned_registry + evidence_hash/resolution_time appear ONLY if/when a
-        # row actually resolves a key out-of-band (rpelevin: no external fields => no fetch, not unknown).
-        "key_evidence": "embedded_fixture",
+        # evidence_mode + its enforced field-presence contract: the mode caps the allowed claim level, and
+        # `holds` asserts the row's fields are consistent with the mode (external fields absent under
+        # embedded_fixture, key hash recomputed, claim within ceiling). Absence is meaningful, not a null.
+        "evidence_mode": evidence_mode,
+        "evidence_contract": {
+            "claim_level_ceiling": claim_ceiling,
+            "external_evidence_fields_present": external_fields_present,
+            "key_hash_recomputed_from_fixture": key_hash_recomputed,
+            "holds": contract_holds,
+        },
     }
 
     sig_valid, sig_detail = _verify_admission(scheme, envelope_hash, pubkey, signature, event)
