@@ -239,41 +239,50 @@ def run(mapping: dict) -> dict:
         # invariant logic applies to flat (SafeAgent) and nested (invinoveritas) shapes alike.
         if "commitment_proof" in astate and isinstance(astate["commitment_proof"], dict):
             astate = astate["commitment_proof"]
-        if "ots_anchor" in astate and isinstance(astate["ots_anchor"], dict):
-            astate = astate["ots_anchor"]
+        # descend into the anchor sub-block, mechanism-agnostic: ots_anchor (Bitcoin), or the convergent
+        # `anchor` / `timestamp_anchor` sibling (on-chain L2 / CT-log / OTS all use the same shape).
+        for _sub in ("ots_anchor", "timestamp_anchor", "anchor"):
+            if isinstance(astate.get(_sub), dict):
+                astate = astate[_sub]
+                break
         # accept either a bare `status` or an explicit `anchor_status` (submitted/confirmed distinction)
         raw_status = astate.get("anchor_status") or astate.get("status", "")
         st = str(raw_status).lower()
         ordering_assertable = astate.get("ordering_assertable")
-        # precedence: an anchor can be Bitcoin-CONFIRMED (the commitment provably existed by some block)
-        # yet NOT prove it was made BEFORE the outcome — e.g. an integrity backfill stamped after the fact.
-        # `precedence=True` means the stamp is a forward commitment (made before the outcome was known);
-        # this is the property anchoring_invariant actually asserts. Confirmed-but-not-precedence is honest
-        # integrity, not ordering. (None = the endpoint doesn't distinguish; fall back to confirm-only.)
+        method = astate.get("method") or astate.get("mechanism") or ""
+        tier = astate.get("tier")
+        # precedence: an anchor can be CONFIRMED (the commitment provably existed by some block) yet NOT
+        # prove it was made BEFORE the outcome — e.g. an integrity backfill stamped after the fact.
+        # `precedence=True` means a forward commitment (made before the outcome was known) — the property
+        # anchoring_invariant actually asserts. Mechanism-agnostic: Bitcoin OTS, on-chain L2 block time,
+        # or a CT-style log all carry the same flag. (None = endpoint doesn't distinguish; confirm-only.)
         precedence = astate.get("precedence")
-        block_time = astate.get("bitcoin_block_time") or astate.get("accepted_anchor_point", {}).get("block_time") \
-            if isinstance(astate.get("accepted_anchor_point"), dict) else astate.get("bitcoin_block_time")
+        # block time of the external anchor, under any standard field name (Bitcoin or on-chain L2)
+        _ap = astate.get("accepted_anchor_point") if isinstance(astate.get("accepted_anchor_point"), dict) else {}
+        block_time = (astate.get("bitcoin_block_time") or astate.get("block_time")
+                      or astate.get("block_timestamp") or astate.get("timestamp") or _ap.get("block_time"))
+        _tag = (f" [method={method}]" if method else "") + (f" [tier={tier}]" if tier else "")
         outcome_time = mapping.get("terminal_outcome_time")
         if "confirmed" in st and precedence is False:
-            # Bitcoin-confirmed for INTEGRITY, but the stamp does not establish pre-outcome ordering
-            # (e.g. a post-hoc backfill). Honest middle state: anchored + confirmed, ordering not asserted.
+            # Confirmed for INTEGRITY, but the stamp does not establish pre-outcome ordering (e.g. a
+            # post-hoc backfill). Honest middle state: anchored + confirmed, ordering not asserted.
             suites["anchoring_invariant"] = _suite("pending", "anchored_integrity_only_no_precedence",
-                                                  f"Bitcoin-confirmed (block_time {block_time}) but precedence=false — "
+                                                  f"externally confirmed (block_time {block_time}){_tag} but precedence=false — "
                                                   "the commitment's existence is proven, but it is not established as "
                                                   "made BEFORE the outcome (no forward stamp yet), so 'ordered' is not asserted")
         elif "confirmed" in st and block_time and outcome_time:
             ok = block_time < outcome_time
             suites["anchoring_invariant"] = _suite("pass" if ok else "fail",
                                                   None if ok else "late_commitment",
-                                                  f"anchor block_time {block_time} vs outcome {outcome_time}"
+                                                  f"anchor block_time {block_time} strictly-< outcome {outcome_time}{_tag}"
                                                   + ("; precedence=true" if precedence else ""))
         elif "confirmed" in st and precedence:
             suites["anchoring_invariant"] = _suite("pass", None,
-                                                  f"Bitcoin-confirmed forward stamp (precedence=true, block_time {block_time}) — "
+                                                  f"confirmed forward stamp (precedence=true, block_time {block_time}){_tag} — "
                                                   "committed before the outcome")
         elif "confirmed" in st:
             suites["anchoring_invariant"] = _suite("pass", None,
-                                                  "anchor Bitcoin-confirmed; provide terminal_outcome_time to check ordering")
+                                                  f"anchor externally confirmed{_tag}; provide terminal_outcome_time to check ordering")
         else:
             # submitted/not_submitted — the anchor exists as a commitment but ordering is not yet assertable.
             # This is a correct, honest state (PENDING), not a failure: 'ordered' becomes assertable only on
