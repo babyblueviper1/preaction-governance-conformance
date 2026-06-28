@@ -1,0 +1,19 @@
+{
+  "name": "invinoveritas",
+  "_doc": "Checks a LIVE published invinoveritas verdict against the three invariants in one no-auth fetch: GET /ledger/{entry}/commitment returns the signed Nostr verdict event (admission + canonical envelope = the recomputable event id) AND the Bitcoin OTS anchor (anchoring). Entry 28 is a stable Bitcoin-confirmed entry; swap for any /ledger entry. The committed-sample mapping (invinoveritas.mapping.json) is kept for the offline demo.",
+  "fetch": {
+    "method": "GET",
+    "url": "https://api.babyblueviper.com/ledger/28/commitment",
+    "governance_path": []
+  },
+  "sig_scheme": "nostr-event",
+  "fields": {
+    "envelope_hash": ["proof_event", "id"],
+    "pubkey": ["proof_event", "pubkey"],
+    "event": "proof_event",
+    "anchor_endpoint": "commitment_proof"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": ["6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7"]
+  }
+}

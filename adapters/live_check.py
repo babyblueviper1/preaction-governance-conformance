@@ -121,7 +121,7 @@ def run(mapping: dict) -> dict:
     envelope_hash = _dig(gov, fields.get("envelope_hash"))
     pubkey = _dig(gov, fields.get("pubkey"))
     signature = _dig(gov, fields.get("signature"))
-    scheme = _dig(gov, fields.get("sig_scheme")) or mapping.get("sig_scheme")
+    scheme = (_dig(gov, fields["sig_scheme"]) if fields.get("sig_scheme") else None) or mapping.get("sig_scheme")
     event = _dig(gov, fields.get("event")) if fields.get("event") else None
     anchor_ep = _dig(gov, fields.get("anchor_endpoint"))
     canonical_bytes = _dig(gov, fields.get("canonical_bytes")) if fields.get("canonical_bytes") else None
@@ -149,6 +149,19 @@ def run(mapping: dict) -> dict:
         suites["canonical_envelope"] = _suite("pass" if ok else "fail",
                                               None if ok else "envelope_hash_mismatch",
                                               f"recomputed {recomputed[:16]} vs declared {str(envelope_hash)[:16]}")
+    elif (scheme or "").lower() == "nostr-event" and event:
+        # In the Nostr-event scheme the canonical envelope IS the signed event, and its commitment hash
+        # is the event id = SHA-256 over the canonical NIP-01 serialization [0,pubkey,created_at,kind,
+        # tags,content]. Recompute it from the published fields: if it matches the declared id (== the
+        # envelope_hash for this scheme), the canonical bytes faithfully bind the hash — no separate
+        # canonical_bytes field needed, the event content IS the canonical payload.
+        recomputed = nostr_event_id(event)
+        declared = event.get("id")
+        ok = recomputed == declared
+        suites["canonical_envelope"] = _suite("pass" if ok else "fail",
+                                              None if ok else "envelope_hash_mismatch",
+                                              f"Nostr event id recomputes from canonical [0,pubkey,created_at,kind,"
+                                              f"tags,content]: {str(recomputed)[:16]} vs declared {str(declared)[:16]}")
     else:
         suites["canonical_envelope"] = _suite("not_provided", None,
                                               "raw claim not returned by the endpoint; envelope hash is asserted, "
@@ -177,18 +190,45 @@ def run(mapping: dict) -> dict:
             astate = _http("GET", anchor_ep) if isinstance(anchor_ep, str) and anchor_ep.startswith("http") else anchor_ep
         except Exception as e:  # noqa: BLE001
             astate = {"status": f"unreachable: {e}"}
+        if not isinstance(astate, dict):
+            astate = {"status": str(astate)}
+        # Some endpoints nest the Bitcoin anchor (e.g. invinoveritas /ledger commitment proofs carry it
+        # under commitment_proof.ots_anchor). Descend to the OTS/anchor sub-block if present so the same
+        # invariant logic applies to flat (SafeAgent) and nested (invinoveritas) shapes alike.
+        if "commitment_proof" in astate and isinstance(astate["commitment_proof"], dict):
+            astate = astate["commitment_proof"]
+        if "ots_anchor" in astate and isinstance(astate["ots_anchor"], dict):
+            astate = astate["ots_anchor"]
         # accept either a bare `status` or an explicit `anchor_status` (submitted/confirmed distinction)
         raw_status = astate.get("anchor_status") or astate.get("status", "")
         st = str(raw_status).lower()
         ordering_assertable = astate.get("ordering_assertable")
+        # precedence: an anchor can be Bitcoin-CONFIRMED (the commitment provably existed by some block)
+        # yet NOT prove it was made BEFORE the outcome — e.g. an integrity backfill stamped after the fact.
+        # `precedence=True` means the stamp is a forward commitment (made before the outcome was known);
+        # this is the property anchoring_invariant actually asserts. Confirmed-but-not-precedence is honest
+        # integrity, not ordering. (None = the endpoint doesn't distinguish; fall back to confirm-only.)
+        precedence = astate.get("precedence")
         block_time = astate.get("bitcoin_block_time") or astate.get("accepted_anchor_point", {}).get("block_time") \
             if isinstance(astate.get("accepted_anchor_point"), dict) else astate.get("bitcoin_block_time")
         outcome_time = mapping.get("terminal_outcome_time")
-        if "confirmed" in st and block_time and outcome_time:
+        if "confirmed" in st and precedence is False:
+            # Bitcoin-confirmed for INTEGRITY, but the stamp does not establish pre-outcome ordering
+            # (e.g. a post-hoc backfill). Honest middle state: anchored + confirmed, ordering not asserted.
+            suites["anchoring_invariant"] = _suite("pending", "anchored_integrity_only_no_precedence",
+                                                  f"Bitcoin-confirmed (block_time {block_time}) but precedence=false — "
+                                                  "the commitment's existence is proven, but it is not established as "
+                                                  "made BEFORE the outcome (no forward stamp yet), so 'ordered' is not asserted")
+        elif "confirmed" in st and block_time and outcome_time:
             ok = block_time < outcome_time
             suites["anchoring_invariant"] = _suite("pass" if ok else "fail",
                                                   None if ok else "late_commitment",
-                                                  f"anchor block_time {block_time} vs outcome {outcome_time}")
+                                                  f"anchor block_time {block_time} vs outcome {outcome_time}"
+                                                  + ("; precedence=true" if precedence else ""))
+        elif "confirmed" in st and precedence:
+            suites["anchoring_invariant"] = _suite("pass", None,
+                                                  f"Bitcoin-confirmed forward stamp (precedence=true, block_time {block_time}) — "
+                                                  "committed before the outcome")
         elif "confirmed" in st:
             suites["anchoring_invariant"] = _suite("pass", None,
                                                   "anchor Bitcoin-confirmed; provide terminal_outcome_time to check ordering")
