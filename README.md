@@ -1,5 +1,7 @@
 # Pre-action governance — conformance fixtures
 
+[![conformance](https://github.com/babyblueviper1/preaction-governance-conformance/actions/workflows/conformance.yml/badge.svg)](https://github.com/babyblueviper1/preaction-governance-conformance/actions/workflows/conformance.yml)
+
 A portable, implementation-independent conformance suite for the pre-action governance receipt model
 discussed in [vercel/ai#13215](https://github.com/vercel/ai/issues/13215): a verifier should be able to
 confirm, from the **bytes and declared trust inputs alone**, that a consequential agent action was

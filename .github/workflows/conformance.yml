@@ -1,0 +1,22 @@
+name: conformance
+
+# Proves the portable reproduction claim runs green, independent of any framework:
+# the offline zero-dependency suite + the AG2 Beta external-attestation contract triple
+# both recompute their verdicts from bytes on every push/PR.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Conformance suite (offline, zero-dep)
+        run: python3 run_conformance.py
+      - name: AG2 Beta external-attestation contract triple
+        run: python3 examples/ag2-beta/check_triple.py
