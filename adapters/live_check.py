@@ -369,10 +369,6 @@ def run(mapping: dict) -> dict:
     # resolution activate when the adapter actually fetches a key and carries its evidence_hash.)
     external_key_resolution = False
     evidence_mode = "external_resolution" if external_key_resolution else "embedded_fixture"
-    # a producer MAY disclose its own evidence_mode as a hint (TK's adapter-symmetry offer); we CROSS-CHECK,
-    # never copy. A mismatch is a finding and the referee-derived value wins (producer_mode_hint_contradicts_referee).
-    producer_mode_hint = _dig(gov, fields.get("evidence_mode", "evidence_mode"))
-    producer_hint_matches = (producer_mode_hint == evidence_mode) if producer_mode_hint else None
     _CEILING = {"embedded_fixture": "admission_multisig_recomputable",
                 "pinned_registry": "admission_multisig_recomputable",
                 "external_resolution": "admission_multisig_recomputable",
@@ -381,19 +377,36 @@ def run(mapping: dict) -> dict:
     claim_ceiling = _CEILING.get(evidence_mode, "admission_independent")
     key_hash_recomputed = bool(pubkey)     # primary_public_key_hash is recomputed from fixture bytes below
     external_fields_present = False         # embedded rows emit no evidence_hash / resolution_time
+    # A producer MAY disclose its own evidence_mode as a hint; the referee CROSS-CHECKS, never copies, and
+    # records the result as a first-class state (rpelevin): a producer hint can be disclosure, never control
+    # flow. A well-formed hint pointing at the wrong contract (e.g. claims pinned_registry with no evidence
+    # hashes available) is `contradicts` -> the referee-derived value wins and the row falls / fails closed.
+    producer_mode_hint = _dig(gov, fields.get("evidence_mode", "evidence_mode"))
+    _KNOWN_MODES = set(_CEILING)
+    if producer_mode_hint is None:
+        cross_check = "producer_hint_missing"
+    elif producer_mode_hint not in _KNOWN_MODES:
+        cross_check = "producer_hint_unverifiable"      # hint present but not a mode the referee can assess
+    elif producer_mode_hint == evidence_mode:
+        cross_check = "producer_hint_matches_referee"
+    else:
+        cross_check = "producer_hint_contradicts_referee"
     # cap the claim at what the mode allows (evidence_mode_claim_mismatch guard) — never show green-by-assertion
+    blocked_reason = None
     if _RANK.get(claim_level, 9) > _RANK[claim_ceiling]:
+        blocked_reason = (f"claim capped to {claim_ceiling} by evidence_mode {evidence_mode!r} "
+                          "(evidence_mode_claim_mismatch)")
         claim_level = claim_ceiling
-    # contract holds for embedded_fixture iff: external fields absent, key hash recomputable, no signer was
-    # promoted into the verified count beyond the declared set, the claim is within the mode's ceiling, and
-    # any producer-declared mode hint agrees with what the referee derived (a contradicting hint fails it).
+    # contract holds iff: external fields absent, key hash recomputable, no signer promoted beyond the
+    # declared set, claim within ceiling, and the producer hint does not contradict the referee derivation.
     contract_holds = (not external_fields_present and key_hash_recomputed
                       and verified <= total_signers
                       and _RANK.get(claim_level, 9) <= _RANK[claim_ceiling]
-                      and producer_hint_matches is not False)
-    if producer_hint_matches is False:
-        multisig_gap = (multisig_gap or "") + (f"; producer declared evidence_mode={producer_mode_hint!r} but the "
-                                               f"referee derived {evidence_mode!r} (producer_mode_hint_contradicts_referee)")
+                      and cross_check != "producer_hint_contradicts_referee")
+    if cross_check == "producer_hint_contradicts_referee":
+        blocked_reason = blocked_reason or (f"producer declared evidence_mode={producer_mode_hint!r} but the "
+                                            f"referee derived {evidence_mode!r}; referee-derived value wins")
+        multisig_gap = (multisig_gap or "") + f"; {blocked_reason}"
 
     # the machine-readable record behind the compact sub-label: precise enough that another verifier can
     # reproduce WHY the level was earned (rpelevin). Hashes make it reproducible; evidence_mode is explicit
@@ -428,8 +441,9 @@ def run(mapping: dict) -> dict:
             "claim_level_ceiling": claim_ceiling,
             "external_evidence_fields_present": external_fields_present,
             "key_hash_recomputed_from_fixture": key_hash_recomputed,
-            "producer_mode_hint": producer_mode_hint,            # what the producer disclosed (if any)
-            "producer_hint_matches_referee": producer_hint_matches,  # null if no hint; false = a finding
+            "producer_mode_hint": producer_mode_hint,    # what the producer disclosed (if any) — disclosure, not control
+            "cross_check": cross_check,                  # matches | contradicts | missing | unverifiable (first-class)
+            "blocked_reason": blocked_reason,            # null, or why the displayed claim was capped/denied
             "holds": contract_holds,
         },
     }
