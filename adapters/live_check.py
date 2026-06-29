@@ -361,7 +361,18 @@ def run(mapping: dict) -> dict:
     # is in use; pinned_registry / cached_prior / external_resolution are specified and ACTIVATE — each with
     # its required hashes (evidence_hash, resolution_time, key_record_hash) — the moment a row resolves a key
     # out-of-band. Those fields are never emitted empty: their absence means "no external fetch", not "unknown".
-    evidence_mode = "embedded_fixture"
+    # evidence_mode is REFEREE-DERIVED, never trusted from the producer. Trusting a producer-declared mode
+    # would be the fixture_declares_result_referee_does_not_recompute negative — and would make the referee
+    # role a rubber stamp any party could replicate by reading claims, which is exactly what keeps the role
+    # hard to commoditize. We derive it from what the adapter actually DID: an out-of-band key fetch happened
+    # or it didn't. (No row resolves keys externally yet -> embedded_fixture; pinned_registry/external_
+    # resolution activate when the adapter actually fetches a key and carries its evidence_hash.)
+    external_key_resolution = False
+    evidence_mode = "external_resolution" if external_key_resolution else "embedded_fixture"
+    # a producer MAY disclose its own evidence_mode as a hint (TK's adapter-symmetry offer); we CROSS-CHECK,
+    # never copy. A mismatch is a finding and the referee-derived value wins (producer_mode_hint_contradicts_referee).
+    producer_mode_hint = _dig(gov, fields.get("evidence_mode", "evidence_mode"))
+    producer_hint_matches = (producer_mode_hint == evidence_mode) if producer_mode_hint else None
     _CEILING = {"embedded_fixture": "admission_multisig_recomputable",
                 "pinned_registry": "admission_multisig_recomputable",
                 "external_resolution": "admission_multisig_recomputable",
@@ -374,10 +385,15 @@ def run(mapping: dict) -> dict:
     if _RANK.get(claim_level, 9) > _RANK[claim_ceiling]:
         claim_level = claim_ceiling
     # contract holds for embedded_fixture iff: external fields absent, key hash recomputable, no signer was
-    # promoted into the verified count beyond the declared set, and the claim is within the mode's ceiling.
+    # promoted into the verified count beyond the declared set, the claim is within the mode's ceiling, and
+    # any producer-declared mode hint agrees with what the referee derived (a contradicting hint fails it).
     contract_holds = (not external_fields_present and key_hash_recomputed
                       and verified <= total_signers
-                      and _RANK.get(claim_level, 9) <= _RANK[claim_ceiling])
+                      and _RANK.get(claim_level, 9) <= _RANK[claim_ceiling]
+                      and producer_hint_matches is not False)
+    if producer_hint_matches is False:
+        multisig_gap = (multisig_gap or "") + (f"; producer declared evidence_mode={producer_mode_hint!r} but the "
+                                               f"referee derived {evidence_mode!r} (producer_mode_hint_contradicts_referee)")
 
     # the machine-readable record behind the compact sub-label: precise enough that another verifier can
     # reproduce WHY the level was earned (rpelevin). Hashes make it reproducible; evidence_mode is explicit
@@ -407,10 +423,13 @@ def run(mapping: dict) -> dict:
         # `holds` asserts the row's fields are consistent with the mode (external fields absent under
         # embedded_fixture, key hash recomputed, claim within ceiling). Absence is meaningful, not a null.
         "evidence_mode": evidence_mode,
+        "evidence_mode_source": "referee_derived",  # NEVER copied from the producer; cross-checked below
         "evidence_contract": {
             "claim_level_ceiling": claim_ceiling,
             "external_evidence_fields_present": external_fields_present,
             "key_hash_recomputed_from_fixture": key_hash_recomputed,
+            "producer_mode_hint": producer_mode_hint,            # what the producer disclosed (if any)
+            "producer_hint_matches_referee": producer_hint_matches,  # null if no hint; false = a finding
             "holds": contract_holds,
         },
     }
