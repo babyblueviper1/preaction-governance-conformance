@@ -1,0 +1,95 @@
+{
+  "ledger_entry": 37,
+  "title": "Live trade outcomes — 1 closed positions (1W/0L, net $0.1469) — 2026-06-26..2026-06-26",
+  "captured_from_relay": "relay.damus.io",
+  "note": "Raw signed Nostr event fetched from a public relay (not from invinoveritas). The recipe re-derives soundness from THESE bytes; nothing here is trusted.",
+  "event": {
+    "content": "{\"record\": {\"audit\": {\"hl_account\": \"0x3b2A858806Fa4DEb9191Bb7918350fDB774603A4\", \"how_to_verify\": \"Recompute the Nostr event id and verify the schnorr signature against our published npub; cross-check each trade against the on-chain Hyperliquid fills.\", \"outcomes_on_chain\": \"Settled on the public Hyperliquid account; verify every fill on-chain.\"}, \"entry\": 37, \"ledger\": \"invinoveritas verdict ledger\", \"summary\": {\"by_sleeve\": {\"cascade-fade\": 1}, \"closed\": 1, \"losses\": 0, \"net_pnl_usd\": 0.1469, \"period\": \"2026-06-26..2026-06-26\", \"skipped_partial_records\": 3, \"wins\": 1}, \"title\": \"Live trade outcomes \\u2014 1 closed positions (1W/0L, net $0.1469) \\u2014 2026-06-26..2026-06-26\", \"trades\": [{\"coin\": \"JTO\", \"realized_pnl\": 0.1469, \"reason\": \"time_exit\", \"result\": \"WIN\", \"side\": null, \"source\": \"cascade-fade\", \"ts\": 1782451220}], \"type\": \"trade_outcomes\", \"what\": \"Every closed position from our own live trading bot since the last entry \\u2014 across all live sleeves (whale-mirror, cascade-fade, xs-reversal), wins AND losses, indiscriminately. xs-reversal is market-neutral so it is reported per-BASKET (legs netted), not per-leg. Each settled on-chain on the public Hyperliquid account below; this is a signed, verifiable pointer to that on-chain truth (not a cherry-picked highlight reel).\"}, \"record_sha256\": \"96983e8fbfd9d2d8dc76293c8a10220db6eba4117c2b68770328e0bcf689c05c\"}",
+    "created_at": 1782461431,
+    "id": "05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62",
+    "kind": 1,
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "sig": "22dcc710541c2f192dbd6460358c1261b48ec4c5bcf6512e01a8a5abf44fa2e35b473b405bb23b7185b54776ca8ac410353305c22a5bdb275a9d6fbcfa8d5dc9",
+    "tags": [
+      [
+        "t",
+        "invinoveritas-ledger"
+      ],
+      [
+        "entry",
+        "37"
+      ],
+      [
+        "type",
+        "trade_outcomes"
+      ],
+      [
+        "sha256",
+        "96983e8fbfd9d2d8dc76293c8a10220db6eba4117c2b68770328e0bcf689c05c"
+      ]
+    ]
+  },
+  "ledger_meta": {
+    "event_id": "05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62",
+    "commitment_proof": {
+      "mechanism": "nostr-relay-publication",
+      "event_id": "05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62",
+      "signed_at": 1782461431,
+      "published_at": 1782461442,
+      "relays": [
+        "relay.damus.io",
+        "nos.lol",
+        "relay.primal.net"
+      ],
+      "how_to_check": "fetch the event by id from any listed public relay and confirm created_at; relays held the signed verdict from published_at, before the outcome settled",
+      "relay_anchor": {
+        "checked_at": 1782721235,
+        "relays_holding": [
+          "nos.lol",
+          "relay.damus.io"
+        ],
+        "status": "anchored"
+      },
+      "ots_anchor": {
+        "mechanism": "opentimestamps-bitcoin-pow",
+        "digest": "05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62",
+        "digest_meaning": "the verdict's signed Nostr event_id, stamped as the OTS digest directly",
+        "status": "confirmed",
+        "precedence": false,
+        "calendars": [
+          "https://a.pool.opentimestamps.org",
+          "https://b.pool.opentimestamps.org",
+          "https://a.pool.eternitywall.com",
+          "https://ots.btc.catallaxy.com"
+        ],
+        "stamped_at": "2026-06-26T08:11:29Z",
+        "ots_path": "/data/track_record/ots/05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62.ots",
+        "verify": "ots verify -d 05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62 05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62.ots  (recomputable against any Bitcoin explorer; no trust in us)",
+        "bitcoin_block_height": 955463,
+        "confirmed_at": "2026-06-26T10:02:47Z",
+        "bitcoin_block_time": 1782462819,
+        "bitcoin_block_hash": "00000000000000000000f6cee2256ff507843ca42c00a98c557eaad535b16d34"
+      },
+      "timing": {
+        "hierarchy": "Bitcoin PoW (OpenTimestamps, trust-maximal) > original relay copy (tightest time) > on-chain committedAt > survivor floor (ERC-8299 Appendix B)",
+        "tier": 1,
+        "timestamp": 1782461431,
+        "claim": "original relay copy held; created_at is relay-attested publication time",
+        "available": {
+          "tier0_btc_pow": null,
+          "tier1_relay_attested": 1782461431,
+          "tier2_onchain_committed_at": null,
+          "tier3_survivor_floor": null
+        },
+        "btc_pow": {
+          "status": "confirmed",
+          "precedence": false,
+          "bitcoin_block_height": 955463,
+          "bitcoin_block_time": 1782462819,
+          "verify": "ots verify -d 05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62 05da2881e85ba9cc50f1dcf244f77d0cb00a38c2144ac7aaf7cd892372412d62.ots  (recomputable against any Bitcoin explorer; no trust in us)",
+          "note": "trust-maximal anchor, un-forgeable Bitcoin proof-of-work — integrity/existence only: stamped after this entry's outcome settled, so NOT read as committed_at"
+        }
+      }
+    }
+  }
+}

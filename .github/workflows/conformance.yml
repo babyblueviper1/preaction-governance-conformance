@@ -20,3 +20,5 @@ jobs:
         run: python3 run_conformance.py
       - name: AG2 Beta external-attestation contract triple
         run: python3 examples/ag2-beta/check_triple.py
+      - name: Per-entry ledger recompute (re-derives to sound + tamper negative)
+        run: python3 examples/ledger-recompute/recompute_entry.py

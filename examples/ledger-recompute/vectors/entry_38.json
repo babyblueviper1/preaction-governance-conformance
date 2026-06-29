@@ -1,0 +1,100 @@
+{
+  "ledger_entry": 38,
+  "title": "Pre-action governance verdict — PRE-OUTCOME: deploy the first deferential ERC-8004 Validation Registry singleton on Base (~July 3)",
+  "captured_from_relay": "relay.damus.io",
+  "note": "Raw signed Nostr event fetched from a public relay (not from invinoveritas). The recipe re-derives soundness from THESE bytes; nothing here is trusted.",
+  "event": {
+    "content": "{\"artifact_hash\":\"d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960\",\"artifact_type\":\"plan\",\"confidence\":0.85,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"summary_hash\":\"1d88d680fa5fbbd9f68636546e7afe718acbd1a471561029324d67ab899d0878\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1782653806,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "created_at": 1782653806,
+    "id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+    "kind": 30078,
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "sig": "7205cfea38ef35886ad83142ed5d08a7545c50eed39f714592ba03280dafb0ac8051fd1b87135c41d188acbc48e5e0ad16ea208eaaa00912e1439137dd493a0b",
+    "tags": [
+      [
+        "d",
+        "invinoveritas-proof-d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960-1782653806-b3c0aff0"
+      ],
+      [
+        "t",
+        "invinoveritas"
+      ],
+      [
+        "t",
+        "proof"
+      ],
+      [
+        "schema",
+        "invinoveritas.verdict_proof.v1"
+      ]
+    ]
+  },
+  "ledger_meta": {
+    "event_id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+    "commitment_proof": {
+      "mechanism": "nostr-relay-publication",
+      "event_id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+      "signed_at": 1782653806,
+      "published_at": 1782653806,
+      "relays": [
+        "relay.damus.io",
+        "nos.lol",
+        "relay.primal.net"
+      ],
+      "how_to_check": "fetch the event by id from any listed public relay and confirm created_at; relays held the signed verdict from published_at, before the outcome settled",
+      "relay_anchor": {
+        "checked_at": 1782721235,
+        "relays_holding": [
+          "nos.lol",
+          "relay.damus.io",
+          "relay.primal.net"
+        ],
+        "status": "anchored"
+      },
+      "ots_anchor": {
+        "mechanism": "opentimestamps-bitcoin-pow",
+        "digest": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+        "digest_meaning": "the verdict's signed Nostr event_id, stamped as the OTS digest directly",
+        "status": "confirmed",
+        "precedence": true,
+        "precedence_basis": "stamped pre-outcome — entry unsettled and fresh at stamp time",
+        "calendars": [
+          "https://a.pool.opentimestamps.org",
+          "https://b.pool.opentimestamps.org",
+          "https://a.pool.eternitywall.com",
+          "https://ots.btc.catallaxy.com"
+        ],
+        "stamped_at": "2026-06-28T13:37:04Z",
+        "ots_path": "/data/track_record/ots/a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9.ots",
+        "verify": "ots verify -d a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9 a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9.ots  (recomputable against any Bitcoin explorer; no trust in us)",
+        "bitcoin_block_height": 955810,
+        "confirmed_at": "2026-06-28T14:53:00Z",
+        "bitcoin_block_time": 1782654639,
+        "bitcoin_block_hash": "000000000000000000019fdeb888e25607352136ed1a3391d0521ad4b7848036"
+      },
+      "timing": {
+        "hierarchy": "Bitcoin PoW (OpenTimestamps, trust-maximal) > original relay copy (tightest time) > on-chain committedAt > survivor floor (ERC-8299 Appendix B)",
+        "tier": 0,
+        "timestamp": 1782654639,
+        "claim": "Bitcoin proof-of-work (OpenTimestamps): the verdict event_id provably existed by this block's timestamp, anchored to a clock no chain operator or our key can move or back-date. Trust-maximal; the relay tier gives a tighter time on weaker trust.",
+        "available": {
+          "tier0_btc_pow": 1782654639,
+          "tier1_relay_attested": 1782653806,
+          "tier2_onchain_committed_at": null,
+          "tier3_survivor_floor": null
+        },
+        "btc_pow": {
+          "status": "confirmed",
+          "precedence": true,
+          "bitcoin_block_height": 955810,
+          "bitcoin_block_time": 1782654639,
+          "verify": "ots verify -d a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9 a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9.ots  (recomputable against any Bitcoin explorer; no trust in us)",
+          "note": "trust-maximal anchor, un-forgeable Bitcoin proof-of-work — pre-outcome precedence"
+        },
+        "committed_at": null,
+        "committed_at_reference": "judgment_type=outcome_verifiable (ERC-8274): committed_at MUST predate the realized outcome's settlement. committed_at is the tier-2 on-chain committedAt sourced from the ERC-8263 proofHash leg (see truthanchor_8263) — distinct from the ERC-8281/OCP input anchor, which commits the input, not the verdict."
+      },
+      "judgment_type": "outcome_verifiable"
+    }
+  }
+}
