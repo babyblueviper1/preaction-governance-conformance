@@ -73,6 +73,45 @@ def _verify_jws_legs(jws, canonical_bytes, candidate_pubkeys):
     return verified, len(sigs), payload_ok, verified_pubkeys
 
 
+# claim-level ordering (incl. rpelevin/giskard09's third level) + each evidence mode's contract requirement
+_CLAIM_RANK = {"admission_multisig_unverifiable": 0, "admission_independent": 1, "admission_multisig_recomputable": 2}
+_MODE_CONTRACT_FIELD = {"embedded_fixture": "key_recomputed", "pinned_registry": "external_evidence",
+                        "external_resolution": "external_evidence", "cached_prior": "external_evidence"}
+
+
+def classify_evidence_mode(declared_hint, derived_mode, key_recomputed, external_evidence, base_claim):
+    """Referee-derived, CONTRACT-AWARE evidence-mode cross-check (rpelevin + giskard09, autogen#7353).
+
+    A producer hint is disclosure, never control flow. The referee derives the mode from what it verified
+    and checks whether the DECLARED mode's CONTRACT is satisfiable by what is actually present — a hint can
+    match the label yet contradict the contract (declares embedded_fixture while the key is not recomputable;
+    declares pinned_registry while no external evidence hashes exist referee-side). On contradiction the
+    referee-derived value wins and the row falls to the strongest claim actually verifiable: admission_
+    independent if the key is at least recomputable, else admission_multisig_unverifiable.
+    Returns {cross_check, evidence_mode, claim_level, blocked_reason}."""
+    if not declared_hint:
+        return {"cross_check": "producer_hint_missing", "evidence_mode": derived_mode,
+                "claim_level": base_claim, "blocked_reason": None}
+    if declared_hint not in _MODE_CONTRACT_FIELD:
+        return {"cross_check": "producer_hint_unverifiable", "evidence_mode": derived_mode,
+                "claim_level": base_claim,
+                "blocked_reason": f"producer hint {declared_hint!r} is not a known evidence mode"}
+    req = _MODE_CONTRACT_FIELD[declared_hint]
+    contract_ok = key_recomputed if req == "key_recomputed" else external_evidence
+    if contract_ok and declared_hint == derived_mode:
+        return {"cross_check": "producer_hint_matches_referee", "evidence_mode": derived_mode,
+                "claim_level": base_claim, "blocked_reason": None}
+    # contradiction: declared mode's contract unmet (or label disagrees) -> referee-derived value wins.
+    fallback = "admission_independent" if key_recomputed else "admission_multisig_unverifiable"
+    claim = fallback if _CLAIM_RANK[fallback] <= _CLAIM_RANK.get(base_claim, 2) else base_claim
+    reason = (f"producer declared {declared_hint!r} but its contract is unmet referee-side "
+              f"({'key not recomputable from fixture' if req == 'key_recomputed' else 'external evidence absent'}); "
+              "referee-derived value wins")
+    return {"cross_check": "producer_hint_contradicts_referee",
+            "evidence_mode": f"{declared_hint}_unverifiable" if not contract_ok else derived_mode,
+            "claim_level": claim, "blocked_reason": reason}
+
+
 def _dig(obj, path):
     """Follow a list-of-keys path into a nested dict/list. Returns None if absent."""
     if path is None:
@@ -377,35 +416,24 @@ def run(mapping: dict) -> dict:
     claim_ceiling = _CEILING.get(evidence_mode, "admission_independent")
     key_hash_recomputed = bool(pubkey)     # primary_public_key_hash is recomputed from fixture bytes below
     external_fields_present = False         # embedded rows emit no evidence_hash / resolution_time
-    # A producer MAY disclose its own evidence_mode as a hint; the referee CROSS-CHECKS, never copies, and
-    # records the result as a first-class state (rpelevin): a producer hint can be disclosure, never control
-    # flow. A well-formed hint pointing at the wrong contract (e.g. claims pinned_registry with no evidence
-    # hashes available) is `contradicts` -> the referee-derived value wins and the row falls / fails closed.
-    producer_mode_hint = _dig(gov, fields.get("evidence_mode", "evidence_mode"))
-    _KNOWN_MODES = set(_CEILING)
-    if producer_mode_hint is None:
-        cross_check = "producer_hint_missing"
-    elif producer_mode_hint not in _KNOWN_MODES:
-        cross_check = "producer_hint_unverifiable"      # hint present but not a mode the referee can assess
-    elif producer_mode_hint == evidence_mode:
-        cross_check = "producer_hint_matches_referee"
-    else:
-        cross_check = "producer_hint_contradicts_referee"
-    # cap the claim at what the mode allows (evidence_mode_claim_mismatch guard) — never show green-by-assertion
-    blocked_reason = None
+    # cap the claim at what the DERIVED mode allows (evidence_mode_claim_mismatch guard) before any hint
     if _RANK.get(claim_level, 9) > _RANK[claim_ceiling]:
-        blocked_reason = (f"claim capped to {claim_ceiling} by evidence_mode {evidence_mode!r} "
-                          "(evidence_mode_claim_mismatch)")
         claim_level = claim_ceiling
-    # contract holds iff: external fields absent, key hash recomputable, no signer promoted beyond the
-    # declared set, claim within ceiling, and the producer hint does not contradict the referee derivation.
+    # A producer MAY disclose its own evidence_mode as a hint; the referee CROSS-CHECKS, never copies. The
+    # check is CONTRACT-AWARE (rpelevin + giskard09): a hint that matches the label but whose contract the
+    # referee can't satisfy is `contradicts` -> referee-derived value wins, row falls to the strongest claim
+    # actually verifiable (admission_independent, or admission_multisig_unverifiable if no key recomputes).
+    producer_mode_hint = _dig(gov, fields.get("evidence_mode", "evidence_mode"))
+    _cls = classify_evidence_mode(producer_mode_hint, evidence_mode, key_hash_recomputed,
+                                  external_fields_present, claim_level)
+    cross_check = _cls["cross_check"]
+    evidence_mode = _cls["evidence_mode"]
+    claim_level = _cls["claim_level"]
+    blocked_reason = _cls["blocked_reason"]
     contract_holds = (not external_fields_present and key_hash_recomputed
                       and verified <= total_signers
-                      and _RANK.get(claim_level, 9) <= _RANK[claim_ceiling]
                       and cross_check != "producer_hint_contradicts_referee")
-    if cross_check == "producer_hint_contradicts_referee":
-        blocked_reason = blocked_reason or (f"producer declared evidence_mode={producer_mode_hint!r} but the "
-                                            f"referee derived {evidence_mode!r}; referee-derived value wins")
+    if blocked_reason:
         multisig_gap = (multisig_gap or "") + f"; {blocked_reason}"
 
     # the machine-readable record behind the compact sub-label: precise enough that another verifier can
