@@ -75,6 +75,7 @@ its claim from bytes and is wired into CI.
 | [`profile-resolution`](examples/profile-resolution) | a canonicalization profile resolves to a content-addressed, reproducible `action_ref` |
 | [`ag2-beta`](examples/ag2-beta) | the external-attestation contract triple recomputes its verdicts (portable conformance, independent of the framework) |
 | [`action-ref-serialization-lineage`](examples/action-ref-serialization-lineage) | field-set convergence ≠ identifier convergence one level down — same four fields, three named constructions (wrong-doc / wrong-field-type / normative), three distinct bytes |
+| [`guardrail-decision-crosswalk`](examples/guardrail-decision-crosswalk) | invinoveritas `/review` ↔ ibex `GuardrailDecision`: 3 states preserve authority, 1 (`approve_with_concerns`) has no equivalent — reported as a named gap, not forced onto a label that doesn't carry the same authority |
 
 Each is the executable form of a thread the suite tracks — "conformant" means *recomputes*, never *we say so*.
 

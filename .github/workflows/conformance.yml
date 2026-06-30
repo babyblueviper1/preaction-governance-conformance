@@ -34,3 +34,5 @@ jobs:
         run: python3 examples/decision-ref-recompute/check_decision_ref.py
       - name: action_ref serialization lineage (field-set convergence != identifier convergence)
         run: python3 examples/action-ref-serialization-lineage/check_action_ref_lineage.py
+      - name: GuardrailDecision crosswalk (invinoveritas /review <-> ibex, named gap not forced)
+        run: python3 examples/guardrail-decision-crosswalk/check_crosswalk.py

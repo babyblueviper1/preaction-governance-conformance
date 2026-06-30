@@ -1,0 +1,39 @@
+{
+  "_doc": "invinoveritas /review verdict <-> ibex GuardrailDecision crosswalk (S215, post safal207 PR #60+#63 merge). Three states map cleanly to authority-equivalent ibex states; one (approve_with_concerns) has no ibex equivalent and is reported as a named gap, not forced.",
+  "source_a": {
+    "name": "invinoveritas /review",
+    "schema": "routes/inference.py verdict enum",
+    "states": ["approve", "approve_with_concerns", "revise", "reject"]
+  },
+  "source_b": {
+    "name": "ibex GuardrailDecision",
+    "schema": "https://github.com/safal207/ibex-agent-verification/blob/main/src/ibex_agent_verification/schemas/guardrail-decision.schema.json",
+    "states": ["ALLOW", "REPAIR", "SOFT_BLOCK", "HARD_BLOCK", "DEFER"]
+  },
+  "mappings": [
+    {
+      "a": "approve",
+      "b": "ALLOW",
+      "status": "valid",
+      "rationale": "Action proceeds with no recorded caveat on either side. allowed_runtime_use unrestricted on the ibex side; invinoveritas does not gate downstream use."
+    },
+    {
+      "a": "revise",
+      "b": "REPAIR",
+      "status": "valid",
+      "rationale": "Both sides mean: do not proceed as-is, the action needs modification before re-submission. Same authority: caller may retry after a bounded change."
+    },
+    {
+      "a": "reject",
+      "b": "HARD_BLOCK",
+      "status": "valid",
+      "rationale": "Both sides mean: do not proceed, full stop. ibex's HARD_BLOCK restricts allowed_runtime_use to [AUDIT_LOG] only -- matches reject's semantics of recording the refusal, not authorizing any downstream action."
+    },
+    {
+      "a": "approve_with_concerns",
+      "b": null,
+      "status": "named_gap",
+      "rationale": "invinoveritas lets the action proceed (same as approve) but attaches a recorded caveat in the verdict body. ibex's enum has no 'proceed, but flagged' state: ALLOW carries no caveat slot, REPAIR/SOFT_BLOCK/HARD_BLOCK all mean don't-proceed-as-is. Forcing this onto ALLOW silently drops the caveat (a real authority difference, not just a label difference); forcing it onto REPAIR silently blocks an action the issuer meant to authorize. Reported as a gap, not a guess -- either the family's authority taxonomy is missing a 'proceed with recorded caveat' state, or invinoveritas should converge this verdict down to ALLOW+annotation. Open question, not resolved here."
+    }
+  ]
+}
