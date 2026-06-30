@@ -1,0 +1,13 @@
+{
+  "artifact_hash": "9857116f45bc8f6e8384cb81c2ca0c6f167fc7ae87a2ffcbf1468eb64a697dd3",
+  "artifact_type": "onchain_action",
+  "policy_version": "invinoveritas.review.v1",
+  "verdict": "approve_with_concerns",
+  "decision_ref": "sha256:5fadb173dbbe84ff61d4c4788ecadd81f3889c7f85842e61ec8a25bdb2f925a1",
+  "decision_ref_preimage_fields": [
+    "artifact_hash",
+    "artifact_type",
+    "policy_version",
+    "verdict"
+  ]
+}
