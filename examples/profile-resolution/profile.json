@@ -1,0 +1,16 @@
+{
+  "canonicalization_profile_id": "471b4e7a19b111f49564732162e94b685336a01dca761dcb54b74305bd93292c",
+  "note": "Content-addressed: canonicalization_profile_id == SHA-256(JCS(doc)). Any verifier rehashes doc and rejects it if it does not hash to this id (same id => same byte rule, by construction). Self-contained demo profile; the autogen#7353 trail/AgentOracle profile jcs-rfc8785-action-ref-v1 (8c7f7175...) is the real-world instance this invariant checks.",
+  "doc": {
+    "profile": "jcs-sorted-utf8-nows-v1",
+    "spec": "RFC 8785 JSON Canonicalization Scheme: object keys sorted, UTF-8, no whitespace. action_ref = SHA-256(JCS(preimage)).",
+    "rules": {
+      "key_order": "lexicographic-codepoint",
+      "encoding": "utf-8",
+      "whitespace": "none",
+      "number_policy": "integers as bare digits; no fractions in this profile",
+      "timestamp": "STRING (Unix-ms-as-string OR ISO-8601). Integer encoding is a DIFFERENT canonical form and yields a different action_ref \u2014 this is the azender1/422 case made first-class."
+    },
+    "version": "1"
+  }
+}
