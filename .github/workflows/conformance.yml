@@ -24,3 +24,5 @@ jobs:
         run: python3 examples/ledger-recompute/recompute_entry.py
       - name: Canonicalization-profile resolution (content-addressed + action_ref reproducible)
         run: python3 examples/profile-resolution/resolve_profile.py
+      - name: Benchmark grade (recompute a submitted trace dump from its bytes)
+        run: python3 examples/benchmark-grade/grade_traces.py
