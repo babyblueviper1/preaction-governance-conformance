@@ -59,6 +59,24 @@ passes the rest:
 | `late_commitment` | anchoring | valid anchor, but accepted *after* the terminal outcome |
 | `ordering_unanchored` | anchoring | valid internal chain, no external existence proof at all |
 
+## Examples — recompute properties, each runnable and CI-green
+
+Beyond the core fixtures, `examples/` holds zero-dependency demonstrations that each turn a property
+argued in a live standards thread into something a third party *runs*, not trusts. Every one recomputes
+its claim from bytes and is wired into CI.
+
+| Example | Recompute property |
+|---|---|
+| [`ledger-recompute`](examples/ledger-recompute) | a `/ledger` verdict re-derives to a sound result from its own bytes — a tampered one fails |
+| [`crosswalk-recompute`](examples/crosswalk-recompute) | a vocabulary mapping between two boards is a recomputation, not an assertion (fails closed on an authority collision) |
+| [`action-id-canonicalization`](examples/action-id-canonicalization) | the cross-implementation `SHA-256(JCS(...))` convergence — construction converges, the timestamp field set doesn't; plus the three-case locked-profile vector (byte-identical id / wrong-type fail-closed / order-independence) |
+| [`decision-ref-recompute`](examples/decision-ref-recompute) | the pre-execution decision (`/review`'s `decision_ref`) recomputes from its own self-described preimage; signer ≠ runtime; tamper-sensitive |
+| [`benchmark-grade`](examples/benchmark-grade) | a submitted benchmark trace dump is graded by recomputing its verdicts from bytes, not by trusting the score |
+| [`profile-resolution`](examples/profile-resolution) | a canonicalization profile resolves to a content-addressed, reproducible `action_ref` |
+| [`ag2-beta`](examples/ag2-beta) | the external-attestation contract triple recomputes its verdicts (portable conformance, independent of the framework) |
+
+Each is the executable form of a thread the suite tracks — "conformant" means *recomputes*, never *we say so*.
+
 ## Provenance (these are real signatures, not mocks)
 
 - The **positive** admission is signed by the live verifier's published secp256k1 key
