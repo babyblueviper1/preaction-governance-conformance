@@ -131,6 +131,35 @@ def check() -> int:
     print(f"    different field set (AlgoVoi `timestamp_ms` int diverges):     {declared_divergence}")
     ok &= same_fieldset and declared_divergence
 
+    # (C) THE THREE-CASE CONFORMANCE VECTOR (crewAI#4877, Tuttotorna + Correctover): a locked profile
+    # is conformant only if all three hold. "one locked envelope -> one byte-identical id ACROSS
+    # implementations" is the meaningful test; case 2 is what makes case 1 non-coincidental.
+    LOCKED = base  # the PR #63 locked profile: timestamp is an ISO-8601 STRING.
+    print("\n(C) three-case conformance vector for the locked profile:")
+    # 1. locked envelope -> byte-identical id (here: the two builders sharing the locked field set).
+    c1 = ibex == rgis
+    print(f"    1. locked envelope -> byte-identical id (ibex == rgiskard):     {c1}")
+    # 2. wrong type in the timestamp field -> deterministic fail-closed. The locked profile pins
+    #    `timestamp` to an ISO-8601 string; supplying the int form (AlgoVoi's) is a TYPE violation in
+    #    THIS profile and must be refused, not silently hashed into a different-but-valid id.
+    def _locked_action_id(pre: dict) -> str:
+        ts = pre.get("timestamp")
+        if not isinstance(ts, str) or "T" not in ts:
+            raise NonCanonical("locked profile: `timestamp` MUST be an ISO-8601 string")
+        return action_id(pre)
+    try:
+        _locked_action_id({**LOCKED, "timestamp": ACTION["ms"]})  # int where ISO string required
+        print("    2. wrong timestamp type accepted -> FAIL (should fail closed)")
+        ok = False
+    except NonCanonical:
+        print("    2. wrong timestamp type -> deterministic fail-closed:           True")
+    # 3. identical payload, reordered non-timestamp fields -> same id (JCS key-sort).
+    reordered = {"scope": LOCKED["scope"], "agent_id": LOCKED["agent_id"],
+                 "timestamp": LOCKED["timestamp"], "action_type": LOCKED["action_type"]}
+    c3 = _locked_action_id(LOCKED) == _locked_action_id(reordered)
+    print(f"    3. reordered non-timestamp fields -> same id:                   {c3}")
+    ok &= c1 and c3
+
     print("\n" + "-" * 78)
     if ok:
         print("PASS — construction converges and is deterministic; cross-builder divergence is")
