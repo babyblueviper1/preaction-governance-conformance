@@ -28,3 +28,5 @@ jobs:
         run: python3 examples/benchmark-grade/grade_traces.py
       - name: Crosswalk recompute (a vocabulary mapping is a recomputation, not an assertion)
         run: python3 examples/crosswalk-recompute/check_crosswalk.py
+      - name: action_id canonicalization (cross-impl convergence is recomputed, field-set delta named)
+        run: python3 examples/action-id-canonicalization/check_action_id.py
