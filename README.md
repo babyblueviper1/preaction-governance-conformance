@@ -74,6 +74,7 @@ its claim from bytes and is wired into CI.
 | [`benchmark-grade`](examples/benchmark-grade) | a submitted benchmark trace dump is graded by recomputing its verdicts from bytes, not by trusting the score |
 | [`profile-resolution`](examples/profile-resolution) | a canonicalization profile resolves to a content-addressed, reproducible `action_ref` |
 | [`ag2-beta`](examples/ag2-beta) | the external-attestation contract triple recomputes its verdicts (portable conformance, independent of the framework) |
+| [`action-ref-serialization-lineage`](examples/action-ref-serialization-lineage) | field-set convergence ≠ identifier convergence one level down — same four fields, three named constructions (wrong-doc / wrong-field-type / normative), three distinct bytes |
 
 Each is the executable form of a thread the suite tracks — "conformant" means *recomputes*, never *we say so*.
 

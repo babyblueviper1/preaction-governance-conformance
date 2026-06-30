@@ -32,3 +32,5 @@ jobs:
         run: python3 examples/action-id-canonicalization/check_action_id.py
       - name: decision_ref recompute (the pre-execution decision is recomputable, not asserted)
         run: python3 examples/decision-ref-recompute/check_decision_ref.py
+      - name: action_ref serialization lineage (field-set convergence != identifier convergence)
+        run: python3 examples/action-ref-serialization-lineage/check_action_ref_lineage.py
