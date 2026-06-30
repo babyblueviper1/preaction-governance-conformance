@@ -1,0 +1,40 @@
+{
+  "_doc": "Two governance boards' verdict records for the SAME evidence, plus claimed vocabulary crosswalks between them. A valid crosswalk preserves the authority tuple (allowed_runtime_use, claim_ceiling, permitted_next_transition) across the name mapping; a collision is a recomputation that disagrees. Each verdict carries the source bytes it was derived from so a third party recomputes the record id and the tuple without trusting either board.",
+  "evidence_id": "act-7f3a9c21",
+  "boards": {
+    "invinoveritas": {
+      "verdict": {
+        "evidence_id": "act-7f3a9c21",
+        "depth_tier": "terminal",
+        "allowed_runtime_use": "autonomous_commit",
+        "claim_ceiling": "recomputable_independent_anchored",
+        "permitted_next_transition": "execute",
+        "source_bytes_utf8": "{\"action\":\"erc20_transfer\",\"scope\":\"x402.screen:PASS\",\"verifier\":\"independent\",\"anchor\":\"present\"}"
+      }
+    },
+    "correctover": {
+      "verdict": {
+        "evidence_id": "act-7f3a9c21",
+        "depth_tier": "D3",
+        "allowed_runtime_use": "autonomous_commit",
+        "claim_ceiling": "recomputable_independent_anchored",
+        "permitted_next_transition": "execute",
+        "source_bytes_utf8": "{\"action\":\"erc20_transfer\",\"scope\":\"x402.screen:PASS\",\"verifier\":\"independent\",\"anchor\":\"present\"}"
+      }
+    },
+    "selfsigned_demo": {
+      "verdict": {
+        "evidence_id": "act-7f3a9c21",
+        "depth_tier": "D3",
+        "allowed_runtime_use": "audit_log_only",
+        "claim_ceiling": "attested",
+        "permitted_next_transition": "require_approval",
+        "source_bytes_utf8": "{\"action\":\"erc20_transfer\",\"scope\":\"x402.screen:PASS\",\"verifier\":\"self\",\"anchor\":\"absent\"}"
+      }
+    }
+  },
+  "claimed_crosswalks": [
+    {"name": "iv-terminal <-> correctover-D3", "a": "invinoveritas", "b": "correctover", "claim": "same transition authority"},
+    {"name": "iv-terminal <-> selfsigned-D3", "a": "invinoveritas", "b": "selfsigned_demo", "claim": "same transition authority (names match: both top-tier)"}
+  ]
+}

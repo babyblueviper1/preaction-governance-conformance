@@ -26,3 +26,5 @@ jobs:
         run: python3 examples/profile-resolution/resolve_profile.py
       - name: Benchmark grade (recompute a submitted trace dump from its bytes)
         run: python3 examples/benchmark-grade/grade_traces.py
+      - name: Crosswalk recompute (a vocabulary mapping is a recomputation, not an assertion)
+        run: python3 examples/crosswalk-recompute/check_crosswalk.py
