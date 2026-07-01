@@ -36,3 +36,5 @@ jobs:
         run: python3 examples/action-ref-serialization-lineage/check_action_ref_lineage.py
       - name: GuardrailDecision crosswalk (invinoveritas /review <-> ibex, named gap not forced)
         run: python3 examples/guardrail-decision-crosswalk/check_crosswalk.py
+      - name: Plaintext-verdict consistency (hash matching != label matching)
+        run: python3 examples/plaintext-verdict-consistency/check_plaintext_consistency.py
