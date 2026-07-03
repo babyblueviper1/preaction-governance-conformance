@@ -44,6 +44,22 @@ The script runs all three failure modes together and reports which axis each one
 
 Three distinct, individually-diagnosable failure reasons — not one pass/fail bit.
 
+## Axis 4 — pshkv's fork-matrix
+
+pshkv, same thread (2026-07-03), on the two independent implementations (this repo and
+`giskard09/argentum-core`) landing on byte-identical `head_hash` values: "that is the useful
+proof... the fork is externally reconstructable from retained bytes," and proposed
+formalizing it as four separately-checkable properties rather than one demo run:
+
+- (a) same `content_hash`, same `prev_head` → same `head_hash` (determinism)
+- (b) same sequence position, different `prev_head` → chain fork detected
+- (c) same payload under a different chain context → different `head_hash` (replay resistance)
+- (d) the verifier reports **both** competing heads, never collapses to a generic `invalid`
+
+`report_fork()` returns both heads plus the shared sequence position as a structured
+result — never a bare bool — so (d) is a property of the return shape, not a claim in a
+comment. All four hold under recompute; see the script output for the actual values.
+
 ```
 python3 check_composed_chain.py      # zero-dependency, offline
 ```

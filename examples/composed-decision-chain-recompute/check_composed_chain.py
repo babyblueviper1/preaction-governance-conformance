@@ -22,6 +22,12 @@ This profile runs all three checks and reports which axis each one fails on --
 admission, recompute, or fork -- so "the composed profile catches all three" is
 something this script actually demonstrates, not just claims.
 
+Axis 4 adds pshkv's fork-matrix (same thread, 2026-07-03), formalizing the chain-fork
+property as four separately-checkable requirements rather than one demo run: (a)
+determinism, (b) same-position-different-prior-head fork detection, (c) replay
+resistance across chain context, (d) the verifier reports both competing heads
+instead of collapsing to a generic invalid.
+
 Zero-dependency, offline. Run: python3 check_composed_chain.py
 """
 from __future__ import annotations
@@ -37,6 +43,11 @@ HERE = Path(__file__).resolve().parent
 # a live chain. The construction doesn't care what it is, only that both candidate
 # entries in the fork test share it (same sequence position).
 TEST_PRIOR_HEAD = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+# A second, distinct real prior-head -- standing in for a competing chain lineage that
+# reaches the same sequence position via a different history. Used only by Axis 4
+# (pshkv's fork-matrix); Axes 1-3 above are unaffected.
+TEST_PRIOR_HEAD_ALT = "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
 
 
 def jcs(obj) -> str:
@@ -58,6 +69,19 @@ def decision_ref(fields: dict, preimage_keys: list[str]) -> str:
     recompute a decision's own id from its self-described preimage."""
     preimage = {k: fields[k] for k in preimage_keys}
     return hashlib.sha256(jcs(preimage).encode("utf-8")).hexdigest()
+
+
+def report_fork(head_a: str, prior_a: str, head_b: str, prior_b: str, position: int) -> dict:
+    """pshkv (autogen#7353, 2026-07-03): 'a fork detector that returns only invalid
+    is less useful than one that exposes the competing heads and the shared sequence
+    position.' Returns both heads plus the position, never collapses to a bool --
+    the reviewer decides corruption vs. replay vs. branch divergence from this."""
+    return {
+        "sequence_position": position,
+        "heads": {"a": head_a, "b": head_b},
+        "prior_heads": {"a": prior_a, "b": prior_b},
+        "conflict": head_a != head_b,
+    }
 
 
 def admits(vector: dict) -> bool:
@@ -141,19 +165,61 @@ def main() -> int:
     print(f"  fork is a detectable CONFLICT, not an overwrite (heads differ): {fork_detectable}")
     axis3_ok = decision_ok and predictable and fork_detectable
 
+    # Axis 4 -- pshkv's fork-matrix (autogen#7353, 2026-07-03), formalizing the same
+    # construction as four separately-checkable properties instead of one demo run:
+    print(f"\n[Axis 4: FORK-MATRIX] pshkv's four properties, checked individually:")
+
+    # 4a. same content_hash, same prev_head -> same head_hash (determinism). Recompute
+    # both content_hash and head_hash from the record fresh, via a separate code path
+    # than Axis 3 used, and check it lands on the SAME head_a already committed above --
+    # not a tautological self-comparison.
+    p4a = head_hash(content_hash(dict(receipt_record)), TEST_PRIOR_HEAD) == head_a
+    print(f"  (a) same content_hash + same prev_head -> same head_hash:      {p4a}")
+
+    # 4b. same sequence position, different prev_head -> chain fork detected. Two
+    # DIFFERENT payloads, each legitimately anchored, arriving at entry 41 from two
+    # DIFFERENT prior heads (two competing chain lineages reaching the same position).
+    head_via_a = head_hash(c_hash_a, TEST_PRIOR_HEAD)
+    head_via_b = head_hash(c_hash_b, TEST_PRIOR_HEAD_ALT)
+    fork_4b = report_fork(head_via_a, TEST_PRIOR_HEAD, head_via_b, TEST_PRIOR_HEAD_ALT, 41)
+    p4b = fork_4b["conflict"]
+    print(f"  (b) same sequence position + different prev_head -> fork detected: {p4b}")
+    print(f"      {json.dumps(fork_4b, indent=6)}".replace("\n", "\n      "))
+
+    # 4c. same payload under a different chain context -> different head. The IDENTICAL
+    # record (same content_hash) replayed under two different prior heads must NOT
+    # produce the same head_hash -- otherwise a valid entry from one point in history
+    # could be replayed at a different position and pass as the original commitment.
+    head_ctx_1 = head_hash(c_hash_a, TEST_PRIOR_HEAD)
+    head_ctx_2 = head_hash(c_hash_a, TEST_PRIOR_HEAD_ALT)
+    p4c = head_ctx_1 != head_ctx_2
+    print(f"  (c) same payload, different chain context -> different head:  {p4c}")
+    print(f"      context 1 (prior={TEST_PRIOR_HEAD[:12]}...): {head_ctx_1}")
+    print(f"      context 2 (prior={TEST_PRIOR_HEAD_ALT[:12]}...): {head_ctx_2}")
+
+    # 4d. the verifier reports BOTH competing heads, not a collapsed boolean -- already
+    # demonstrated structurally: report_fork() returns both heads + the shared
+    # position, and 4b printed that dict directly rather than a pass/fail bit.
+    p4d = {"a", "b"} <= set(fork_4b["heads"].keys()) and "sequence_position" in fork_4b
+    print(f"  (d) verifier exposes both heads (not a collapsed bool):        {p4d}")
+
+    axis4_ok = p4a and p4b and p4c and p4d
+
     print("\n" + "-" * 78)
     print(f"Axis 1 (admission)  : {'PASS' if axis1_ok else 'FAIL'} -- fails on WHO signed, hash/verdict untouched")
     print(f"Axis 2 (recompute)  : {'PASS' if axis2_ok else 'FAIL'} -- fails on WHETHER the verdict follows from its inputs")
     print(f"Axis 3 (chain fork) : {'PASS' if axis3_ok else 'FAIL'} -- fails on WHERE two conflicting heads meet at one position")
+    print(f"Axis 4 (fork-matrix): {'PASS' if axis4_ok else 'FAIL'} -- (a) determinism (b) shared-position fork (c) replay-across-context (d) both-heads-reported")
 
-    ok = axis1_ok and axis2_ok and axis3_ok
+    ok = axis1_ok and axis2_ok and axis3_ok and axis4_ok
     print()
     if ok:
-        print("PASS -- all three axes distinguishable and caught: a self-signed ALLOW, a")
-        print("        verdict that doesn't recompute, and a same-sequence fork each fail")
-        print("        for a DIFFERENT, individually-diagnosable reason.")
+        print("PASS -- all four axes distinguishable and caught: a self-signed ALLOW, a")
+        print("        verdict that doesn't recompute, a same-sequence fork, and pshkv's")
+        print("        four-property matrix each fail/hold for a DIFFERENT, individually")
+        print("        diagnosable reason.")
         return 0
-    print("FAIL -- composed profile did not hold on all three axes.")
+    print("FAIL -- composed profile did not hold on all four axes.")
     return 1
 
 
