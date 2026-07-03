@@ -32,6 +32,8 @@ jobs:
         run: python3 examples/action-id-canonicalization/check_action_id.py
       - name: decision_ref recompute (the pre-execution decision is recomputable, not asserted)
         run: python3 examples/decision-ref-recompute/check_decision_ref.py
+      - name: x402 payment-decision recompute (real argentum-core#29 fixture, verdict = f(controls))
+        run: python3 examples/x402-payment-decision-recompute/check_x402_decision_ref.py
       - name: action_ref serialization lineage (field-set convergence != identifier convergence)
         run: python3 examples/action-ref-serialization-lineage/check_action_ref_lineage.py
       - name: GuardrailDecision crosswalk (invinoveritas /review <-> ibex, named gap not forced)
