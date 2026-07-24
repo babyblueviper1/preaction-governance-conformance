@@ -1,0 +1,77 @@
+{
+  "description": "Three independently-operated systems, three different artifact shapes (knowledge receipt / action receipt / pre-action verdict), one shared canonicalization discipline (jcs-rfc8785-v1). Sourced verbatim from microsoft/autogen#7353, 2026-07-24.",
+  "canon_version": "jcs-rfc8785-v1",
+  "artifacts": [
+    {
+      "party": "Yarmoluk / Graphify.md (CKG)",
+      "kind": "knowledge_receipt",
+      "source_comment": "https://github.com/microsoft/autogen/issues/7353#issuecomment-5074692825",
+      "verify_service": "https://ckg-receipt.onrender.com",
+      "issuer_pubkey_base64": "WZ6lD5yusFVYV7oPGYngmnZzRz/dH3Hffi5QvCplutw=",
+      "issuer_pubkey_source": "https://ckg-receipt.onrender.com/keys (fetched live, not pasted from the thread)",
+      "receipt_ref": "sha256:886cc29944ff8d845cb6b73d542d4ebbc97a5594ccb223f55d0e017af6120667",
+      "payload": {
+        "canon_version": "jcs-rfc8785-v1",
+        "concept_id": "Einstein Trust Layer",
+        "source_content_hash": "sha256:8719c5d6d7d50e40acd58c309cd587dace8a1740745c98d4ddb0ce3c324320b9",
+        "source_url": "https://help.salesforce.com/s/articleView?language=en_US&id=sf.einstein_trust_layer.htm",
+        "issuer_id": "graphifymd.com",
+        "issued_at": 1784929278
+      },
+      "signature_base64": "RnoSvCX7sZQPRJaorxKb0HsB1YuffRGPEiiYh6whh0gtmGzhtocWlIdQIHURd7h69rJLbCngtVF4RMBRJdB5Bg==",
+      "signature_algorithm": "Ed25519",
+      "signed_message": "jcs_canonical_payload_bytes",
+      "extra_check": {
+        "claim": "source_content_hash is sha256 of the live source_url content, fetched at signing time",
+        "independently_verified": "curl -s <source_url> | sha256sum reproduced 8719c5d6d7d50e40acd58c309cd587dace8a1740745c98d4ddb0ce3c324320b9 exactly, 2026-07-24"
+      }
+    },
+    {
+      "party": "giskard09 / Argentum-core (action_ref)",
+      "kind": "action_receipt",
+      "source_comment": "https://github.com/microsoft/autogen/issues/7353#issuecomment-5074882367",
+      "on_chain_anchor": "https://argentum.rgiskard.xyz/trails/81f1b061-58dd-4252-9681-93f6bd8418aa (tx_hash da8ebbaa..., block 487356592) -- NOT independently checked by this fixture, noted as a claim only",
+      "issuer_pubkey_base64": "5pZTdLR/ld9Ef9LtSGTtK00paWqgoqFSz/21nsqutmg=",
+      "issuer_pubkey_source": "pasted directly in the source comment (not fetched from a separate /keys endpoint the way CKG's is)",
+      "receipt_ref": "sha256:7a8471da231dbd26304a6012eb4ad192993073f6875b227bb9bed731142aec2d",
+      "payload": {
+        "action_type": "cycle:monitor",
+        "agent_id": "pioneer-agent-001",
+        "scope": "mycelium.pioneer.infra-scan",
+        "timestamp": "2026-07-24T22:01:35.213Z"
+      },
+      "signature_base64": "xHwf1fP9ArHmsXJvn1ffxf196R01l5blRMXsIIqxQLxsz5FcD5FY+aTMEsw6oLBJyYfqyif6RxNxf3jWBJZjDw==",
+      "signature_algorithm": "Ed25519",
+      "signed_message": "jcs_canonical_payload_bytes"
+    },
+    {
+      "party": "invinoveritas (/review)",
+      "kind": "pre_action_verdict",
+      "endpoint": "POST https://api.babyblueviper.com/review",
+      "verify_endpoint": "https://api.babyblueviper.com/verify-proof",
+      "note": "Structurally different check than the two receipts above -- this is a Nostr NIP-01 (schnorr/secp256k1) signature over the proof event, not a raw Ed25519 signature over the payload. The check_composed_trust.py script in this directory verifies the decision_ref recompute offline (zero-dep); full signature verification is exactly what ../decision-ref-recompute/ and /verify-proof already cover, not re-implemented here to avoid duplicating a second crypto stack in one script.",
+      "decision_ref": "sha256:c355ab24ab205682c13a9986ac1d5fe6ea588b4fb0c6a0cf8c375bc4cabfa9ce",
+      "decision_ref_preimage_fields": ["artifact_hash", "artifact_type", "policy_version", "verdict", "source_class", "vantage_limitation"],
+      "decision_ref_preimage": {
+        "artifact_hash": "07817afb7da674abb902979d10646ec0d58c5c9b3ab5680b29de862eb333004f",
+        "artifact_type": "general",
+        "policy_version": "invinoveritas.review.v5",
+        "verdict": "approve_with_concerns",
+        "source_class": "agent_reported",
+        "vantage_limitation": null
+      },
+      "verdict": "approve_with_concerns",
+      "confidence": 0.75,
+      "verifier_pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+      "nostr_event_id": "7fbcb030105772e8c4e73f043c521877c92212b5abf57266eb46c3a78b985c5b",
+      "verified_live_via_verify_proof": true,
+      "verify_proof_response_checks": {
+        "id_integrity": true,
+        "signature_valid": true,
+        "issued_by_invinoveritas": true,
+        "is_proof_event": true,
+        "decision_ref_recomputes": true
+      }
+    }
+  ]
+}
