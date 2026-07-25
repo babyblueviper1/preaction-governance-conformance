@@ -15,7 +15,8 @@
     "canonical_bytes": "canonical_bytes_utf8",
     "pubkey": "verifier_pubkey_hex",
     "signature": "signature_hex",
-    "sig_scheme": "sig_scheme"
+    "sig_scheme": "sig_scheme",
+    "anchor_endpoint": "anchor_status"
   },
   "trust_policy": {
     "independent_verifier_pubkeys": [
