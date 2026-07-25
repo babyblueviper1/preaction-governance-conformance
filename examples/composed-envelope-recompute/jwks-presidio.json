@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "kid": "presidio-fixture-v0.3-composed-2026-06",
+      "use": "sig",
+      "alg": "EdDSA",
+      "x": "Byvx9x71nZEbrcDxi-UTrUlt5WFq2nIKy9j4MUqHt5w"
+    }
+  ]
+}
