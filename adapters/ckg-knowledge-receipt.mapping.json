@@ -1,0 +1,25 @@
+{
+  "name": "ckg-knowledge-receipt",
+  "_doc": "Runs the conformance invariants against Graphify.md's CKG Receipt /sign/demo endpoint. Knowledge receipt = Layer 4 of the four-layer governance stack (settlement → action → verdict → knowledge). issuer_id (graphifymd.com) is structurally distinct from agent_id — the signer cannot be the party whose knowledge is in question. Public key resolves from https://ckg-receipt.onrender.com/keys (out-of-band, never embedded in the receipt). sig_scheme: ed25519-jcs (Ed25519 over JCS/RFC-8785 canonical bytes).",
+  "fetch": {
+    "method": "POST",
+    "url": "https://ckg-receipt.onrender.com/sign/demo",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {},
+    "governance_path": []
+  },
+  "fields": {
+    "envelope_hash": "envelope_hash_hex",
+    "canonical_bytes": "canonical_bytes_utf8",
+    "pubkey": "verifier_pubkey_hex",
+    "signature": "signature_hex",
+    "sig_scheme": "sig_scheme"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": [
+      "599ea50f9caeb0555857ba0f1989e09a7673473fdd1f71df7e2e50bc2a65badc"
+    ]
+  }
+}

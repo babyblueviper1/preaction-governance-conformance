@@ -1,0 +1,30 @@
+{
+  "name": "crewai-guardrail",
+  "_doc": "Adapter skeleton for GuardrailDecisionV1 from crewAI#4877 — the action-authorization receipt shape proposed for CrewAI enterprise governance. Same jcs-rfc8785-v1 canonicalization discipline as CKG Receipt and argentum-core. Live endpoint pending a reference implementation; this mapping documents the field structure against the three conformance invariants. See: https://github.com/crewAIInc/crewAI/issues/4877",
+  "_status": "skeleton — live endpoint not yet stood up. Field names match the GuardrailDecisionV1 spec shape. Update 'url' and 'independent_verifier_pubkeys' when a reference endpoint is deployed.",
+  "fetch": {
+    "method": "POST",
+    "url": "https://PENDING-crewai-guardrail-endpoint/decision",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "agent_id": "conformance-check",
+      "action_type": "tool_call",
+      "scope": "conformance-run __NONCE__"
+    },
+    "governance_path": ["guardrail_decision"]
+  },
+  "fields": {
+    "envelope_hash": "decision_ref",
+    "canonical_bytes": "canonical_bytes_utf8",
+    "pubkey": "verifier_pubkey_hex",
+    "signature": "signature_hex",
+    "sig_scheme": "sig_scheme"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": [
+      "PENDING-guardrail-authority-pubkey-hex"
+    ]
+  }
+}
