@@ -10,7 +10,7 @@ sorted keys, compact separators, no `\uXXXX` escaping):
 | Party | System | Artifact | Signature scheme |
 |---|---|---|---|
 | Yarmoluk / Graphify.md | CKG | `knowledge_receipt` — binds a concept to the hash of the source content it was extracted from | Ed25519, key fetched live from a separate `/keys` endpoint |
-| giskard09 | Argentum-core | `action_ref` — binds an agent action to its scope, also anchored on-chain | Ed25519, key pasted alongside the receipt |
+| giskard09 | Argentum-core | `action_ref` — binds an agent action to its scope, also anchored on-chain | Ed25519, key resolved from a separate out-of-band registry (`marks.rgiskard.xyz/pubkey/<agent_id>`) |
 | invinoveritas | `/review` | `decision_ref` — a pre-action verdict, issued *before* the action it governs | Nostr NIP-01 (schnorr/secp256k1) |
 
 `check_composed_trust.py` recomputes all three from `fixture.json`'s own
@@ -37,13 +37,14 @@ PASS -- pre_action_verdict   invinoveritas (/review)
   fetching the live `source_url` and hashing it — it matches exactly.
 
 - **Argentum action_ref** — same construction (`receipt_ref = sha256(JCS(payload))`,
-  Ed25519 over the canonical bytes), with a real structural difference worth
-  naming rather than glossing over: the public key was pasted directly
-  alongside the receipt in the same comment, not resolved from a separate
-  endpoint the way CKG's is. Both are legitimate ("out-of-band" doesn't
-  strictly require a *second URL*, just that the artifact itself can't set its
-  own verifying key) — but a reader checking key provenance should notice
-  they're not identically strong. The on-chain anchor claim
+  Ed25519 over the canonical bytes). At the time this fixture was first built the
+  public key had been pasted directly alongside the receipt rather than resolved
+  out-of-band the way CKG's is — a real asymmetry worth naming, since an
+  artifact that can set its own verifying key inline is weaker than one that
+  can't. **Fixed 2026-07-25** (giskard09, autogen#7353): the key now resolves
+  from `marks.rgiskard.xyz/pubkey/<agent_id>`, its own out-of-band registry
+  endpoint, closing the gap — both receipts now cite an out-of-band key
+  location, different registry paths, same invariant. The on-chain anchor claim
   (`argentum.rgiskard.xyz/trails/...`) is recorded in the fixture but **not**
   independently checked by this script.
 
