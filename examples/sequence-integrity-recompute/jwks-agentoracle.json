@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "kid": "ao-fixture-v0.3-composed-2026-06",
+      "use": "sig",
+      "alg": "EdDSA",
+      "x": "pB-ci4MJkokSrVh9U3DaEWUMaveXlcz8mv7gbhar_rA"
+    }
+  ]
+}
