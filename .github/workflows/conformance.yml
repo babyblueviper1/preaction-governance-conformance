@@ -42,3 +42,5 @@ jobs:
         run: python3 examples/guardrail-decision-crosswalk/check_crosswalk.py
       - name: Plaintext-verdict consistency (hash matching != label matching)
         run: python3 examples/plaintext-verdict-consistency/check_plaintext_consistency.py
+      - name: ERC-8337 attestation-refs conformance (real live Sepolia fixture, sort/dedupe/verify_url-excluded, three-valued authority)
+        run: python3 examples/erc-8337-attestation-refs/check_attestation_refs.py
