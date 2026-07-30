@@ -112,6 +112,23 @@ def classify_evidence_mode(declared_hint, derived_mode, key_recomputed, external
             "claim_level": claim, "blocked_reason": reason}
 
 
+def _hex_only(h):
+    """Strip a cosmetic hash-prefix ('sha256-', 'sha256:', '0x') so comparisons and
+    bytes.fromhex() work regardless of which convention an implementer's endpoint uses --
+    prefix style is not part of the invariant. Real bug found+fixed 2026-07-30 reviewing a
+    real PR (agenttrust.mapping.json): envelope_hash came back as 'sha256-<hex>' and both the
+    canonical_envelope hex comparison AND the admission_invariant's bytes.fromhex(envelope_hash)
+    assumed bare hex -- a genuinely correct implementation failed both checks for a prefix-style
+    reason that had nothing to do with either invariant actually holding."""
+    if not isinstance(h, str):
+        return h
+    s = h.lower()
+    for prefix in ("sha256-", "sha256:", "0x"):
+        if s.startswith(prefix):
+            return s[len(prefix):]
+    return s
+
+
 def _dig(obj, path):
     """Follow a list-of-keys path into a nested dict/list. Returns None if absent."""
     if path is None:
@@ -200,7 +217,14 @@ def _verify_admission(scheme, envelope_hash, pubkey, signature, event):
             except ImportError:
                 return None, "ed25519-jcs recognized; needs an ed25519 verifier (e.g. PyNaCl) to check here"
             vk = VerifyKey(bytes.fromhex(pubkey))
-            sig_b = bytes.fromhex(signature)
+            # Implementations differ on signature encoding too: hex (e.g. PMI/moyan) or base64url/JWS-
+            # style (e.g. AgentTrust: '_PnAyD3f...', which is not valid hex and would otherwise raise
+            # ValueError here). Try hex first, fall back to base64url -- same "accommodate the
+            # convention" approach used for the hash-encoding dual-attempt just below.
+            try:
+                sig_b = bytes.fromhex(signature)
+            except ValueError:
+                sig_b = _b64u(signature)
             # Implementations differ on what message the hash-signature covers: the RAW 32 bytes of the
             # envelope hash, or the 64-char HEX STRING of it (e.g. PMI/moyan signs the hex string). Both
             # are a deterministic commitment to the same hash, so accept either and report which matched —
@@ -236,7 +260,7 @@ def run(mapping: dict) -> dict:
                 "suites": {}, "raw_status": resp.get("status") if isinstance(resp, dict) else None,
                 "detail": "response carried no governance block (e.g. SKIP/duplicate/error) — nothing to verify"}
 
-    envelope_hash = _dig(gov, fields.get("envelope_hash"))
+    envelope_hash = _hex_only(_dig(gov, fields.get("envelope_hash")))
     pubkey = _dig(gov, fields.get("pubkey"))
     signature = _dig(gov, fields.get("signature"))
     scheme = (_dig(gov, fields["sig_scheme"]) if fields.get("sig_scheme") else None) or mapping.get("sig_scheme")
@@ -476,7 +500,17 @@ def run(mapping: dict) -> dict:
         },
     }
 
-    sig_valid, sig_detail = _verify_admission(scheme, envelope_hash, pubkey, signature, event)
+    if used_jws and pubkey in verified_pubkeys:
+        # Real gap found+fixed reviewing a real PR (agenttrust.mapping.json, poteshniy): the JWS
+        # general-serialization path above already independently re-verified the PRIMARY signer's
+        # leg (not just co-signers) -- _verify_admission's ed25519 branch only tries "sign the
+        # envelope hash directly" (raw bytes or hex string), which a JWS-general-serialization
+        # implementer (signature covers BASE64URL(protected)+"."+BASE64URL(payload), not the hash)
+        # will always fail, even though the signature is genuinely valid. Reuse the verification
+        # already done above instead of re-deriving it a second, narrower way.
+        sig_valid, sig_detail = True, "Ed25519 over the JWS signing input (protected.payload), verified via JWS general serialization"
+    else:
+        sig_valid, sig_detail = _verify_admission(scheme, envelope_hash, pubkey, signature, event)
     if sig_valid is None:
         suites["admission_invariant"] = _suite("unverified_here", "scheme_not_verifiable_here", sig_detail)
     elif not sig_valid:
