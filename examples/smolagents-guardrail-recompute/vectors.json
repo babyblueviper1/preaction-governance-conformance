@@ -1,0 +1,77 @@
+{
+  "schema": "smolagents-guardrail-recompute.v0",
+  "spec": "huggingface/smolagents#2117 (issue) / #2126 (PR, open as of 2026-07-30): GuardrailProvider.before_tool_call(tool_name, arguments) -> GuardrailDecision{allowed: bool, reason: str}. Promised as a follow-up fixture on #2117 (2026-07-06) so any provider -- theirs, ours, or a future one -- has something concrete to recompute against, independent of which implementation lands.",
+  "guardrail_decision_fields": ["allowed", "reason"],
+  "cases": [
+    {
+      "case_id": "allowlist_permits_listed_tool",
+      "guardrail": {"kind": "allowlist", "allowed_tools": ["web_search", "final_answer"]},
+      "tool_name": "web_search",
+      "expected": {"allowed": true}
+    },
+    {
+      "case_id": "allowlist_denies_unlisted_tool",
+      "guardrail": {"kind": "allowlist", "allowed_tools": ["web_search"]},
+      "tool_name": "execute_python",
+      "expected": {"allowed": false, "reason_contains": "not in the allowed tools list"}
+    },
+    {
+      "case_id": "allowlist_final_answer_always_permitted_even_if_unlisted",
+      "guardrail": {"kind": "allowlist", "allowed_tools": ["web_search"]},
+      "tool_name": "final_answer",
+      "expected": {"allowed": true}
+    },
+    {
+      "case_id": "blocklist_denies_listed_tool",
+      "guardrail": {"kind": "blocklist", "blocked_tools": ["execute_python"]},
+      "tool_name": "execute_python",
+      "expected": {"allowed": false, "reason_contains": "is blocked"}
+    },
+    {
+      "case_id": "blocklist_permits_unlisted_tool",
+      "guardrail": {"kind": "blocklist", "blocked_tools": ["execute_python"]},
+      "tool_name": "web_search",
+      "expected": {"allowed": true}
+    },
+    {
+      "case_id": "composite_first_denial_wins_first_provider",
+      "guardrail": {"kind": "composite", "providers": [
+        {"kind": "blocklist", "blocked_tools": ["execute_python"]},
+        {"kind": "allowlist", "allowed_tools": ["execute_python", "web_search"]}
+      ]},
+      "tool_name": "execute_python",
+      "expected": {"allowed": false, "reason_contains": "is blocked"}
+    },
+    {
+      "case_id": "composite_first_denial_wins_second_provider",
+      "guardrail": {"kind": "composite", "providers": [
+        {"kind": "blocklist", "blocked_tools": ["execute_python"]},
+        {"kind": "allowlist", "allowed_tools": ["web_search"]}
+      ]},
+      "tool_name": "shell_exec",
+      "expected": {"allowed": false, "reason_contains": "not in the allowed tools list"}
+    },
+    {
+      "case_id": "composite_all_providers_allow",
+      "guardrail": {"kind": "composite", "providers": [
+        {"kind": "blocklist", "blocked_tools": ["execute_python"]},
+        {"kind": "allowlist", "allowed_tools": ["web_search", "final_answer"]}
+      ]},
+      "tool_name": "web_search",
+      "expected": {"allowed": true}
+    },
+    {
+      "case_id": "composite_empty_providers_permits_everything",
+      "guardrail": {"kind": "composite", "providers": []},
+      "tool_name": "anything_at_all",
+      "expected": {"allowed": true}
+    },
+    {
+      "case_id": "adversarial_deliberately_wrong_obvious_answer_substring_tool_name",
+      "description": "A naive checker doing substring/prefix matching on tool_name instead of exact set membership would incorrectly ALLOW this -- 'web_search_v2' contains 'web_search' as a substring, but the allowlist names an exact tool, not a prefix family.",
+      "guardrail": {"kind": "allowlist", "allowed_tools": ["web_search"]},
+      "tool_name": "web_search_v2",
+      "expected": {"allowed": false, "reason_contains": "not in the allowed tools list"}
+    }
+  ]
+}

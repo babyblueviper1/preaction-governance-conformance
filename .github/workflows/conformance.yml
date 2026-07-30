@@ -46,3 +46,7 @@ jobs:
         run: python3 examples/erc-8337-attestation-refs/check_attestation_refs.py
       - name: DEILS leg-2 held-content reveal check (5 pinned cases incl. deep-nested-key-shuffle adversarial)
         run: python3 examples/deils-leg2/check_deils_leg2.py
+      - name: Sequence-integrity recompute (TKCollective/AgentOracle -- N artifacts over time, Merkle log + inclusion + consistency + reorder/drop tamper demos)
+        run: python3 examples/sequence-integrity-recompute/check_sequence_integrity.py
+      - name: smolagents guardrail-decision recompute (huggingface/smolagents#2117/#2126, first-denial-wins composite semantics)
+        run: python3 examples/smolagents-guardrail-recompute/check_guardrail_decision.py
