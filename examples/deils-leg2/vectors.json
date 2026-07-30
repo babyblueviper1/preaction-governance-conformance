@@ -1,0 +1,52 @@
+{
+  "schema": "deils-leg2-reveal-check.v0",
+  "spec": "trustless-ai/deils \"leg 2\" (Merlini's held-content-behind-commitment design), pinned in Telegram msg_id 1623 (case ownership), 1632/2111-2112 (canonicalization + ref-string format correction). Reference implementation: invinoveritas POST /prove {disclose:false} + POST /prove/{proof_id}/reveal.",
+  "ref_format": "\"sha256:\" + 64 lowercase hex. NOT \"0x\"+hex -- corrected msg_id 2111/2112, matches invinoveritas's own decision_ref convention.",
+  "canonicalization": "RFC 8785 JCS: recursively sorted object keys, compact separators (no whitespace), raw UTF-8 (not \\uXXXX-escaped). Equivalent to Python json.dumps(v, sort_keys=True, separators=(',',':'), ensure_ascii=False).",
+  "commitment_hash_definition": "\"sha256:\" + sha256(jcs(committed_content)).hexdigest()",
+  "cases": [
+    {
+      "case_id": "content_bound",
+      "description": "Happy path: revealed content hashes to the published commitment exactly.",
+      "committed_content": {"verdict": "approve", "confidence": 0.9, "artifact_hash": "abc123", "policy_version": "v1"},
+      "revealed_content": {"verdict": "approve", "confidence": 0.9, "artifact_hash": "abc123", "policy_version": "v1"},
+      "expected_state": "content_bound"
+    },
+    {
+      "case_id": "canonicalization_near_miss",
+      "description": "Same content, different input key order -- MUST still bind. Proves the shared canonical JSON does the work, not string-equality.",
+      "committed_content": {"verdict": "approve", "confidence": 0.9, "artifact_hash": "abc123", "policy_version": "v1"},
+      "revealed_content": {"policy_version": "v1", "artifact_hash": "abc123", "verdict": "approve", "confidence": 0.9},
+      "expected_state": "content_bound"
+    },
+    {
+      "case_id": "single_byte_flip",
+      "description": "One byte of revealed content changed (artifact_hash's last char) -- MUST be content_commitment_mismatch. Proves the check says NO loudly, no silent pass.",
+      "committed_content": {"verdict": "approve", "confidence": 0.9, "artifact_hash": "abc123", "policy_version": "v1"},
+      "revealed_content": {"verdict": "approve", "confidence": 0.9, "artifact_hash": "abc124", "policy_version": "v1"},
+      "expected_state": "content_commitment_mismatch"
+    },
+    {
+      "case_id": "content_withheld",
+      "description": "Nothing disclosed yet -- pending, not a failure. No revealed_content is submitted; the checker must not attempt a recompute over unbound content.",
+      "committed_content": {"verdict": "approve_with_concerns", "confidence": 0.7, "artifact_hash": "def456", "policy_version": "v1"},
+      "revealed_content": null,
+      "expected_state": "content_withheld"
+    },
+    {
+      "case_id": "deep_nested_key_shuffle_adversarial",
+      "description": "Deliberately-wrong-obvious-answer case (Correctover-style, distinct from the top-level near-miss above): keys are shuffled at MULTIPLE NESTED LEVELS, not just the top level. A checker that only sorts top-level keys, or does a raw string diff instead of a recursive JCS canonicalization, would report this as a mismatch (or falsely pass without ever canonicalizing). The correct recursive canonicalization must still bind.",
+      "committed_content": {
+        "verdict": "approve",
+        "inputs": {"artifact_hash": "abc123", "policy_version": "v1", "source_class": "internal"},
+        "meta": {"tier": {"z": 1, "a": 2, "m": 3}}
+      },
+      "revealed_content": {
+        "inputs": {"source_class": "internal", "artifact_hash": "abc123", "policy_version": "v1"},
+        "meta": {"tier": {"m": 3, "z": 1, "a": 2}},
+        "verdict": "approve"
+      },
+      "expected_state": "content_bound"
+    }
+  ]
+}

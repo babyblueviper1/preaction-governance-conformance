@@ -78,6 +78,7 @@ its claim from bytes and is wired into CI.
 | [`guardrail-decision-crosswalk`](examples/guardrail-decision-crosswalk) | invinoveritas `/review` ↔ ibex `GuardrailDecision`: 3 states preserve authority, 1 (`approve_with_concerns`) has no equivalent — reported as a named gap, not forced onto a label that doesn't carry the same authority |
 | [`plaintext-verdict-consistency`](examples/plaintext-verdict-consistency) | a hash matching isn't the same as the label matching — found live in a real published package: a plaintext `expected_verdict` field can be tampered independently of the `valid` hash check that's supposed to guard it |
 | [`erc-8337-attestation-refs`](examples/erc-8337-attestation-refs) | attestation-refs.md §3/§6 against everest-an's real live Sepolia fixture — canonicalization (sort+dedupe+verify_url-excluded), signature, `decision_ref` (byte-identical to invinoveritas's own preimage), and three-valued authority all recompute from bytes, not asserted |
+| [`deils-leg2`](examples/deils-leg2) | Merlini's held-content-behind-commitment design (existence mandatory-public + non-suppressible, content optional-private until reveal) — 5 pinned cases recompute the reveal-check predicate, including a deep-nested-key-shuffle adversarial case a naive top-level-only canonicalizer would get wrong |
 
 Each is the executable form of a thread the suite tracks — "conformant" means *recomputes*, never *we say so*.
 
