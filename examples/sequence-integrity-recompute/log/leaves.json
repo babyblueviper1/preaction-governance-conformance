@@ -1,0 +1,44 @@
+[
+ {
+  "envelope_hash": "sha256-1a6c323758036d7c2c1c6ab1df8be737de64c6808cdd6d6d307b34d1e824b261",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660801000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ },
+ {
+  "envelope_hash": "sha256-97c5e3572eb4c793de439977d15b8bc87033dbd39aabf98d092b97b023aadd9c",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660802000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ },
+ {
+  "envelope_hash": "sha256-87012a5e89e4f0c137c189ac628d72f3a1f82e59ddcece9aa32cd17252f1a492",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660803000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ },
+ {
+  "envelope_hash": "sha256-fb413ef0897144144959072e481c893f53589ae985b4f77b87dbc5420ee1a5d3",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660804000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ },
+ {
+  "envelope_hash": "sha256-90bec800f087f25d06758ac40b3302b8d7c339c482190a50f13131b45e3730d2",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660805000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ },
+ {
+  "envelope_hash": "sha256-e39ece74933c37d7102a8ac67ebfa2825a04d377c2368c8ba7dbeeefe9a0fcdd",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660806000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ },
+ {
+  "envelope_hash": "sha256-552f1ed68837130d7e9926d2717ebe62f7ec1437da0d783ee6c1ea182c7996cb",
+  "issuer_kid": "ao-fixture-v0.3-composed-2026-06",
+  "log_time_ms": 1753660807000,
+  "typ": "application/vnd.verification.v0.3+composed+jws"
+ }
+]

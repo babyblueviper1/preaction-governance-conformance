@@ -1,0 +1,10 @@
+{
+ "keys": [
+  {
+   "kty": "OKP",
+   "crv": "Ed25519",
+   "kid": "log-fixture-seq-2026-07",
+   "x": "vsSXkDjcczh6df0giWRgSCPJIj7ryWeAoZHxJCUB0AI"
+  }
+ ]
+}

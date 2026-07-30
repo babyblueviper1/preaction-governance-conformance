@@ -1,0 +1,9 @@
+{
+ "payload": {
+  "root_hash": "ec599235c88d6eb5d1b37a1a583c187f682b27720d4a5772638521ba3588fc88",
+  "sth_time_ms": 1753660820000,
+  "tree_size": 7
+ },
+ "kid": "log-fixture-seq-2026-07",
+ "signature": "s2GLRDMbRt3hCxFyhdtUkNKC9NwTmwjZAUQ8n7RhTsuzfSo2hSTDLboOc0dSTicO42oJ-1M6HnWPfaiE1ni5BA"
+}
