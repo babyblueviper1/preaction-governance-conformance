@@ -1,0 +1,33 @@
+{
+  "name": "agenttrust",
+  "fetch": {
+    "method": "POST",
+    "url": "https://agenttrust.uk/v1/compose",
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "preaction-governance-conformance/referee"
+    },
+    "body": {
+      "claim_hash": "sha256-conformance-NONCE",
+      "mcp_content": {
+        "tool": "web.search",
+        "query": "conformance NONCE"
+      }
+    },
+    "governance_path": ["governance"]
+  },
+  "sig_scheme": "ed25519-jcs",
+  "fields": {
+    "envelope_hash": "envelope_hash",
+    "canonical_bytes": "canonical_bytes_utf8",
+    "pubkey": "verifier_pubkey",
+    "signature": "signature",
+    "sig_scheme": "sig_scheme"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": [
+      "98e73aa9d4c701092ccd3f3f450be9ce6293727b41087d5ff9dc83c2e2a91312",
+      "171b4df82481832913a7706017146b024c4d5112309e649f453c1fbd7066052a"
+    ]
+  }
+}
