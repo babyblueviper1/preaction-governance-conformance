@@ -76,3 +76,20 @@ style: two independent implementations converging on the same 5 verdicts is the 
 ```bash
 python3 check_deils_leg2.py
 ```
+
+## A real trap found live (2026-07-30, Merlini, blind end-to-end verification)
+
+Independently verifying against a real live commitment (not just the pinned vectors), Merlini
+found a genuine wire-level gotcha worth documenting: **canonicalize, don't hash the served
+content.** The commitment is `sha256(JCS(content))` computed over raw UTF-8 bytes
+(`ensure_ascii=False` — msg_id 2111/2112). But content served back to a caller may travel through
+a JSON layer that re-escapes non-ASCII into `\uXXXX` sequences (the default behavior of a plain
+`json.dumps()`, and plausibly a Nostr relay's own re-serialization if the content is fetched from
+a relay rather than directly from the issuing API). Hashing that literal escaped wire string
+produces the WRONG digest — a byte-level verifier must first JSON-parse the served string back to
+its real value, then re-encode as raw UTF-8, before hashing. Confirmed on invinoveritas's own REST
+API: it serves the correct raw-UTF-8 form (Starlette's `JSONResponse` uses `ensure_ascii=False`),
+so this specific trap does not fire there — but it is a general Nostr/JSON-relay risk, not an
+implementation detail of any one server, and any consumer fetching a proof's content from a relay
+rather than the origin should canonicalize before hashing, never hash the wire bytes directly.
+
