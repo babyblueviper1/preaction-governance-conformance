@@ -79,6 +79,7 @@ its claim from bytes and is wired into CI.
 | [`plaintext-verdict-consistency`](examples/plaintext-verdict-consistency) | a hash matching isn't the same as the label matching — found live in a real published package: a plaintext `expected_verdict` field can be tampered independently of the `valid` hash check that's supposed to guard it |
 | [`erc-8337-attestation-refs`](examples/erc-8337-attestation-refs) | attestation-refs.md §3/§6 against everest-an's real live Sepolia fixture — canonicalization (sort+dedupe+verify_url-excluded), signature, `decision_ref` (byte-identical to invinoveritas's own preimage), and three-valued authority all recompute from bytes, not asserted |
 | [`deils-leg2`](examples/deils-leg2) | Merlini's held-content-behind-commitment design (existence mandatory-public + non-suppressible, content optional-private until reveal) — 5 pinned cases recompute the reveal-check predicate, including a deep-nested-key-shuffle adversarial case a naive top-level-only canonicalizer would get wrong |
+| [`sequence-integrity-recompute`](examples/sequence-integrity-recompute) | N artifacts over TIME, not just N signers on one artifact (TKCollective/AgentOracle) — two signed tree heads + 7 real composed-envelope entries; ordering and completeness recompute from bytes (Merkle root, inclusion proofs, consistency), and both a reorder and a drop are caught with damage localized to exactly where it happened |
 
 Each is the executable form of a thread the suite tracks — "conformant" means *recomputes*, never *we say so*.
 
