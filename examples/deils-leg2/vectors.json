@@ -47,6 +47,15 @@
         "verdict": "approve"
       },
       "expected_state": "content_bound"
+    },
+    {
+      "case_id": "escaped_non_ascii_wire_trap",
+      "description": "Byte-domain ambiguity (Pavlo, trustless-ai group, 2026-07-31, extending Merlini's own escaping-catch note from the PQ-key-binding close): the commitment is over raw UTF-8 JCS bytes (ensure_ascii=False), but a relay/consumer that re-serializes the revealed content with a DEFAULT json.dumps (ensure_ascii=True, \\uXXXX-escaped non-ASCII) produces DIFFERENT bytes for the same logical content. A checker that hashes the served WIRE STRING directly (byte-level, no re-parse) gets the WRONG digest and would report a false content_commitment_mismatch on genuinely identical content. The correct check always parses THEN re-canonicalizes (JCS, ensure_ascii=False) before hashing -- it must never trust or hash the wire bytes as-received. `wire_representation_ascii_escaped` is what a relay doing plain json.dumps(content) (ensure_ascii's stdlib default) would actually serve; `wire_byte_hash_must_not_match_commitment` pins that hashing those bytes directly is WRONG, not just undocumented risk.",
+      "committed_content": {"verdict": "approve", "confidence": 0.85, "artifact_hash": "abc123", "reviewer_note": "informe correcto — 承認済み"},
+      "revealed_content": {"verdict": "approve", "confidence": 0.85, "artifact_hash": "abc123", "reviewer_note": "informe correcto — 承認済み"},
+      "expected_state": "content_bound",
+      "wire_representation_ascii_escaped": "{\"artifact_hash\":\"abc123\",\"confidence\":0.85,\"reviewer_note\":\"informe correcto \\u2014 \\u627f\\u8a8d\\u6e08\\u307f\",\"verdict\":\"approve\"}",
+      "wire_byte_hash_must_not_match_commitment": true
     }
   ]
 }

@@ -98,6 +98,26 @@ def main() -> int:
     print(f"[{'PASS' if sensitivity_ok else 'FAIL'}] mismatch evidence bundle is populated and disagrees "
           f"(not a silent/empty rejection): {sensitivity_ok}")
 
+    # Escaped-wire-bytes trap (Pavlo, 2026-07-31): pins BOTH halves of the byte-domain ambiguity --
+    # (a) hashing the served \uXXXX-escaped wire string directly (no re-parse) MUST NOT match the
+    # commitment (proves the trap is real, not just a documentation footnote), and (b) parsing that
+    # same wire string then re-canonicalizing via the shared jcs() MUST still bind (proves the
+    # correct path handles it fine -- canonicalize, don't hash the served bytes).
+    wire_case = next((c for c in vectors["cases"] if c.get("wire_byte_hash_must_not_match_commitment")), None)
+    if wire_case is not None:
+        wire_ch = commitment_hash_of(wire_case["committed_content"])
+        wire_bytes = wire_case["wire_representation_ascii_escaped"]
+        naive_byte_hash = "sha256:" + hashlib.sha256(wire_bytes.encode("utf-8")).hexdigest()
+        naive_diverges = naive_byte_hash != wire_ch
+        reparsed = json.loads(wire_bytes)
+        reparsed_state, _ = reveal_check(wire_ch, reparsed)
+        reparsed_binds = reparsed_state == "content_bound"
+        wire_trap_ok = naive_diverges and reparsed_binds
+        all_ok = all_ok and wire_trap_ok
+        print(f"[{'PASS' if wire_trap_ok else 'FAIL'}] escaped-wire-bytes trap: naive byte-hash of "
+              f"served \\uXXXX string diverges ({naive_diverges}) AND parse-then-recanonicalize still "
+              f"binds ({reparsed_binds}): {wire_trap_ok}")
+
     print("\nall cases hold ✓" if all_ok else "\nCONFORMANCE CHECK FAILED ✗")
     return 0 if all_ok else 1
 

@@ -51,7 +51,7 @@ RFC 8785: recursively sorted object keys, compact separators, raw UTF-8 (not `\u
 matches invinoveritas's own `decision_ref` convention and the receipt canonicalization already used
 elsewhere in this stack.
 
-## The 5 pinned cases (vectors.json)
+## The 6 pinned cases (vectors.json)
 
 1. `content_bound` — happy path, content hashes to the commitment.
 2. `canonicalization_near_miss` — same content, different top-level key order → **must still
@@ -64,6 +64,15 @@ elsewhere in this stack.
    that only sorts top-level keys (or does a raw string diff instead of a recursive JCS
    canonicalization) would get this wrong. Needed to prove the checker genuinely re-derives from
    the canonicalization rule, not a shape that only happens to look independent.
+6. `escaped_non_ascii_wire_trap` (added 2026-07-31, Pavlo) — makes the "canonicalize, don't hash
+   the served content" trap below **falsifiable, not just documented**. Carries a real non-ASCII
+   `reviewer_note` field plus a pinned `wire_representation_ascii_escaped` string (what a plain
+   `json.dumps()`, the stdlib's `ensure_ascii=True` default, would actually serve for that content).
+   The checker pins BOTH halves: (a) hashing that wire string's raw bytes directly **must not**
+   match the commitment — the trap is real, not a hypothetical — and (b) `json.loads()`-ing it
+   back and re-canonicalizing via the shared JCS **must still bind** — the correct path handles it
+   fine. A checker that only implemented case 1-5 could pass every one of them while still hashing
+   served wire bytes directly and silently mis-verifying real non-ASCII content in production.
 
 ## Independent second checker
 
@@ -92,4 +101,9 @@ API: it serves the correct raw-UTF-8 form (Starlette's `JSONResponse` uses `ensu
 so this specific trap does not fire there — but it is a general Nostr/JSON-relay risk, not an
 implementation detail of any one server, and any consumer fetching a proof's content from a relay
 rather than the origin should canonicalize before hashing, never hash the wire bytes directly.
+
+Pavlo (trustless-ai group, 2026-07-31) named the sharper framing: this is "a byte-domain ambiguity,
+not just a documentation trap — same class as a fixture recipe that pins the hash operation but
+not which bytes feed it." Case 6 above turns his proposed vector into an executable, falsifiable
+check rather than leaving it as a README caveat.
 
