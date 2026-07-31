@@ -3,7 +3,7 @@
   "spec": "trustless-ai/deils \"leg 2\" (Merlini's held-content-behind-commitment design), pinned in Telegram msg_id 1623 (case ownership), 1632/2111-2112 (canonicalization + ref-string format correction). Reference implementation: invinoveritas POST /prove {disclose:false} + POST /prove/{proof_id}/reveal.",
   "ref_format": "\"sha256:\" + 64 lowercase hex. NOT \"0x\"+hex -- corrected msg_id 2111/2112, matches invinoveritas's own decision_ref convention.",
   "canonicalization": "RFC 8785 JCS: recursively sorted object keys, compact separators (no whitespace), raw UTF-8 (not \\uXXXX-escaped). Equivalent to Python json.dumps(v, sort_keys=True, separators=(',',':'), ensure_ascii=False).",
-  "commitment_hash_definition": "\"sha256:\" + sha256(jcs(committed_content)).hexdigest()",
+  "commitment_hash_definition": "\"sha256:\" + sha256(jcs(parsed(content))).hexdigest() -- the input to jcs() is ALWAYS the parsed (language-native dict/object) form of the content, never whatever wire encoding it happened to arrive in. Pinned explicitly (Pavlo, trustless-ai group, 2026-07-31) after the escaped_non_ascii_wire_trap vector below showed the failure mode: hashing a served \\uXXXX-escaped JSON string (even though it is byte-for-byte valid, parseable JSON) is WRONG, because that string is not the canonical form -- only re-canonicalizing the PARSED value is. Putting `parsed()` in the rule itself (not just in a test vector) closes the domain ambiguity at the definition, not just at the checker.",
   "cases": [
     {
       "case_id": "content_bound",

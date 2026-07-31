@@ -45,11 +45,19 @@ would otherwise leak it before a real reveal).
 
 ## Canonicalization
 
-`sha256(JCS(content))`, ref string = `"sha256:"` + 64 lowercase hex (**not** `"0x"` + hex — the
-earlier `0x` form was superseded live, msg_id 2111/2112, before any vectors were cut). JCS here is
-RFC 8785: recursively sorted object keys, compact separators, raw UTF-8 (not `\uXXXX`-escaped) —
+`sha256(JCS(parsed(content)))`, ref string = `"sha256:"` + 64 lowercase hex (**not** `"0x"` + hex —
+the earlier `0x` form was superseded live, msg_id 2111/2112, before any vectors were cut). JCS here
+is RFC 8785: recursively sorted object keys, compact separators, raw UTF-8 (not `\uXXXX`-escaped) —
 matches invinoveritas's own `decision_ref` convention and the receipt canonicalization already used
 elsewhere in this stack.
+
+**The input to JCS is always the PARSED (language-native) value, never the wire bytes as-received**
+(pinned explicitly, Pavlo, 2026-07-31, after case 6 below showed why): a served `\uXXXX`-escaped
+JSON string is byte-for-byte valid, parseable JSON, but it is NOT the canonical form — only
+re-canonicalizing the *parsed* value is. Putting `parsed()` in the definition itself, rather than
+leaving it implicit and catching the failure only via a test vector, means a correct implementation
+cannot fall into the wire-bytes trap in the first place; the vector (case 6) now exists to catch a
+*non*-conforming implementation, not to carry the rule's own domain boundary.
 
 ## The 6 pinned cases (vectors.json)
 
