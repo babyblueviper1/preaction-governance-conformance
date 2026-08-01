@@ -84,6 +84,21 @@ its claim from bytes and is wired into CI.
 
 Each is the executable form of a thread the suite tracks — "conformant" means *recomputes*, never *we say so*.
 
+## `tools/` — the one exception to offline/zero-dependency
+
+Everything above recomputes from local bytes alone, by design. `tools/broadcast_byte_diff.py` is
+different in kind, not degree: it audits whether a *published* Nostr proof event is byte-identical
+to what a relay actually serves back — a property that structurally requires talking to the network
+(`pip install websockets`), which is why it's kept out of `run_conformance.py` / CI rather than
+forced into the offline shape. A plain reachability check only proves a relay has *something*
+answering to the event id; this refetches the event by id from each relay and diffs every NIP-01
+field individually.
+
+```bash
+pip install websockets
+python3 tools/broadcast_byte_diff.py path/to/event.json
+```
+
 ## Provenance (these are real signatures, not mocks)
 
 - The **positive** admission is signed by the live verifier's published secp256k1 key
