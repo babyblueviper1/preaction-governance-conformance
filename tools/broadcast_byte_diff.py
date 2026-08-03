@@ -30,6 +30,20 @@ byte_identical on a real, already-published proof. A single flaky relay was mask
 otherwise fully-confirmed, clean result. Fixed: `all_byte_identical` requires >=1 relay
 confirming identical AND zero relays reporting an actual mismatch -- a connection error or
 not_found is inconclusive for that relay, not disqualifying.
+
+SECOND finding (2026-08-03, everest-an/AwareLiquid/ERC-8350#20 -- same account this tool was
+cited as ruling out that failure class): it didn't, for the RUN as a whole. `all_byte_identical`
+is a plain bool, so when EVERY relay errors (network down, all URLs unreachable, whatever), the
+result is `all_byte_identical: false` -- byte-for-byte identical to what a REAL, CONFIRMED
+mismatch produces. Verified live: pointed the tool at two nonexistent relay hostnames, got
+`{"relays": {"url1": "error: ...", "url2": "error: ..."}, "all_byte_identical": false}`, exit
+code 1 -- same shape, same exit code a genuine byte_mismatch would produce. A caller reading
+just the bool or the exit code cannot tell "we confirmed this doesn't match" from "we couldn't
+reach anyone to check at all" -- the exact §6.1/§6.2 collapse this tool was cited as already
+ruling out, just manifesting on the fail-safe side instead of the fail-unsafe side. Fixed:
+`run_status` is now a required, explicit three-valued field (see verify_broadcast_bytes'
+docstring) and the CLI exit code distinguishes all three cases numerically (0/1/2), not just
+2 of them.
 """
 from __future__ import annotations
 
@@ -52,18 +66,30 @@ async def verify_broadcast_bytes(event: dict[str, Any], relays: tuple[str, ...] 
     """Byte-diff verification of a published proof event against each relay's own copy.
 
     Returns {relays: {url: 'byte_identical'|'byte_mismatch (field=X)'|'not_found'|'error: ...'},
+             run_status: 'confirmed_match'|'confirmed_mismatch'|'inconclusive',
              all_byte_identical: bool, checked_at: int}. Never raises -- a single relay's
     failure doesn't fail the whole check; each relay gets its own independent status.
+
+    run_status is the field that answers "did this run actually check anything," which
+    all_byte_identical alone cannot: 'confirmed_mismatch' means at least one relay's copy
+    provably differs; 'confirmed_match' means at least one relay confirmed identical and none
+    disagreed; 'inconclusive' means NEITHER happened -- every relay errored/not_found, so
+    nothing was actually verified. all_byte_identical is kept for backward compatibility (True
+    only for confirmed_match) but must not be read alone -- False is the result for BOTH
+    confirmed_mismatch and inconclusive, which is exactly the ambiguity run_status exists to
+    remove. A caller that only checks the bool is back to the collapse this field fixes.
     """
     result: dict[str, Any] = {"relays": {}, "checked_at": int(time.time())}
     if not isinstance(event, dict) or not event.get("id"):
         result["error"] = "event must be an object with an id"
+        result["run_status"] = "inconclusive"
         result["all_byte_identical"] = False
         return result
     try:
         import websockets
     except ImportError as exc:
         result["error"] = f"websockets not installed ({exc}) -- pip install websockets"
+        result["run_status"] = "inconclusive"
         result["all_byte_identical"] = False
         return result
 
@@ -95,10 +121,15 @@ async def verify_broadcast_bytes(event: dict[str, Any], relays: tuple[str, ...] 
         result["relays"][url] = await _check_one(url)
 
     statuses = list(result["relays"].values())
-    result["all_byte_identical"] = (
-        any(v == "byte_identical" for v in statuses)
-        and not any(v.startswith("byte_mismatch") for v in statuses)
-    )
+    any_mismatch = any(v.startswith("byte_mismatch") for v in statuses)
+    any_identical = any(v == "byte_identical" for v in statuses)
+    if any_mismatch:
+        result["run_status"] = "confirmed_mismatch"
+    elif any_identical:
+        result["run_status"] = "confirmed_match"
+    else:
+        result["run_status"] = "inconclusive"  # every relay errored or not_found -- nothing verified
+    result["all_byte_identical"] = result["run_status"] == "confirmed_match"
     return result
 
 
@@ -117,7 +148,11 @@ def main() -> int:
     relays = tuple(args.relays) if args.relays else DEFAULT_RELAYS
     result = asyncio.run(verify_broadcast_bytes(event, relays))
     print(json.dumps(result, indent=2))
-    return 0 if result.get("all_byte_identical") else 1
+    # Exit code is three-valued too, not just result.get("all_byte_identical") -- that collapsed
+    # confirmed_mismatch and inconclusive onto the same nonzero code, which is the exact bug this
+    # fix closes. 0 = confirmed_match, 1 = confirmed_mismatch (a real, checkable finding), 2 =
+    # inconclusive (the run itself did not verify anything -- distinct from a real negative result).
+    return {"confirmed_match": 0, "confirmed_mismatch": 1, "inconclusive": 2}[result["run_status"]]
 
 
 if __name__ == "__main__":
