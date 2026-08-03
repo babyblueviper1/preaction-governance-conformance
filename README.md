@@ -71,6 +71,7 @@ its claim from bytes and is wired into CI.
 | [`crosswalk-recompute`](examples/crosswalk-recompute) | a vocabulary mapping between two boards is a recomputation, not an assertion (fails closed on an authority collision) |
 | [`action-id-canonicalization`](examples/action-id-canonicalization) | the cross-implementation `SHA-256(JCS(...))` convergence — construction converges, the timestamp field set doesn't; plus the three-case locked-profile vector (byte-identical id / wrong-type fail-closed / order-independence) |
 | [`decision-ref-recompute`](examples/decision-ref-recompute) | the pre-execution decision (`/review`'s `decision_ref`) recomputes from its own self-described preimage; signer ≠ runtime; tamper-sensitive |
+| [`verdict-of-verdict-recompute`](examples/verdict-of-verdict-recompute) | a re-review's `source_class` is capped by the vantage of the verdict it reviews, never upgraded — a min-rule bound into `decision_ref` via `related_decision_ref`, fails closed on a tampered/unverifiable inner claim |
 | [`benchmark-grade`](examples/benchmark-grade) | a submitted benchmark trace dump is graded by recomputing its verdicts from bytes, not by trusting the score |
 | [`profile-resolution`](examples/profile-resolution) | a canonicalization profile resolves to a content-addressed, reproducible `action_ref` |
 | [`ag2-beta`](examples/ag2-beta) | the external-attestation contract triple recomputes its verdicts (portable conformance, independent of the framework) |
