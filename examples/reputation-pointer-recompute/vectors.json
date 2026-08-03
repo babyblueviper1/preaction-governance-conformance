@@ -1,0 +1,85 @@
+{
+  "reputation_pointer": {
+    "_doc": "The typed pointer field proposed on a2aproject/A2A#1962 (issuer/scheme/ref, verifying key + anchored committed_at, content-addressed export with monotonic head commitment, published head location, explicit genesis marker) mapped onto a real, live invinoveritas /ledger entry -- not a hypothetical schema.",
+    "issuer": "invinoveritas",
+    "scheme": "https://api.babyblueviper.com/ledger#chain-v1",
+    "ref": "https://api.babyblueviper.com/ledger/40",
+    "verifying_key": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "committed_at": 1783121760,
+    "committed_at_meaning": "Bitcoin OTS block time -- this record's signed event_id was stamped into a Bitcoin block, precedence=true (committed before any outcome was known), independently checkable via `ots verify`.",
+    "head_commitment": "4969c7c18949e50f72be14f8087cf856564ac7354b127473a219d92bac3662d3",
+    "head_commitment_formula": "sha256(content_hash + '|' + prev_head_hash)",
+    "published_head_location": [
+      "relay.damus.io",
+      "nos.lol",
+      "relay.primal.net"
+    ],
+    "genesis_marker": {
+      "type": "explicit-precursor-hash",
+      "value": "09c790b34b51e22a0d4a0bd9c393d7e0c5891129038f83676a85e2b45f0316d2",
+      "how_it_was_derived": "sha256('invinoveritas-ledger-genesis:before-entry-40')",
+      "why": "entries #1-39 predate the head-chaining fix and keep their original individual OTS anchors, unchanged (not retroactively chained -- rewriting history into a chain would invalidate their existing signatures). Entry #40 is the documented root the chain starts from -- the CHAIN_START_ENTRY-equivalent named in the original proposal."
+    }
+  },
+  "recompute_inputs": {
+    "record": {
+      "ledger": "invinoveritas verdict ledger",
+      "entry": 40,
+      "type": "pre_action_verdict",
+      "title": "Pre-action governance verdict — approve_with_concerns (conf 0.85) on a PROPOSED entry: TAO short $10 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+      "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+      "verdict": {
+        "verdict": "approve_with_concerns",
+        "confidence": 0.85,
+        "summary": "The discretionary trade proposal is generally sound but carries specific risks due to the small account size and manual judgment basis.",
+        "issues": 2,
+        "high_blockers": 0,
+        "proposed_entries": {
+          "TAO": "short $10"
+        },
+        "paid": true
+      },
+      "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+      "proof": {
+        "event_id": "3937dc7263ee4193bdfc11da5c7c7ee450b48d7484fb721dcde33139a98bb169",
+        "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+        "artifact_sha256_in_event": true,
+        "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+      },
+      "judgment_execution": {
+        "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+        "hash_alg": "sha256",
+        "raw_proposal_hash": "72cf86ce51266f9d28e5c73387b75fd1b4d96e958f471d4fb7aee542babda4a6",
+        "verdict_ref": {
+          "binding": "nostr-event",
+          "event_id": "3937dc7263ee4193bdfc11da5c7c7ee450b48d7484fb721dcde33139a98bb169",
+          "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+        },
+        "verdict_timestamp": 1783119107,
+        "executed_action": {
+          "schema": "invinoveritas.executed_action.v1",
+          "proposed_basket": {
+            "TAO": "short $10"
+          },
+          "heed_on": false,
+          "size_multiplier_applied": 1.0,
+          "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+        },
+        "executed_action_hash": "12eaf25dc836349d2eecca56492205458ac16700ca04b53724bb28b9d795e3d8",
+        "executed_timestamp": null,
+        "ordering": "verdict strictly precedes order placement within the same governance cycle",
+        "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+        "record_pointer": "https://api.babyblueviper.com/ledger/40",
+        "record_pointer_paths": {
+          "commitment": "https://api.babyblueviper.com/ledger/40/commitment",
+          "outcome": "https://api.babyblueviper.com/ledger/40/outcome"
+        }
+      },
+      "ts": 1783119107
+    },
+    "content_hash": "ae19dfb4297d8d573bf3f9a252f4259bbc946141fcb3807a9f0e1f2842034f71",
+    "prev_head_hash": "09c790b34b51e22a0d4a0bd9c393d7e0c5891129038f83676a85e2b45f0316d2",
+    "head_hash": "4969c7c18949e50f72be14f8087cf856564ac7354b127473a219d92bac3662d3",
+    "genesis_constant": "invinoveritas-ledger-genesis:before-entry-40"
+  }
+}

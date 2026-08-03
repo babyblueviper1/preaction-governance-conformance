@@ -34,6 +34,8 @@ jobs:
         run: python3 examples/decision-ref-recompute/check_decision_ref.py
       - name: Verdict-of-verdict recompute (a re-review's source_class is capped by the reviewed vantage, never upgraded; fails closed on a tampered inner claim)
         run: python3 examples/verdict-of-verdict-recompute/check_verdict_of_verdict.py
+      - name: Reputation-pointer recompute (typed Agent-Card pointer mapped onto a real /ledger entry, content-addressed + chain-recomputable + tamper-sensitive)
+        run: python3 examples/reputation-pointer-recompute/check_reputation_pointer.py
       - name: x402 payment-decision recompute (real argentum-core#29 fixture, verdict = f(controls))
         run: python3 examples/x402-payment-decision-recompute/check_x402_decision_ref.py
       - name: Composed admission + recompute + chain-fork profile (rpelevin, autogen#7353)
