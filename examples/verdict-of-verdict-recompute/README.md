@@ -24,6 +24,11 @@ outer.related_decision_ref = inner.decision_ref   # ONLY when inner independentl
 `related_decision_ref` joins `decision_ref_preimage_fields` — the binding is cryptographic, not a
 side-channel a downstream party has to trust on the outer caller's word.
 
+Same non-silent-upgrade principle, applied one layer down, as `delegation-chain-ref-v1` (backward
+`parent_delegation_ref` traversal for *delegated execution* — did authority pass down a chain
+correctly). This mechanism is for composing *verdicts* — did an outer judgment silently trust an
+inner one it shouldn't have. Different layer, no actual dependency between the two.
+
 ## What this checks
 
 Five real, cryptographically-signed vectors (produced through the actual production
