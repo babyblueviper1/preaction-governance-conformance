@@ -52,15 +52,16 @@ DEFAULT_FILE = os.path.join(VECTORS_DIR, "mandate_gate_verdict.json")
 def _tamper_content(event: dict) -> dict:
     """helmymekaoui-web's vector 1: 'confidence changed in content'. Generalized here to any JSON
     field inside content, since a real verdict's payload shape varies by artifact_type -- the point
-    is any semantic change to the signed content, not the specific field name."""
+    is any semantic change to the signed content, not the specific field name.
+
+    2026-08-08, caught by our own /review on this exact file: the original version's confidence
+    mutation (round(1.0 - x, 2)) was a no-op fixed point at x=0.5, and even when it did change the
+    number, nothing GUARANTEED the mutation actually altered the field -- a self-inverse transform
+    is the wrong shape for a tamper vector. Fixed: always append an unconditional marker key, which
+    changes content's bytes regardless of what the original payload happened to contain."""
     ev = copy.deepcopy(event)
     payload = json.loads(ev["content"])
-    if "confidence" in payload:
-        payload["confidence"] = round(1.0 - float(payload["confidence"]), 2)
-    elif "verdict" in payload:
-        payload["verdict"] = "reject" if payload["verdict"] != "reject" else "approve"
-    else:
-        payload["_tampered"] = True
+    payload["_tampered_marker"] = "check_tamper_matrix.py content-tamper vector, unconditional"
     ev["content"] = json.dumps(payload)
     return ev
 
@@ -123,17 +124,35 @@ def run(event: dict) -> int:
               "nothing downstream is meaningful until this passes.")
         return 1
 
-    print("\ntamper matrix (each row must be REJECTED — a checker that accepts any of these is a "
-          "constant-true placebo, not a real check):\n")
+    print("\ntamper matrix (each row must be REJECTED for the SPECIFIC reason it documents, not just")
+    print("'invalid somehow' -- overall rejection alone doesn't prove the mechanism claimed. A row")
+    print("could fail closed for the wrong reason (e.g. a pinned-pubkey allowlist rejecting the")
+    print("pubkey-swap vector before schnorr verification ever runs) and this matrix would miss it")
+    print("if it only checked `valid`):\n")
     failures = 0
     for name, mutate, primary_check in TAMPER_VECTORS:
         tampered = mutate(event)
         result = verify_proof(tampered)
+        checks = result["checks"]
+        # 2026-08-08, caught by our own /review on this exact file: `primary_check` was defined
+        # per-vector but never actually asserted against -- the matrix only checked overall
+        # `valid == False`, which a pinned-pubkey policy rejecting for the WRONG reason (e.g.
+        # issued_by_invinoveritas failing before signature_valid is even meaningful) would still
+        # pass, without proving the claimed mechanism (id_integrity or signature_valid) is what
+        # actually caught it. Fixed: assert the specific check that should fail, per vector.
+        specific_field = {"id": "id_integrity", "sig": "signature_valid"}[primary_check]
+        specific_failed = checks.get(specific_field) is False
         rejected = not result["valid"]
-        status = "REJECTED (correct)" if rejected else "ACCEPTED (WRONG — placebo check)"
-        print(f"  [{name:36}] valid={result['valid']!s:5}  {status}")
-        print(f"      checks: {result['checks']}")
-        if not rejected:
+        mechanism_ok = rejected and specific_failed
+        if mechanism_ok:
+            status = "REJECTED (correct, and for the claimed reason)"
+        elif rejected:
+            status = f"REJECTED, but NOT via {specific_field} — mechanism claim unproven"
+        else:
+            status = "ACCEPTED (WRONG — placebo check)"
+        print(f"  [{name:40}] valid={result['valid']!s:5}  {status}")
+        print(f"      checks: {checks}")
+        if not mechanism_ok:
             failures += 1
 
     print(f"\n{len(TAMPER_VECTORS) - failures}/{len(TAMPER_VECTORS)} tamper vectors correctly rejected.")
@@ -141,10 +160,15 @@ def run(event: dict) -> int:
         print(f"FAIL: {failures} tampered event(s) were incorrectly accepted as valid.")
         return 1
 
-    print("\nOK: baseline verifies clean, all four tamper vectors correctly rejected.")
+    print("\nOK: baseline verifies clean, all four tamper vectors correctly rejected for their")
+    print("claimed reason (not just rejected somehow).")
     print("\nWhat this proves: the signed verdict is authentically invinoveritas's, byte-exact and")
-    print("untampered — checkable by anyone re-running this file against the published pubkey,")
-    print("no API call, no trust in either party.")
+    print("untampered, and its content cryptographically COMMITS to the declared intended_verifier")
+    print("string (changing that string would change content, which id_integrity would catch) —")
+    print("checkable by anyone re-running this file against the published pubkey, no API call, no")
+    print("trust in either party. This is a commitment check, not a validation of the address: it")
+    print("does not confirm the declared address is actually the MandateGate contract, is on Base")
+    print("Sepolia, or that the verdict payload is meaningful to that specific contract.")
     print("\nWhat this does NOT prove: anything about the ECDSA/secp256k1 side of a MandateGate-style")
     print("on-chain gate. That is a genuinely different signature scheme over a genuinely different")
     print("preimage (keccak/EIP-191, not sha256/NIP-01) — closing THAT gap is separate, unbuilt work:")
@@ -157,7 +181,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", default=DEFAULT_FILE)
     args = ap.parse_args()
-    sys.exit(run(json.load(open(args.file))))
+    with open(args.file, encoding="utf-8") as f:
+        event = json.load(f)
+    if not isinstance(event, dict) or any(k not in event for k in ("id", "pubkey", "created_at", "kind", "content", "sig")):
+        print(f"FAIL: {args.file} is not a well-formed NIP-01 event "
+              f"(needs id/pubkey/created_at/kind/content/sig)")
+        sys.exit(1)
+    sys.exit(run(event))
 
 
 if __name__ == "__main__":
