@@ -17,6 +17,20 @@ python3 run_conformance.py        # asserts every fixture meets the bar (exit 0)
 python3 verifier.py fixtures/positive.json fixtures/negative_*.json   # per-fixture detail
 ```
 
+**That claim now has a real instance, not just an assertion.** [`tools/independent_checker_js`](tools/independent_checker_js)
+is a from-scratch reimplementation in JavaScript — its own secp256k1/BIP-340 schnorr math (pure
+BigInt, no library), its own NIP-01 event-id recompute, its own five-invariant logic, written from
+this README + the fixture shapes alone. It does not import, require, or read `verifier.py` or
+`_bip340_nostr.py` at any point. Wired into the same CI job as the Python runner — if the two ever
+disagree on a fixture, CI goes red on whichever one is wrong, independently of the other. This is
+what closed [Rul1an's checker-independence critique](https://github.com/crewAIInc/crewAI/issues/4877)
+(an *adapter* pointing a shared checker at a new endpoint tests integration, not code-independence —
+a real second checker has to reach the verdict on its own).
+
+```bash
+node tools/independent_checker_js/run_conformance.js   # same bar, independent implementation
+```
+
 ## The three joined invariants
 
 Recompute the canonical envelope hash **once**, then test three joins against that single byte commitment:

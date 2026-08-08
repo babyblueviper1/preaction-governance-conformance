@@ -16,8 +16,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Conformance suite (offline, zero-dep)
         run: python3 run_conformance.py
+      - name: Independent JS checker (own crypto, own five-invariant logic, imports nothing from the Python side -- closes crewAI#4877's checker-independence critique)
+        run: node tools/independent_checker_js/run_conformance.js
       - name: AG2 Beta external-attestation contract triple
         run: python3 examples/ag2-beta/check_triple.py
       - name: Per-entry ledger recompute (re-derives to sound + tamper negative)
