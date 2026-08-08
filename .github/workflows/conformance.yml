@@ -54,3 +54,5 @@ jobs:
         run: python3 examples/sequence-integrity-recompute/check_sequence_integrity.py
       - name: smolagents guardrail-decision recompute (huggingface/smolagents#2117/#2126, first-denial-wins composite semantics)
         run: python3 examples/smolagents-guardrail-recompute/check_guardrail_decision.py
+      - name: Schnorr tamper matrix (ethereum-magicians t/29275, helmymekaoui-web's 4-vector matrix against a real /ledger verdict)
+        run: python3 examples/schnorr-tamper-matrix/check_tamper_matrix.py
