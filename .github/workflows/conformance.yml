@@ -56,3 +56,5 @@ jobs:
         run: python3 examples/smolagents-guardrail-recompute/check_guardrail_decision.py
       - name: Schnorr tamper matrix (ethereum-magicians t/29275, helmymekaoui-web's 4-vector matrix against a real /ledger verdict)
         run: python3 examples/schnorr-tamper-matrix/check_tamper_matrix.py
+      - name: verdict-ref-v1 adapter (microsoft/autogen#7353, giskard09 -- 4/4 upstream vectors + live verdict_object emission)
+        run: python3 examples/verdict-ref-v1-adapter/build_verdict_object.py
