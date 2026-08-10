@@ -14,19 +14,26 @@ backdated, independent of who holds write access.
 `git log` / the GitHub API that `commit_sha` was reachable from `branch` at or before
 `claimed_at`.
 
-## Known gap, disclosed (2026-08-10)
+## Correction (2026-08-10) — the anchor below was never lost, an earlier version of this file was wrong
 
-The `b92d2c69...` anchor (commit `45c9b2b8`, claimed 2026-07-23T15:37:44Z) was submitted to 4
-OpenTimestamps calendar servers successfully at the time, but was never polled/upgraded
-afterward. Checked again on 2026-08-10 (17 days later): all 4 calendars now return
-`CommitmentNotFoundError` for its digest — the pending commitment was lost, most likely pruned by
-the calendar servers' own retention window for unconfirmed submissions. Its `.ots`/`.manifest.json`
-files are kept here as an honest record of the gap, not removed — the manifest and commit_sha are
-still independently checkable via `git log` even without the OTS proof.
+**`b92d2c69...` (commit `45c9b2b8`) is Bitcoin-confirmed: block 959284, existence attested as of
+2026-07-23 UTC.** Verify yourself: `ots verify -d b92d2c6945bb96d97e5dbf8b552c9d7c957a10fb34b30bb6f17fad5cbac45018 b92d2c6945bb96d97e5dbf8b552c9d7c957a10fb34b30bb6f17fad5cbac45018.ots`.
 
-Fix shipped the same day: `suite-repo-ots-anchor.timer` (systemd, every 6h) now runs
-`suite_repo_ots_anchor.py --upgrade` on a recurring cadence so a future pending anchor gets
-polled/firmed to Bitcoin-confirmed well within any calendar's retention window, instead of relying
-on a manual re-run that might not happen. The `6b8aefca...` anchor (commit `62d32e51`, claimed
-2026-08-10) is the fresh replacement, now covering the repo's current work (the independent second
-checker, the recomputable policy_commitment spec) that the lost anchor never reached.
+An earlier version of this README claimed this anchor was "lost" — that was our own bug, not a
+real gap in the anchor. The verification code queried a hardcoded generic pool-subdomain calendar
+list (`a.pool.opentimestamps.org`, meant for *submission*) instead of the specific calendar server
+each pending attestation actually resolves through (embedded in the `.ots` file itself, e.g.
+`bob.btc.calendar.opentimestamps.org`). Querying the wrong hostname for the right digest returns
+`CommitmentNotFoundError`, which got misread as "the commitment was lost." Caught by a direct
+question ("that anchor is definitely lost?") that prompted re-verifying with the official `ots`
+CLI instead of trusting the first (buggy) answer — full fix in `suite_repo_ots_anchor.py`
+(invinoveritas repo, `upgrade_pending()`), now shells out to the real `ots upgrade`/`ots verify`
+CLI instead of hand-rolling calendar resolution.
+
+The `6b8aefca...` anchor (commit `62d32e51`, claimed 2026-08-10) still stands as a genuine,
+separate anchor — it covers real work shipped since 2026-07-23 (the independent second checker,
+the recomputable `policy_commitment` spec), not a replacement for a "lost" predecessor. Both
+anchors are real and both are kept. `suite-repo-ots-anchor.timer` (systemd, every 6h) still runs
+`suite_repo_ots_anchor.py --upgrade` on a recurring cadence — genuinely useful for firming a
+*newly pending* anchor to confirmed status sooner, just not the fix for the bug that caused this
+correction (that was in the verification code, not the anchor's cadence).
