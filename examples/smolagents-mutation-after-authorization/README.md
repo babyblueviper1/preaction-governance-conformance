@@ -79,3 +79,28 @@ it needs inspection of smolagents' real call-routing guarantees, not a standalon
 ```bash
 python3 full_receipt_adversarial_matrix.py
 ```
+
+## The bypass, demonstrated (Brodin2001's 2026-09-09 proposal)
+
+A real, traced fresh-clone finding (huggingface/smolagents head `30bb1161`): `ToolCallingAgent` has
+one canonical dispatch choke point, `execute_tool_call()` (agents.py:1453); `CodeAgent` has none —
+its tools are registered as plain callables directly into the sandboxed Python executor's namespace
+(`send_tools()`, agents.py:492) and invoked as ordinary function calls from LLM-generated code
+(agents.py:1726). A guard wired at `execute_tool_call` — the obvious placement — protects
+`ToolCallingAgent` completely and `CodeAgent` not at all.
+
+`callable_boundary_vs_dispatch_boundary.py` doesn't just assert this — it simulates both dispatch
+shapes and both guard placements, and runs the exact same mutated call through each:
+
+| Guard placement | ToolCallingAgent-style call | CodeAgent-style call |
+|---|---|---|
+| Wrapped at `execute_tool_call()` | mutated call correctly DENIED | **same mutated call NOT denied — bypass confirmed, actually executes** |
+| Wrapped at the callable itself, before either dispatch mechanism gets a reference | mutated call correctly DENIED | mutated call correctly DENIED — bypass closed |
+
+The fix isn't "add a second hook" — it's placing the one hook at the right boundary (the tool
+object, via `send_tools()`'s input) rather than at a dispatch method only one of the two agent
+subclasses happens to call through.
+
+```bash
+python3 callable_boundary_vs_dispatch_boundary.py
+```
