@@ -50,3 +50,32 @@ hashes from the original authorization, recomputes the same two hashes over the 
 about to execute, and compares strings. Both of Brodin2001's mutation cases are caught by that one
 comparison — no policy engine, no semantic understanding of what a "refund" is, just a hash
 recomputed the same way twice.
+
+## Follow-up: the full adversarial matrix (Brodin2001's 2026-09-09 comment)
+
+Brodin2001 asked how much enforcement comes from action binding alone vs. AgentGuard's broader
+receipt (tool + args + target + agent identity + runtime identity + policy state + expiry +
+single-use), and proposed 7 test cases. `full_receipt_adversarial_matrix.py` extends the recompute
+to invinoveritas's real preimage fields (`tool`, `args`, `agent_id`, `policy_version`) plus a
+consume-on-first-use ledger mirroring the real `consumed_decisions` table, and covers 5 of the 7:
+
+| Case | Covered? | Mechanism |
+|---|---|---|
+| policy changes after authorization | yes | `policy_version` is in the same hashed preimage — a receipt issued under policy vN no longer matches a verifier recomputing against vN+1 |
+| agent identity changes | yes (agent identity only) | `agent_id` is in the same preimage — a different agent presenting the same receipt breaks the hash. "Runtime identity" as a distinct axis from agent identity is NOT tracked — disclosed gap, not claimed coverage |
+| receipt replay | yes | atomic consume-on-first-use (`PRIMARY KEY(decision_ref)` in the real table — the INSERT failing IS the check-and-consume, no read-then-write race) |
+| expiry | **no, by design** | invinoveritas ships no hard TTL — the script demonstrates this explicitly (a receipt "issued" a year ago recomputes identically to one issued now), not silently |
+| target / argument mutation | yes | already covered in `action_binding_recompute.py` above |
+| alternate execution path bypassing the protected execution point | **not attempted** | see below |
+
+The last case is deliberately not attempted here: it isn't a hash-comparison problem. A hash
+comparison only matters if every tool-dispatch path in the calling framework actually routes
+through the point where the comparison happens. If `MultiStepAgent.step()` (or a sub-agent
+delegation path, a retry path, a tool-calling-a-tool path) has any way to invoke a tool without
+going through wherever the guard is wired in, no receipt scheme — this one, AgentGuard, or
+anything else — closes that gap, because the gap is upstream of verification entirely. Answering
+it needs inspection of smolagents' real call-routing guarantees, not a standalone fixture.
+
+```bash
+python3 full_receipt_adversarial_matrix.py
+```
