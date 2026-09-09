@@ -104,3 +104,33 @@ subclasses happens to call through.
 ```bash
 python3 callable_boundary_vs_dispatch_boundary.py
 ```
+
+## Same test, Brodin2001's real AgentGuard (not a toy substitute)
+
+Brodin2001 asked to keep the harness as the source of truth and wire his real library —
+[`Agentguard`](https://github.com/Brodin2001/Agentguard), branch `v0.2-action-bound-authorization`,
+commit `8e126c62` — into the same two placements, running the identical mutation/replay sequence,
+and to report the result honestly even if something failed rather than adapt the harness around it.
+Nothing failed unexpectedly; `agentguard_dispatch_test.py` runs clean:
+
+| | ToolCallingAgent-style call | CodeAgent-style call |
+|---|---|---|
+| Guard wired at `execute_tool_call()` (via `guard.execute_receipt()`) | mutated call DENIED, replay of the authorized call DENIED | **same mutated call bypasses AgentGuard entirely and executes** — matches AgentGuard's own docstring: *"Alternate direct calls to the underlying function remain outside this library's control boundary."* |
+| Guard wired at the callable itself (wrapping the tool with `execute_receipt` once, before either dispatch mechanism gets a reference) | mutated call DENIED, replay DENIED | mutated call DENIED, replay DENIED — bypass closed |
+
+**Classification, as requested** — what AgentGuard's own receipt logic catches vs. what's a
+placement question: mutation, replay, and (present in the code, not separately exercised here)
+expiry and live policy-hash staleness are receipt-shape properties AgentGuard's `verify_and_consume()`
+catches regardless of placement. Whether `verify_and_consume()` gets called AT ALL for a given call
+site is purely a placement question — this harness reproduces the disclosed limitation concretely
+against a real CodeAgent-shaped call path, using AgentGuard's real API. One real capability AgentGuard
+has that invinoveritas's action_binding-shaped check in the fixture above does not: a genuine
+TTL-based expiry and a live re-check of the CURRENT policy hash at consume time, not just a value
+bound at issue time — see the disclosed expiry gap in `full_receipt_adversarial_matrix.py` above.
+
+Setup (source not vendored here — no LICENSE file on that branch as of this test, so it's installed,
+not redistributed):
+```bash
+pip install "git+https://github.com/Brodin2001/Agentguard.git@v0.2-action-bound-authorization"
+python3 agentguard_dispatch_test.py
+```
