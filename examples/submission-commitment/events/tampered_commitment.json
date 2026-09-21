@@ -1,0 +1,9 @@
+{
+ "attempt_id": "attempt-0001-abcd",
+ "request_digest": "d20c97f7d0825f2f93cb4052cd7e62799a2f731d5cecc35b5e6e21910362d940",
+ "requester_pubkey": "dff1d77f2a671c5f36183726db2341be58feae1da2deced843240f7b502ba659",
+ "sent_at": 1789900001,
+ "sig": "0c5cf53375122c6b8c948bac6216ff370703684db1a8db7ebd1458f091657bc29fd506b104f665297d4c306a19636c9d850450c8dec4f882d20846c405d9986a",
+ "type": "submission_commitment",
+ "version": "v0"
+}
