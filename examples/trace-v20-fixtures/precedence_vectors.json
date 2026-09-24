@@ -1,0 +1,10 @@
+{
+  "about": "Host-side precedence vectors for tools/related_claims_check.py (x402-foundation/tsc#4, 2026-09-24). Verdict order FAIL > CANNOT_ESTABLISH > PASS: an adverse finding always wins, an absence never hides one. Exit codes: 0 PASS, 1 FAIL, 2 CANNOT_ESTABLISH (this checker's convention; the charter picks the number).",
+  "boundary": "A referenced proof the relying party does not hold is CANNOT_ESTABLISH (absence), not FAIL: it is third-party data, and failing would assert something unchecked about the artifact. The checker is stdlib-only (pure-Python BIP-340), so the 'host lacks a crypto backend' absence cannot arise here.",
+  "vectors": [
+    {"id": "mixed_forged_outer_inner_absent", "args": ["events/outer_forged_sig.json", "-", "events/outer_matched_claims.json"], "expect_exit": 1, "expect": "FAIL", "why": "outer signature forged (adverse, needs no missing input) + inner proof not supplied (absence): FAIL must win"},
+    {"id": "absence_only", "args": ["events/outer_matched.json", "-", "events/outer_matched_claims.json"], "expect_exit": 2, "expect": "CANNOT_ESTABLISH", "why": "every check that can run passes; the comparison cannot be recomputed without the inner proof"},
+    {"id": "adverse_inner_tampered", "args": ["events/outer_matched.json", "events/inner_tampered.json", "events/outer_matched_claims.json"], "expect_exit": 1, "expect": "FAIL", "why": "inner proof invalid and recomputed comparison contradicts the recorded result"},
+    {"id": "clean", "args": ["events/outer_matched.json", "events/inner.json", "events/outer_matched_claims.json"], "expect_exit": 0, "expect": "PASS", "why": "all checks run and pass"}
+  ]
+}
