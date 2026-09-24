@@ -1,0 +1,99 @@
+{
+ "partial (3 pinned + 1 no_content_returned), all content held": {
+  "step": "evidence_set",
+  "resolution": "unknown",
+  "source_count": 4,
+  "pinned_count": 3,
+  "fully_pinned": false,
+  "evidence_root": "fad3cd3ffdcd244dbf75c0fd5bee8deaa13cff49ec90ae5818ff707cf64dddb8",
+  "items": [
+   {
+    "url": "https://api.babyblueviper.com/record/064bb61b158ec8d863e04bb3eb040fe494c5be9d3088414408d691fb13505da3",
+    "reason": "content_matches"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/aba24be0b26463773432d1d090a16601440ba09a0ea8b81ab9fbe1051634e476",
+    "reason": "content_matches"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/3eb0a7b1e386990dd692c5c7c7ad71ce8ff3a973f225ae8cc4dcac7c48fc9d28",
+    "reason": "content_matches"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/0000000000000000000000000000000000000000000000000000000000000000",
+    "reason": "content_not_held"
+   }
+  ],
+  "offline_recomputation": "not established",
+  "why": "partial evidence set (5.4.1 c): valid, but MUST NOT be presented as satisfying offline recomputation"
+ },
+ "fully pinned (the 3), all content held": {
+  "step": "evidence_set",
+  "resolution": "resolved",
+  "source_count": 3,
+  "pinned_count": 3,
+  "fully_pinned": true,
+  "evidence_root": "fad3cd3ffdcd244dbf75c0fd5bee8deaa13cff49ec90ae5818ff707cf64dddb8",
+  "items": [
+   {
+    "url": "https://api.babyblueviper.com/record/064bb61b158ec8d863e04bb3eb040fe494c5be9d3088414408d691fb13505da3",
+    "reason": "content_matches"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/aba24be0b26463773432d1d090a16601440ba09a0ea8b81ab9fbe1051634e476",
+    "reason": "content_matches"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/3eb0a7b1e386990dd692c5c7c7ad71ce8ff3a973f225ae8cc4dcac7c48fc9d28",
+    "reason": "content_matches"
+   }
+  ],
+  "offline_recomputation": "performed"
+ },
+ "fully pinned, content not held": {
+  "step": "evidence_set",
+  "resolution": "unknown",
+  "source_count": 3,
+  "pinned_count": 3,
+  "fully_pinned": true,
+  "evidence_root": "fad3cd3ffdcd244dbf75c0fd5bee8deaa13cff49ec90ae5818ff707cf64dddb8",
+  "items": [
+   {
+    "url": "https://api.babyblueviper.com/record/064bb61b158ec8d863e04bb3eb040fe494c5be9d3088414408d691fb13505da3",
+    "reason": "content_not_held"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/aba24be0b26463773432d1d090a16601440ba09a0ea8b81ab9fbe1051634e476",
+    "reason": "content_not_held"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/3eb0a7b1e386990dd692c5c7c7ad71ce8ff3a973f225ae8cc4dcac7c48fc9d28",
+    "reason": "content_not_held"
+   }
+  ],
+  "offline_recomputation": "not established"
+ },
+ "fully pinned, one item's held bytes differ": {
+  "step": "evidence_set",
+  "resolution": "unknown",
+  "source_count": 3,
+  "pinned_count": 3,
+  "fully_pinned": true,
+  "evidence_root": "fad3cd3ffdcd244dbf75c0fd5bee8deaa13cff49ec90ae5818ff707cf64dddb8",
+  "items": [
+   {
+    "url": "https://api.babyblueviper.com/record/064bb61b158ec8d863e04bb3eb040fe494c5be9d3088414408d691fb13505da3",
+    "reason": "content_differs"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/aba24be0b26463773432d1d090a16601440ba09a0ea8b81ab9fbe1051634e476",
+    "reason": "content_matches"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/3eb0a7b1e386990dd692c5c7c7ad71ce8ff3a973f225ae8cc4dcac7c48fc9d28",
+    "reason": "content_matches"
+   }
+  ],
+  "offline_recomputation": "not established"
+ }
+}

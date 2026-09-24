@@ -1,0 +1,40 @@
+{
+ "evidence_set": {
+  "evidence_set_version": "ao-evidence-set-v1",
+  "retrieved_at": "2026-09-24T17:53:35.975Z",
+  "source_count": 4,
+  "pinned_count": 3,
+  "fully_pinned": false,
+  "evidence_root": "fad3cd3ffdcd244dbf75c0fd5bee8deaa13cff49ec90ae5818ff707cf64dddb8",
+  "sources": [
+   {
+    "url": "https://api.babyblueviper.com/record/064bb61b158ec8d863e04bb3eb040fe494c5be9d3088414408d691fb13505da3",
+    "snippet_sha256": "064bb61b158ec8d863e04bb3eb040fe494c5be9d3088414408d691fb13505da3",
+    "retrieved_at": "2026-09-24T17:53:35.975Z",
+    "pinned": true,
+    "content_kind": "full_resource"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/aba24be0b26463773432d1d090a16601440ba09a0ea8b81ab9fbe1051634e476",
+    "snippet_sha256": "aba24be0b26463773432d1d090a16601440ba09a0ea8b81ab9fbe1051634e476",
+    "retrieved_at": "2026-09-24T17:53:36.003Z",
+    "pinned": true,
+    "content_kind": "full_resource"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/3eb0a7b1e386990dd692c5c7c7ad71ce8ff3a973f225ae8cc4dcac7c48fc9d28",
+    "snippet_sha256": "3eb0a7b1e386990dd692c5c7c7ad71ce8ff3a973f225ae8cc4dcac7c48fc9d28",
+    "retrieved_at": "2026-09-24T17:53:36.012Z",
+    "pinned": true,
+    "content_kind": "full_resource"
+   },
+   {
+    "url": "https://api.babyblueviper.com/record/0000000000000000000000000000000000000000000000000000000000000000",
+    "snippet_sha256": null,
+    "retrieved_at": "2026-09-24T17:53:36.021Z",
+    "pinned": false,
+    "unpinned_reason": "no_content_returned"
+   }
+  ]
+ }
+}
