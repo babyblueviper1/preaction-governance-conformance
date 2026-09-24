@@ -7,7 +7,7 @@ Everything here is offline and stdlib-only (`_bip340_nostr.py` is the vendored B
 the published invinoveritas key, issued 2026-09-24 by `POST /review` on the live endpoint.
 
 ```bash
-python3 examples/trace-v20-fixtures/test_v20_negative_cases.py          # 24 negative/baseline cases
+python3 examples/trace-v20-fixtures/test_v20_negative_cases.py          # 31 negative/baseline cases
 python3 tools/related_claims_check.py  examples/trace-v20-fixtures/events/outer_matched.json examples/trace-v20-fixtures/events/inner.json examples/trace-v20-fixtures/events/outer_matched_claims.json
 python3 tools/vantage_limitation_check.py examples/trace-v20-fixtures/events/inner.json
 ```
@@ -16,7 +16,7 @@ python3 tools/vantage_limitation_check.py examples/trace-v20-fixtures/events/inn
 
 `vantage_limitation = NOTE[policy_version][source_class]` if `artifact_type` is irreversible-class (`trade`, `onchain_action`,
 `sanctions_screening`), else `null`. It is a pure function of three fields already inside the signed `decision_ref` preimage.
-`tools/vantage_notes_by_policy.json` is the exact-string table: **v19** (archived) and **v20** (current).
+`tools/vantage_notes_by_policy.json` is the exact-string table: **v19**, **v20** (archived) and **v21** (current).
 
 What changed in v20, per the review on the thread: the `agent_reported` note no longer says it is "sufficient as standalone evidence
 for a reversible action", and **every** note now says: *"This note is derived from source_class and artifact_type only: it does not
@@ -25,6 +25,12 @@ signed fields; it never established the classification is true or that the check
 
 The server validates exact wording under the proof's own policy version (v19 proofs against the archived v19 strings, v20 against the
 new ones); versions older than the table are checked for presence/absence only and the checker reports `CANNOT_ESTABLISH` for wording.
+
+What changed in v21 (wording only; preimage fields unchanged): the v20 `platform_operator` and `independent_mediator` notes still
+said the reviewed agent *"cannot bypass this call by calling us directly under its own key"*. That is an enforcement claim the
+derivation never checked. v21 says only what is true: the calling key is custody-separated from the agent; *"this proof does not show
+that the agent could not act without this call, or that the platform [mediator] enforces it -- enforcement happens outside anything
+this record captures."* The signed v20 fixtures in `events/` are unchanged and still verify under their own (archived) v20 wording.
 
 ## #398 `related_claims` -- bound comparison result, checker, vectors
 

@@ -9,7 +9,7 @@ Lines are PASS / FAIL / CANNOT_ESTABLISH. Exit code: 1 if any FAIL, else 2 if an
 The note is a pure function of three fields already inside the signed decision_ref preimage:
     vantage_limitation = NOTE[policy_version][source_class]   if artifact_type is irreversible-class
                          null                                  otherwise
-tools/vantage_notes_by_policy.json is the per-policy-version table of exact strings (v19 archived, v20 current). A
+tools/vantage_notes_by_policy.json is the per-policy-version table of exact strings (v19, v20 archived; v21 current). A
 policy version not in the table cannot be checked for exact wording (CANNOT_ESTABLISH), only for presence/absence.
 
 What passing means (agentrust-io/trace-spec#397): the note is consistent with the signed fields and was not stripped or

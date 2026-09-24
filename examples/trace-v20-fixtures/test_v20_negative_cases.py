@@ -227,6 +227,26 @@ class VantageNegatives(unittest.TestCase):
             ev19_wrong = self._stub(policy_version="invinoveritas.review.v19", vantage_limitation=v20)
             self.assertIn(vl.FAIL, {s for s, _, _ in vl.check(ev19_wrong)})
 
+    def test_v21_no_note_asserts_non_bypassability(self):
+        v20 = vl.TABLE["policies"]["invinoveritas.review.v20"]
+        v21 = vl.TABLE["policies"]["invinoveritas.review.v21"]
+        for sc in ("platform_operator", "independent_mediator"):
+            self.assertIn("cannot bypass this call", v20[sc])      # archived as issued; signed v20 proofs keep it
+        for sc, note in v21.items():
+            self.assertNotIn("cannot bypass this call", note, sc)
+            self.assertIn("does not establish that the source classification is true", note, sc)
+
+    def test_signed_v20_fixture_still_passes_under_archived_wording(self):
+        self.assertEqual({s for s, _, _ in vl.check(INNER)}, {vl.PASS})    # real signature, no stubs
+
+    def test_v21_proof_carrying_v20_wording_fails(self):
+        with mock.patch.object(vl, "verify_proof", stub_valid(vl.verify_proof)):
+            old = vl.TABLE["policies"]["invinoveritas.review.v20"]["independent_mediator"]
+            new = vl.TABLE["policies"]["invinoveritas.review.v21"]["independent_mediator"]
+            kw = dict(policy_version="invinoveritas.review.v21", source_class="independent_mediator")
+            self.assertIn(vl.FAIL, {s for s, _, _ in vl.check(self._stub(vantage_limitation=old, **kw))})
+            self.assertEqual({s for s, _, _ in vl.check(self._stub(vantage_limitation=new, **kw))}, {vl.PASS})
+
     def test_unknown_policy_version_cannot_be_checked_for_exact_wording(self):
         with mock.patch.object(vl, "verify_proof", stub_valid(vl.verify_proof)):
             res = vl.check(self._stub(policy_version="invinoveritas.review.v12"))
