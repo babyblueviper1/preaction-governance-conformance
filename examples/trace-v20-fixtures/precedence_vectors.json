@@ -69,6 +69,17 @@
       "expect_exit": 0,
       "expect": "PASS",
       "why": "the flag changes nothing when the referenced proof is present and valid"
+    },
+    {
+      "id": "unverifiable_inner_absent",
+      "args": [
+        "events/outer_unverifiable_proof.json",
+        "-",
+        "events/outer_unverifiable_proof_claims.json"
+      ],
+      "expect_exit": 2,
+      "expect": "CANNOT_ESTABLISH",
+      "why": "the outer proof's signed 'referenced proof did not verify' is the issuer's assertion; without the inner event nobody can reproduce it (agentrust-io/trace-spec#398)"
     }
   ]
 }

@@ -12,7 +12,9 @@ MUTANTS = [
      "    if any(s == CANNOT for s, _, _ in res):\n        return 2\n    return 1 if any(s == FAIL for s, _, _ in res) else 0",
      {"mixed_forged_outer_inner_absent"}),
     ("complete-set declaration ignored",
-     "        if COMPLETE:", "        if False:", {"absence_declared_complete"}),
+     "    if inner_ev is None:\n        if COMPLETE:", "    if inner_ev is None:\n        if False:", {"absence_declared_complete"}),
+    ("unverifiable_proof accepted without the inner event (trace-spec#398)",
+     "        if inner_ev is None:\n            if COMPLETE:", "        if False:\n            if COMPLETE:", {"unverifiable_inner_absent"}),
 ]
 bad = 0
 for name, old, new, expect_red in MUTANTS:

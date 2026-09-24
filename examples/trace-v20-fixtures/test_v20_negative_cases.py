@@ -143,6 +143,28 @@ class MissingEvidence(unittest.TestCase):
         self.assertIn(rc.CANNOT, statuses(res))
         self.assertNotIn(rc.FAIL, statuses(res))
 
+    def test_unverifiable_without_the_inner_event_cannot_be_established(self):
+        # agentrust-io/trace-spec#398: the issuer's signed "did not verify" is an assertion, not reproduced evidence
+        uclaims = load("outer_unverifiable_proof_claims.json")
+        res = rc.check(UNVERIF, None, uclaims)
+        self.assertIn(rc.CANNOT, statuses(res))
+        self.assertNotIn(rc.FAIL, statuses(res))
+
+    def test_unverifiable_without_the_inner_event_is_a_policy_refusal_when_the_set_is_complete(self):
+        uclaims = load("outer_unverifiable_proof_claims.json")
+        with mock.patch.object(rc, "COMPLETE", True):
+            self.assertIn(rc.FAIL, statuses(rc.check(UNVERIF, None, uclaims)))
+
+    def test_unverifiable_with_a_really_failing_inner_event_passes(self):
+        uclaims = load("outer_unverifiable_proof_claims.json")
+        res = rc.check(UNVERIF, load("inner_tampered.json"), uclaims)
+        self.assertNotIn(rc.FAIL, statuses(res))
+        self.assertNotIn(rc.CANNOT, statuses(res))
+
+    def test_unverifiable_with_an_inner_event_that_does_verify_is_a_fail(self):
+        uclaims = load("outer_unverifiable_proof_claims.json")
+        self.assertIn(rc.FAIL, statuses(rc.check(UNVERIF, INNER, uclaims)))
+
     def test_missing_proof_that_still_binds_a_reference_is_a_fail(self):
         with mock.patch.object(rc, "verify_proof", stub_valid(rc.verify_proof)):
             ev = resign_stub(MISSING, related_decision_ref=payload(INNER)["decision_ref"])

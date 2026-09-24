@@ -104,9 +104,16 @@ def check(outer_ev, inner_ev, claims):
     if result == "unverifiable_proof":
         add(PASS if op.get("related_decision_ref") is None else FAIL,
             "unverifiable_proof: no related_decision_ref bound (the referenced proof did not verify)")
-        if inner_ev is not None:
-            add(PASS if not verify_proof(inner_ev)["valid"] else FAIL,
-                "the supplied inner event really does fail verification")
+        # The signature authenticates the ISSUER'S assertion that the referenced proof did not verify; without the inner event nobody
+        # can reproduce that, so it is CANNOT_ESTABLISH, exactly like the matched path (agentrust-io/trace-spec#398, imran-siddique).
+        if inner_ev is None:
+            if COMPLETE:
+                add(FAIL, "referenced proof is in the relying party's set", "not held, and the set was declared complete (policy refusal)")
+            else:
+                add(CANNOT, "the referenced proof really does fail verification", "inner event not supplied (pass it instead of '-')")
+            return out
+        add(PASS if not verify_proof(inner_ev)["valid"] else FAIL,
+            "the supplied inner event really does fail verification")
         return out
     if result not in ("matched", "mismatched"):
         add(FAIL, "claims were supplied but the recorded result is not a comparison outcome", str(result))
