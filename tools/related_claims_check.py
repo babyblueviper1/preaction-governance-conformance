@@ -3,6 +3,12 @@
 
     python3 tools/related_claims_check.py OUTER_EVENT.json INNER_EVENT.json CLAIMS.json
     python3 tools/related_claims_check.py OUTER_EVENT.json - CLAIMS.json      # inner proof not available
+    python3 tools/related_claims_check.py --referenced-set-is-complete OUTER_EVENT.json - CLAIMS.json
+
+--referenced-set-is-complete: the caller DECLARES that the proofs it holds are its complete set, so a referenced proof it does not
+hold is a policy refusal (FAIL), not an absence. Default (flag absent): a proof the relying party does not hold is CANNOT_ESTABLISH,
+because failing would assert something about the artifact that was never checked (x402-foundation/tsc#4; same split as
+cryptovalid-opencore's keys_are_complete).
 
 OUTER/INNER are full signed Nostr events ({id,pubkey,created_at,kind,tags,content,sig}); CLAIMS is the exact JSON
 object the caller sent as `related_claims`. Every line is one of PASS / FAIL / CANNOT_ESTABLISH (an unrunnable check is
@@ -107,7 +113,10 @@ def check(outer_ev, inner_ev, claims):
         return out
 
     if inner_ev is None:
-        add(CANNOT, "recompute the comparison", "inner event not supplied (pass it instead of '-')")
+        if COMPLETE:
+            add(FAIL, "referenced proof is in the relying party's set", "not held, and the set was declared complete (policy refusal)")
+        else:
+            add(CANNOT, "recompute the comparison", "inner event not supplied (pass it instead of '-')")
         return out
     iv = verify_proof(inner_ev)
     add(PASS if iv["valid"] else FAIL, "inner proof valid (id, schnorr, issuer, kind)")
@@ -119,7 +128,14 @@ def check(outer_ev, inner_ev, claims):
     return out
 
 
+COMPLETE = False
+
+
 def main(argv):
+    global COMPLETE
+    if "--referenced-set-is-complete" in argv:
+        COMPLETE = True
+        argv = [a for a in argv if a != "--referenced-set-is-complete"]
     if len(argv) != 4:
         print(__doc__)
         return 2

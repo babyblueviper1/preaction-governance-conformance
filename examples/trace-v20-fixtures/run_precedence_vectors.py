@@ -7,7 +7,7 @@ checker = os.path.join(here, "..", "..", "tools", "related_claims_check.py")
 spec = json.load(open(os.path.join(here, "precedence_vectors.json")))
 bad = 0
 for v in spec["vectors"]:
-    args = [a if a == "-" else os.path.join(here, a) for a in v["args"]]
+    args = [a if a == "-" or a.startswith("--") else os.path.join(here, a) for a in v["args"]]
     rc = subprocess.run([sys.executable, checker, *args], capture_output=True).returncode
     ok = rc == v["expect_exit"]
     bad += not ok
