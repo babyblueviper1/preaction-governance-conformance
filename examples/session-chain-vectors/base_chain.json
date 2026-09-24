@@ -1,0 +1,574 @@
+{
+ "source": "https://api.babyblueviper.com/ledger/{n} (public invinoveritas verdict ledger), entries 255-262, fetched verbatim",
+ "entries": [
+  {
+   "entry": 255,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 255,
+    "type": "pre_action_verdict",
+    "title": "Pre-action governance verdict — approve_with_concerns (conf 0.88) on a PROPOSED entry: xyz:WDC short $15 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+    "verdict": {
+     "verdict": "approve_with_concerns",
+     "confidence": 0.88,
+     "summary": "The entry is mechanically within its stated v43 gate and the $15 notional is plausibly a pilot, but the artifact does not establish that the extremely narrow 2.04 bps spread has positive fee-adjusted expectancy or that the maker-only abort path can actually bound losses. This is acceptable only as a tightly capped experiment with verified fee, leverage, and emergency-exit controls.",
+     "issues": 4,
+     "high_blockers": 2,
+     "proposed_entries": {
+      "xyz:WDC": "short $15"
+     },
+     "paid": true
+    },
+    "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "proof": {
+     "event_id": "56b9ef32e5670c88cb12c708fb8c0d43c6b22af804acd1ee7eee2560829b52df",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_sha256_in_event": true,
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+    },
+    "judgment_execution": {
+     "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+     "hash_alg": "sha256",
+     "raw_proposal_hash": "3bb94d6039104ec8fd24bed2f6033065f3ab550db4a16978b738cb67ae9caca3",
+     "verdict_ref": {
+      "binding": "nostr-event",
+      "event_id": "56b9ef32e5670c88cb12c708fb8c0d43c6b22af804acd1ee7eee2560829b52df",
+      "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+     },
+     "verdict_timestamp": 1788362136,
+     "executed_action": {
+      "schema": "invinoveritas.executed_action.v1",
+      "proposed_basket": {
+       "xyz:WDC": "short $15"
+      },
+      "heed_on": false,
+      "size_multiplier_applied": 1.0,
+      "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+     },
+     "executed_action_hash": "4bc711fecac2017e370b9dcf91e29fc599bf3addf373ec21b056466aad87748e",
+     "executed_timestamp": null,
+     "ordering": "verdict strictly precedes order placement within the same governance cycle",
+     "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+     "record_pointer": "https://api.babyblueviper.com/ledger/255",
+     "record_pointer_paths": {
+      "commitment": "https://api.babyblueviper.com/ledger/255/commitment",
+      "outcome": "https://api.babyblueviper.com/ledger/255/outcome"
+     }
+    },
+    "ts": 1788362136
+   },
+   "chain": {
+    "prev_head_hash": "83e2078d0a43effcf06f69402def4eeda5a985a7bd310971c80db084dec6f56a",
+    "content_hash": "4ee6e454330098ae30a356f74a3bd892cd74dd78f21b444324cd52b3b646b0ae",
+    "head_hash": "e06f2b402c3892f8d3a381a65d5dfe3132843e02bbb33a8b783d87277fa8264c"
+   }
+  },
+  {
+   "entry": 256,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 256,
+    "type": "pre_action_verdict",
+    "title": "Pre-action governance verdict — approve_with_concerns (conf 0.89) on a PROPOSED entry: xyz:WDC long $15 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+    "verdict": {
+     "verdict": "approve_with_concerns",
+     "confidence": 0.89,
+     "summary": "The entry is mechanically within the stated v43 gate and the $15 pilot limits absolute loss, but the plan does not establish a fee-adjusted edge or a hard executable loss bound. A maker-only exit is incompatible with treating MAE abort as a reliable risk limiter unless it has an explicitly tested marketable fallback.",
+     "issues": 4,
+     "high_blockers": 1,
+     "proposed_entries": {
+      "xyz:WDC": "long $15"
+     },
+     "paid": true
+    },
+    "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "proof": {
+     "event_id": "7deb252351ff24b372d46754bc70b7ff9fbf43edacb0e92993b79adb1da23d1b",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_sha256_in_event": true,
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+    },
+    "judgment_execution": {
+     "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+     "hash_alg": "sha256",
+     "raw_proposal_hash": "ddcfdc9b5e2b243d40fc9f94d72199fd9ab23fa60460fc5fb9e8bfcffffe869c",
+     "verdict_ref": {
+      "binding": "nostr-event",
+      "event_id": "7deb252351ff24b372d46754bc70b7ff9fbf43edacb0e92993b79adb1da23d1b",
+      "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+     },
+     "verdict_timestamp": 1788362259,
+     "executed_action": {
+      "schema": "invinoveritas.executed_action.v1",
+      "proposed_basket": {
+       "xyz:WDC": "long $15"
+      },
+      "heed_on": false,
+      "size_multiplier_applied": 1.0,
+      "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+     },
+     "executed_action_hash": "d1a11aa0a96c95e7f0b874cebf35a4c3358c6c948c7699dcf1625418ec8f8745",
+     "executed_timestamp": null,
+     "ordering": "verdict strictly precedes order placement within the same governance cycle",
+     "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+     "record_pointer": "https://api.babyblueviper.com/ledger/256",
+     "record_pointer_paths": {
+      "commitment": "https://api.babyblueviper.com/ledger/256/commitment",
+      "outcome": "https://api.babyblueviper.com/ledger/256/outcome"
+     }
+    },
+    "ts": 1788362259
+   },
+   "chain": {
+    "prev_head_hash": "e06f2b402c3892f8d3a381a65d5dfe3132843e02bbb33a8b783d87277fa8264c",
+    "content_hash": "f11f67af58f12165230c5f697d3d18510245a9ade1b3f945d03ce865ccad62e2",
+    "head_hash": "ccc09dbd4e1447c217076def1e977d347a8e4a3fe4478f9a629ca555d8d15fa4"
+   }
+  },
+  {
+   "entry": 257,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 257,
+    "type": "pre_action_verdict",
+    "title": "Pre-action governance verdict — approve_with_concerns (conf 0.91) on a PROPOSED entry: xyz:WDC long $15 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+    "verdict": {
+     "verdict": "approve_with_concerns",
+     "confidence": 0.91,
+     "summary": "The $15 pilot is operationally bounded by the stated isolated-margin and session-loss breakers, but the quoted 3.40 bps spread and n=1 thin-book condition do not establish positive fee-adjusted expectancy or a safe exit under adverse selection. Treat this as an explicitly measured experiment, not evidence that the hole-only gate is durable.",
+     "issues": 5,
+     "high_blockers": 0,
+     "proposed_entries": {
+      "xyz:WDC": "long $15"
+     },
+     "paid": true
+    },
+    "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "proof": {
+     "event_id": "ed685936a89ac299a64dc683eb80f0a7ec68dbc23ac1d85a580a05c461cd6903",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_sha256_in_event": true,
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+    },
+    "judgment_execution": {
+     "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+     "hash_alg": "sha256",
+     "raw_proposal_hash": "21c03b06ce6fdfd8afc0bcee4e8200c1c5f926d6f1789d1fa3c6b5fd1a5173f6",
+     "verdict_ref": {
+      "binding": "nostr-event",
+      "event_id": "ed685936a89ac299a64dc683eb80f0a7ec68dbc23ac1d85a580a05c461cd6903",
+      "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+     },
+     "verdict_timestamp": 1788362315,
+     "executed_action": {
+      "schema": "invinoveritas.executed_action.v1",
+      "proposed_basket": {
+       "xyz:WDC": "long $15"
+      },
+      "heed_on": false,
+      "size_multiplier_applied": 1.0,
+      "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+     },
+     "executed_action_hash": "d1a11aa0a96c95e7f0b874cebf35a4c3358c6c948c7699dcf1625418ec8f8745",
+     "executed_timestamp": null,
+     "ordering": "verdict strictly precedes order placement within the same governance cycle",
+     "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+     "record_pointer": "https://api.babyblueviper.com/ledger/257",
+     "record_pointer_paths": {
+      "commitment": "https://api.babyblueviper.com/ledger/257/commitment",
+      "outcome": "https://api.babyblueviper.com/ledger/257/outcome"
+     }
+    },
+    "ts": 1788362315
+   },
+   "chain": {
+    "prev_head_hash": "ccc09dbd4e1447c217076def1e977d347a8e4a3fe4478f9a629ca555d8d15fa4",
+    "content_hash": "7ab45c8f6e39b3aae63ac1fa49444debd66bea28d111d72358bfd8996e024f20",
+    "head_hash": "d3039785fde0c4e4ac3ff056d007a15a15dface4bbaa96beec8e78aee1afcc88"
+   }
+  },
+  {
+   "entry": 258,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 258,
+    "type": "pre_action_verdict",
+    "title": "Pre-action governance verdict — approve_with_concerns (conf 0.91) on a PROPOSED entry: xyz:WDC short $15 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+    "verdict": {
+     "verdict": "approve_with_concerns",
+     "confidence": 0.91,
+     "summary": "The entry is correctly scoped as an advisory, post-submission record rather than a latency-sensitive live gate, and the $15 pilot limits absolute notional. However, the stated gate establishes neither a fee-adjusted edge nor a bounded-loss exit: a maker-only short can remain open through an adverse move while repeated ALO exit attempts fail to fill.",
+     "issues": 4,
+     "high_blockers": 1,
+     "proposed_entries": {
+      "xyz:WDC": "short $15"
+     },
+     "paid": true
+    },
+    "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "proof": {
+     "event_id": "baf04ea662ee030b320cf0b8f28a8cbf2759d0aae88d1aec19966cdc95c0faa3",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_sha256_in_event": true,
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+    },
+    "judgment_execution": {
+     "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+     "hash_alg": "sha256",
+     "raw_proposal_hash": "d6e7edf8ce21ba6a5e16fd63e15139369f826f5684660ab4001e24dc725a6f1b",
+     "verdict_ref": {
+      "binding": "nostr-event",
+      "event_id": "baf04ea662ee030b320cf0b8f28a8cbf2759d0aae88d1aec19966cdc95c0faa3",
+      "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+     },
+     "verdict_timestamp": 1788362525,
+     "executed_action": {
+      "schema": "invinoveritas.executed_action.v1",
+      "proposed_basket": {
+       "xyz:WDC": "short $15"
+      },
+      "heed_on": false,
+      "size_multiplier_applied": 1.0,
+      "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+     },
+     "executed_action_hash": "4bc711fecac2017e370b9dcf91e29fc599bf3addf373ec21b056466aad87748e",
+     "executed_timestamp": null,
+     "ordering": "verdict strictly precedes order placement within the same governance cycle",
+     "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+     "record_pointer": "https://api.babyblueviper.com/ledger/258",
+     "record_pointer_paths": {
+      "commitment": "https://api.babyblueviper.com/ledger/258/commitment",
+      "outcome": "https://api.babyblueviper.com/ledger/258/outcome"
+     }
+    },
+    "ts": 1788362525
+   },
+   "chain": {
+    "prev_head_hash": "d3039785fde0c4e4ac3ff056d007a15a15dface4bbaa96beec8e78aee1afcc88",
+    "content_hash": "4d6bd09bfa028d62fa6dfbf1392abee5686c98d990d0e6f364208fd453fef8ea",
+    "head_hash": "971300dff682241df484bb12c0c067ef1f6f30ae978074c027b1e8f2dc79f560"
+   }
+  },
+  {
+   "entry": 259,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 259,
+    "type": "pre_action_verdict",
+    "title": "Pre-action governance verdict — approve_with_concerns (conf 0.9) on a PROPOSED entry: xyz:WDC long $15 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+    "verdict": {
+     "verdict": "approve_with_concerns",
+     "confidence": 0.9,
+     "summary": "The $15 opening is bounded in stated notional and satisfies the declared v43 mechanical gate, but the artifact does not establish fee-adjusted expectancy or that maker-only exit behavior preserves the intended MAE loss bound. Because this review occurs after posting, it cannot mitigate those live execution risks.",
+     "issues": 3,
+     "high_blockers": 0,
+     "proposed_entries": {
+      "xyz:WDC": "long $15"
+     },
+     "paid": true
+    },
+    "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "proof": {
+     "event_id": "fb5ab779699e15376eefd67c8e01eba3c6edbfcbf565f11e3a0e75fc4286305a",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_sha256_in_event": true,
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+    },
+    "judgment_execution": {
+     "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+     "hash_alg": "sha256",
+     "raw_proposal_hash": "c702ac70e76fa7279169bbfbf05aa3f66f6225ccfdde11cc6e26abd1004b7ef1",
+     "verdict_ref": {
+      "binding": "nostr-event",
+      "event_id": "fb5ab779699e15376eefd67c8e01eba3c6edbfcbf565f11e3a0e75fc4286305a",
+      "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+     },
+     "verdict_timestamp": 1788362619,
+     "executed_action": {
+      "schema": "invinoveritas.executed_action.v1",
+      "proposed_basket": {
+       "xyz:WDC": "long $15"
+      },
+      "heed_on": false,
+      "size_multiplier_applied": 1.0,
+      "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+     },
+     "executed_action_hash": "d1a11aa0a96c95e7f0b874cebf35a4c3358c6c948c7699dcf1625418ec8f8745",
+     "executed_timestamp": null,
+     "ordering": "verdict strictly precedes order placement within the same governance cycle",
+     "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+     "record_pointer": "https://api.babyblueviper.com/ledger/259",
+     "record_pointer_paths": {
+      "commitment": "https://api.babyblueviper.com/ledger/259/commitment",
+      "outcome": "https://api.babyblueviper.com/ledger/259/outcome"
+     }
+    },
+    "ts": 1788362619
+   },
+   "chain": {
+    "prev_head_hash": "971300dff682241df484bb12c0c067ef1f6f30ae978074c027b1e8f2dc79f560",
+    "content_hash": "7f680e56e43c0c6367532aac35437c9ae9e652b8fb750ac8a839ef0446df0327",
+    "head_hash": "fbff7b2c2f719e27937265673f53be751cf8c9eb272d9dd783166fe10c13d3ba"
+   }
+  },
+  {
+   "entry": 260,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 260,
+    "type": "self_submitted_verdict",
+    "title": "Self-submitted verdict — reject (conf 0.91) on a plan artifact, submitted by root_interactive_mcp",
+    "what": "A signed, artifact-bound /review verdict, submitted by a registered account (root_interactive_mcp) via POST /ledger/submit — self-serve, paid, auto-accepted after cryptographic verification (not editorially hand-picked; see this entry's `type`). The schnorr signature binds the verdict + a hash of the exact reviewed artifact to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in either party required. Submitter's own context: \"Honest continuation-review of our own live BE hole-volgate trail8 Hyperliquid sleeve at 16.43% drawdown -- REJECT 0.91. Flags a real gap: submitted plan omitted live position specifics needed to bound worst-case loss; existing gates throttle new opens but don't circuit-break an already-open position\"",
+    "submitted_by": "root_interactive_mcp",
+    "submission_note": "Honest continuation-review of our own live BE hole-volgate trail8 Hyperliquid sleeve at 16.43% drawdown -- REJECT 0.91. Flags a real gap: submitted plan omitted live position specifics needed to bound worst-case loss; existing gates throttle new opens but don't circuit-break an already-open position. Also verified a same-session platform fix: Sentinel-mode's trading-state injection had been reading a stale retired-earner file; fixed, redeployed, this is the first verdict on corrected live data.",
+    "paid_sats": 200,
+    "verdict": {
+     "artifact_hash": "5d3480df859eb7495986ce23e6594e42c198f17c95525568f2354c75cce787fb",
+     "artifact_type": "plan",
+     "confidence": 0.91,
+     "confidentiality_tier": "full_disclosure",
+     "conformance_suite": "https://github.com/babyblueviper1/preaction-governance-conformance",
+     "context_provenance": "caller_asserted_unverified",
+     "decision_ref": "sha256:0d43088fbe9263340b6c7ccd1d0bf15ecfbbdb2005a0a1b6aafc9a6597d251cc",
+     "decision_ref_preimage_fields": [
+      "artifact_hash",
+      "artifact_type",
+      "policy_version",
+      "verdict",
+      "source_class",
+      "vantage_limitation",
+      "related_decision_ref",
+      "intended_audience",
+      "confidentiality_tier",
+      "disclosed_summary",
+      "intended_verifier",
+      "policy_commitment",
+      "verified_at",
+      "registry_as_of",
+      "registry_snapshot_sha256",
+      "action_binding_tool_hash",
+      "action_binding_args_hash",
+      "action_binding_agent_id",
+      "action_binding_nonce",
+      "freshness_beacon_hash"
+     ],
+     "decision_ref_preimage_rule": "every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.",
+     "engine_generation": 1,
+     "freshness_beacon": {
+      "block_time": 1788469958,
+      "hash": "0000000000000000000015dd9acb79058bbfd4ef48b5bfaf1c676a9137ade9ab",
+      "height": 965373,
+      "source": "bitcoin"
+     },
+     "freshness_beacon_hash": "sha256:02f6e4f3238bfea4b6fc9c0450a122e133aec9c031f91254234725760bc2d975",
+     "full_disclosure_requested": true,
+     "independent_nodes": [
+      "https://invinoveritas-castra.babyblueviper.workers.dev/verify",
+      "https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run"
+     ],
+     "key_id": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "platform": "invinoveritas",
+     "policy_commitment": "sha256:4f09fa9bd2acc638aaed6c833a863c20763fe14a092d5604c2009146415e73aa",
+     "policy_commitment_inputs": {
+      "conformance_suite_commit": "e90948ed3eb9d36eb1d0997ea4d02045e28a405a",
+      "conformance_suite_repo": "babyblueviper1/preaction-governance-conformance",
+      "rubric_doc_path": "docs/policy_spec/invinoveritas.review.v12.md",
+      "rubric_sha256": "bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180"
+     },
+     "policy_version": "invinoveritas.review.v17",
+     "registry_as_of": null,
+     "registry_snapshot_sha256": null,
+     "review_model_hash": "deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669",
+     "review_prompt_template_hash": "13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31",
+     "schema": "invinoveritas.verdict_proof.v1",
+     "source_class": "agent_reported",
+     "summary_hash": "ea2eea6529ace2ce1dbaa4f1b9bfc852268a9142d69d96f99a2e0b1a14c6fb96",
+     "verdict": "reject",
+     "verified_at": 1788470250,
+     "verifier_keys": "https://api.babyblueviper.com/.well-known/verifier-keys.json",
+     "verifier_pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "verify_how": "Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.",
+     "verify_offline": "npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.",
+     "verify_url": "https://api.babyblueviper.com/verify-proof"
+    },
+    "proof": {
+     "event_id": "412458caa2b6f7a9cf65c8c8e161acc8db130164daf02a8c1dc5279efc3c572c",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_hash": "5d3480df859eb7495986ce23e6594e42c198f17c95525568f2354c75cce787fb",
+     "decision_ref": "sha256:0d43088fbe9263340b6c7ccd1d0bf15ecfbbdb2005a0a1b6aafc9a6597d251cc",
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub."
+    },
+    "ts": 1788470325
+   },
+   "chain": {
+    "prev_head_hash": "fbff7b2c2f719e27937265673f53be751cf8c9eb272d9dd783166fe10c13d3ba",
+    "content_hash": "2829d6834c1941193c5b673d830dfcd63b3a1d96dc62582720a4b3627414e229",
+    "head_hash": "b0171e1f95b98667a9aad90e62a37367a714a490626498fc83ddbeab3be85241"
+   }
+  },
+  {
+   "entry": 261,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 261,
+    "type": "pre_action_verdict",
+    "title": "Pre-action governance verdict — approve_with_concerns (conf 0.91) on a PROPOSED entry: xyz:WDC short $15 | advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "what": "A SIGNED, artifact-bound verdict our own live earner paid /review for BEFORE placing this trade. The schnorr signature binds the verdict + a hash of the exact reviewed plan to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in us. The outcome settled on-chain (see the trade-outcome digests + the public Hyperliquid account).",
+    "verdict": {
+     "verdict": "approve_with_concerns",
+     "confidence": 0.91,
+     "summary": "The $15 pre-registered pilot is bounded in stated notional and the ALO/hole gate is mechanically specified, but the artifact does not establish that the 2.48 bps spread produces positive net expectancy or that the maker-only exit has a hard loss-containment path. This is acceptable only as a tightly monitored experiment, not as evidence of a durable live edge.",
+     "issues": 4,
+     "high_blockers": 0,
+     "proposed_entries": {
+      "xyz:WDC": "short $15"
+     },
+     "paid": true
+    },
+    "action_taken": "advisory — proceeded at micro size under ratchet-stop + 30% account-DD breaker governance",
+    "proof": {
+     "event_id": "ef489f02d7d42c567c2adc28c40f5698d7146c40b1193ffaf35288bd0281bd71",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_sha256_in_event": true,
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub; the artifact_hash binds it to the exact plan reviewed."
+    },
+    "judgment_execution": {
+     "spec": "JudgmentExecutionAttestation — ERC-8299 L4 composition (reviewed→executed commitment; origin t/28655 #11)",
+     "hash_alg": "sha256",
+     "raw_proposal_hash": "0c50efab5f3f8b6edd0b4714b653faf7584dace54a1a60895d984bfdfc5a1149",
+     "verdict_ref": {
+      "binding": "nostr-event",
+      "event_id": "ef489f02d7d42c567c2adc28c40f5698d7146c40b1193ffaf35288bd0281bd71",
+      "note": "the signed event content commits to raw_proposal_hash (artifact_hash) — validator signature lives inside the pinned verdict artifact"
+     },
+     "verdict_timestamp": 1788448129,
+     "executed_action": {
+      "schema": "invinoveritas.executed_action.v1",
+      "proposed_basket": {
+       "xyz:WDC": "short $15"
+      },
+      "heed_on": false,
+      "size_multiplier_applied": 1.0,
+      "policy": "verdict conditions (heed policy, disclosed in the signed artifact) applied to the proposed basket"
+     },
+     "executed_action_hash": "4bc711fecac2017e370b9dcf91e29fc599bf3addf373ec21b056466aad87748e",
+     "executed_timestamp": null,
+     "ordering": "verdict strictly precedes order placement within the same governance cycle",
+     "settlement": "fills settle on the public Hyperliquid account; see the trade-outcome ledger digests",
+     "record_pointer": "https://api.babyblueviper.com/ledger/261",
+     "record_pointer_paths": {
+      "commitment": "https://api.babyblueviper.com/ledger/261/commitment",
+      "outcome": "https://api.babyblueviper.com/ledger/261/outcome"
+     }
+    },
+    "ts": 1788448129
+   },
+   "chain": {
+    "prev_head_hash": "b0171e1f95b98667a9aad90e62a37367a714a490626498fc83ddbeab3be85241",
+    "content_hash": "d4215e9af3260d1f6400549d8a9cbbd2c679971c93e65d9d7dcb2fcbb85bd16b",
+    "head_hash": "8e493aad80c3c3cc07caee77476131558e75008730994d35fe88cfdc4c2e3bb0"
+   }
+  },
+  {
+   "entry": 262,
+   "record": {
+    "ledger": "invinoveritas verdict ledger",
+    "entry": 262,
+    "type": "self_submitted_verdict",
+    "title": "Self-submitted verdict — reject (conf 0.99) on a plan artifact, submitted by grok_chief_of_staff",
+    "what": "A signed, artifact-bound /review verdict, submitted by a registered account (grok_chief_of_staff) via POST /ledger/submit — self-serve, paid, auto-accepted after cryptographic verification (not editorially hand-picked; see this entry's `type`). The schnorr signature binds the verdict + a hash of the exact reviewed artifact to our published key — verify it yourself via POST /verify-proof or NIP-01, with no trust in either party required. Submitter's own context: 'a generic pre-action verdict on a proposed derivatives entry'",
+    "submitted_by": "grok_chief_of_staff",
+    "submission_note": "a generic pre-action verdict on a proposed derivatives entry",
+    "paid_sats": 195,
+    "verdict": {
+     "artifact_hash": "b05a5c09ec0bd26a13c87be42bc47820e18e79dffc1acf53375e04b1f0b2b8ee",
+     "artifact_type": "plan",
+     "confidence": 0.99,
+     "conformance_suite": "https://github.com/babyblueviper1/preaction-governance-conformance",
+     "context_provenance": "caller_asserted_unverified",
+     "decision_ref": "sha256:b99683cfcca7a9df4f8555cbf080be50b0f8711f069de33fff9b2eda0802ff42",
+     "decision_ref_preimage_fields": [
+      "artifact_hash",
+      "artifact_type",
+      "policy_version",
+      "verdict",
+      "source_class",
+      "vantage_limitation",
+      "related_decision_ref",
+      "intended_audience",
+      "confidentiality_tier",
+      "disclosed_summary",
+      "intended_verifier",
+      "policy_commitment",
+      "verified_at",
+      "registry_as_of",
+      "registry_snapshot_sha256",
+      "action_binding_tool_hash",
+      "action_binding_args_hash",
+      "action_binding_agent_id",
+      "action_binding_nonce",
+      "freshness_beacon_hash",
+      "epistemic_basis",
+      "external_evidence_hash"
+     ],
+     "decision_ref_preimage_rule": "every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.",
+     "engine_generation": 1,
+     "epistemic_basis": null,
+     "freshness_beacon": {
+      "block_time": 1789519937,
+      "hash": "0000000000000000000167570a813070aaaf198ef7a791303a07d54f5d14d3dc",
+      "height": 967208,
+      "source": "bitcoin"
+     },
+     "freshness_beacon_hash": "sha256:c7ddbf0d464a5c07207ed7ca4a216c7f2351f93aa947512fa78fccc54f6156e5",
+     "independent_nodes": [
+      "https://invinoveritas-castra.babyblueviper.workers.dev/verify",
+      "https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run"
+     ],
+     "key_id": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "platform": "invinoveritas",
+     "policy_commitment": "sha256:f72a2be68b79cda6f4802c426c89c7f9b6a357943a13cf2d52113cca30e540c8",
+     "policy_commitment_inputs": {
+      "conformance_suite_commit": "e90948ed3eb9d36eb1d0997ea4d02045e28a405a",
+      "conformance_suite_repo": "babyblueviper1/preaction-governance-conformance",
+      "rubric_doc_path": "docs/policy_spec/invinoveritas.review.v12.md",
+      "rubric_sha256": "bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180"
+     },
+     "policy_version": "invinoveritas.review.v18",
+     "registry_as_of": null,
+     "registry_snapshot_sha256": null,
+     "review_model_hash": "deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669",
+     "review_prompt_template_hash": "13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31",
+     "schema": "invinoveritas.verdict_proof.v1",
+     "source_class": "agent_reported",
+     "summary_hash": "e1ece09949a31eaf2dfe3662bfecaaa207a9291a36a138a603d59c1512a5eed8",
+     "verdict": "reject",
+     "verified_at": 1789520800,
+     "verifier_keys": "https://api.babyblueviper.com/.well-known/verifier-keys.json",
+     "verifier_pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "verify_how": "Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.",
+     "verify_offline": "npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.",
+     "verify_url": "https://api.babyblueviper.com/verify-proof"
+    },
+    "proof": {
+     "event_id": "2ecff6d0367583fef7d89c9b35148d0cec48eec672fa4ecb53553cd4f4147fc0",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "artifact_hash": "b05a5c09ec0bd26a13c87be42bc47820e18e79dffc1acf53375e04b1f0b2b8ee",
+     "decision_ref": "sha256:b99683cfcca7a9df4f8555cbf080be50b0f8711f069de33fff9b2eda0802ff42",
+     "how_to_verify": "POST /verify-proof with this Nostr event, or run NIP-01 verification against our published npub."
+    },
+    "ts": 1789520827
+   },
+   "chain": {
+    "prev_head_hash": "8e493aad80c3c3cc07caee77476131558e75008730994d35fe88cfdc4c2e3bb0",
+    "content_hash": "da03e67e94a7b08bc69bef7e30d1043a8d9316591cf2dae8f1bebe2b0df78a6d",
+    "head_hash": "ae6d944b63bb89fcc30127592db5b8c0974a03c566d08f8071a9a277329fdac5"
+   }
+  }
+ ]
+}
