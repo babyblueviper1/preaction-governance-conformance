@@ -1,5 +1,23 @@
 # Cold implementation of draft-krausz-verification-state-02 §5.3 / §5.4.1: findings against the text
 
+## Status: moved to -03 (2026-09-25)
+
+`tools/evidence_set_check.py` now implements the -03 text on TKCollective/agentoracle-ietf-id branch
+`dash03-cold-build-resolutions` at `5a71863`, where F1-F12 below are resolved. The -02 implementation these findings were
+written against is at `ecdbeb8`. Changes: every violated condition is reported and compared as a set; a condition whose
+input member failed its own type or form check is not evaluated (a bad `pinned` suppresses the branch and count rules, a
+bad entry `retrieved_at` suppresses `set_retrieved_at_not_bytewise_least` and `duplicate_bound_tuple` for the whole set);
+the (k) order (structural checks of (h) reported alone, unsupported version -> `unknown` with
+`evidence_set_version_unsupported`, (b) only if (a) is clean); `sources_not_array` split out; renamed
+`resource_sha256_present_for_full_resource`; `:60` seconds rejected. The five vectors tabulated in
+`DASH03-COLD-BUILD-RESOLUTIONS.md` (case 1, case 2, three (k) stops) are `Dash03Vectors` in `test_evidence_set.py`;
+28 tests pass.
+
+One reading the -03 text leaves implicit, marked `READING R1` in the code: an unpinned entry whose `snippet_sha256` is
+non-null and not 64 lowercase hex reports `{snippet_sha256_not_lowercase_hex64}` only, not also
+`snippet_sha256_present_when_unpinned`, because the general (a) rule suppresses a condition whose input member failed its
+own form check. A verifier reading "present when unpinned" as a presence check independent of form reports both.
+
 Written from the draft text only (https://www.ietf.org/archive/id/draft-krausz-verification-state-02.txt), with no
 reference code and no explanation outside the draft, per x402-foundation/tsc#4. Implementation:
 `tools/evidence_set_check.py` (stdlib only). Tests: `test_evidence_set.py` (16). Live run: `run_live_ledger.py`.

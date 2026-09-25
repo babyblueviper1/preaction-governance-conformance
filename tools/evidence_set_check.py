@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Cold implementation of draft-krausz-verification-state-02 Section 5.3 (Evidence Pinning) and the
+"""Cold implementation of draft-krausz-verification-state-03 Section 5.3 (Evidence Pinning) and the
 Section 5.4.1 evidence-set resolution step, written from the draft text alone (x402-foundation/tsc#4).
-Stdlib only. Where the text left a choice open, the choice made here is marked `# FINDING Fn` and
-listed in examples/evidence-set-cold/FINDINGS.md -- those are findings against the text, not settled readings.
+Stdlib only. Moved from -02 (tag: ecdbeb8, findings F1-F12 in examples/evidence-set-cold/FINDINGS.md) to the -03 text on
+TKCollective/agentoracle-ietf-id branch dash03-cold-build-resolutions (5a71863): report-all conditions with type-check
+suppression, unsupported version -> unknown, the (k) evaluation order. Readings not fixed by the text: `# READING Rn`.
 
     python3 tools/evidence_set_check.py receipt_payload.json [--content DIR]
         DIR holds candidate content files named by their lowercase sha256 hex OR by any name; every file
@@ -13,6 +14,7 @@ Exit: 0 resolved, 2 unknown, 1 malformed (gate decision = halt). Output: JSON re
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import os
@@ -25,18 +27,11 @@ NODE_PREFIX = b"ao-evidence-node-v1"
 CONTENT_KINDS = ("snippet", "excerpt", "full_resource")
 UNPINNED_REASONS = ("no_content_returned", "provider_metadata_only")
 # 5.3.2: "UTC with the Z designator and exactly three fractional-second digits".
-# FINDING F6: the text fixes the lexical form but not whether the date/time must also be a valid instant
-# (2026-02-30T25:61:00.000Z). We require a valid calendar date and time (seconds 00-60 per RFC 3339 leap second).
+# -03 5.3.2: must also denote a valid instant; seconds 00-59 (":60" not permitted).
 TS_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
 RESOLVED, UNKNOWN, HALT = "resolved", "unknown", "halt"
-
-
-class Malformed(Exception):
-    def __init__(self, condition, detail=""):
-        super().__init__(condition)
-        self.condition, self.detail = condition, detail
 
 
 def _valid_ts(s):
@@ -44,7 +39,7 @@ def _valid_ts(s):
     if not m:
         return False
     y, mo, d, h, mi, se = (int(x) for x in m.groups()[:6])
-    if not (1 <= mo <= 12 and h <= 23 and mi <= 59 and se <= 60):
+    if not (1 <= mo <= 12 and h <= 23 and mi <= 59 and se <= 59):
         return False
     dim = [31, 29 if (y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][mo - 1]
     return 1 <= d <= dim
@@ -82,52 +77,52 @@ def evidence_root(sources):
     return level[0].hex()
 
 
-def _check_entry(e, i):
+def _check_entry(e, i, conds):
+    """5.3.2 for one entry, report-all. Returns the set of members that failed their own type/form check
+    (5.4.1(a): a condition is not evaluated if any member it takes as input failed its own check)."""
+    bad = set()
     if not isinstance(e, dict):
-        raise Malformed("source_entry_not_object", f"sources[{i}]")          # FINDING F1: no named condition
-    # retrieved_at form: "evaluated before any branch on pinned"
+        conds.add("source_entry_not_object")
+        return {"*"}
     if not _valid_ts(e.get("retrieved_at")):
-        raise Malformed("retrieved_at_not_canonical_form", f"sources[{i}]")
-    if not isinstance(e.get("pinned"), bool):
-        raise Malformed("pinned_absent_or_not_boolean", f"sources[{i}]")
-    url = e.get("url")
-    if not isinstance(url, str):
-        raise Malformed("url_absent_or_not_string", f"sources[{i}]")        # FINDING F1
-    # 5.3.3 "No member may contain an octet 0x00" -- FINDING F5: stated as a fact, not a rule with a condition.
-    # A JSON string CAN carry U+0000, so we enforce it as malformed.
+        conds.add("retrieved_at_not_canonical_form"); bad.add("retrieved_at")
+    pinned = e.get("pinned")
+    if not isinstance(pinned, bool):
+        conds.add("pinned_absent_or_not_boolean"); bad.add("pinned")
+    if not isinstance(e.get("url"), str):
+        conds.add("url_absent_or_not_string"); bad.add("url")
     for k in ("url", "snippet_sha256", "content_kind", "retrieved_at"):
         if isinstance(e.get(k), str) and "\x00" in e[k]:
-            raise Malformed("member_contains_nul", f"sources[{i}].{k}")      # FINDING F5
+            conds.add("member_contains_nul")
+    s = e.get("snippet_sha256")
+    if s is not None and not (isinstance(s, str) and HEX64.match(s)):
+        conds.add("snippet_sha256_not_lowercase_hex64"); bad.add("snippet_sha256")
     ck = e.get("content_kind")
     rs = e.get("resource_sha256")
-    # resource_sha256 rule "ranges over every entry regardless of pinned"
-    if ck == "full_resource" and rs is not None:
-        raise Malformed("snippet_digest_present_for_full_resource", f"sources[{i}]")   # FINDING F8 (name)
-    if "snippet_sha256" not in e:
-        # REQUIRED member (string or null). For a pinned entry 5.4.1(b) names the condition.
-        if e["pinned"]:
-            raise Malformed("snippet_sha256_absent_when_pinned", f"sources[{i}]")
-        raise Malformed("snippet_sha256_member_absent", f"sources[{i}]")     # FINDING F1
-    s = e["snippet_sha256"]
-    if e["pinned"]:
-        if s is None:
-            # FINDING F3: 5.4.1(b) gates this check on evidence_root being non-null; we apply it unconditionally.
-            raise Malformed("snippet_sha256_absent_when_pinned", f"sources[{i}]")
-        if not (isinstance(s, str) and HEX64.match(s)):
-            raise Malformed("snippet_sha256_not_lowercase_hex64", f"sources[{i}]")   # FINDING F1
-        if ck not in CONTENT_KINDS:
-            raise Malformed("content_kind_absent_or_invalid_when_pinned", f"sources[{i}]")  # FINDING F1
-    else:
-        if s is not None:
-            # FINDING F4: "or null if not pinned" -- we read a digest on an unpinned entry as malformed (if bytes
-            # were held, the possession rule says it must be pinned).
-            raise Malformed("snippet_sha256_present_when_unpinned", f"sources[{i}]")
-        if ck is not None:
-            raise Malformed("content_kind_present_when_unpinned", f"sources[{i}]")    # FINDING F1
-        if e.get("unpinned_reason") not in UNPINNED_REASONS:
-            raise Malformed("unpinned_reason_absent_or_invalid", f"sources[{i}]")     # FINDING F1 (text: "malformed; halt")
     if rs is not None and not (isinstance(rs, str) and HEX64.match(rs)):
-        raise Malformed("resource_sha256_not_lowercase_hex64", f"sources[{i}]")       # FINDING F1
+        conds.add("resource_sha256_not_lowercase_hex64"); bad.add("resource_sha256")
+    # ranges over every entry regardless of pinned; takes content_kind and resource_sha256 as input
+    if ck == "full_resource" and rs is not None and "resource_sha256" not in bad:
+        conds.add("resource_sha256_present_for_full_resource")
+    if "pinned" in bad:
+        return bad | {"snippet_sha256", "content_kind"}   # every branch rule takes pinned as input
+    if pinned:
+        if s is None:                                     # absent or null
+            conds.add("snippet_sha256_absent_when_pinned"); bad.add("snippet_sha256")
+        if ck not in CONTENT_KINDS:
+            conds.add("content_kind_absent_or_invalid_when_pinned"); bad.add("content_kind")
+    else:
+        if "snippet_sha256" not in e:
+            conds.add("snippet_sha256_member_absent"); bad.add("snippet_sha256")
+        elif s is not None and "snippet_sha256" not in bad:
+            # READING R1: a non-hex non-null value on an unpinned entry reports only its form condition,
+            # per the general (a) rule (the form check of the member this condition takes as input failed).
+            conds.add("snippet_sha256_present_when_unpinned")
+        if ck is not None:
+            conds.add("content_kind_present_when_unpinned")
+        if e.get("unpinned_reason") not in UNPINNED_REASONS:
+            conds.add("unpinned_reason_absent_or_invalid")
+    return bad
 
 
 def _same_retrieval(a, b):
@@ -138,75 +133,92 @@ def _same_retrieval(a, b):
     return True   # "A pinned entry and an unpinned entry sharing url and retrieved_at are ... one retrieval recorded twice"
 
 
+def _int(v):
+    return type(v) is int
+
+
 def validate(es):
-    """5.4.1(a)+(b). Returns derived counts; raises Malformed."""
+    """5.4.1 (h)-structural + (a) + (b), in the (k) order. Returns (conditions:set, derived:dict|None,
+    unsupported:bool). Empty conditions and unsupported False = consistent."""
+    # (k): version-independent structural checks of (h); a failure is reported alone and stops evaluation.
     if not isinstance(es, dict):
-        raise Malformed("evidence_set_not_object")                          # FINDING F1
-    if es.get("evidence_set_version") != VERSION:
-        raise Malformed("evidence_set_version_unrecognized")                 # FINDING F7
+        return {"evidence_set_not_object"}, None, False
+    v = es.get("evidence_set_version")
+    if not isinstance(v, str):
+        return {"evidence_set_version_absent_or_not_string"}, None, False
+    if v != VERSION:
+        return set(), None, True       # (h): unknown, every version-specific rule stops
+    conds = set()
     src = es.get("sources")
-    if not isinstance(src, list) or len(src) == 0:
-        raise Malformed("evidence_set_names_no_sources")                     # FINDING F9 (absent/non-array folded in)
-    for i, e in enumerate(src):
-        _check_entry(e, i)
-    for i in range(len(src)):
-        for j in range(i + 1, len(src)):
-            if _same_retrieval(src[i], src[j]):
-                raise Malformed("duplicate_bound_tuple", f"sources[{i}] and sources[{j}]")
-    n, p = len(src), sum(1 for e in src if e["pinned"])
+    if src is None or src == []:
+        conds.add("evidence_set_names_no_sources")
+    elif not isinstance(src, list):
+        conds.add("sources_not_array")
+    if conds:
+        # (a): no per-entry check and no check against len(sources); the counts, fully_pinned, root presence and
+        # set-level retrieved_at all take sources as input.
+        return conds, None, False
+    bads = [_check_entry(e, i, conds) for i, e in enumerate(src)]
+    n = len(src)
     sc = es.get("source_count", n)
-    pc = es.get("pinned_count", p)
-    if sc != n or type(sc) is not int:
-        raise Malformed("evidence_set_names_no_sources" if sc == 0 else "source_count_mismatch")   # FINDING F2
-    if pc != p or type(pc) is not int:
-        raise Malformed("pinned_count_mismatch")                               # FINDING F2
-    fp = es.get("fully_pinned", p == n and n > 0)
-    if fp is not (p == n and n > 0):
-        raise Malformed("fully_pinned_mismatch")                               # FINDING F2
-    least = min((_b(e["retrieved_at"]) for e in src))
-    if "retrieved_at" in es:
-        if not isinstance(es["retrieved_at"], str) or _b(es["retrieved_at"]) != least:
-            raise Malformed("set_retrieved_at_not_bytewise_least")
-    else:
-        pass   # FINDING F10: retrieved_at has no stated fallback when absent (the counts do); we derive it.
-    root = es.get("evidence_root", None)
+    if not _int(sc) or sc != n:
+        conds.add("source_count_mismatch")
+    pinned_ok = all("pinned" not in b and "*" not in b for b in bads)
+    p = sum(1 for e in src if isinstance(e, dict) and e.get("pinned") is True) if pinned_ok else None
+    if pinned_ok:
+        pc = es.get("pinned_count", p)
+        if not _int(pc) or pc != p:
+            conds.add("pinned_count_mismatch")
+        fp = es.get("fully_pinned", p == n and n > 0)
+        if fp is not (p == n and n > 0):
+            conds.add("fully_pinned_mismatch")
+        root = es.get("evidence_root", None)
+        if p == 0 and root is not None:
+            conds.add("evidence_root_present_with_no_pinned_items")
+        if p > 0 and root is None:
+            conds.add("evidence_root_absent_with_pinned_items")
+    ts_ok = all("retrieved_at" not in b and "*" not in b for b in bads)
+    if ts_ok:   # whole-check suppression: one malformed retrieved_at suppresses both set-wide rules
+        least = min(_b(e["retrieved_at"]) for e in src)
+        if "retrieved_at" in es and (not isinstance(es["retrieved_at"], str) or _b(es["retrieved_at"]) != least):
+            conds.add("set_retrieved_at_not_bytewise_least")
+        # (absent set-level retrieved_at: derived as the bytewise-least, 5.3.1 fallback)
+        dup_in = {"url", "pinned", "snippet_sha256", "content_kind", "*"}
+        ok = [i for i, b in enumerate(bads) if not (b & dup_in)]
+        for x in range(len(ok)):
+            for y in range(x + 1, len(ok)):
+                if _same_retrieval(src[ok[x]], src[ok[y]]):
+                    conds.add("duplicate_bound_tuple")
+    if conds:
+        return conds, None, False
+    # (b), only if (a) reported none
     want = evidence_root(src)
-    if p == 0:
-        if root is not None:
-            raise Malformed("evidence_root_present_with_no_pinned_items")     # FINDING F2
-    else:
-        if root is None:
-            raise Malformed("evidence_root_absent_with_pinned_items")         # FINDING F2 / F3
-        if root != want:
-            raise Malformed("root_not_recomputable_from_sources")
-    return {"source_count": n, "pinned_count": p, "fully_pinned": p == n and n > 0, "evidence_root": want}
+    if es.get("evidence_root") is not None and es["evidence_root"] != want:
+        return {"root_not_recomputable_from_sources"}, None, False
+    return set(), {"source_count": n, "pinned_count": p, "fully_pinned": p == n and n > 0, "evidence_root": want}, False
 
 
 def resolve(payload, held=None):
-    """The evidence-set step. held: dict sha256hex -> True for candidate content the verifier holds, plus
-    optional 'by_url': {url: sha256hex} for content held for a URL whose digest differs.
-    Returns (token, report). token in {resolved, unknown} or HALT for malformed."""
+    """The evidence-set step. held: {'hashes': set of sha256 hex held, 'by_url': {url: sha256hex}}.
+    Returns (token, report); token in {resolved, unknown} or HALT (malformed)."""
     held = held or {}
     if "evidence_set" not in payload:
         return UNKNOWN, {"step": "evidence_set", "resolution": UNKNOWN, "why": "no evidence_set (5.4.1 e); not a failure"}
-    try:
-        d = validate(payload["evidence_set"])
-    except Malformed as m:
-        return HALT, {"step": "evidence_set", "resolution": HALT, "gate": "halt", "condition": m.condition, "detail": m.detail}
+    conds, d, unsupported = validate(payload["evidence_set"])
+    if conds:
+        return HALT, {"step": "evidence_set", "resolution": HALT, "gate": "halt", "conditions": sorted(conds)}
+    if unsupported:
+        return UNKNOWN, {"step": "evidence_set", "resolution": UNKNOWN, "reason": "evidence_set_version_unsupported"}
     by_hash, by_url = held.get("hashes", set()), held.get("by_url", {})
     items, all_match = [], True
     for e in payload["evidence_set"]["sources"]:
-        if not e["pinned"]:
-            items.append({"url": e["url"], "reason": "content_not_held"}); all_match = False; continue
-        if e["snippet_sha256"] in by_hash:
-            items.append({"url": e["url"], "reason": "content_matches"})     # FINDING F11: no token named for a match
-        elif e["url"] in by_url:
+        if e["pinned"] and e["snippet_sha256"] in by_hash:
+            items.append({"url": e["url"], "reason": "content_matches"})
+        elif e["pinned"] and e["url"] in by_url:
             items.append({"url": e["url"], "reason": "content_differs"}); all_match = False
         else:
             items.append({"url": e["url"], "reason": "content_not_held"}); all_match = False
-    # FINDING F12: "resolved" is defined only as "the step's evidence requirements are met". We resolve only when
-    # the set is fully pinned, the root recomputes, AND the verifier held matching bytes for every item -- i.e.
-    # offline recomputation was actually performed. A fully pinned set whose content we do not hold is unknown.
+    # (i): resolved only when fully pinned, root recomputes, and every item content_matches (conjunction)
     token = RESOLVED if d["fully_pinned"] and all_match else UNKNOWN
     rep = {"step": "evidence_set", "resolution": token, **d, "items": items,
            "offline_recomputation": "performed" if token == RESOLVED else "not established"}
@@ -217,12 +229,15 @@ def resolve(payload, held=None):
 
 def build(entries):
     """Issuer side: finished source entries -> evidence_set (counts, set retrieved_at, root)."""
+    entries = copy.deepcopy(entries)
     es = {"evidence_set_version": VERSION,
           "retrieved_at": min(entries, key=lambda e: _b(e["retrieved_at"]))["retrieved_at"],
           "source_count": len(entries), "pinned_count": sum(1 for e in entries if e["pinned"]),
           "fully_pinned": all(e["pinned"] for e in entries) and len(entries) > 0,
           "evidence_root": evidence_root(entries), "sources": entries}
-    validate(es)
+    conds, _, _ = validate(es)
+    if conds:
+        raise ValueError(f"build produced a malformed evidence_set: {sorted(conds)}")
     return es
 
 
