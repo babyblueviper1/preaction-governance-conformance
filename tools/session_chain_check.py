@@ -14,7 +14,10 @@ Result (exit code): PASS (0) / FAIL (1) / CANNOT_ESTABLISH (2).
   CANNOT_ESTABLISH  the log is internally consistent but no external head was supplied, so truncation of the tail
                     is undetectable. Never reported as PASS.
   PASS              internally consistent AND every supplied external head is matched by the log at that entry.
-                    Scope: complete up to the newest external head supplied -- not beyond it.
+                    Scope has TWO bounds. Upper: complete up to the newest external head supplied -- not beyond it.
+                    Lower: the segment's first prev_head_hash is taken as given, so nothing before the first entry is
+                    established -- unless an external head for (first entry - 1) is supplied and equals it, which
+                    anchors the lower bound too (a mismatch there is FAIL: the segment does not attach to that history).
 
     python3 tools/session_chain_check.py chain.json [external_heads.json]
 """
@@ -50,22 +53,32 @@ def check(entries, external_heads=None):
     if why:
         return FAIL, why
     by_entry = {e["entry"]: e["chain"]["head_hash"] for e in entries}
-    last = entries[-1]["entry"]
+    first, last = entries[0]["entry"], entries[-1]["entry"]
+    seg_prev = entries[0]["chain"]["prev_head_hash"]
+    lower_anchored = False
     for h in external_heads:
         n, hh = h["entry"], h["head_hash"]
         if n > last:
             why.append(f"external head for entry {n} exists but the log ends at {last} (truncated)")
         elif n in by_entry and by_entry[n] != hh:
             why.append(f"external head for entry {n} differs from the log's head (equivocation)")
+        elif n == first - 1:
+            if hh == seg_prev:
+                lower_anchored = True
+            else:
+                why.append(f"external head for entry {n} differs from entry {first}'s prev_head_hash (segment does not attach: equivocation)")
         elif n not in by_entry:
-            why.append(f"external head for entry {n} precedes this log segment (cannot compare)")
+            why.append(f"external head for entry {n} precedes this log segment by more than one entry (cannot compare)")
     if any("truncated" in w or "equivocation" in w for w in why):
         return FAIL, why
     comparable = [h for h in external_heads if h["entry"] in by_entry]
     if not comparable:
         return CANNOT, why + ["internally consistent, but no comparable external head: removal of the tail is undetectable"]
     newest = max(h["entry"] for h in comparable)
-    return PASS, why + [f"consistent, and complete up to entry {newest} (the newest external head supplied); nothing is established beyond it"]
+    lower = (f"from entry {first} (its prev_head_hash matches the external head for {first - 1}, so the segment attaches to that history)"
+             if lower_anchored else
+             f"from entry {first} (its prev_head_hash {seg_prev[:8]}... is taken as given; nothing before {first} is established)")
+    return PASS, why + [f"consistent, and complete {lower} up to entry {newest} (the newest external head supplied); nothing is established beyond it"]
 
 
 def main(a):

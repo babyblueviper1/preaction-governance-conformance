@@ -65,12 +65,25 @@ V = [  # (id, entries, external heads, expected, why)
      "the same rewrite against a head for 262 someone kept: the log now ends at 261"),
     ("writer_full_rewrite_with_held_head_261", full_rewrite(), [head(261)], S.FAIL,
      "or a held head for 261: same entry number, different head (equivocation)"),
+    # lower bound (TKCollective, autogen#7353 2026-09-25): a segment's first prev_head_hash is taken as given unless an
+    # external head for (first - 1) is held. The real head for 254 (api.babyblueviper.com/ledger/254) anchors it.
+    ("lower_anchor_254_matches", E(*range(255, 263)), [{"entry": 254, "head_hash": "83e2078d0a43effcf06f69402def4eeda5a985a7bd310971c80db084dec6f56a"}, head(262)], S.PASS,
+     "complete FROM 255 (attached to the real 254 head) up to 262"),
+    ("lower_anchor_254_mismatch", E(*range(255, 263)), [{"entry": 254, "head_hash": "11" * 32}, head(262)], S.FAIL,
+     "the segment does not attach to the history whose 254 head someone holds"),
+    ("lower_anchor_only", E(*range(255, 263)), [{"entry": 254, "head_hash": "83e2078d0a43effcf06f69402def4eeda5a985a7bd310971c80db084dec6f56a"}], S.CANNOT,
+     "a lower anchor alone says nothing about the tail: still CANNOT_ESTABLISH"),
 ]
 
 bad = 0
+SCOPE = {  # PASS results must state BOTH bounds
+    "base_with_head": ("from entry 255", "nothing before 255 is established", "up to entry 262"),
+    "truncate_with_older_head": ("from entry 255", "nothing before 255 is established", "up to entry 258"),
+    "lower_anchor_254_matches": ("from entry 255", "attaches to that history", "up to entry 262"),
+}
 for vid, ents, heads, want, why in V:
     got, reasons = S.check(ents, heads)
-    ok = got == want
+    ok = got == want and all(any(p in r for r in reasons) for p in SCOPE.get(vid, ()))
     bad += not ok
     print(f"{'ok  ' if ok else 'FAIL'} {vid:40s} {got:17s} expect {want:17s} | {why}")
     if not ok:

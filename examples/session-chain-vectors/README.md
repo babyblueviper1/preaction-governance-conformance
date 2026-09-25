@@ -24,3 +24,12 @@ equivocation. Truncation of the tail with no external head must return **CANNOT_
 Of the 14 vectors, the full-rewrite ones carry the argument. When the writer controls the log, internal checks establish
 nothing about completeness, and only a head someone else kept does. What the external channel buys is exactly that
 head, and only for whoever retained it.
+
+## Lower bound (added 2026-09-25, from TKCollective's recompute on autogen#7353)
+
+A PASS states both bounds. The segment's first `prev_head_hash` is taken as given, so nothing before the first entry is
+established, unless an external head for `first - 1` is supplied and equals it. That anchors the lower bound
+(a mismatch is FAIL: the segment does not attach to that history). The anchored vector uses the real head for entry 254
+(`83e2078d...`, served by `api.babyblueviper.com/ledger/254`). A lower anchor alone still gives CANNOT_ESTABLISH,
+because it says nothing about the tail. 17 vectors in total. Every PASS vector also asserts that its scope line names
+both bounds.
