@@ -35,6 +35,7 @@ MATCHED, MISMATCHED = load("outer_matched.json"), load("outer_mismatched.json")
 MISSING, UNVERIF, NOTSUP = load("outer_missing_proof.json"), load("outer_unverifiable_proof.json"), load("outer_not_supplied.json")
 CLAIMS = load("outer_matched_claims.json")
 BAD_CLAIMS = load("outer_mismatched_claims.json")
+V21_TRADE = load("v21_trade_irreversible.json")   # real signed v21 proof, artifact_type=trade (synthetic proposal, live /review, 2026-09-25)
 
 
 def statuses(res):
@@ -246,6 +247,22 @@ class VantageNegatives(unittest.TestCase):
             kw = dict(policy_version="invinoveritas.review.v21", source_class="independent_mediator")
             self.assertIn(vl.FAIL, {s for s, _, _ in vl.check(self._stub(vantage_limitation=old, **kw))})
             self.assertEqual({s for s, _, _ in vl.check(self._stub(vantage_limitation=new, **kw))}, {vl.PASS})
+
+    def test_signed_v21_irreversible_fixture_passes_end_to_end(self):
+        # trace-spec#397's outstanding item: a REAL signed v21 proof of an irreversible class, no stubs.
+        p = payload(V21_TRADE)
+        self.assertEqual((p["policy_version"], p["artifact_type"]), ("invinoveritas.review.v21", "trade"))
+        self.assertEqual(p["vantage_limitation"], vl.TABLE["policies"]["invinoveritas.review.v21"][p["source_class"]])
+        self.assertEqual({s for s, _, _ in vl.check(V21_TRADE)}, {vl.PASS})
+
+    def test_signed_v21_irreversible_fixture_edited_after_signing_fails(self):
+        # stripping or swapping the note on the real event breaks id/signature: no stubs, the edit alone must FAIL
+        for note in (None, vl.TABLE["policies"]["invinoveritas.review.v20"]["agent_reported"]):
+            ev = copy.deepcopy(V21_TRADE)
+            p = payload(ev)
+            p["vantage_limitation"] = note
+            ev["content"] = json.dumps(p, sort_keys=True, separators=(",", ":"))
+            self.assertIn(vl.FAIL, {s for s, _, _ in vl.check(ev)})
 
     def test_unknown_policy_version_cannot_be_checked_for_exact_wording(self):
         with mock.patch.object(vl, "verify_proof", stub_valid(vl.verify_proof)):
