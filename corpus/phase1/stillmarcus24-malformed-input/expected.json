@@ -1,0 +1,152 @@
+{
+ "env_not_object_string": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "env_not_object_int": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "env_null": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "env_empty_object": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "signatures_string": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "signatures_int": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "signatures_list_of_nondict": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "signatures_dict_not_list": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "payload_not_string_int": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "payload_null": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "payload_object": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "missing_payload": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "missing_signatures": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "signatures_empty_list": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ },
+ "jws_not_object": {
+  "must_return_one_of": [
+   "indeterminate",
+   "invalid",
+   "not_evaluated",
+   "valid"
+  ],
+  "must_not_raise": true,
+  "rationale": "malformed input is still input; a verifier that raises has opted out of the four-state vocabulary (draft \u00a73.1)"
+ }
+}
