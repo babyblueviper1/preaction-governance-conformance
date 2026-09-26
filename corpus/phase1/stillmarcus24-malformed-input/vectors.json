@@ -1,0 +1,61 @@
+{
+ "env_not_object_string": "not-an-envelope",
+ "env_not_object_int": 12345,
+ "env_null": null,
+ "env_empty_object": {},
+ "signatures_string": {
+  "payload": "e30",
+  "signatures": "nope"
+ },
+ "signatures_int": {
+  "payload": "e30",
+  "signatures": 7
+ },
+ "signatures_list_of_nondict": {
+  "payload": "e30",
+  "signatures": [
+   "x",
+   3
+  ]
+ },
+ "signatures_dict_not_list": {
+  "payload": "e30",
+  "signatures": {
+   "a": 1
+  }
+ },
+ "payload_not_string_int": {
+  "payload": 123,
+  "signatures": []
+ },
+ "payload_null": {
+  "payload": null,
+  "signatures": []
+ },
+ "payload_object": {
+  "payload": {
+   "k": "v"
+  },
+  "signatures": []
+ },
+ "missing_payload": {
+  "signatures": []
+ },
+ "missing_signatures": {
+  "payload": "e30"
+ },
+ "signatures_empty_list": {
+  "payload": "e30",
+  "signatures": []
+ },
+ "jws_not_object": {
+  "payload": "e30",
+  "jws": "str",
+  "signatures": [
+   {
+    "protected": "e30",
+    "signature": "x"
+   }
+  ]
+ }
+}

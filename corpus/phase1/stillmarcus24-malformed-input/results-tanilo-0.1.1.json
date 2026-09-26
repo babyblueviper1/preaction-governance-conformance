@@ -1,0 +1,98 @@
+{
+ "implementation": "tanilo-receipt-verify==0.1.1",
+ "note": "as-run, not edited to match; failures would be reported",
+ "conforming": 15,
+ "total": 15,
+ "results": {
+  "env_not_object_string": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "env_not_object_int": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "env_null": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "env_empty_object": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "signatures_string": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "signatures_int": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "signatures_list_of_nondict": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "signatures_dict_not_list": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "payload_not_string_int": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "payload_null": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "payload_object": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "missing_payload": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "missing_signatures": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "signatures_empty_list": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  },
+  "jws_not_object": {
+   "outcome": "returned",
+   "status": "invalid",
+   "indeterminate_reason": null,
+   "raised": false
+  }
+ }
+}
