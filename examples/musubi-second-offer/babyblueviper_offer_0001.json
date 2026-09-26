@@ -1,0 +1,50 @@
+{
+ "beacon": {
+  "hash": "00000000000000000001854f11c4d247dba6f61a9e9742a225c78ab328220ff0",
+  "height": 968650
+ },
+ "body": {
+  "evidence": [
+   {
+    "n": 55,
+    "sha256": "b0d86bcd07ce61a3adb60ef3731274a78bc6a3439a2092e90a13594f86378bcc",
+    "type": "ledger_entry"
+   },
+   {
+    "domain": "api.babyblueviper.com",
+    "extract": "/role",
+    "key_url": "https://api.babyblueviper.com/keys/agreement.json",
+    "sig": "ydVAWNRDSlUV3g9c/CkENOKKww0T4BVXvUiAoRHvH44CRh4nWWuX7U+D0ay1uqc9Xzv7VOyai3tlm1DIlcG7Cg==",
+    "statement": {
+     "agent_card": "https://api.babyblueviper.com/.well-known/agent-card.json",
+     "contractor_of": "e15c0188cea4fd281281a0302e6308b722b4989857bb029e8a581776a46ec001",
+     "role": "witness"
+    },
+    "type": "signed_statement"
+   }
+  ],
+  "terms": {
+   "data_access": "public_endpoint",
+   "expiry_height": 980000,
+   "max_hops": 1,
+   "payment_jpy": 0,
+   "scope": "witness_walk"
+  }
+ },
+ "from": {
+  "domain": "api.babyblueviper.com",
+  "key_url": "https://api.babyblueviper.com/keys/agreement.json"
+ },
+ "offer_id": "babyblueviper-offer-0001",
+ "schema": "a2a-offer-v0",
+ "signatures": [
+  {
+   "alg": "ed25519",
+   "domain": "api.babyblueviper.com",
+   "sig": "9ygcVV89BMNyuwvNPDeXRzhtyp9j+1aQe65bzzCUmi63azY8kidT7zkwwqR7SySqVtVNwg4YI45s3wS+3xR9AQ=="
+  }
+ ],
+ "to": {
+  "domain": "horizonshield.dev"
+ }
+}
