@@ -15,3 +15,6 @@ raises has silently opted out of the vocabulary it implements (draft-krausz-veri
 - `build_set.py` — regenerates all three files by running the reference verifier. Recompute it yourself.
 
 CC0 1.0. Contributed to x402-foundation/tsc#4 Phase 1.
+
+## Rebuild
+Run from `corpus/phase1/` (the script resolves `stillmarcus24-malformed-input/...` relative to it): `cd corpus/phase1 && python stillmarcus24-malformed-input/build_set.py` with `tanilo-receipt-verify==0.1.1` installed. Independently rebuilt byte-identical by TKCollective (tsc#4 5843190019) and by the repo maintainer before merge.
