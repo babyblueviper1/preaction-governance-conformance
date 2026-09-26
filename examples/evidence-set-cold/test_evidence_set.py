@@ -196,6 +196,16 @@ class Dash03Rules(unittest.TestCase):
         e = dict(U("https://d.example/"), snippet_sha256=h(b"x"), content_kind="snippet")
         self.assertEqual(halt(es1([e])), {"snippet_sha256_present_when_unpinned", "content_kind_present_when_unpinned"})
 
+    def test_unpinned_nonhex_digest_reports_both_presence_and_form(self):
+        # -03: presence rule evaluated regardless of the digest's form (tsc#4 5842824265, the vector credited there)
+        e = dict(U("https://d.example/"), snippet_sha256="XYZ")
+        self.assertEqual(halt(es1([e])), {"snippet_sha256_not_lowercase_hex64", "snippet_sha256_present_when_unpinned"})
+
+    def test_member_contains_nul_suppresses_nothing(self):
+        # -03: a content rule, reported alongside the member's other conditions
+        e = dict(U("https://d.example/\x00x"), snippet_sha256=None)
+        self.assertEqual(halt(es1([e])), {"member_contains_nul"})
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)

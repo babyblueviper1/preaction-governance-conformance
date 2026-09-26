@@ -13,7 +13,7 @@ the (k) order (structural checks of (h) reported alone, unsupported version -> `
 `DASH03-COLD-BUILD-RESOLUTIONS.md` (case 1, case 2, three (k) stops) are `Dash03Vectors` in `test_evidence_set.py`;
 28 tests pass.
 
-One reading the -03 text leaves implicit, marked `READING R1` in the code: an unpinned entry whose `snippet_sha256` is
+RESOLVED by TK on tsc#4 (5842824265), and the checker follows it: `_present_when_`/`_absent_when_` rules are presence checks, evaluated whatever the member's form, so the case below reports BOTH conditions; `member_contains_nul` is a content rule that suppresses nothing. Original note: an unpinned entry whose `snippet_sha256` is
 non-null and not 64 lowercase hex reports `{snippet_sha256_not_lowercase_hex64}` only, not also
 `snippet_sha256_present_when_unpinned`, because the general (a) rule suppresses a condition whose input member failed its
 own form check. A verifier reading "present when unpinned" as a presence check independent of form reports both.

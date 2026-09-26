@@ -114,9 +114,10 @@ def _check_entry(e, i, conds):
     else:
         if "snippet_sha256" not in e:
             conds.add("snippet_sha256_member_absent"); bad.add("snippet_sha256")
-        elif s is not None and "snippet_sha256" not in bad:
-            # READING R1: a non-hex non-null value on an unpinned entry reports only its form condition,
-            # per the general (a) rule (the form check of the member this condition takes as input failed).
+        elif s is not None:
+            # -03 (TK, tsc#4 5842824265): _present_when_/_absent_when_ rules are PRESENCE checks -- evaluated whatever the tested
+            # member's form (a malformed pinned still suppresses them, above). So a non-hex digest on an unpinned entry reports
+            # BOTH snippet_sha256_not_lowercase_hex64 and snippet_sha256_present_when_unpinned. (Was READING R1 -- superseded.)
             conds.add("snippet_sha256_present_when_unpinned")
         if ck is not None:
             conds.add("content_kind_present_when_unpinned")
