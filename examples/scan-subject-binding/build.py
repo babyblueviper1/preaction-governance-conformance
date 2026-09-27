@@ -54,16 +54,24 @@ def answer(ret):
     import re
     m = re.search(r"is (\d+) USD", ret[0]["content"]); return m.group(1) + " USD"
 
-def decision(docs):
-    ret = retrieve(docs, QUERY)
+def decision(docs, k=1):
+    ret = retrieve(docs, QUERY, k)
     ls = sorted_leaves(docs)
     proofs = [{"doc_id": d["id"], "leaf": leaf(d).hex(), "index": ls.index(leaf(d)), "tree_size": len(ls),
                "path": [p.hex() for p in path(ls, ls.index(leaf(d)))]} for d in ret]
-    return {"query": QUERY, "retrieved": ret, "effective_dataset_digest": root(ret), "corpus_root": root(docs),
+    return {"query": QUERY, "k": k, "retrieved": ret, "effective_dataset_digest": root(ret), "corpus_root": root(docs),
             "inclusion_proofs": proofs, "answer": answer(ret)}
 
-def scan(subject_root, with_subject):
-    s = {"scanner_version": "toy-scan/0.1.0", "scanned_at": "2026-09-26T07:00:00Z", "result": "clean"}
+# Two scanners. "opaque-scan/1.0" is a report the checker cannot rerun (its evidence grade tops out at
+# AUTHENTICATED_REPORT). "toy-scan/0.1.0" is deterministic and published below, so a checker can rerun it over
+# the named subject (grade REPRODUCED) -- including disagreeing with a signed "clean".
+# semantics: "recordwise" = a finding in any record is a finding in any set containing it (hereditary), which is
+# what lets NO_FINDING over a corpus transfer to a consumed subset proven inside it. "corpus_statistical" does not.
+TOY_PATTERN = "no approver needed"
+def toy_scan(docs): return [d["id"] for d in docs if TOY_PATTERN in d["content"].lower()]
+
+def scan(subject_root, with_subject, scanner="opaque-scan/1.0", semantics="recordwise", result="clean"):
+    s = {"scanner_version": scanner, "scanned_at": "2026-09-26T07:00:00Z", "result": result, "semantics": semantics}
     if with_subject: s["subject_digest"] = subject_root
     return s
 
@@ -71,7 +79,7 @@ def manifest(docs, s):
     body = {"rag_corpus": {"corpus_id": "demo", "merkle_root": root(docs), "document_count": len(docs), "poisoning_scan": s}}
     return {"body": body, "sig": sign(body)}
 
-dA, dB = decision(A), decision(B)
+dA, dB, dB2 = decision(A), decision(B), decision(B, k=2)
 cases = {
   "c0_answer_flips_while_all_bindings_valid": {"corpus_A": A, "corpus_B": B, "manifest_A": manifest(A, scan(root(A), False)),
       "manifest_B": manifest(B, scan(root(B), False)), "decision_A": dA, "decision_B": dB,
@@ -83,14 +91,26 @@ cases = {
   "c1b_scan_of_A_presented_with_B_bound": {"corpus": B, "manifest": manifest(B, scan(root(A), True)), "decision": dB,
       "expect": {"result_only_check": "VALID", "subject_bound_check": "CANNOT_ESTABLISH", "reason": "subject_digest != corpus_root consumed"}},
   "c2_scan_bound_to_consumed_effective_dataset": {"corpus": A, "manifest": manifest(A, scan(dA["effective_dataset_digest"], True)), "decision": dA,
-      "expect": {"subject_bound_check": "NO_FINDING", "recompute": "exact", "note": "NO_FINDING = this scanner found nothing in this subject; not POISONING_ABSENT"}},
+      "expect": {"subject_bound_check": "NO_FINDING", "evidence_grade": "AUTHENTICATED_REPORT", "recompute": "exact", "note": "NO_FINDING = this scanner reported nothing in this subject; not POISONING_ABSENT"}},
   "c3_scan_bound_to_root_subset_with_proofs": {"corpus": A, "manifest": manifest(A, scan(root(A), True)), "decision": dA,
-      "expect": {"subject_bound_check": "NO_FINDING", "reason": "every consumed leaf has an inclusion proof to the scanned root"}},
+      "expect": {"subject_bound_check": "NO_FINDING", "evidence_grade": "AUTHENTICATED_REPORT", "reason": "every consumed leaf has an inclusion proof to the scanned root and the scanner declares recordwise semantics"}},
   "c3b_scan_bound_to_root_subset_no_proofs": {"corpus": A, "manifest": manifest(A, scan(root(A), True)),
       "decision": {**dA, "inclusion_proofs": []},
       "expect": {"subject_bound_check": "CANNOT_ESTABLISH", "reason": "consumed subset not shown to be inside the scanned root"}},
+  # (2) same bytes as c3, but the scanner declares corpus-level semantics: NO_FINDING over the corpus says nothing about a subset.
+  "c3c_scan_bound_to_root_subset_not_hereditary": {"corpus": A, "manifest": manifest(A, scan(root(A), True, semantics="corpus_statistical")), "decision": dA,
+      "expect": {"subject_bound_check": "CANNOT_ESTABLISH", "reason": "corpus->subset transfer needs recordwise (hereditary) scanner semantics"}},
+  # (1) reproducible scanner: the checker reruns it over the subject instead of trusting the signed result.
+  "c4_reproduced_clean": {"corpus": A, "manifest": manifest(A, scan(dA["effective_dataset_digest"], True, scanner="toy-scan/0.1.0")), "decision": dA,
+      "expect": {"subject_bound_check": "NO_FINDING", "evidence_grade": "REPRODUCED"}},
+  "c4b_reproduced_contradicts_signed_clean": {"corpus": B, "manifest": manifest(B, scan(dB["effective_dataset_digest"], True, scanner="toy-scan/0.1.0")), "decision": dB,
+      "expect": {"result_only_check": "VALID", "subject_bound_check": "CONTRADICTED", "evidence_grade": "REPRODUCED",
+                 "reason": "the signed result says clean; rerunning the published scanner over the bound subject finds policy-001b"}},
+  # (3) k=2: effective_dataset_digest = root(retrieved) sorts leaves, so it loses retrieval order. Frozen to k=1.
+  "c5_k2_unordered_effective_digest": {"corpus": B, "manifest": manifest(B, scan(dB2["effective_dataset_digest"], True)), "decision": dB2,
+      "expect": {"subject_bound_check": "CANNOT_ESTABLISH", "reason": "effective_dataset_digest is unordered; this profile is frozen to k=1 (k>1 needs an ordered digest)"}},
 }
-out = {"schema": "scan-subject-binding-vectors-v0", "test_public_key_ed25519": PUB, "sig_domain": "scan-subject-binding-v0\\n",
+out = {"schema": "scan-subject-binding-vectors-v1", "toy_scan": {"scanner_version": "toy-scan/0.1.0", "rule": "finding iff content (lowercased) contains the pattern", "pattern": TOY_PATTERN}, "test_public_key_ed25519": PUB, "sig_domain": "scan-subject-binding-v0\\n",
        "merkle": "Agent Manifest v0.2 s3.2.5.1 (agentrust-io/agent-manifest@0a2513df6c84d1c35599c9f7b8bdf976f11746bf)", "cases": cases}
 open("vectors.json", "w").write(json.dumps(out, indent=1, sort_keys=True) + "\n")
 print("wrote vectors.json", len(cases), "cases; A answer", dA["answer"], "B answer", dB["answer"])
