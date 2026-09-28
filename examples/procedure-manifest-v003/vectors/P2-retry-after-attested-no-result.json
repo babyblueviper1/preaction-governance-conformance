@@ -1,0 +1,103 @@
+{
+ "claims": [
+  {
+   "accepted_at": 2000,
+   "attempt_id": "e2062f70f68199f92422c59593f724c38425a86976d46fc3b3da50be1505fc49",
+   "attestation": "38a1e3e759ef3ff2e29f96dd677c27f576f193ac9592a7f9fdba9cdd0bd3ee382a7cf367f8fb12ed2cd56778e1e9449819ec3843d5f55cf247c08378e1e16a68",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "839974d3dad916b58953f06431271fd912cfd9b2cc54403447295018a0d2cc11"
+  },
+  {
+   "accepted_at": 2100,
+   "attempt_id": "63fd4a5f85cb37ce49e35fc9c956134955581327daae28a3ef192b8b08600b95",
+   "attestation": "7d2ba030d50adfb4cba74639450e3c90f5fb4c07bc2b3dff33cca0e7e3b73a1fde6561937a85416fa364db7d4e6ec0fafc2fbf38d07294965420e7427d768c62",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "839974d3dad916b58953f06431271fd912cfd9b2cc54403447295018a0d2cc11"
+  }
+ ],
+ "description": "Attempt 0 is provider-attested NO_RESULT, so attempt 1 is authorized (section 5, C20).",
+ "dispute_id": "81714acc8262e0d52370a9ed6113c775b35fc91307d373e3bcc2a789445ef51f",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": true,
+  "run_verdict": "RESULT",
+  "state": "TERMINAL_RESULT",
+  "terms": {
+   "authorized_execution": "true",
+   "exact_request_binding": "true",
+   "sufficient_scope": "true",
+   "unique_terminal_execution": "true"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "NO_RESULT"
+    ],
+    "max_attempts": 2
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1",
+    "scope_predicate": "covers_all"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "P2-retry-after-attested-no-result",
+ "submission_commitments": [],
+ "terminals": [
+  {
+   "attestation": "1df18ec9ca90b619e180e90cb3867b43e56c7eedc07abb366aab05f3fa2a5bc795e75acc7b3c3b93ae9e7ddb9ef1b2c583adfe7e181723ea5c0a0487cd51f70d",
+   "claim_receipt_hash": "d5450d328bc89c5cb3aa744c5e1941cb806359c863363bffd1abfbef5edab74d",
+   "observation_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "terminal_status": "NO_RESULT"
+  },
+  {
+   "attestation": "e3bf9c045ddf181a9d7a157f5a46897c31783b8df7e1682cef22376bf84dac5a51a2a6e327ee128c156fbf83a8f26f79d9f098a18051e47fa986fe382bd9efc1",
+   "claim_receipt_hash": "ac40a8622f17b05c6dbf34a95c4f40ebf1f7b43510b0f3e085dccb786e668723",
+   "observation_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "output_hash": "32e3c0215358a1f45d846a4a2d924cf7901caa608db81c166e70fc4ac2fecd9a",
+   "terminal_status": "RESULT"
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "artifact": "Procedure Manifests v0.0.3 F3 real-object request. judge_execution_profile=pm003-judge-v1; model=pin:judge-weights-2026-09; sampling={temperature:0,top_p:1,seed:7}; evidence_root=sha256:5a1f9b2c; requirement=R1: deliverable meets the committed acceptance criteria.",
+ "submission_commitment": {
+  "type": "submission_commitment",
+  "version": "v0",
+  "request_digest": "2c8c894a51dce1c2c89d33e29d8ac7816810c2295e04ac125017a52c1e93ea5b",
+  "attempt_id": "pm003-f3-real-0001",
+  "sent_at": 1790627111,
+  "requester_pubkey": "f725c25c11373b05763e26f01fc64ef280f5c6833ae5e8a4eaa92f5e2eb22f5b",
+  "sig": "b5544075000ee03c0658f51b4e09ece63e1df01187f8c6668c7cd34ffa748c40099018f53ff322941525e1e21f8917d888af25da64570b5c2bdff5f6504d1f26"
+ },
+ "admission_receipt": {
+  "request_capture_ref": null,
+  "artifact_hash": "2c8c894a51dce1c2c89d33e29d8ac7816810c2295e04ac125017a52c1e93ea5b",
+  "requester_identity": "f959e057b99f26ad77e2dcd4be98eafa8c04237b7a49edaeb9b5c5c347c210bc",
+  "review_policy_version": "invinoveritas.review.v22",
+  "admission_index": 240,
+  "accepted_at": 1790627111,
+  "request_class": "standard",
+  "response_deadline": 1790627171,
+  "deadline_policy_commitment": "a36a5b9c77734556f7e2fbe1f68554d79cd63e52cf7fd3a71bdf9a44c79118c4",
+  "submission_commitment_status": "verified",
+  "submission_commitment_ref": "0dd110f082136bff0083a7a5016c100d92e31edeca541392d8a247dd1a0f5212",
+  "receipt_hash": "a5f9649c86caf8ddc9b48b90d67c5be742c4b933cf5c6d3bb19371607c563409",
+  "prev_receipt_hash": "bc99b3de19f7a88488ca98f81b31f47a9e7793bf409182b47cb8783c4bb18451"
+ },
+ "verdict": "reject"
+}

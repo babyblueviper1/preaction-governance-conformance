@@ -1,0 +1,83 @@
+{
+ "claims": [
+  {
+   "accepted_at": 2000,
+   "attempt_id": "d32adb8a290100cd241807e38c9c11c509503766292ea9847e8efd0bedfbae2e",
+   "attestation": "0e9bfcfbec43b632ba562aba3e10fbd35d23d1ab164a32ec9589c56b0f69048ae31fc835bd2098b03498a671d2528c2bde0425903fb164c9d0be9e85bbf09a20",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "e9dca95a4ef01eed3ea150b1048fbd775ecc18ce96b1e425ec810e578b058407"
+  }
+ ],
+ "description": "Executor mints a fresh dispute_id after seeing a result; it is not the one derived from committed dispute state (C16).",
+ "dispute_id": "30ba7dedc6361d71c574c47e642bc262b8da4a3735dbe25e6b7f8972b6540a0e",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "TERMINAL_RESULT",
+  "terms": {
+   "authorized_execution": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "NO_RESULT"
+    ],
+    "max_attempts": 1
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1",
+    "scope_predicate": "covers_all"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "F6-namespace-regeneration",
+ "submission_commitments": [],
+ "terminals": [
+  {
+   "attestation": "7708c02107a67782c0d37247e635ed1969e69f34a97e2b2085aaf3bcbdfb0185a6f09eb09807fad982dc0feb5a3bd563aaa835f792e151c6265209e8c9b1203b",
+   "claim_receipt_hash": "43f275101dfa95a9231b3eb84af6304fc600846995dd354102c2d074d49e3699",
+   "observation_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "output_hash": "32e3c0215358a1f45d846a4a2d924cf7901caa608db81c166e70fc4ac2fecd9a",
+   "terminal_status": "RESULT"
+  }
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "claims": [],
+ "description": "Valid requester submission_commitment, no provider claim -> evidence preserved, not CLAIMED (section 2, C18).",
+ "dispute_id": "f31e26ad62b4b1bfbef446adec9578ad223e769ca25f28e8f3079dc670252d57",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "AUTHORIZED",
+  "terms": {
+   "authorized_execution": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "NO_RESULT"
+    ],
+    "max_attempts": 1
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1",
+    "scope_predicate": "covers_all"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "F5-submission-without-admission",
+ "submission_commitments": [
+  {
+   "attempt_id": "pm003-att-0001",
+   "request_digest": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "requester_pubkey": "e74ebe03b988115af22da9c809cdb477d54da4c317f8dfdc1e08a918ac9d5cab",
+   "sent_at": 1500,
+   "sig": "36608791c7b45d9ad7cdddc95cab6fa8b99ae4967c2e5ceb9c019fad163c7aac66a373a09aa4a43818c047b9af75c1453c02e85514681375888878e35439ce7f",
+   "type": "submission_commitment",
+   "version": "v0"
+  }
+ ],
+ "terminals": []
+}

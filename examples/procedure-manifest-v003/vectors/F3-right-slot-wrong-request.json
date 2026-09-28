@@ -1,0 +1,83 @@
+{
+ "claims": [
+  {
+   "accepted_at": 2000,
+   "attempt_id": "88ebe0454e3de11a5ebb264c3e708c9655b36c65cbdf63682bfd4387df390113",
+   "attestation": "780f1152425bd8a1e8ae7663647eddf87282a0582f938b77484d161bee0e647aab1284e1db74d9998055bf11f43f111295a9de62bd7bd6d5f32d5b391ede398b",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "7706295601f1086961b391507a47cc6f258a6b411fb5b6ef237f9dfec4120d3f",
+   "run_id": "fd45e6099a85e3d1f0b09bfbbed869ac9e0e01b7a33f051c5e164513bcc73fb4"
+  }
+ ],
+ "description": "Authentic terminal for the authorized run_id, but request_hash covers temperature 0.7 vs committed 0 (C17).",
+ "dispute_id": "f31e26ad62b4b1bfbef446adec9578ad223e769ca25f28e8f3079dc670252d57",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "TERMINAL_RESULT",
+  "terms": {
+   "exact_request_binding": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "NO_RESULT"
+    ],
+    "max_attempts": 1
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1",
+    "scope_predicate": "covers_all"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "F3-right-slot-wrong-request",
+ "submission_commitments": [],
+ "terminals": [
+  {
+   "attestation": "96da43a8555357a726d36f01f9523761868eb24d0d789a4d67d342e39a8da281071a305ef96512d83e97119bb16f31410068285e102063aa0d957ab3efd8b687",
+   "claim_receipt_hash": "97641c41c255cd019b43f54a81dddc0b772756f7927a03e0cf041f3cc4eceddd",
+   "observation_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "output_hash": "32e3c0215358a1f45d846a4a2d924cf7901caa608db81c166e70fc4ac2fecd9a",
+   "terminal_status": "RESULT"
+  }
+ ]
+}

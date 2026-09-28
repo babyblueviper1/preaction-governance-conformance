@@ -1,0 +1,83 @@
+{
+ "claims": [
+  {
+   "accepted_at": 900,
+   "attempt_id": "88ebe0454e3de11a5ebb264c3e708c9655b36c65cbdf63682bfd4387df390113",
+   "attestation": "fd3faadde2a2548208fa9df09a15edf93d536a57ec3054c3eb6496e8599e01f09ecb5c1c610a55ca108ee07eb1b452275590cf7392bb44675fa2bdfeacd5c63c",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "fd45e6099a85e3d1f0b09bfbbed869ac9e0e01b7a33f051c5e164513bcc73fb4"
+  }
+ ],
+ "description": "dispute_id derivation is right but its commitment postdates the claim (C16: committed BEFORE results exist).",
+ "dispute_id": "f31e26ad62b4b1bfbef446adec9578ad223e769ca25f28e8f3079dc670252d57",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "TERMINAL_RESULT",
+  "terms": {
+   "authorized_execution": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "NO_RESULT"
+    ],
+    "max_attempts": 1
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1",
+    "scope_predicate": "covers_all"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "F6b-dispute-committed-after-claim",
+ "submission_commitments": [],
+ "terminals": [
+  {
+   "attestation": "7b0f8450eecd8c74cb039214fbc60cb83f9a6c541847c3e4f1baba33a166df1d6ee7aad7b63b1b13d445dc3c52ae460f767164a541ff90d086ff8b418b76ef56",
+   "claim_receipt_hash": "137ed55207a8f7da709d8df9022288eb0bea6ed030c2111b69dd03dbcca93e81",
+   "observation_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "output_hash": "32e3c0215358a1f45d846a4a2d924cf7901caa608db81c166e70fc4ac2fecd9a",
+   "terminal_status": "RESULT"
+  }
+ ]
+}

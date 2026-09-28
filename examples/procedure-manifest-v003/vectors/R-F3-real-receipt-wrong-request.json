@@ -1,0 +1,66 @@
+{
+ "admission_receipt": {
+  "accepted_at": 1790627111,
+  "admission_index": 240,
+  "artifact_hash": "2c8c894a51dce1c2c89d33e29d8ac7816810c2295e04ac125017a52c1e93ea5b",
+  "deadline_policy_commitment": "a36a5b9c77734556f7e2fbe1f68554d79cd63e52cf7fd3a71bdf9a44c79118c4",
+  "prev_receipt_hash": "bc99b3de19f7a88488ca98f81b31f47a9e7793bf409182b47cb8783c4bb18451",
+  "receipt_hash": "a5f9649c86caf8ddc9b48b90d67c5be742c4b933cf5c6d3bb19371607c563409",
+  "request_capture_ref": null,
+  "request_class": "standard",
+  "requester_identity": "f959e057b99f26ad77e2dcd4be98eafa8c04237b7a49edaeb9b5c5c347c210bc",
+  "response_deadline": 1790627171,
+  "review_policy_version": "invinoveritas.review.v22",
+  "submission_commitment_ref": "0dd110f082136bff0083a7a5016c100d92e31edeca541392d8a247dd1a0f5212",
+  "submission_commitment_status": "verified"
+ },
+ "description": "REAL live receipt (admission 240) against a manifest committing the same request with a different model pin: request binding false (C17).",
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "CLAIMED",
+  "terms": {
+   "authorized_execution": "cannot_establish",
+   "exact_request_binding": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "hash-chained admission receipt (receipt_hash over admission_index, accepted_at, request_digest, prev_receipt_hash[, submission_commitment_ref]); periodic Merkle/OpenTimestamps checkpoints",
+   "provenance_profile": "invinoveritas-admission-chain-v1",
+   "retry_policy": {
+    "allowed_after": [
+     "NO_RESULT"
+    ],
+    "max_attempts": 1
+   }
+  },
+  "contract_id": "contract-pm003-real",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request_text": "Procedure Manifests v0.0.3 F3 real-object request. judge_execution_profile=pm003-judge-v1; model=pin:judge-weights-2026-08; sampling={temperature:0,top_p:1,seed:7}; evidence_root=sha256:5a1f9b2c; requirement=R1: deliverable meets the committed acceptance criteria.",
+    "required_scope": [
+     "criteria:R1"
+    ],
+    "requirement_id": "R1",
+    "scope_predicate": "covers_all"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "R-F3-real-receipt-wrong-request",
+ "real_object": true,
+ "submission_commitments": [
+  {
+   "attempt_id": "pm003-f3-real-0001",
+   "request_digest": "2c8c894a51dce1c2c89d33e29d8ac7816810c2295e04ac125017a52c1e93ea5b",
+   "requester_pubkey": "f725c25c11373b05763e26f01fc64ef280f5c6833ae5e8a4eaa92f5e2eb22f5b",
+   "sent_at": 1790627111,
+   "sig": "b5544075000ee03c0658f51b4e09ece63e1df01187f8c6668c7cd34ffa748c40099018f53ff322941525e1e21f8917d888af25da64570b5c2bdff5f6504d1f26",
+   "type": "submission_commitment",
+   "version": "v0"
+  }
+ ]
+}
