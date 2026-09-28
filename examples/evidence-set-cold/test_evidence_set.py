@@ -178,7 +178,8 @@ class Dash03Rules(unittest.TestCase):
 
     def test_root_not_checked_when_a_reports_anything(self):
         es = E.build([A, B]); es["evidence_root"] = "0" * 64; es["source_count"] = 3
-        self.assertEqual(halt(es), {"source_count_mismatch"})
+        # declared operands (5.3.1): pinned_count 2 != source_count 3 -> fully_pinned must be false; declared true -> mismatch
+        self.assertEqual(halt(es), {"source_count_mismatch", "fully_pinned_mismatch"})
 
     def test_entry_not_object_skips_only_that_entry(self):
         es = E.build([A, B]); es["sources"][1] = "x"
@@ -205,6 +206,32 @@ class Dash03Rules(unittest.TestCase):
         # -03: a content rule, reported alongside the member's other conditions
         e = dict(U("https://d.example/\x00x"), snippet_sha256=None)
         self.assertEqual(halt(es1([e])), {"member_contains_nul"})
+
+
+
+
+class NousTsc4Inputs(unittest.TestCase):
+    """Inputs posted by Roberto Locatelli / Nous on x402-foundation/tsc#4 (2026-09-28) against -03 at 03afc83."""
+
+    def test_2_pinned_not_boolean_fully_pinned_checked_on_declared_counts(self):
+        es = es1([dict(A, pinned="yes")], source_count=1, pinned_count=1, fully_pinned=False, evidence_root=None)
+        self.assertEqual(halt(es), {"pinned_absent_or_not_boolean", "fully_pinned_mismatch"})
+
+    def test_2b_declared_source_count_is_an_operand(self):
+        es = es1([A, B], source_count=5, pinned_count=2, fully_pinned=True, evidence_root=E.evidence_root([A, B]))
+        self.assertEqual(halt(es), {"source_count_mismatch", "fully_pinned_mismatch"})
+
+    def test_3_null_snippet_on_pinned_pair_does_not_suppress_duplicate(self):
+        d = dict(A, snippet_sha256=None)
+        es = es1([d, dict(d)], source_count=2, pinned_count=2, fully_pinned=True, evidence_root=None)
+        self.assertEqual(halt(es), {"snippet_sha256_absent_when_pinned", "evidence_root_absent_with_pinned_items", "duplicate_bound_tuple"})
+
+    def test_1_null_resource_sha256_read_as_absent_pending_text(self):
+        # -03 is silent on null for resource_sha256 (it says "absent or null ... equivalent" only for content_kind), but its own
+        # full_resource rule speaks of "a non-null resource_sha256". This checker reads null as absent -> unknown, not halt.
+        # Raised on tsc#4 for a one-line ruling; flip this assertion if the text rules null a type failure.
+        es = E.build([dict(A, resource_sha256=None)])
+        self.assertIsNone(halt(es))
 
 
 if __name__ == "__main__":

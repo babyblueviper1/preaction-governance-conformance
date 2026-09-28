@@ -108,7 +108,10 @@ def _check_entry(e, i, conds):
         return bad | {"snippet_sha256", "content_kind"}   # every branch rule takes pinned as input
     if pinned:
         if s is None:                                     # absent or null
-            conds.add("snippet_sha256_absent_when_pinned"); bad.add("snippet_sha256")
+            # -03 5.4.1(a) suppresses only on a failed TYPE or FORM check. snippet_sha256 is typed "string or null", so a
+            # missing digest on a pinned entry is a consistency failure: it is reported, and rules taking snippet_sha256 as
+            # input (duplicate_bound_tuple) are still evaluated (Roberto/Nous, tsc#4 5871..., input 3).
+            conds.add("snippet_sha256_absent_when_pinned")
         if ck not in CONTENT_KINDS:
             conds.add("content_kind_absent_or_invalid_when_pinned"); bad.add("content_kind")
     else:
@@ -130,7 +133,7 @@ def _same_retrieval(a, b):
     if a["url"] != b["url"] or a["retrieved_at"] != b["retrieved_at"]:
         return False
     if a["pinned"] and b["pinned"]:
-        return a["snippet_sha256"] == b["snippet_sha256"] and a["content_kind"] == b["content_kind"]
+        return a.get("snippet_sha256") == b.get("snippet_sha256") and a.get("content_kind") == b.get("content_kind")
     return True   # "A pinned entry and an unpinned entry sharing url and retrieved_at are ... one retrieval recorded twice"
 
 
@@ -170,14 +173,21 @@ def validate(es):
         pc = es.get("pinned_count", p)
         if not _int(pc) or pc != p:
             conds.add("pinned_count_mismatch")
-        fp = es.get("fully_pinned", p == n and n > 0)
-        if fp is not (p == n and n > 0):
-            conds.add("fully_pinned_mismatch")
         root = es.get("evidence_root", None)
         if p == 0 and root is not None:
             conds.add("evidence_root_present_with_no_pinned_items")
         if p > 0 and root is None:
             conds.add("evidence_root_absent_with_pinned_items")
+    # fully_pinned (5.3.1): "true iff pinned_count equals source_count and source_count > 0" -- the operands are the DECLARED
+    # counts; the derived ones stand in only when a count is declared absent (5.3.1 fallback). So it takes pinned as input only
+    # through an absent pinned_count, and a declared count that fails its own type check suppresses it (5.4.1(a)).
+    # (Roberto/Nous, tsc#4, input 2: was checked against the derived counts, which missed fully_pinned_mismatch.)
+    sc_op = (sc if _int(sc) else None) if "source_count" in es else n
+    pc_op = (es["pinned_count"] if _int(es["pinned_count"]) else None) if "pinned_count" in es else p
+    if sc_op is not None and pc_op is not None:
+        want_fp = pc_op == sc_op and sc_op > 0
+        if es.get("fully_pinned", want_fp) is not want_fp:
+            conds.add("fully_pinned_mismatch")
     ts_ok = all("retrieved_at" not in b and "*" not in b for b in bads)
     if ts_ok:   # whole-check suppression: one malformed retrieved_at suppresses both set-wide rules
         least = min(_b(e["retrieved_at"]) for e in src)
