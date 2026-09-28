@@ -60,3 +60,23 @@ the receipt binds that commitment by hash (`submission_commitment_ref`); its `ar
 - One author wrote the checker and the fixtures. The mutation check shows every rule is load-bearing, but a second, independent
   checker running these vectors is what would make them evidence.
 - The real receipts' OpenTimestamps anchoring is checked elsewhere (`tools/verify_admission_chain.py` in the service repo), not here.
+
+## Design note: slot authorization on the live `/review` profile (not built yet)
+
+The real-object vectors stop at `authorized_execution: cannot_establish` because `/review` admits requests without a
+pre-authorized slot. Here is how the live service would close that gap once the upstream encodings are settled. Nothing
+below is deployed. We'll build it to whatever `run_id` / `dispute_id` / `attempt_id` encoding the spec adopts, not to the guesses above.
+
+| v0.0.3 concept | what `/review` has today | what slot authorization adds |
+|---|---|---|
+| `run_id` (§1, C16) | nothing: admission is per request | an optional `slot` object on the request: `{manifest_hash, dispute_id, requirement_id, judge_id, run_index, attempt_index}`; the service derives `run_id` and `attempt_id` itself and refuses a slot whose derivation doesn't match |
+| claim / admission (§4 CLAIMED, C18) | hash-chained admission receipt (`receipt_hash`), periodic Merkle + OpenTimestamps checkpoints | `run_id`, `attempt_id` and `request_hash` folded into `receipt_hash`. The key is present only when a slot was supplied, so every existing receipt recomputes byte for byte (same rule as `submission_commitment_ref`) |
+| single use per attempt (§4, C19) | a replayed `submission_commitment.attempt_id` already returns `duplicate_of_admission:<n>` | the same one-admission-per-`attempt_id` rule, keyed on the derived `attempt_id` under a unique index, so a second admission for a slot is refused, not recorded |
+| exact request binding (§3, C17) | `artifact_hash` = sha256 of the exact request text; the requester commitment is bound by hash | `request_hash` over the manifest's declared outcome-relevant inputs, when the caller supplies them as structured fields rather than one text blob |
+| terminal record (§4 TERMINAL_RESULT / UNRESOLVED) | the signed verdict proof (BIP-340 event) | the proof carries `claim_receipt_hash`; `terminal_status` = RESULT for a verdict, UNRESOLVED for an explicit inability to rule; `output_hash` = hash of the verdict |
+| ATTESTED_NO_RESULT (§4, C20) | every receipt already commits `response_deadline` and a `deadline_policy_commitment` | a provider-signed NO_RESULT once the committed deadline passes with no verdict, and only then may the next `attempt_index` be admitted. Caller-side timeouts are never accepted as NO_RESULT |
+| authority scope (§7, C21) | `review_policy_version`, `artifact_type`, `vantage_limitation` in the proof | a structured `observation_scope` list in the terminal record, derived from those fields, so a manifest's `required_scope` can be checked mechanically |
+
+Open questions to settle upstream before building: the canonical encoding for `H` and the three derivations; whether
+`dispute_id` commitment evidence (the `committed_at` < first-claim rule) lives in the manifest or a separate anchored record;
+and whether ATTESTED_NO_RESULT needs a trusted clock beyond the provider's own committed deadline.
