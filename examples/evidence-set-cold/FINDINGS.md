@@ -129,3 +129,30 @@ retrieval returned 404 and is recorded unpinned (`no_content_returned`). Results
 `evidence_root` is identical across the partial and full sets, because unpinned items contribute nothing, as §5.3.3
 requires. These results are self-consistent only: there is no independent implementation to cross-check the root
 against yet. That is the next test: run both implementations on the same `payload.json`.
+
+## Companion fixture corpus run (2026-09-29, against -03 @ 057abd7)
+
+`run_companion_corpus.py` runs this checker against TK's companion corpus, `TKCollective/tanilo-receipt-spec@3fc216e`
+`fixtures/evidence-pinning-fixtures-v2-rev8.json` (sha256 `6ac833edc7e8b915...`). Harness adaptations H1-H5 are
+stated in the script header. Output: `companion_corpus_rev8_run.txt`.
+
+**40/44 agree.** All 16 root-bearing vectors reproduce byte-exact. Every malformed vector halts on its named
+condition, after the 8 rev8 names are mapped to the -03 Table 2 names.
+
+**C1 -- the 4 disagreements have one cause: the corpus and the -03 text conflict.** The disagreeing vectors are
+`evi-fully-pinned-fallback-derives-from-sources-accepted`, `evi-root-present-pinned-count-absent-accepted`,
+`evi-unpinned-item-reason-content-not-held` and `evi-unpinned-members-absent-accepted`.
+- Each carries an unpinned entry that omits `snippet_sha256`, and each expects acceptance. This follows rev6
+  Finding 30: "an omitted member is equivalent to an explicit null on an unpinned entry".
+- -03 5.3.2 says the member "MUST be present on every entry", and makes an absent member on an unpinned entry
+  malformed (`snippet_sha256_member_absent`, Table 2).
+- The cause is established by counterfactual: removing only that rule from the checker gives 44/44.
+- One side has to move before filing. Either regenerate the four vectors with an explicit `null`, plus a negative
+  vector for `snippet_sha256_member_absent`, or strike the rule from -03.
+
+**C2 -- stale names.** The corpus header's `conditions_named` still uses 8 pre-registry names. For example,
+`root_null_with_pinned_entries` is `evidence_root_absent_with_pinned_items` in -03.
+
+**C3 -- Open Issue 3 vector.** `proposed_vectors_open_issue_3.json` covers two cases. A pinned entry and an unpinned
+entry sharing `url` and `retrieved_at` halt on `duplicate_bound_tuple`. The same pair with distinct `retrieved_at`
+is accepted and resolves `unknown`.

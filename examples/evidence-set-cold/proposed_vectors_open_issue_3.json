@@ -1,0 +1,66 @@
+[
+ {
+  "id": "evi-duplicate-pinned-unpinned-pair-rejects",
+  "designation": "MALFORMED",
+  "expect": "halt, malformed; reported condition duplicate_bound_tuple (5.3.2: a pinned and an unpinned entry sharing url and retrieved_at are one retrieval recorded twice)",
+  "input": {
+   "evidence_set": {
+    "evidence_set_version": "ao-evidence-set-v1",
+    "sources": [
+     {
+      "url": "https://example.org/a",
+      "snippet_sha256": "8ed3f6ad685b959ead7022518e1af76cd816f8e8ec7ccdda1ed4018e8f2223f8",
+      "content_kind": "snippet",
+      "retrieved_at": "2026-09-01T12:00:00.000Z",
+      "pinned": true
+     },
+     {
+      "url": "https://example.org/a",
+      "snippet_sha256": null,
+      "retrieved_at": "2026-09-01T12:00:00.000Z",
+      "pinned": false,
+      "unpinned_reason": "no_content_returned"
+     }
+    ],
+    "evidence_root": "35bc8fb1c853c3de6fa2a4fcacaa7223202fafa7bb5411595f167f21834160c3"
+   }
+  },
+  "checker_result": {
+   "token": "halt",
+   "conditions": [
+    "duplicate_bound_tuple"
+   ]
+  }
+ },
+ {
+  "id": "evi-pinned-unpinned-same-url-distinct-time-accepted",
+  "designation": "ADDITIVE",
+  "expect": "accepted; NOT malformed (distinct retrieved_at = two retrievals); step resolves unknown (not fully pinned)",
+  "input": {
+   "evidence_set": {
+    "evidence_set_version": "ao-evidence-set-v1",
+    "sources": [
+     {
+      "url": "https://example.org/a",
+      "snippet_sha256": "8ed3f6ad685b959ead7022518e1af76cd816f8e8ec7ccdda1ed4018e8f2223f8",
+      "content_kind": "snippet",
+      "retrieved_at": "2026-09-01T12:00:00.000Z",
+      "pinned": true
+     },
+     {
+      "url": "https://example.org/a",
+      "snippet_sha256": null,
+      "retrieved_at": "2026-09-01T12:00:01.000Z",
+      "pinned": false,
+      "unpinned_reason": "no_content_returned"
+     }
+    ],
+    "evidence_root": "35bc8fb1c853c3de6fa2a4fcacaa7223202fafa7bb5411595f167f21834160c3"
+   }
+  },
+  "checker_result": {
+   "token": "unknown",
+   "conditions": []
+  }
+ }
+]
