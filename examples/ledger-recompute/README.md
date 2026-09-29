@@ -6,7 +6,7 @@ entirely from the bytes. No network, no `pip install`, nothing trusted but code 
 the published key you pin yourself.
 
 This is the **first leg** of the per-entry "ledger entry re-derives to sound" composite, and the
-**unit the [ERC-8275](https://api.babyblueviper.com/ledger) reputation axis aggregates**: reputation
+**unit the [ERC-8275](https://invinoveritas.dev/ledger.html) reputation axis aggregates**: reputation
 is *recomputable, not stored*, precisely because every entry independently re-derives to sound from
 public bytes. Outcome settlement is a separate, later leg (see "What this is / isn't").
 
