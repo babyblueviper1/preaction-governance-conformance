@@ -36,6 +36,21 @@ What this shows:
 - The registry is not blind to the live market. Most payees do settle through a facilitator it knows, so 0% was an artifact of the join.
 - It still misses about three in four sampled settlements. That gap is concentrated: 22 submitter addresses account for all 667, and the top five hold 45 to 50 settlements each. This fits a small pool of rotated signer keys (goun7's point in #2887) better than a long tail of unknown facilitators. Attributing those 22 addresses would close most of the measured gap. That is a registry-maintenance fix, not a spec fix.
 
+## Inputs, pinned (mirrored here under their CC0 license)
+
+`inputs/` holds the exact files the run read, copied from
+[RayR-audit/x402-settlement-audit@a954beb](https://github.com/RayR-audit/x402-settlement-audit/tree/a954bebbc6bbf298e433367def6d760017e86221)
+(branch `_registry_gap_landing`, CC0-1.0): `probe_results_v3.csv`, `base_facilitators.csv` and `hosts_snapshot_20260927.jsonl`.
+`inputs/SHA256SUMS` pins them, so a recompute doesn't depend on any branch staying reachable.
+
+    python3 submitter_join.py inputs/probe_results_v3.csv inputs/base_facilitators.csv
+
+## Reconciliation with the third implementation (stillmarcus24, Node, x402#2887)
+
+- **Per-settlement coverage agrees:** 25.6% here (5 most recent settlements per payee, 896 sampled) against 24.0% there (20 per payee, 3,597 sampled).
+- **The payee-level figure differs by sampling depth, not by disagreement.** At about 25% coverage per settlement, P(at least one covered) is about 1 - 0.75^5 = 76% with 5 samples (73% measured here) and about 1 - 0.75^20 = 99.7% before payee heterogeneity with 20 (93.75% there). Compare payee coverage only at the same depth.
+- **Both runs observe exactly 7 distinct registered submitters** (coinbase and payai) of the 105 in the registry.
+
 ## Limits
 
 - Base only. Payees settling on other networks show up as "no Base USDC inflow", not as uncovered.
