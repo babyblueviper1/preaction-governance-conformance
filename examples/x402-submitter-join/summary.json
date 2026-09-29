@@ -1,0 +1,17 @@
+{
+ "payees": 192,
+ "fetch_errors": 4,
+ "payees_no_base_usdc_inflow": 7,
+ "payees_inflow_but_no_facilitator_style": 0,
+ "payees_with_facilitator_settlements": 181,
+ "payees_any_settlement_covered": 132,
+ "payees_all_sampled_covered": 2,
+ "settlements_sampled": 896,
+ "settlements_covered": 229,
+ "settlement_coverage": 0.256,
+ "by_registry_facilitator": {
+  "UNREGISTERED": 667,
+  "coinbase": 223,
+  "payai": 6
+ }
+}
