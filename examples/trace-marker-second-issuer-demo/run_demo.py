@@ -38,6 +38,9 @@ CASES = [  # (label, argv, expected exit)
     ("control: demo record under invinoveritas default", [VL, R("vl_pass_irreversible.json")], 1),
     ("control: invinoveritas record under demo profile", [VL, "--profile", DEMO, os.path.join(FIX, "v21_trade_irreversible.json")], 1),
     ("control: invinoveritas record, invinoveritas profile", [VL, "--profile", INV, os.path.join(FIX, "v21_trade_irreversible.json")], 0),
+    # ACCEPTANCE.md: our own demo run reproduces but must NOT count as the independent issuer
+    ("acceptance: demo run attestation is rejected (not independent)",
+     [os.path.join(ROOT, "tools", "issuer_run_check.py"), os.path.join(HERE, "run_attestation.demo.json")], 1),
 ]
 
 

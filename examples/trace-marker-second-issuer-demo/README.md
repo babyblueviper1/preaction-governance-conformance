@@ -45,7 +45,7 @@ JWS/EdDSA verification is pure stdlib (`tools/_ed25519.py`, RFC 8032, verificati
 
 ```
 python3 build.py      # needs `cryptography` (build time only); deterministic
-python3 run_demo.py   # stdlib; 18/18 expected outcomes
+python3 run_demo.py   # stdlib; 19/19 expected outcomes
 ```
 
 `run_demo.py` asserts the following against the unchanged checkers.
@@ -61,6 +61,10 @@ python3 run_demo.py   # stdlib; 18/18 expected outcomes
 - **Controls:**
   - the demo record fails under the invinoveritas profile, and our record fails under the demo profile, so the profile is what admits an issuer;
   - our record passes under our published profile.
+
+## What counts as the independent run
+
+[ACCEPTANCE.md](ACCEPTANCE.md) fixes both words of the bar in advance: which relationships disqualify an issuer (adjudicated by the TRACE maintainers, not us) and the `trace-issuer-run.v1` attestation an issuer publishes itself. `tools/issuer_run_check.py` reruns it from the repository. Our own demo attestation reproduces exactly and is rejected on independence, as it must be.
 
 ## What this does not show
 

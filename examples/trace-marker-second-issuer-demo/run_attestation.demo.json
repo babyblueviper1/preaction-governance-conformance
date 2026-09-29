@@ -1,0 +1,35 @@
+{
+ "schema": "trace-issuer-run.v1",
+ "issuer": "example-issuer (DEMONSTRATION -- the proposer's own fixture, NOT independent)",
+ "checker": "vantage_limitation",
+ "checker_repo": "https://github.com/babyblueviper1/preaction-governance-conformance",
+ "checker_commit": "b403534fa5ce26acb02cbc99804e89ed7ef44db1",
+ "profile": {
+  "path": "examples/trace-marker-second-issuer-demo/example-issuer.profile.json",
+  "sha256": "862bd79f66721d69a5cacbd24861c4d846145eef0d091da57b8f343a6d50beea"
+ },
+ "inputs": [
+  {
+   "path": "examples/trace-marker-second-issuer-demo/records/vl_pass_irreversible.json",
+   "sha256": "12931fe2377bd5290a7f2573d5e257b8149f23ed6f23934b97aad5e36d0afe7c"
+  }
+ ],
+ "argv": [
+  "--profile",
+  "examples/trace-marker-second-issuer-demo/example-issuer.profile.json",
+  "examples/trace-marker-second-issuer-demo/records/vl_pass_irreversible.json"
+ ],
+ "exit_code": 0,
+ "output_sha256": "23920679815761b67b0b59168215c5a965587cb2b19705269cc5f8e4d4d8400f",
+ "environment": {
+  "python": "3.12.3"
+ },
+ "independence": {
+  "not_controlled_by_proposer": false,
+  "not_funded_by_proposer": false,
+  "not_maintainer_affiliated": true,
+  "records_emitted_by_issuer_own_software": false,
+  "published_by_issuer": false
+ },
+ "published_at_url": ""
+}
