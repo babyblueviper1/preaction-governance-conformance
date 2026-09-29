@@ -4,6 +4,9 @@
     python3 tools/related_claims_check.py OUTER_EVENT.json INNER_EVENT.json CLAIMS.json
     python3 tools/related_claims_check.py OUTER_EVENT.json - CLAIMS.json      # inner proof not available
     python3 tools/related_claims_check.py --referenced-set-is-complete OUTER_EVENT.json - CLAIMS.json
+    python3 tools/related_claims_check.py --profile ISSUER.json [--inner-profile OTHER.json] OUTER INNER CLAIMS   # any issuer
+    (issuer-neutral since trace-spec #398: envelope, key and preimage member come from the issuer profile, see
+    tools/issuer_profile.py; with no --profile the built-in invinoveritas profile reproduces the previous behaviour)
 
 --referenced-set-is-complete: the caller DECLARES that the proofs it holds are its complete set, so a referenced proof it does not
 hold is a policy refusal (FAIL), not an absence. Default (flag absent): a proof the relying party does not hold is CANNOT_ESTABLISH,
@@ -31,6 +34,15 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from _bip340_nostr import verify_proof  # noqa: E402
+from issuer_profile import envelope_label, load_profile, verify_envelope, ProfileError  # noqa: E402
+
+
+def _verify(record, profile):
+    """No profile: the original invinoveritas path (module verify_proof, patchable, byte-identical). Else the issuer's profile."""
+    if profile is None:
+        v = verify_proof(record)
+        return {"valid": v["valid"], "payload": v.get("proof_payload")}
+    return verify_envelope(record, profile)
 
 PASS, FAIL, CANNOT = "PASS", "FAIL", "CANNOT_ESTABLISH"
 ALLOWED_KEYS = ("artifact_hash", "verdict", "verified_at", "policy_version", "decision_ref")
@@ -58,15 +70,17 @@ def expected_result(claims, inner_payload):
     return "matched" if ok else "mismatched"
 
 
-def check(outer_ev, inner_ev, claims):
+def check(outer_ev, inner_ev, claims, profile=None, inner_profile=None):
+    inner_profile = inner_profile or profile      # a referenced proof may come from another issuer (--inner-profile)
+    member = profile["preimage_member"] if profile else "decision_ref_preimage_fields"
     out = []
     def add(status, name, detail=""):
         out.append((status, name, detail))
 
-    ov = verify_proof(outer_ev)
-    add(PASS if ov["valid"] else FAIL, "outer proof valid (id, schnorr, issuer, kind)")
-    op = ov.get("proof_payload") or {}
-    declared = op.get("decision_ref_preimage_fields") or []
+    ov = _verify(outer_ev, profile)
+    add(PASS if ov["valid"] else FAIL, "outer proof valid " + envelope_label(profile))
+    op = ov.get("payload") or {}
+    declared = op.get(member) or []
     if not all(f in declared for f in NEW_FIELDS):
         add(CANNOT, "outer proof declares the v20 related_claims_* preimage fields",
             f"policy_version={op.get('policy_version')} does not carry them; nothing to check")
@@ -112,7 +126,7 @@ def check(outer_ev, inner_ev, claims):
             else:
                 add(CANNOT, "the referenced proof really does fail verification", "inner event not supplied (pass it instead of '-')")
             return out
-        add(PASS if not verify_proof(inner_ev)["valid"] else FAIL,
+        add(PASS if not _verify(inner_ev, inner_profile)["valid"] else FAIL,
             "the supplied inner event really does fail verification")
         return out
     if result not in ("matched", "mismatched"):
@@ -125,9 +139,9 @@ def check(outer_ev, inner_ev, claims):
         else:
             add(CANNOT, "recompute the comparison", "inner event not supplied (pass it instead of '-')")
         return out
-    iv = verify_proof(inner_ev)
-    add(PASS if iv["valid"] else FAIL, "inner proof valid (id, schnorr, issuer, kind)")
-    ip = iv.get("proof_payload") or {}
+    iv = _verify(inner_ev, inner_profile)
+    add(PASS if iv["valid"] else FAIL, "inner proof valid " + envelope_label(inner_profile))
+    ip = iv.get("payload") or {}
     add(PASS if op.get("related_decision_ref") == ip.get("decision_ref") else FAIL,
         "outer.related_decision_ref == inner.decision_ref (referenced proof identity)")
     exp = expected_result(claims, ip)
@@ -143,13 +157,28 @@ def main(argv):
     if "--referenced-set-is-complete" in argv:
         COMPLETE = True
         argv = [a for a in argv if a != "--referenced-set-is-complete"]
+    paths = {}
+    for flag in ("--profile", "--inner-profile"):
+        if flag in argv:
+            i = argv.index(flag)
+            if i + 1 >= len(argv):
+                print(f"{flag} needs a path"); return 2
+            paths[flag] = argv[i + 1]; argv = argv[:i] + argv[i + 2:]
     if len(argv) != 4:
         print(__doc__)
         return 2
+    try:
+        prof, plabel = load_profile(paths.get("--profile"))
+        iprof, ilabel = load_profile(paths.get("--inner-profile")) if "--inner-profile" in paths else (None, None)
+    except (OSError, ProfileError) as e:
+        print(f"CANNOT_ESTABLISH  issuer profile: {e}")
+        return 2
+    if paths:
+        print(f"issuer profile: {plabel}" + (f"; referenced proof's issuer profile: {ilabel}" if ilabel else ""))
     outer = json.load(open(argv[1]))
     inner = None if argv[2] == "-" else json.load(open(argv[2]))
     claims = json.load(open(argv[3]))
-    res = check(outer, inner, claims)
+    res = check(outer, inner, claims, prof if "--profile" in paths else None, iprof)
     for s, n, d in res:
         print(f"{s:<17} {n}" + (f"  [{d}]" if d else ""))
     print("NOTE: exact equality establishes faithful restatement; it does not establish relevance, authorization or truth.")

@@ -1,0 +1,19 @@
+{
+ "schema": "trace-issuer-profile.v1",
+ "issuer": "example-issuer (DEMONSTRATION, not independent)",
+ "envelope": "jws-eddsa",
+ "keys": [
+  "c384e7a650315473b58c6b588afe8deb709eeddd7b9feb2beb99bfa7a1a79024"
+ ],
+ "preimage_member": "signed_fields",
+ "irreversible_artifact_types": [
+  "wire_transfer",
+  "contract_signature"
+ ],
+ "notes_by_policy": {
+  "example-issuer.policy.2026-09": {
+   "self_reported": "Operator-reported inputs; the issuer did not observe execution.",
+   "issuer_observed": "Issuer observed the request; settlement was not observed."
+  }
+ }
+}
