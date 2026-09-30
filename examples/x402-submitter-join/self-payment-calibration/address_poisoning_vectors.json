@@ -1,0 +1,20 @@
+{
+  "about": "Two rows any self-payment rule in x402#2887 must classify correctly before it counts a funding edge or a settlement. Both are real Base transactions on payee 0x161dbdd73d025e9aedd4918a67c28e5bf9a87fb9.",
+  "vectors": [
+    {
+      "id": "spoofed-funding-edge",
+      "row": {"from": "0x161dbdd73d025e9aedd4918a67c28e5bf9a87fb9", "to": "0x4fabc1df8dde7820de9a343d0921f9250e493841",
+              "token": "0xa1eb5cb9862c0dca92c4847260ec33afe2b9f76f", "symbol": "UᎽD‬C", "value": "30000000"},
+      "why": "A token contract with one holder emits Transfer(from=payee). The payee never signed it. Its address imitates 0x4faba7514c3796b72b3dc91dda7ed1c85e73a841, which the payee really paid 30 USDC minutes earlier.",
+      "expect": {"funding_edge": false, "rule": "a funding edge counts only if token == 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 (canonical USDC on Base)"}
+    },
+    {
+      "id": "poisoning-dust-is-not-a-settlement",
+      "row": {"tx": "0xf4ec78a5e9b22e49596edb6ab04e225e06fa0fc6bb01c3d041ab08d282860967", "from": "0x4fabc1df8dde7820de9a343d0921f9250e493841",
+              "to": "0x161dbdd73d025e9aedd4918a67c28e5bf9a87fb9", "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", "value": "30",
+              "method": "0xa9059cbb", "tx_from": "0x6f92c7593d8448121c2e335474a766498c3f3187", "tx_to": "0x75161fd560c487dfac2b33aec7f5681bff33eb96"},
+      "why": "Real USDC, 0.00003, pushed by a poisoning contract with a plain transfer. No facilitator submitted it and nobody bought anything.",
+      "expect": {"settlement": false, "rule": "a plain transfer (0xa9059cbb) is not a facilitator settlement; same exclusion as ../submitter_join.py"}
+    }
+  ]
+}

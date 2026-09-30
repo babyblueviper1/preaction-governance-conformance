@@ -1,0 +1,74 @@
+{
+  "window": {
+    "first": "2026-07-02T14:57:47.000000Z",
+    "last": "2026-09-17T05:41:03.000000Z",
+    "inbound_transfers": 50,
+    "settlements": 48,
+    "not_settlements": [
+      {
+        "tx": "0xf4ec78a5e9b22e49596edb6ab04e225e06fa0fc6bb01c3d041ab08d282860967",
+        "frm": "0x4fabc1df8dde7820de9a343d0921f9250e493841",
+        "value": "30",
+        "method": "0xa9059cbb"
+      },
+      {
+        "tx": "0x0ac7f1e83979293b5b57330f6c4a63632c9d34b6a4264346466dee593622a287",
+        "frm": "0x4fabc1df8dde7820de9a343d0921f9250e493841",
+        "value": "30",
+        "method": "0xa9059cbb"
+      }
+    ]
+  },
+  "labels_over_settlements": {
+    "external": 38,
+    "self": 10
+  },
+  "payee_funded_any_token": {
+    "flagged": 12,
+    "true_pos": 10,
+    "false_pos": 2,
+    "missed_self": 0
+  },
+  "payee_funded_canonical_usdc": {
+    "flagged": 10,
+    "true_pos": 10,
+    "false_pos": 0,
+    "missed_self": 0
+  },
+  "spoofed_funding_edges": [
+    "0x4fabc1df8dde7820de9a343d0921f9250e493841 via token 0xa1eb5cb9862c0dca92c4847260ec33afe2b9f76f"
+  ],
+  "self_degrees": [
+    1
+  ],
+  "out_degree": [
+    {
+      "threshold": 2,
+      "confirmed_external": 29,
+      "self_confirmed_external": 0,
+      "external_left_unclassified": 9,
+      "self_left_unclassified": 10
+    },
+    {
+      "threshold": 3,
+      "confirmed_external": 29,
+      "self_confirmed_external": 0,
+      "external_left_unclassified": 9,
+      "self_left_unclassified": 10
+    },
+    {
+      "threshold": 5,
+      "confirmed_external": 23,
+      "self_confirmed_external": 0,
+      "external_left_unclassified": 15,
+      "self_left_unclassified": 10
+    },
+    {
+      "threshold": 10,
+      "confirmed_external": 22,
+      "self_confirmed_external": 0,
+      "external_left_unclassified": 16,
+      "self_left_unclassified": 10
+    }
+  ]
+}

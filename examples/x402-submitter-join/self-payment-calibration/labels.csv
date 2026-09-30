@@ -1,0 +1,23 @@
+address,label,basis
+0x1611cf65193a4830fca47643e7825e5eacddd499,self,X402_BUYER_KEY in our own .env.x402; 54 internal rows in platform_revenue_ledger
+0x89ea40a908505aa15ee50ee3a9fa0399716755c2,self,X402_BOOTSTRAP_PAYER_KEY in our own .env.x402 (catalog seed buyer)
+0x315e1969bd1bec7f29a8c7d3e549d668599f10cd,self,X402_TEST_RECEIVE_KEY in our own .env.x402
+0x4fabc1df8dde7820de9a343d0921f9250e493841,not_a_payer,address-poisoning sender: 0.00003 USDC dust via contract 0x75161fd5; its 'funding' from our payee is a fake token (0xa1eb5cb9..; symbol UႽD‬C; 1 holder)
+0x2a079176ec3ac96cc094e9413f9d7bb54cd17bae,external,classification=external in our platform_revenue_ledger (1 rows)
+0x4db7aafbe797a39cd6cc4e7aa64d970f7f6e02b7,external,classification=external in our platform_revenue_ledger (1 rows)
+0x644678ad37833c0d52f0170f1f73a5e62bc3e6d5,external,classification=external in our platform_revenue_ledger (2 rows)
+0x65c85bdf9df49f6e7f572fb8d32f0e3dc8697f7a,external,classification=external in our platform_revenue_ledger (925 rows)
+0x72f6d77a78dbec1b2fff6f6db4672ddde1bd04c4,external,classification=external in our platform_revenue_ledger (1 rows)
+0x79f896ff38691931fc2494610c106ad755e6f758,external,classification=external in our platform_revenue_ledger (2 rows)
+0x7dd81398fac7de0bf843bfd874cbea68face17d2,external,classification=external in our platform_revenue_ledger (1 rows)
+0x843b544bf5f0aa6cbf13e94563874878c98cc4a7,external,classification=external in our platform_revenue_ledger (1 rows)
+0x98978c8926ac59325b74c7070d9b71fe8d8de042,external,classification=external in our platform_revenue_ledger (6 rows)
+0xb1a4d0e4d593efa2af4d6fe4343cc7f1f47ba464,external,classification=external in our platform_revenue_ledger (1 rows)
+0xbc687b498eac52f95bede6700a981dd64a22920a,external,classification=external in our platform_revenue_ledger (1 rows)
+0xc533bf5268a2f64adde58dce380651f70aa92d7a,external,classification=external in our platform_revenue_ledger (1 rows)
+0xc59e74ed6386b2a12d892fff2509a6965a0498dc,external,classification=external in our platform_revenue_ledger (1 rows)
+0xcd513d2e063177caa937d70b4d87603a9a4946a9,external,classification=external in our platform_revenue_ledger (5 rows)
+0xe19d249c2fc31157179c89aaf1ea3e6fd2d9a099,external,classification=external in our platform_revenue_ledger (1 rows)
+0xeb3d1b27e74aaa4ecbc9dc80d795512806de515f,external,classification=external in our platform_revenue_ledger (3 rows)
+0xf5a65ae916474da7fb0b47c6182e6c4eb63a0c80,external,classification=external in our platform_revenue_ledger (1 rows)
+0xfe2d5e9c5ae6e48b7f8b0b82ac4de8b423ba0557,external,classification=external in our platform_revenue_ledger (1 rows)
