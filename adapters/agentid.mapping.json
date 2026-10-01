@@ -1,0 +1,39 @@
+{
+  "name": "agentid",
+  "_doc": "AgentID verifier_attestation (CTEF v0.1): off-chain issuer-signed, recomputable, no anchor claimed; ordering and sequence integrity are the board's layer. Issuer key kid agentid-2026-03 (OKP/Ed25519) resolves from https://getagentid.dev/.well-known/jwks.json and is the verificationMethod of did:web:getagentid.dev. envelope_hash = response.digest = SHA-256(JCS(core)), core = response minus {digest, jws}; the compact JWS payload IS JCS(core) and the EdDSA signature covers BASE64URL(protected).BASE64URL(payload). The live response carries no hex pubkey / canonical_bytes field and a COMPACT JWS, so this adapter reads the saved fixture (agentid.fixtures/positive.json), which embeds the verbatim response under verifier_attestation plus a governance block and an RFC 7515 general-serialization re-encoding of the same JWS -- see agentid.fixtures/build_fixtures.py and verify_fixture.py.",
+  "_fetch": {
+    "method": "POST",
+    "url": "https://getagentid.dev/api/v1/agents/gateway/verifier-attestation",
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "preaction-governance-conformance/referee"
+    },
+    "body": {
+      "subject_did": "did:web:getagentid.dev:agent:agent_d1b7ef01f9af191f",
+      "charge_ref": "conformance-fixture",
+      "amount_usd": 0,
+      "action_class": "reversible",
+      "action": "read",
+      "action_type": "read",
+      "scope": "conformance-fixture",
+      "nonce": "preaction-governance-conformance-agentid-__NONCE__"
+    },
+    "note": "how agentid.fixtures/positive.raw.json was obtained (public endpoint, no credential). Kept as _fetch (not executed) because the live shape lacks verifier_pubkey / canonical_bytes_utf8 and carries a compact JWS, which live_check cannot read without the re-encoding in positive.json."
+  },
+  "response_file": "adapters/agentid.fixtures/positive.json",
+  "governance_path": ["governance"],
+  "jws_path": "jws",
+  "sig_scheme": "ed25519-jcs",
+  "fields": {
+    "envelope_hash": "envelope_hash",
+    "canonical_bytes": "canonical_bytes_utf8",
+    "pubkey": "verifier_pubkey",
+    "signature": "signature",
+    "sig_scheme": "sig_scheme"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": [
+      "c5da668dfab60d7e1deb230bed08da4a4601da1f439b7a61c2db3982400f069f"
+    ]
+  }
+}
