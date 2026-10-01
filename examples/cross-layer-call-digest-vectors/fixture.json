@@ -1,0 +1,111 @@
+{
+  "_doc": "Cross-layer call_digest vectors (microsoft/autogen#7405 GuardrailProvider RFC, issuecomment-5933530423). action_ref correlates one attempt's records across layers (preimage: {agent_id, action_type, scope, timestamp}, no arguments); call_digest binds what the call actually was (preimage: {tool_name, arguments}), recomputable by a layer that never sees agent_id or scope. The two are deliberately different primitives, not duplicates -- this fixture demonstrates all three joins a verifier needs: same call seen by two layers that disagree (A), the same call rewritten before dispatch (B), and a call that never reached an inner layer at all (C).",
+  "spec_refs": {
+    "action_ref_spec": "giskard09/argentum-core docs/spec/action-ref.md, pinned commit c277309b0d51dd3dca87d3c7c07688a80021a467",
+    "fixture_reused": "giskard09/argentum-core examples/conformance/guardrail-provider-v1.fixture.json, same commit, referenced with author confirmation (microsoft/autogen#7405#issuecomment-5934214515: \"Confirmed -- go ahead and reference it\")",
+    "not_reached_marker": "babyblueviper1/invinoveritas integrations/autogen/governed_workbench.py (commit bd06127), the on_not_reached marker proposed and shipped on this same thread (#7405#issuecomment-5299618444 / 5299678449)"
+  },
+  "canonicalization": {
+    "rule": "sha256(json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=False))",
+    "note": "Matches giskard09's reproduce_in_python dispatch for action_ref/authorization_ref/args digests, so all values in this fixture recompute under one rule."
+  },
+  "shared_context": {
+    "description": "action_ref and authorization_ref are reused verbatim from the pinned guardrail-provider-v1 fixture (recomputed and confirmed matching in issuecomment-5933530423). Vectors A and B both concern this one attempt.",
+    "intent_tuple": {
+      "action_type": "tool.call",
+      "agent_id": "guardrail-agent-001",
+      "scope": "autogen:guardrail",
+      "timestamp": "2026-06-09T22:00:00.000Z"
+    },
+    "action_ref": "104812928eb50e0e1ad28f379f8ade03ea0f479ac7abd1bbf9205e9317665c7f",
+    "authorization_preimage": {
+      "action_ref": "104812928eb50e0e1ad28f379f8ade03ea0f479ac7abd1bbf9205e9317665c7f",
+      "authorized_scope": "autogen:guardrail",
+      "decision_ts": 1749513600000,
+      "policy_id": "guardrail-policy-v1"
+    },
+    "authorization_ref": "b9f8494a4a5943687d105769556be2963271e37f2216d2afd279e5b260261327",
+    "tool_name": "db.query",
+    "original_args": {
+      "limit": 1000,
+      "query": "SELECT * FROM users WHERE admin=true",
+      "target": "database"
+    },
+    "effective_args": {
+      "limit": 100,
+      "query": "SELECT * FROM users WHERE admin=true",
+      "target": "database"
+    },
+    "original_args_digest": "df57a577bbc3d0849aa7ce8df577d7310d57dbb06b099c14343efa343af70ee9",
+    "effective_args_digest": "a208fd12e4ea22541f71ae426532adaa445058ce36b30c3b580b1371cd0ee477"
+  },
+  "vector_a_provider_approve_gate_deny": {
+    "label": "Two independently-emitted layer records about the SAME call disagree on verdict",
+    "description": "A provider layer approves the call (dispatched args == effective_args, no revision). A separate gate layer evaluates the identical call and denies it for a policy reason the provider layer has no visibility into. Both layers compute call_digest from only {tool_name, arguments} -- neither needs the other's record to do it. A verifier recomputes both call_digests, confirms they're equal (same call), and that the deny wins (no receipt exists for this action_ref + call_digest pair).",
+    "call_digest": "17a6d490a0088fd0af1deb8257e759526556dff18b42a4618ef346d07e463ae2",
+    "provider_record": {
+      "record_type": "provider_decision",
+      "provider_id": "guardrail.provider",
+      "action_ref": "104812928eb50e0e1ad28f379f8ade03ea0f479ac7abd1bbf9205e9317665c7f",
+      "authorization_ref": "b9f8494a4a5943687d105769556be2963271e37f2216d2afd279e5b260261327",
+      "call_digest": "17a6d490a0088fd0af1deb8257e759526556dff18b42a4618ef346d07e463ae2",
+      "verdict": "approve"
+    },
+    "gate_record": {
+      "record_type": "gate_decision",
+      "gate_id": "invinoveritas.review",
+      "action_ref": "104812928eb50e0e1ad28f379f8ade03ea0f479ac7abd1bbf9205e9317665c7f",
+      "authorization_ref": "b9f8494a4a5943687d105769556be2963271e37f2216d2afd279e5b260261327",
+      "call_digest": "17a6d490a0088fd0af1deb8257e759526556dff18b42a4618ef346d07e463ae2",
+      "verdict": "deny",
+      "reason": "policy:admin_query_outside_window"
+    },
+    "dispatch_allowed": false,
+    "invariant": "provider_record.call_digest == gate_record.call_digest (confirmed same call) AND gate verdict == deny => no receipt exists for (action_ref, call_digest)"
+  },
+  "vector_b_rewrite": {
+    "label": "A call rewritten before dispatch produces two different call_digests",
+    "description": "The provider proposes original_args; a guardrail revises them before the call executes. proposed_call_digest and effective_call_digest differ -- this is the two-number join call_digest already requires for a rewrite (distinct from the single-call case in Vector A). Deliberately NOT equal to giskard09's original_args_digest/effective_args_digest: those bind args alone, call_digest additionally folds in tool_name, so a layer with no scope/agent_id visibility can still recompute it. The two primitives are complementary, not duplicates.",
+    "proposed_call_digest": "e81e66c573087a9252cac1a359bc9dca22ba6aacbf4ddcc23cc9bd5b73340bfd",
+    "effective_call_digest": "17a6d490a0088fd0af1deb8257e759526556dff18b42a4618ef346d07e463ae2",
+    "pre_execution_record": {
+      "record_type": "pre_execution",
+      "action_ref": "104812928eb50e0e1ad28f379f8ade03ea0f479ac7abd1bbf9205e9317665c7f",
+      "authorization_ref": "b9f8494a4a5943687d105769556be2963271e37f2216d2afd279e5b260261327",
+      "proposed_call_digest": "e81e66c573087a9252cac1a359bc9dca22ba6aacbf4ddcc23cc9bd5b73340bfd",
+      "effective_call_digest": "17a6d490a0088fd0af1deb8257e759526556dff18b42a4618ef346d07e463ae2",
+      "original_args_digest": "df57a577bbc3d0849aa7ce8df577d7310d57dbb06b099c14343efa343af70ee9",
+      "effective_args_digest": "a208fd12e4ea22541f71ae426532adaa445058ce36b30c3b580b1371cd0ee477",
+      "revised": true
+    },
+    "invariants": [
+      "proposed_call_digest != effective_call_digest (rewrite is visible at the call_digest layer)",
+      "original_args_digest != effective_args_digest (rewrite is visible at giskard09's args-digest layer too, independently)",
+      "effective_call_digest != effective_args_digest (same args, different preimage shape -- tool_name changes the binding)"
+    ]
+  },
+  "vector_c_not_reached": {
+    "label": "A call that never reached the inner layer carries no call_digest at all",
+    "description": "A second, independent attempt. An outer gate denies before ever delegating to an inner provider -- the inner provider never receives the call and therefore never computes a call_digest for it. This is the not_reached marker shape proposed and shipped on this thread (babyblueviper1/invinoveritas commit bd06127, integrations/autogen/governed_workbench.py): {provider_id, reason}, no call fields, because none exist yet to hash. A verifier must read 'no call_digest field' here as 'never attempted', distinct from a record that carries a call_digest field with a null/empty value (which would mean a bug).",
+    "intent_tuple": {
+      "action_type": "tool.call",
+      "agent_id": "guardrail-agent-001",
+      "scope": "fs:delete",
+      "timestamp": "2026-06-09T22:05:00.000Z"
+    },
+    "action_ref": "0854d05bd512edb1324f3518a2d2deed5c9edb149a3d5124ae9bb0c6f8364c81",
+    "outer_terminal_record": {
+      "record_type": "gate_decision",
+      "gate_id": "outer.gw",
+      "action_ref": "0854d05bd512edb1324f3518a2d2deed5c9edb149a3d5124ae9bb0c6f8364c81",
+      "verdict": "deny",
+      "reason": "scope_not_allowed"
+    },
+    "inner_not_reached_marker": {
+      "record_type": "not_reached",
+      "provider_id": "inner.gw",
+      "reason": "upstream_deny"
+    },
+    "invariant": "inner_not_reached_marker has no call_digest key at all (provider never saw the call) while outer_terminal_record carries its own action_ref/verdict for the attempt the outer gate DID evaluate"
+  }
+}

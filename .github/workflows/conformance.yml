@@ -63,3 +63,5 @@ jobs:
         run: python3 examples/schnorr-tamper-matrix/check_tamper_matrix.py
       - name: verdict-ref-v1 adapter (microsoft/autogen#7353, giskard09 -- 4/4 upstream vectors + live verdict_object emission)
         run: python3 examples/verdict-ref-v1-adapter/build_verdict_object.py
+      - name: Cross-layer call_digest vectors (microsoft/autogen#7405, giskard09 action_ref parity + provider/gate join + rewrite + not_reached)
+        run: python3 examples/cross-layer-call-digest-vectors/check_cross_layer.py
