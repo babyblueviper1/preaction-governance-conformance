@@ -1,0 +1,23 @@
+{
+  "name": "agentid.negative_bound_field_altered",
+  "_doc": "NEGATIVE: same envelope + same signature as agentid.mapping.json with binding.charge_ref altered. Expected: canonical_envelope fail (envelope_hash_mismatch) and admission_invariant fail (the JWS payload no longer equals the canonical bytes, so the still-valid signature no longer binds this envelope).",
+  "response_file": "adapters/agentid.fixtures/negative_bound_field_altered.json",
+  "governance_path": [
+    "governance"
+  ],
+  "jws_path": "jws",
+  "sig_scheme": "ed25519-jcs",
+  "fields": {
+    "envelope_hash": "envelope_hash",
+    "canonical_bytes": "canonical_bytes_utf8",
+    "pubkey": "verifier_pubkey",
+    "signature": "signature",
+    "sig_scheme": "sig_scheme"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": [
+      "c5da668dfab60d7e1deb230bed08da4a4601da1f439b7a61c2db3982400f069f"
+    ]
+  },
+  "expected_failure_reason": "envelope_hash_mismatch"
+}

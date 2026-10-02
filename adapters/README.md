@@ -55,3 +55,42 @@ substitutes a unique token per run.
   `/.well-known/` or `/governance/pubkey`) is what makes "independent identity" checkable.
 - **anchoring_invariant** = the anchor's accepted point (the Bitcoin block) provably precedes the
   terminal outcome. A background OTS submission is `pending` until it confirms.
+
+## AgentID (`adapters/agentid*`)
+
+Off-chain issuer-signed, recomputable, no anchor claimed; ordering and sequence integrity are the
+board's layer.
+
+`POST https://getagentid.dev/api/v1/agents/gateway/verifier-attestation` (public, no credential) returns a
+CTEF v0.1 `verifier_attestation`: `digest = SHA-256(JCS(core))` where `core` = the response minus
+`{digest, jws}`, and `jws` is a compact EdDSA JWS whose payload bytes **are** `JCS(core)`, signed by
+`kid agentid-2026-03` (OKP/Ed25519, `https://getagentid.dev/.well-known/jwks.json`, also the
+`verificationMethod` of `did:web:getagentid.dev`).
+
+```bash
+PYTHONUTF8=1 python3 adapters/live_check.py adapters/agentid.mapping.json                                # positive: canonical_envelope + admission pass, anchoring unanchored (by design)
+PYTHONUTF8=1 python3 adapters/live_check.py adapters/agentid.negative_bound_field_altered.mapping.json   # envelope_hash_mismatch
+PYTHONUTF8=1 python3 adapters/live_check.py adapters/agentid.negative_throwaway_key.mapping.json         # key_different_but_identity_unproven
+python3 adapters/agentid.fixtures/verify_fixture.py adapters/agentid.fixtures/positive.raw.json          # independent recompute (cryptography + jcs), live JWKS
+```
+
+- `agentid.fixtures/positive.raw.json` — the endpoint response verbatim; `request.json` — the exact body sent.
+- `agentid.fixtures/positive.json` — the same response under `verifier_attestation`, plus a `governance`
+  block (`envelope_hash` = `digest`, `canonical_bytes_utf8` = `JCS(core)`, `verifier_pubkey` = hex of the
+  JWKS `x`) and the same JWS re-encoded as RFC 7515 general serialization, so `live_check.py` can read it.
+  `build_fixtures.py` derives it; nothing is re-signed.
+- Negatives: `negative_bound_field_altered.json` (same envelope + same signature, `binding.charge_ref`
+  altered, declared digest unchanged) and `negative_throwaway_key.json` (same core and header, signed by a
+  deliberately public throwaway key).
+- `agentid.profile.json` — `trace-issuer-profile.v1` / `jws-eddsa` for `tools/issuer_profile.py`. Known gap:
+  that profile matches `kid` against the hex pubkey list, while the live header carries the JWKS label
+  `kid: "agentid-2026-03"` (RFC 7517), so `verify_envelope` on `positive.flattened-jws.json` returns
+  `kid not among the profile's keys` even though `tools/_ed25519.verify` accepts the signature under the
+  JWKS key. `live_check.py` resolves the key by value and is unaffected.
+- Bound-field constructions (see `verify_fixture.py`): `binding_digest = SHA-256(JCS({amount_usd,
+  charge_ref, nonce, subject_did}))`; `action_ref = SHA-256(agent_id ‖ action_type ‖ scope ‖
+  int64_be(ms(issued_at)))` (argentum-core action-ref-v1, raw concatenation, where `action_type`/`scope`
+  come from the request, not the envelope). Neither is `SHA-256(JCS(core))` — that is the envelope `digest`.
+- The `response_file` form is used because the live response has no hex pubkey / `canonical_bytes_utf8`
+  field and a compact (not general-serialization) JWS, which `live_check.py` cannot consume directly;
+  `_fetch` in the mapping documents the request so the raw fixture can be regenerated.

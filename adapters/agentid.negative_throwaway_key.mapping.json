@@ -1,0 +1,23 @@
+{
+  "name": "agentid.negative_throwaway_key",
+  "_doc": "NEGATIVE: same core and same protected header (kid claims agentid-2026-03) signed by a throwaway Ed25519 key. Expected: canonical_envelope pass, admission_invariant fail (key_different_but_identity_unproven: signer is not the JWKS key in trust_policy).",
+  "response_file": "adapters/agentid.fixtures/negative_throwaway_key.json",
+  "governance_path": [
+    "governance"
+  ],
+  "jws_path": "jws",
+  "sig_scheme": "ed25519-jcs",
+  "fields": {
+    "envelope_hash": "envelope_hash",
+    "canonical_bytes": "canonical_bytes_utf8",
+    "pubkey": "verifier_pubkey",
+    "signature": "signature",
+    "sig_scheme": "sig_scheme"
+  },
+  "trust_policy": {
+    "independent_verifier_pubkeys": [
+      "c5da668dfab60d7e1deb230bed08da4a4601da1f439b7a61c2db3982400f069f"
+    ]
+  },
+  "expected_failure_reason": "key_different_but_identity_unproven"
+}
