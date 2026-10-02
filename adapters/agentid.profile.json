@@ -8,5 +8,8 @@
   "preimage_member": "canonicalization",
   "irreversible_artifact_types": [],
   "notes_by_policy": {},
-  "_doc": "AgentID issuer profile for tools/issuer_profile.py (jws-eddsa). keys[0] = hex of the OKP/Ed25519 'x' served at https://getagentid.dev/.well-known/jwks.json under kid agentid-2026-03. NOTE: the live protected header carries kid 'agentid-2026-03' (a JWKS label, RFC 7517), not the hex pubkey the jws-eddsa profile expects as kid -- see adapters/README.md (AgentID section) for the verbatim verify_envelope output."
+  "_doc": "AgentID issuer profile for tools/issuer_profile.py (jws-eddsa). keys[0] = hex of the OKP/Ed25519 'x' served at https://getagentid.dev/.well-known/jwks.json under kid agentid-2026-03; kid_labels maps that JWKS label (RFC 7517) to the hex key so verify_envelope resolves the live header kid.",
+  "kid_labels": {
+    "agentid-2026-03": "c5da668dfab60d7e1deb230bed08da4a4601da1f439b7a61c2db3982400f069f"
+  }
 }

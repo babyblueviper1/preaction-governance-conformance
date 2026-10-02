@@ -8,6 +8,7 @@ issuer is data, so it comes from a published issuer profile passed with --profil
       "issuer": "<name>",
       "envelope": "nip01-schnorr" | "jws-eddsa",
       "keys": ["<hex public key>", ...],          # nip01: 32-byte x-only BIP-340 key; jws: 32-byte Ed25519 key
+      "kid_labels": {"<JWKS kid label>": "<hex key>"},     # jws only, optional: maps an RFC 7517 kid label to one of "keys"
       "nip01": {"kinds": [30078], "schema_prefix": "invinoveritas."},   # nip01 only; both optional
       "preimage_member": "decision_ref_preimage_fields",   # payload member listing the signed-preimage field names
       "irreversible_artifact_types": ["trade", ...],
@@ -68,6 +69,12 @@ def load_profile(path: str | None) -> tuple[dict, str]:
     keys = p.get("keys")
     if not (isinstance(keys, list) and keys and all(isinstance(k, str) and len(k) == 64 for k in keys)):
         raise ProfileError("keys must be a nonempty list of 64-hex-char public keys")
+    labels = p.get("kid_labels")
+    if labels is not None:
+        if p["envelope"] != "jws-eddsa":
+            raise ProfileError("kid_labels applies to the jws-eddsa envelope only")
+        if not (isinstance(labels, dict) and all(isinstance(a, str) and isinstance(b, str) and b.lower() in [k.lower() for k in keys] for a, b in labels.items())):
+            raise ProfileError("kid_labels must map label strings to hex keys listed in keys")
     for k in ("preimage_member",):
         if not isinstance(p.get(k), str) or not p[k]:
             raise ProfileError(f"{k} must be a nonempty string")
@@ -121,7 +128,9 @@ def verify_envelope(record, profile: dict) -> dict:
         header = json.loads(_b64url(record["protected"]))
         if header.get("alg") != "EdDSA":
             return {"valid": False, "payload": None, "why": "alg is not EdDSA"}
-        kid = str(header.get("kid", "")).lower()
+        kid = str(header.get("kid", ""))
+        labels = profile.get("kid_labels") or {}
+        kid = labels[kid].lower() if kid in labels else kid.lower()  # a JWKS label resolves to its listed hex key; hex kids unchanged
         if kid not in keys:
             return {"valid": False, "payload": None, "why": "kid not among the profile's keys"}
         signing_input = (record["protected"] + "." + record["payload"]).encode("ascii")

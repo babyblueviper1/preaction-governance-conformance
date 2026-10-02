@@ -82,11 +82,10 @@ python3 adapters/agentid.fixtures/verify_fixture.py adapters/agentid.fixtures/po
 - Negatives: `negative_bound_field_altered.json` (same envelope + same signature, `binding.charge_ref`
   altered, declared digest unchanged) and `negative_throwaway_key.json` (same core and header, signed by a
   deliberately public throwaway key).
-- `agentid.profile.json` — `trace-issuer-profile.v1` / `jws-eddsa` for `tools/issuer_profile.py`. Known gap:
-  that profile matches `kid` against the hex pubkey list, while the live header carries the JWKS label
-  `kid: "agentid-2026-03"` (RFC 7517), so `verify_envelope` on `positive.flattened-jws.json` returns
-  `kid not among the profile's keys` even though `tools/_ed25519.verify` accepts the signature under the
-  JWKS key. `live_check.py` resolves the key by value and is unaffected.
+- `agentid.profile.json` — `trace-issuer-profile.v1` / `jws-eddsa` for `tools/issuer_profile.py`. The live header carries the JWKS label
+  `kid: "agentid-2026-03"` (RFC 7517), not a hex pubkey; the profile's optional `kid_labels` map
+  (`{"agentid-2026-03": "<hex key>"}`, label must resolve to a key listed in `keys`) lets `verify_envelope` resolve it,
+  so `positive.flattened-jws.json` verifies and the throwaway-key negative fails on `sig`. Hex kids work unchanged.
 - Bound-field constructions (see `verify_fixture.py`): `binding_digest = SHA-256(JCS({amount_usd,
   charge_ref, nonce, subject_did}))`; `action_ref = SHA-256(agent_id ‖ action_type ‖ scope ‖
   int64_be(ms(issued_at)))` (argentum-core action-ref-v1, raw concatenation, where `action_type`/`scope`
