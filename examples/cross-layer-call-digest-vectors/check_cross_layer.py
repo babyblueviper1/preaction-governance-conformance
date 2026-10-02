@@ -45,6 +45,9 @@ import hashlib
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import rfc8785  # noqa: E402
+
 HERE = Path(__file__).resolve().parent
 
 
@@ -170,6 +173,31 @@ def main() -> int:
         print(f"  {'OK' if moved else 'FAIL'}  changing {label} moves call_digest away from "
               f"the original")
     ok = ok and tamper_ok
+
+    # --- 6. Vector D: RFC 8785 number canonicalization ---
+    vd = fx["vector_d_number_canonicalization"]
+    print("\n-- Vector D: call_digest preimage is RFC 8785 JCS (number text) --")
+    d_ok = True
+    n_differs = 0
+    for case in vd["cases"]:
+        args = json.loads(case["args_source_json"])
+        canon_ok = rfc8785.jcs(args) == case["canonical_args_rfc8785"]
+        dg = {m: hashlib.sha256(rfc8785.jcs({"tool_name": vd["tool_name"], m: args}).encode("utf-8")).hexdigest()
+              for m in ("arguments", "tool_input")}
+        dg_ok = (dg["arguments"] == case["call_digest_arguments"]
+                 and dg["tool_input"] == case["call_digest_tool_input"])
+        # the naive serializer must differ exactly where the fixture says it does
+        naive_differs = json.dumps(args, sort_keys=True, separators=(",", ":")) != case["canonical_args_rfc8785"]
+        flag_ok = naive_differs == case["python_json_dumps_differs"]
+        n_differs += naive_differs
+        case_ok = canon_ok and dg_ok and flag_ok
+        d_ok = d_ok and case_ok
+        print(f"  {'OK' if case_ok else 'FAIL'}  {case['args_source_json']} -> {case['canonical_args_rfc8785']}"
+              f"{'  (json.dumps differs)' if naive_differs else ''}")
+    d_ok = d_ok and n_differs > 0
+    ok = ok and d_ok
+    print(f"  {'OK' if n_differs else 'FAIL'}  at least one case where the default Python serializer would compute a "
+          f"different call_digest ({n_differs} of {len(vd['cases'])})")
 
     print(f"\n{'OK' if ok else 'FAIL'}")
     return 0 if ok else 1

@@ -107,5 +107,109 @@
       "reason": "upstream_deny"
     },
     "invariant": "inner_not_reached_marker has no call_digest key at all (provider never saw the call) while outer_terminal_record carries its own action_ref/verdict for the attempt the outer gate DID evaluate"
+  },
+  "vector_d_number_canonicalization": {
+    "_doc": "The call_digest preimage must be RFC 8785 JCS, not a language's default JSON serializer: Python json.dumps and ECMAScript JSON.stringify disagree on number text (1e-07 vs 1e-7, 1e+16 vs 10000000000000000, -0.0 vs 0, floats above 2^53). A layer that hashes with the wrong serializer computes a different call_digest for the same call and the cross-layer join silently fails. canonical_args_rfc8785 was produced by Node JSON.stringify (v22) and is reproduced byte for byte by examples/cross-layer-call-digest-vectors/rfc8785.py (stdlib only). The preimage member name for the arguments object is not pinned by the RFC text yet, so both digests are given: call_digest_arguments = sha256(JCS({tool_name, arguments})) as used in vectors A-C, call_digest_tool_input = sha256(JCS({tool_name, tool_input})). tool_name is 'calc.run' throughout.",
+    "tool_name": "calc.run",
+    "cases": [
+      {
+        "args_source_json": "{\"limit\":100,\"ratio\":0.5}",
+        "canonical_args_rfc8785": "{\"limit\":100,\"ratio\":0.5}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "5585250dc71d97e74ac05c97dc8ad9d4ae9c5e249a9f785736c1ee5fd3b5365f",
+        "call_digest_tool_input": "ecc17e62f69459b7ac9ba644bda2ebdf19e9700b0bca95cef68ef1686e63a828"
+      },
+      {
+        "args_source_json": "{\"x\":0.0000001}",
+        "canonical_args_rfc8785": "{\"x\":1e-7}",
+        "python_json_dumps_differs": true,
+        "call_digest_arguments": "73592ac02705840a1fa6f7ff779607891dd2141b70eaa82ee5fd16c9f52fedf8",
+        "call_digest_tool_input": "21521b5aa684d0ad97f5fff397839a5551af8690ad0ca3ecf00c30aadab82923"
+      },
+      {
+        "args_source_json": "{\"x\":1e21}",
+        "canonical_args_rfc8785": "{\"x\":1e+21}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "7e48bf1f154e1c5543419244f8635c5f0e2a6da22d747c96cfb71aa0d73bde0e",
+        "call_digest_tool_input": "9576de78379263a307cb018de0911206cf667e59960c107ec04bf8ac82446a6b"
+      },
+      {
+        "args_source_json": "{\"x\":1e22}",
+        "canonical_args_rfc8785": "{\"x\":1e+22}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "c88ba1f4980751538c239919e5b2a5df9e95dc7bdf240b1e21b82481f9de5919",
+        "call_digest_tool_input": "f3623851825e51d4225b037d2a1b689b969c9504643d8894de30da53b44b1cf5"
+      },
+      {
+        "args_source_json": "{\"x\":10000000000000000}",
+        "canonical_args_rfc8785": "{\"x\":10000000000000000}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "cfdb0406df85e630aab6c2e1fff7e4e0851831a0ec1f7ce49ea8d5daa9376e2e",
+        "call_digest_tool_input": "3a5ae8b85a2a0501cbb5bd7249160cad0c128457dbb43174f9d0fff6e78a0331"
+      },
+      {
+        "args_source_json": "{\"x\":-0.0}",
+        "canonical_args_rfc8785": "{\"x\":0}",
+        "python_json_dumps_differs": true,
+        "call_digest_arguments": "4b63d161b9b5e68db2100222b18da46a686e68bb81523e376147814ba3214237",
+        "call_digest_tool_input": "2f6aced5969b87616a9fd4e7533b55ae05cdac0a34a4c5c69fd9bcd86c29138c"
+      },
+      {
+        "args_source_json": "{\"x\":0.30000000000000004}",
+        "canonical_args_rfc8785": "{\"x\":0.30000000000000004}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "2d33e287b50049cea207e0a461731f30429e4897bafd757cf0e5e5f195802288",
+        "call_digest_tool_input": "2ef44d6f3125f19e56745c20bacebd14193361191fb44bc20f253944e365412f"
+      },
+      {
+        "args_source_json": "{\"x\":9007199254740993}",
+        "canonical_args_rfc8785": "{\"x\":9007199254740992}",
+        "python_json_dumps_differs": true,
+        "call_digest_arguments": "e913dcade1765087fa4afb5a2660e0008bdf8e83a19229ddf636a278fe76b6f9",
+        "call_digest_tool_input": "ac1cec1c0afd7b680704ab724eedbce7e3a217f83920f974bec82d493620c50e"
+      },
+      {
+        "args_source_json": "{\"x\":123456789012345680000}",
+        "canonical_args_rfc8785": "{\"x\":123456789012345680000}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "6f45fd5153f1ab561fe1ea9d2e8129608739802d2633c5aaaf7f14121ed2c0d3",
+        "call_digest_tool_input": "1e3c4e276a502c2678658c12b7f77eb4b8e62af7adc72f5849e30523064545de"
+      },
+      {
+        "args_source_json": "{\"x\":5e-324}",
+        "canonical_args_rfc8785": "{\"x\":5e-324}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "4323344ddb86e1d70448ff7c094d4c951c2ca4c579f3bfed53330e94301618ed",
+        "call_digest_tool_input": "9f9ae17c810cedb1ab72b1d4169ed897cd1ec35d9220f189df2b11bf2e06fb36"
+      },
+      {
+        "args_source_json": "{\"x\":1.7976931348623157e308}",
+        "canonical_args_rfc8785": "{\"x\":1.7976931348623157e+308}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "e66944a0e9e98d227487a3eac17bab099795642c18f21aa41f6c04207c1a3336",
+        "call_digest_tool_input": "b7d2ca7effbdc3f4ac260a7aa6bde1c961b7309dc2a9d6ca329ed7f9e02f739f"
+      },
+      {
+        "args_source_json": "{\"x\":[1e-7,2.50,-1e-7]}",
+        "canonical_args_rfc8785": "{\"x\":[1e-7,2.5,-1e-7]}",
+        "python_json_dumps_differs": true,
+        "call_digest_arguments": "4ecffeb43a14354ef3cb9ae28131664b4e8df828c0638ad839df676bb854d8a9",
+        "call_digest_tool_input": "8e28becb791581d3cdeb6580d2102645c9cae8625ac398f396955dfa4f4749c2"
+      },
+      {
+        "args_source_json": "{\"x\":4294967295}",
+        "canonical_args_rfc8785": "{\"x\":4294967295}",
+        "python_json_dumps_differs": false,
+        "call_digest_arguments": "6c56281fd2afcd31758dd56fbc26ff263714fe6c495cb031d452142eaef3531c",
+        "call_digest_tool_input": "8a01be541c57b6dd2edb948c5eb19e9ce194eddb1a57a16e1e5362d43ea4b46a"
+      },
+      {
+        "args_source_json": "{\"x\":100.0}",
+        "canonical_args_rfc8785": "{\"x\":100}",
+        "python_json_dumps_differs": true,
+        "call_digest_arguments": "45de0001ce8d9f0f3c830e8b64db2507b08576f44bce593d3891eed87f8231f5",
+        "call_digest_tool_input": "7dabcece8adb00128de55cfc033264187727d8260dd3532ef980eeee8502fc28"
+      }
+    ]
   }
 }
