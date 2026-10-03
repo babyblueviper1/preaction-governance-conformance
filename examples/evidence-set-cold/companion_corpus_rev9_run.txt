@@ -1,0 +1,52 @@
+# run_companion_corpus.py (unmodified, this repo @ 8a7599f) against TKCollective/tanilo-receipt-spec @ 0dffb77fa117099438d5ec15fbb48b2311792d26
+# fixtures/evidence-pinning-fixtures-v2-rev9.json sha256 3c5f4bf42d5e60c4e424d9a301f1efbfdffba642f2f7b80b2cec1727e0873724 (47 vectors), Python 3.12.3, run 2026-10-03
+# run_companion_corpus.py sha256 23f1fec6...2c27c, tools/evidence_set_check.py sha256 d6a7c3a5...0bd6
+AGREE    evi-root-order-independent                           root_1 7f6addf189cd root_2 7f6addf189cd
+AGREE    evi-root-odd-promotion                               root d0cacaa281b5 want d0cacaa281b5
+AGREE    evi-node-child-encoding                              root 7f6addf189cd want 7f6addf189cd
+AGREE    evi-leaf-member-encoding                             root 35bc8fb1c853 want 35bc8fb1c853
+AGREE    evi-snippet-change-changes-root                      root_1 35bc8fb1c853 root_2 365973a6cd59
+AGREE    evi-url-normalization-changes-root                   root_1 35bc8fb1c853 root_2 14adb6a20e3e
+AGREE    evi-duplicate-url-distinct-digest                    root_1 b563b47601d6 root_2 b563b47601d6
+AGREE    evi-leaf-binds-content-kind                          root_1 35bc8fb1c853 root_2 7125a9d8aff1
+AGREE    evi-leaf-binds-retrieved-at                          root_1 35bc8fb1c853 root_2 5e085fc1bf90
+AGREE    evi-order-tiebreak-content-kind                      root_1 2b778cd55172 root_2 2b778cd55172
+AGREE    evi-order-tiebreak-retrieved-at                      root_1 ef067e8708b9 root_2 ef067e8708b9
+AGREE    evi-set-retrieved-at-not-earliest-rejects            halt ['set_retrieved_at_not_bytewise_least'] want set_retrieved_at_not_bytewise_least
+AGREE    evi-content-kind-absent-when-pinned-rejects          halt ['content_kind_absent_or_invalid_when_pinned', 'evidence_root_absent_with_pinned_items'] want content_kind_absent_or_invalid_when_pinned
+AGREE    evi-resource-sha256-with-full-resource-rejects       halt ['resource_sha256_present_for_full_resource'] want resource_sha256_present_for_full_resource
+AGREE    evi-full-resource-digest-on-unpinned-rejects         halt ['content_kind_present_when_unpinned', 'resource_sha256_present_for_full_resource'] want resource_sha256_present_for_full_resource
+AGREE    evi-pinned-absent-rejects                            halt ['pinned_absent_or_not_boolean'] want pinned_absent_or_not_boolean
+AGREE    evi-pinned-not-boolean-rejects                       halt ['pinned_absent_or_not_boolean'] want pinned_absent_or_not_boolean
+AGREE    evi-snippet-sha256-absent-when-pinned-rejects        halt ['evidence_root_absent_with_pinned_items', 'snippet_sha256_absent_when_pinned'] want snippet_sha256_absent_when_pinned
+AGREE    evi-empty-set-rejects                                halt ['evidence_set_names_no_sources'] want evidence_set_names_no_sources
+AGREE    evi-duplicate-bound-tuple-rejects                    halt ['duplicate_bound_tuple'] want duplicate_bound_tuple
+AGREE    evi-unpinned-reason-outside-domain-rejects           halt ['unpinned_reason_absent_or_invalid'] want unpinned_reason_absent_or_invalid
+AGREE    evi-unpinned-without-reason-rejects                  halt ['unpinned_reason_absent_or_invalid'] want unpinned_reason_absent_or_invalid
+AGREE    evi-source-count-mismatch-rejects                    halt ['source_count_mismatch'] want source_count_mismatch
+AGREE    evi-count-inconsistency-rejects                      halt ['pinned_count_mismatch'] want pinned_count_mismatch
+AGREE    evi-root-with-zero-pinned-rejects                    halt ['evidence_root_present_with_no_pinned_items'] want evidence_root_present_with_no_pinned_items
+AGREE    evi-nonzero-pinned-null-root-rejects                 halt ['evidence_root_absent_with_pinned_items'] want evidence_root_absent_with_pinned_items
+AGREE    evi-fully-pinned-fallback-derives-from-sources-accepted unknown []
+AGREE    evi-root-present-pinned-count-absent-accepted        unknown []
+AGREE    evi-resolve-all-counts-absent-accepted               resolved ['content_matches', 'content_matches']
+AGREE    evi-root-mismatch-rejects                            halt ['root_not_recomputable_from_sources'] want root_not_recomputable_from_sources
+AGREE    evi-empty-root-null                                  unknown root None
+AGREE    evi-absent-unknown                                   unknown
+AGREE    evi-partial-resolves-unknown                         unknown ['content_not_held', 'content_not_held', 'content_not_held']
+AGREE    evi-declared-partial-is-not-invalid                  unknown []
+AGREE    evi-content-mismatch-unknown                         unknown ['content_differs']
+AGREE    evi-content-not-held-unknown                         unknown ['content_not_held']
+AGREE    evi-unpinned-item-reason-content-not-held            unknown ['content_not_held']
+AGREE    evi-step-resolves-affirmatively                      resolved ['content_matches', 'content_matches']
+AGREE    evi-unpinned-members-absent-accepted                 unknown []
+AGREE    evi-retrieved-at-noncanonical-rejects                halt ['retrieved_at_not_canonical_form'] want retrieved_at_not_canonical_form
+AGREE    evi-duplicate-unpinned-entries-rejects               halt ['duplicate_bound_tuple'] want duplicate_bound_tuple
+AGREE    evi-unpinned-retrieved-at-noncanonical-rejects       halt ['retrieved_at_not_canonical_form'] want retrieved_at_not_canonical_form
+AGREE    evi-set-retrieved-at-equals-unpinned-value           unknown []
+AGREE    evi-set-retrieved-at-above-unpinned-value-rejects    halt ['set_retrieved_at_not_bytewise_least'] want set_retrieved_at_not_bytewise_least
+AGREE    evi-snippet-sha256-member-absent-on-unpinned-rejects halt ['snippet_sha256_member_absent'] want snippet_sha256_member_absent
+AGREE    evi-duplicate-pinned-unpinned-pair-rejects           halt ['duplicate_bound_tuple'] want duplicate_bound_tuple
+AGREE    evi-pinned-unpinned-same-url-distinct-time-accepted  unknown []
+
+47/47 agree  (corpus sha256 3c5f4bf42d5e60c4)
