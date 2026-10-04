@@ -1,0 +1,1167 @@
+{
+ "description": "Acceptance-record vectors for Shodai's condition set (x402-foundation/tsc#4, 2026-10-04), keys per draft-krausz-verification-state-03 5.4.2. Conditions compare as SETS. Built by build_vectors.py; CC0-1.0.",
+ "vectors": [
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "-cii7G-2U0SLDpEYXWoZWs84eQu40Um9qnSD8HpQfQZF5hrmYgvTSbVLXKTNDMZo5WVZZIqBZToDATv2fNq8Dw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "accepted",
+    "result": "verified"
+   },
+   "id": "acc-accepted-verified",
+   "what": "well-formed, counterparty-signed, authority resolved"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoicmVqZWN0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "bltYWK9b5sdWawWpbsF1a-IvNzzAm56O8S2YOtrMTrWwdlYjXfnPybiQz95e_BwqdiJzI-R4ictyWfEadSm7CA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "rejected",
+    "result": "verified"
+   },
+   "id": "acc-rejected-verified",
+   "what": "'verified' means a valid counterparty-signed record exists; the judgment (rejected) stays the counterparty's"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiZGlzcHV0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "KqUZNpXU7NLUjLJ-Yx47xse3zs0dBgrmbE3p3zjUPuPevoMg4J3XSIEpp56oDNS-hzScEawD0xldaR4gtIzbDw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "disputed",
+    "result": "verified"
+   },
+   "id": "acc-disputed-verified",
+   "what": ""
+  },
+  {
+   "case": {
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    }
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "not_responded",
+    "result": "no_record"
+   },
+   "id": "acc-no-record-not-responded",
+   "what": "no acceptance record: not_responded, never a weaker accepted, never verified"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "6KwiQT6zHJnyMI25WDNSsP9tVpiNF2otLSSARSY1S1ym7h1WXUTlwTfCPpyBlXsgczIlHNbOJ6k2fRF67ROaAQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "confirming_party_absent"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-confirming-party-absent",
+   "what": ""
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6IiIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "auvcNR0IMb8NQ7sTue_6Qw3_reUAPIpSm6I9lvNz6kycV79yPxaHdUDXEQM_hiQH1TBNWWB-W97pm-_ovyMLDg"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "confirming_party_absent"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-confirming-party-empty",
+   "what": ""
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6Imlzcy0xIn0",
+     "signature": "fwWu4Cqp9SGMQ1X6-Qt6AJZ0Tp-v5bfzs3kUsb-ABLimSdBQOi9JZrIPBv3qoQGAUFozPHvKexjOX-hWc86eDg"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_signer_is_issuer"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-signer-is-issuer-same-kid",
+   "what": "the issuer's own key signs the acceptance"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLXJldXNlZCJ9",
+     "signature": "EkLW_nt5PIkQ7rbEQx71PCFKIrDQY43CwiZnYOwerVXopbt0g-qtujBk44CTWhun7AQsCEm_OoSK6sBidmxMDQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_signer_is_issuer"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-signer-is-issuer-reused-key-new-kid",
+   "what": "the issuer's key bytes under a different kid: same key, so the condition still fires"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmlzc3VlciIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "s4TlCgK8wxxmpqbs0xpaZ-9a7ikK4weQ8AduxRKslio7PNDcUsg8zgfiAY4DCEZvwNWzog8k-GzsupUowprNDQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_signer_is_issuer"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-signer-is-issuer-same-party",
+   "what": "the confirming party named is the issuer itself"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJhMjE3ZTU2YjRiMWY2NjZkZmFiNDkyYjY0ZDgwNzVmMjRlOTUzNjQ0OTA4MWQwNGVjYjQwMzEyOTJkODEwZDRmIn0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "JZ-5U8p6kFY6TqaEOc8fmYEct7_QqqheHXMmXb6HG5TDPWtMWpgqDrxqhcy8XXemCqUmPlNCemLPIJY_XwdmCg"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_terms_digest_mismatch"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-terms-digest-mismatch",
+   "what": ""
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6ImE2YTY3YTNkOTJmZjA1MDlkZDc0MGQyMGMyMTExYjkxN2ZmZTQ5YmEzOGVmNTRmODhlNGE3ZjZiNmU1YzA4ZDQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "pVc99tH-wAtRuXiI1E3Jc-2hzR6KvG0EC4JVfV9_wZ9xx-rawLdlvmwvnCtloKypEH5RxvWskxWg-PbwldSVDA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_outcome_digest_mismatch"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-outcome-digest-mismatch",
+   "what": ""
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxNzo1OTo1OS45OTlaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "h5VEmXQ7mly2tMnTjxwVs6aP7VChwm8tdtC6j5nUHNC_5kDt4fBV9JBc5boHYbJq1sz9QWOZHiTnICP8UjIaBQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_precedes_outcome"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-precedes-outcome",
+   "what": ""
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowMDowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "hXlFQoQZS8zSwPnOiwlwYUJgbsaX3D48YE1TAgZ6k1_dpT5PgB8QQeYGg5gGAWwrEUNgzwnid4Nm9GUFZy76Dw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "accepted",
+    "result": "verified"
+   },
+   "id": "acc-same-instant-as-outcome-ok",
+   "what": "'earlier than' is strict: an acceptance at the outcome's own instant does not precede it"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "-cii7G-2U0SLDpEYXWoZWs84eQu40Um9qnSD8HpQfQZF5hrmYgvTSbVLXKTNDMZo5WVZZIqBZToDATv2fNq8Dw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_authority_unresolved"
+    ],
+    "disposition": "accepted",
+    "result": "unknown"
+   },
+   "id": "acc-authority-unresolved",
+   "what": "delegation material does not bind cp-1 to the confirming party: a limit of the verifier, not a finding"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxNzowMDowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJhMjE3ZTU2YjRiMWY2NjZkZmFiNDkyYjY0ZDgwNzVmMjRlOTUzNjQ0OTA4MWQwNGVjYjQwMzEyOTJkODEwZDRmIn0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "TC7EQmO0H3hnTVjUgLJJ8vOToAlznSFKE8n4OtiZ684wkcO0Jm00VcnpQF7FWbsTwow0DA2Sr0wcwH69getDBQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_precedes_outcome",
+     "acceptance_terms_digest_mismatch"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-report-all-two-mismatches",
+   "what": "report-all: both conditions, compared as a set"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJub3QtaGV4In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "AzSBYE7KXnwhdZvKCMuYdzLL4S2pcEHQeejZxvCcvbBjjExZU0SEKoFJgZBYrXbBXWcmMPae5l4XDGZGHiyLDA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_member_invalid"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-illtyped-digest-suppresses-mismatch",
+   "what": "type-check suppression: an ill-typed digest raises acceptance_member_invalid only, not a mismatch"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoibm90X3Jlc3BvbmRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "TLX37XuHPA1U_m7700hqvjMrW18o4s1kA1ZOyuOK4oLRVf2gFkAaJeEp_wK4_D3CPIdGiTLLWvuNWKhP1AfnBA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_member_invalid"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-signed-not-responded",
+   "what": "READING A2: a counterparty-signed 'not_responded' contradicts itself"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjJkNzExNjQyYjcyNmIwNDQwMTYyN2NhOWZiYWMzMmY1Yzg1MzBmYjE5MDNjYzRkYjAyMjU4NzE3OTIxYTQ4ODEiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "1lh35uHFNSlMGcq0Tn21bnDwrMMi2a-BsrfOifjjL6G05PAns9U4IDbcsZeLJ1pMhORyQWDv8KIWNCD3hElaDA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {},
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_outcome_digest_mismatch"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-malformed-plus-authority",
+   "what": "a malformed finding is reported; the authority unknown is not added on top of it"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTkifQ",
+     "signature": "NYW5ZnQRV-ZXgpAr1HboK2tOYz1tm06alxcv-ufAMyQQBUtrzULT2zYQUkqJxEn6aZh25Iuv0ZIMWv_FTWhCBw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "key_step": "key_unresolved",
+    "result": "key_unresolved"
+   },
+   "id": "acc-key-unresolved",
+   "what": "-03 5.4.2(a): not malformed, not a failed signature, no result"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTkifQ",
+     "signature": "NYW5ZnQRV-ZXgpAr1HboK2tOYz1tm06alxcv-ufAMyQQBUtrzULT2zYQUkqJxEn6aZh25Iuv0ZIMWv_FTWhCBw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": true
+   },
+   "expect": {
+    "conditions": [],
+    "key_step": "key_unresolved",
+    "policy_refusal": true,
+    "result": "key_unresolved"
+   },
+   "id": "acc-key-unresolved-declared-complete",
+   "what": "-03 5.4.2(b): same token, plus the relying party's refusal"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "qxt3o3yTfx_nAjcjgu7OBdmi2D-i6URZE3LwPQRYgur2CKAJWs4b_chvQwN-Pby2qa8viIK3kGJsLl_JIoxZAQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "signature_invalid"
+    ],
+    "key_step": "signature_invalid",
+    "result": "malformed"
+   },
+   "id": "acc-signature-invalid",
+   "what": "-03 5.4.2(c): the key resolves and the signature fails; declaring completeness never changes this"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "qxt3o3yTfx_nAjcjgu7OBdmi2D-i6URZE3LwPQRYgur2CKAJWs4b_chvQwN-Pby2qa8viIK3kGJsLl_JIoxZAQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": true
+   },
+   "expect": {
+    "conditions": [
+     "signature_invalid"
+    ],
+    "key_step": "signature_invalid",
+    "result": "malformed"
+   },
+   "id": "acc-signature-invalid-declared-complete",
+   "what": ""
+  }
+ ]
+}
