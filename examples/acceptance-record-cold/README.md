@@ -7,7 +7,7 @@ someone else issued. The confirming party's key goes through draft-krausz-verifi
 unchanged: `key_unresolved` versus `signature_invalid`, with the completeness input.
 
 - Checker: [`tools/acceptance_record_check.py`](../../tools/acceptance_record_check.py). Stdlib only; Ed25519 verification is `tools/_ed25519.py`.
-- Vectors: `vectors.json` (25), CC0-1.0. Built by `build_vectors.py`, which uses fixed seeds and deterministic Ed25519, so it regenerates byte-identically. Every expectation was written by hand from the condition table, not read back from the checker.
+- Vectors: `vectors.json` (25), CC0-1.0. Built by `build_vectors.py`, which uses fixed seeds and deterministic Ed25519, so it regenerates byte-identically. The checker and the runner are stdlib-only; `build_vectors.py` alone needs the `cryptography` package (signing only). Byte-identical regeneration was confirmed with `cryptography` 50.0.2 by an independent reproduction on x86_64 glibc ([tsc#4](https://github.com/x402-foundation/tsc/issues/4), @Tetsurohhori, which also ran the checker 22/22 on x86 glibc/musl, aarch64 and s390x); other versions are untested. Every expectation was written by hand from the condition table, not read back from the checker.
 - Run: `python3 run_vectors.py` reports 25/25. Condition lists compare as sets.
 
 ## Result tokens
