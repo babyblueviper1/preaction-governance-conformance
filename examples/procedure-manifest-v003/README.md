@@ -5,8 +5,8 @@ For [@chugarchugarr's v0.0.3 acquisition-boundary draft](https://github.com/chug
 These are those fixtures, plus a checker written **from the draft text alone**, so the fixtures are exercised by something other than their author.
 
 ```
-python3 check.py --vectors vectors/     # 15 vectors -> ALL PASS            (stdlib only)
-python3 mutation_check.py               # switch off each of C16-C21 -> each is caught by >=1 vector
+python3 check.py --vectors vectors/     # 19 vectors -> ALL PASS            (stdlib only)
+python3 mutation_check.py               # switch off each of C16-C21 -> each flips >=1 vector (verdict, eligibility or state)
 python3 build.py && python3 build_real.py   # regenerate (build.py needs `coincurve` for signing only)
 ```
 
@@ -18,24 +18,28 @@ each term reported as `true` / `false` / `cannot_establish`. Anything short of f
 
 | rule | enforced as |
 |---|---|
-| C16 | `dispute_id` must equal the derivation from committed dispute state, committed **before** the first claim; `run_id` derived from it |
+| C16 | `dispute_id` must equal the derivation from committed dispute state, and the profile's `ordering_proof` must place that commitment before every claim. Under the fixture profile the proof is a hash-chained ordering log whose head is attested by the manifest-pinned `ordering_anchor_pubkey` (standing in for OTS or chain inclusion); log position is the order. `committed_at` / `accepted_at` are kept as evidence and **never compared** (formulary-systems/spec#5 hardened C16). No proof, or a checkpoint not by the anchor → `cannot_establish` |
 | C17 | the claim's `request_hash` must equal `H(manifest-committed request)` |
-| C18 | a claim counts only if attested by the manifest-pinned **provider** key; requester evidence never counts as admission |
+| C18 | a claim counts only if attested by the manifest-pinned **provider** key; requester evidence never counts as admission; two distinct authentic claims for one `attempt_id` → `EQUIVOCATION`, neither acquires authority (F1b) |
 | C19 | two conflicting attested terminals for one attempt → `EQUIVOCATION`, no silent choice (identical duplicates are fine) |
 | C20 | attempt *k+1* is authorized only after a provider-attested `NO_RESULT` for attempt *k* |
-| C21 | `observation_scope` must cover the manifest's `required_scope` (`covers_all`) |
+| C21 | `required_scope ⊆ observed_scope` (flat token sets; the v0.0.3 fixed predicate) |
 
 ## Vectors
 
 | vector | expect | what it pins |
 |---|---|---|
-| P1–P4 | RESULT / RESULT / RESULT / UNRESOLVED | positive controls: valid run, retry after attested NO_RESULT, identical duplicate terminal, explicit TERMINAL_UNRESOLVED |
+| P1–P5 | RESULT / RESULT / RESULT / UNRESOLVED / RESULT | positive controls: valid run, retry after attested NO_RESULT, identical duplicate terminal, explicit TERMINAL_UNRESOLVED, and P5: `committed_at` later than `accepted_at` but the attested log orders the dispute first (the clock cannot break order either) |
 | F1 authentic double terminal | UNRESOLVED | C19 |
 | F2 suppressed unfavorable result | UNRESOLVED | C20: local timeout ≠ NO_RESULT |
 | F3 right slot, wrong request | UNRESOLVED | C17 (temperature 0.7 vs committed 0) |
 | F4 authentic, insufficient scope | UNRESOLVED | C21 |
 | F5 submission without admission | UNRESOLVED, state AUTHORIZED | §2 / C18 (commitment verified and preserved as evidence) |
-| F6 namespace regeneration (+ F6b committed-after-claim) | UNRESOLVED | C16 |
+| F1b authentic double claim | UNRESOLVED, EQUIVOCATION | C18 claim uniqueness |
+| F6 namespace regeneration | UNRESOLVED | C16 |
+| F6b unauthoritative predecessor ordering | UNRESOLVED, `cannot_establish` | C16: `committed_at` < `accepted_at` but no ordering proof |
+| F6c log orders dispute after claim | UNRESOLVED, `false` | C16: the clocks say before, the attested log says after |
+| N2 checkpoint not by anchor | UNRESOLVED, `cannot_establish` | C16: a provider-attested order is the executor side's own assertion |
 | N1 claim signed by requester | UNRESOLVED | C18 |
 | **R-F3 real receipt, wrong request** | UNRESOLVED, binding **false** | a **live** `/review` admission receipt (index 240, 2026-09-28) vs a manifest committing a different model pin |
 | **R-P real receipt, exact request** | UNRESOLVED, binding **true** | same live receipt, exact request |
@@ -59,7 +63,7 @@ the receipt binds that commitment by hash (`submission_commitment_ref`); its `ar
   build against whatever encoding lands upstream.
 - One author wrote the checker and the fixtures. The mutation check shows every rule is load-bearing, but a second, independent
   checker running these vectors is what would make them evidence.
-- The real receipts' OpenTimestamps anchoring is checked elsewhere (`tools/verify_admission_chain.py` in the service repo), not here.
+- The real receipts' OpenTimestamps anchoring is not checked by `check.py`. It can now be checked by anyone, without our database: `GET https://api.babyblueviper.com/admission-chain/inclusion/<receipt_hash>` returns the Merkle path and the `.ots` proof (live since 2026-10-05). The registry entry for this profile, with today's coverage stated honestly and the v2 build that closes it, is [PROFILE-invinoveritas-admission-chain.md](PROFILE-invinoveritas-admission-chain.md).
 
 ## Design note: slot authorization on the live `/review` profile (not built yet)
 
@@ -75,8 +79,6 @@ below is deployed. We'll build it to whatever `run_id` / `dispute_id` / `attempt
 | exact request binding (§3, C17) | `artifact_hash` = sha256 of the exact request text; the requester commitment is bound by hash | `request_hash` over the manifest's declared outcome-relevant inputs, when the caller supplies them as structured fields rather than one text blob |
 | terminal record (§4 TERMINAL_RESULT / UNRESOLVED) | the signed verdict proof (BIP-340 event) | the proof carries `claim_receipt_hash`; `terminal_status` = RESULT for a verdict, UNRESOLVED for an explicit inability to rule; `output_hash` = hash of the verdict |
 | ATTESTED_NO_RESULT (§4, C20) | every receipt already commits `response_deadline` and a `deadline_policy_commitment` | a provider-signed NO_RESULT once the committed deadline passes with no verdict, and only then may the next `attempt_index` be admitted. Caller-side timeouts are never accepted as NO_RESULT |
-| authority scope (§7, C21) | `review_policy_version`, `artifact_type`, `vantage_limitation` in the proof | a structured `observation_scope` list in the terminal record, derived from those fields, so a manifest's `required_scope` can be checked mechanically |
+| authority scope (§7, C21) | `review_policy_version`, `artifact_type`, `vantage_limitation` in the proof | a structured `observed_scope` list in the terminal record, derived from those fields, so a manifest's `required_scope` can be checked mechanically |
 
-Open questions to settle upstream before building: the canonical encoding for `H` and the three derivations; whether
-`dispute_id` commitment evidence (the `committed_at` < first-claim rule) lives in the manifest or a separate anchored record;
-and whether ATTESTED_NO_RESULT needs a trusted clock beyond the provider's own committed deadline.
+Open questions to settle upstream before building: the canonical encoding for `H` and the three derivations; and whether ATTESTED_NO_RESULT needs a trusted clock beyond the provider's own committed deadline.

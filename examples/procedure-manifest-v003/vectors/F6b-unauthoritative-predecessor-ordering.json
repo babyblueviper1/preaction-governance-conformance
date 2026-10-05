@@ -1,16 +1,16 @@
 {
  "claims": [
   {
-   "accepted_at": 900,
-   "attempt_id": "88ebe0454e3de11a5ebb264c3e708c9655b36c65cbdf63682bfd4387df390113",
-   "attestation": "fd3faadde2a2548208fa9df09a15edf93d536a57ec3054c3eb6496e8599e01f09ecb5c1c610a55ca108ee07eb1b452275590cf7392bb44675fa2bdfeacd5c63c",
+   "accepted_at": 2000,
+   "attempt_id": "dcd50389021a147b0cb328659aabe5686d2c307646d77e3bc5ef51da33d2f0cc",
+   "attestation": "a8a64774159514e2756bc675b82955f3d44ad701f6a7ddb87ed87361de9830ff8919ee5c09c7f279fc6967e975b353730835ce95881eb1d90d1661b5d17a5320",
    "provenance_profile": "pm003-bip340-v0",
    "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
-   "run_id": "fd45e6099a85e3d1f0b09bfbbed869ac9e0e01b7a33f051c5e164513bcc73fb4"
+   "run_id": "2ecf3d3da92c8019f7c8f6a0f51f99a31709fc5178dbaf425ea232730edc5e5c"
   }
  ],
- "description": "dispute_id derivation is right but its commitment postdates the claim (C16: committed BEFORE results exist).",
- "dispute_id": "f31e26ad62b4b1bfbef446adec9578ad223e769ca25f28e8f3079dc670252d57",
+ "description": "Derivation is consistent and committed_at (1000) numerically precedes accepted_at (2000), but there is no ordering proof. A timestamp comparison alone cannot establish precedence (C16) -> cannot_establish, UNRESOLVED.",
+ "dispute_id": "4314b61350474bce87f80fb7b5f72325d11eabe1ca793c0dd2982ccfc9daade3",
  "dispute_state": {
   "committed_at": 1000,
   "contract_id": "contract-pm003-fixture",
@@ -22,18 +22,21 @@
   "run_verdict": "UNRESOLVED",
   "state": "TERMINAL_RESULT",
   "terms": {
-   "authorized_execution": "false"
+   "authorized_execution": "cannot_establish"
   }
  },
  "manifest": {
   "acquisition": {
    "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
    "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "ordering_anchor_pubkey": "dd51897a5e5b2791be195c21c63b532481a8e17459786be5c290c113e0c1ca36",
+   "ordering_proof_rule": "hash-chained ordering log; head attested by ordering_anchor_pubkey; log position = order; clock values never compared",
+   "predecessor_authority_rule": "dispute_state committed as a dispute_commitment entry in the ordering log",
    "provenance_profile": "pm003-bip340-v0",
    "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
    "retry_policy": {
     "allowed_after": [
-     "NO_RESULT"
+     "ATTESTED_NO_RESULT"
     ],
     "max_attempts": 1
    },
@@ -59,20 +62,19 @@
      "criteria:R1",
      "evidence:full"
     ],
-    "requirement_id": "R1",
-    "scope_predicate": "covers_all"
+    "requirement_id": "R1"
    }
   ],
   "spec": "procedure-manifest",
   "version": "0.0.3"
  },
- "name": "F6b-dispute-committed-after-claim",
+ "name": "F6b-unauthoritative-predecessor-ordering",
  "submission_commitments": [],
  "terminals": [
   {
-   "attestation": "7b0f8450eecd8c74cb039214fbc60cb83f9a6c541847c3e4f1baba33a166df1d6ee7aad7b63b1b13d445dc3c52ae460f767164a541ff90d086ff8b418b76ef56",
-   "claim_receipt_hash": "137ed55207a8f7da709d8df9022288eb0bea6ed030c2111b69dd03dbcca93e81",
-   "observation_scope": [
+   "attestation": "deda021d31b1f0d630aeed18e0ae3748510f6718841d73c846bbb3e2102cb2e1c856513c5ca036136e2fc041ba7851a20dde3e65b0aac132db5e840bd7750980",
+   "claim_receipt_hash": "9314b776c1df3b762449222444c0ae9d754a5dbc61fea95da4164b990bda6134",
+   "observed_scope": [
     "criteria:R1",
     "evidence:full"
    ],

@@ -1,7 +1,7 @@
 {
  "claims": [],
- "description": "Valid requester submission_commitment, no provider claim -> evidence preserved, not CLAIMED (section 2, C18).",
- "dispute_id": "f31e26ad62b4b1bfbef446adec9578ad223e769ca25f28e8f3079dc670252d57",
+ "description": "Valid requester submission_commitment, no provider claim -> evidence preserved, not CLAIMED (section 4, C18).",
+ "dispute_id": "4314b61350474bce87f80fb7b5f72325d11eabe1ca793c0dd2982ccfc9daade3",
  "dispute_state": {
   "committed_at": 1000,
   "contract_id": "contract-pm003-fixture",
@@ -20,11 +20,14 @@
   "acquisition": {
    "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
    "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "ordering_anchor_pubkey": "dd51897a5e5b2791be195c21c63b532481a8e17459786be5c290c113e0c1ca36",
+   "ordering_proof_rule": "hash-chained ordering log; head attested by ordering_anchor_pubkey; log position = order; clock values never compared",
+   "predecessor_authority_rule": "dispute_state committed as a dispute_commitment entry in the ordering log",
    "provenance_profile": "pm003-bip340-v0",
    "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
    "retry_policy": {
     "allowed_after": [
-     "NO_RESULT"
+     "ATTESTED_NO_RESULT"
     ],
     "max_attempts": 1
    },
@@ -50,14 +53,29 @@
      "criteria:R1",
      "evidence:full"
     ],
-    "requirement_id": "R1",
-    "scope_predicate": "covers_all"
+    "requirement_id": "R1"
    }
   ],
   "spec": "procedure-manifest",
   "version": "0.0.3"
  },
  "name": "F5-submission-without-admission",
+ "ordering_log": {
+  "checkpoint": {
+   "attestation": "944889eb8f4afe0ae28cdbcd107cd05ce4fcae1257c77e585da6bbf3f5c3edf7f2a7a4f1f45c37e2810dee9fc8346fdd4f1ad422e4b7d472de33df105c8037cb",
+   "head": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+   "seq": 0
+  },
+  "entries": [
+   {
+    "entry_hash": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "kind": "dispute_commitment",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "ref": "370bcd2d5b8d76f88fb51e64ffd9ab6984787596d2e76c5639bb10c3dd16793e",
+    "seq": 0
+   }
+  ]
+ },
  "submission_commitments": [
   {
    "attempt_id": "pm003-att-0001",

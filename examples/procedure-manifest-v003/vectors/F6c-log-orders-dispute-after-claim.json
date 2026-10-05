@@ -3,14 +3,14 @@
   {
    "accepted_at": 2000,
    "attempt_id": "dcd50389021a147b0cb328659aabe5686d2c307646d77e3bc5ef51da33d2f0cc",
-   "attestation": "0d0ab2de69829c000d566c74070037fb3586dcc3347507be0a18a7885d70073be7b5c1415a199ef1110c2163509a625087cc42950b43a4a0445a0f0a8a82722a",
-   "ordering_proof": "43c4fbf24e971827cc4cbc13ca662108679fbdbdae29986b7b2025dcafc26633",
+   "attestation": "97e1b851346a6ef2abae48662cc2ee35d26c694ff7452738345ec76742a03fcebd7df0ec847e694b40648bfbafc95282acf7ad78fbdca2e8aa5b795e3ed247e9",
+   "ordering_proof": "bfc10c71c47c4ccefe34d3591955bcafa26c4dab2d94fee40e5e633aee1a6d9f",
    "provenance_profile": "pm003-bip340-v0",
    "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
    "run_id": "2ecf3d3da92c8019f7c8f6a0f51f99a31709fc5178dbaf425ea232730edc5e5c"
   }
  ],
- "description": "A 'claim' attested by the requester key is submission evidence, not admission (C18).",
+ "description": "The clocks say the dispute came first (committed_at 1000 < accepted_at 2000), but the attested ordering log places the dispute commitment AFTER the claim -> false (C16).",
  "dispute_id": "4314b61350474bce87f80fb7b5f72325d11eabe1ca793c0dd2982ccfc9daade3",
  "dispute_state": {
   "committed_at": 1000,
@@ -21,7 +21,7 @@
  "expect": {
   "eligible": false,
   "run_verdict": "UNRESOLVED",
-  "state": "AUTHORIZED",
+  "state": "TERMINAL_RESULT",
   "terms": {
    "authorized_execution": "false"
   }
@@ -69,26 +69,26 @@
   "spec": "procedure-manifest",
   "version": "0.0.3"
  },
- "name": "N1-claim-signed-by-requester",
+ "name": "F6c-log-orders-dispute-after-claim",
  "ordering_log": {
   "checkpoint": {
-   "attestation": "61012dbbb3e9d96c227e90ca4eccbbbcf54f645b51f92cd9b56a7ecc5b55ba667665011ea705ce08580e07958252d1231d2f528d4b3f6217a843c52ffd0574b3",
-   "head": "43c4fbf24e971827cc4cbc13ca662108679fbdbdae29986b7b2025dcafc26633",
+   "attestation": "ce46f8714430591a45306edf4c8f23930ebfa04698f74873ee21c5964a6f43a0dd6f0d5bbc177a037772d3d87ba81da70bbc8859c81766ce4025023243404ff3",
+   "head": "c06b0e88a23917c07fde327e863d605a09ffcbf2e19811e27a94fa804f193135",
    "seq": 1
   },
   "entries": [
    {
-    "entry_hash": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
-    "kind": "dispute_commitment",
+    "entry_hash": "bfc10c71c47c4ccefe34d3591955bcafa26c4dab2d94fee40e5e633aee1a6d9f",
+    "kind": "claim",
     "prev": "0000000000000000000000000000000000000000000000000000000000000000",
-    "ref": "370bcd2d5b8d76f88fb51e64ffd9ab6984787596d2e76c5639bb10c3dd16793e",
+    "ref": "7ae46d3798ae9236a1e73a9518ba32c331994a86b7ce82eb2c6adbf48a9963dc",
     "seq": 0
    },
    {
-    "entry_hash": "43c4fbf24e971827cc4cbc13ca662108679fbdbdae29986b7b2025dcafc26633",
-    "kind": "claim",
-    "prev": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
-    "ref": "7ae46d3798ae9236a1e73a9518ba32c331994a86b7ce82eb2c6adbf48a9963dc",
+    "entry_hash": "c06b0e88a23917c07fde327e863d605a09ffcbf2e19811e27a94fa804f193135",
+    "kind": "dispute_commitment",
+    "prev": "bfc10c71c47c4ccefe34d3591955bcafa26c4dab2d94fee40e5e633aee1a6d9f",
+    "ref": "370bcd2d5b8d76f88fb51e64ffd9ab6984787596d2e76c5639bb10c3dd16793e",
     "seq": 1
    }
   ]
@@ -96,8 +96,8 @@
  "submission_commitments": [],
  "terminals": [
   {
-   "attestation": "54291e0634da3cc49c9556bd92b72dc21e02e1430ee90ab8d6f6b5547f64a483ed2b3d251454e8030aea0673b0e74db64935a35a3839324beb163c12dc6408c3",
-   "claim_receipt_hash": "2fb691f2d8c163c5a9ec86e500399e2be8c713066cc119919ad93c817308a963",
+   "attestation": "c0f2d3c4abde40177f251e7a3ebe183d38244cafb89124e4f641931454093d2bb5e85e2537c2560b2321010930b2399648af150b196f0eda5e3a01b4f656b4fc",
+   "claim_receipt_hash": "bc56a1c98e08178574a1077e6a3fe44c46c0ee82c6fa46b770daa018f88a901e",
    "observed_scope": [
     "criteria:R1",
     "evidence:full"

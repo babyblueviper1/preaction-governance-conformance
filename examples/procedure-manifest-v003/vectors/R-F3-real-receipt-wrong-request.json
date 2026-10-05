@@ -30,7 +30,7 @@
    "provenance_profile": "invinoveritas-admission-chain-v1",
    "retry_policy": {
     "allowed_after": [
-     "NO_RESULT"
+     "ATTESTED_NO_RESULT"
     ],
     "max_attempts": 1
    }
@@ -43,8 +43,7 @@
     "required_scope": [
      "criteria:R1"
     ],
-    "requirement_id": "R1",
-    "scope_predicate": "covers_all"
+    "requirement_id": "R1"
    }
   ],
   "spec": "procedure-manifest",

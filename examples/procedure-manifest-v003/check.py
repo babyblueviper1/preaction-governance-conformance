@@ -8,7 +8,11 @@ boundary), rules C16-C21 (section 9), fixtures F1-F6 (section 10). Standard libr
 Where the draft leaves an encoding open, this checker makes the simplest faithful choice and says so (see README):
   H(x)            = sha256 over canonical JSON (sorted keys, (",", ":") separators; ASCII/int values -> JCS-identical)
   manifest_hash   = H(manifest)
-  dispute_id      = H({manifest_hash, contract_id, dispute_nonce}) from dispute_state, committed before any claim
+  dispute_id      = H({manifest_hash, contract_id, dispute_nonce}) from dispute_state
+  ordering        = C16 (formulary-systems/spec#5 hardened text): precedence of the dispute commitment over every claim is read
+                    ONLY from the profile's ordering_proof -- a hash-chained ordering log whose head is attested by the
+                    manifest-pinned ordering_anchor_pubkey (a stand-in for OTS / chain inclusion), position = order.
+                    committed_at / accepted_at are carried as evidence and never compared.
   run_id          = H({manifest_hash, dispute_id, requirement_id, judge_id, run_index})                 (section 1)
   attempt_id      = H({run_id, attempt_index}), attempt_index < retry_policy.max_attempts            (section 5)
   request_hash    = H(requirement.request)  -- the manifest-committed outcome-relevant inputs          (section 3)
@@ -66,6 +70,40 @@ def admission_receipt_recomputes(r):
     return H(p) == r.get("receipt_hash")
 
 
+ZERO = "0" * 64
+
+
+def claim_core(c):
+    return {"run_id": c.get("run_id"), "attempt_id": c.get("attempt_id"), "request_hash": c.get("request_hash")}
+
+
+def ordering(pkg, acq, ds, claims):
+    """C16 ordering under the fixture profile: 'true' / 'false' / 'cannot_establish'. Never reads a clock value."""
+    log, anchor = pkg.get("ordering_log"), acq.get("ordering_anchor_pubkey")
+    if not log or not anchor:
+        return "cannot_establish", "no authoritative ordering mechanism: a bare committed_at cannot establish precedence (C16, F6b)"
+    prev, by_hash = ZERO, {}
+    for i, e in enumerate(log.get("entries", [])):
+        if e.get("seq") != i or e.get("prev") != prev or e.get("entry_hash") != H({k: e.get(k) for k in ("seq", "kind", "ref", "prev")}):
+            return "cannot_establish", f"ordering log entry {i} does not chain (C16)"
+        prev = e["entry_hash"]; by_hash[prev] = e
+    cp = log.get("checkpoint") or {}
+    if cp.get("head") != prev or cp.get("seq") != len(log.get("entries", [])) - 1 or not _sig_ok(cp, anchor):
+        return "cannot_establish", "ordering checkpoint is not attested by the manifest-pinned anchor over the log head (C16)"
+    dseq = [e["seq"] for e in by_hash.values() if e["kind"] == "dispute_commitment" and e["ref"] == H(ds)]
+    if not dseq:
+        return "cannot_establish", "dispute state is not in the ordering log (C16)"
+    cseq = []
+    for c in claims:
+        e = by_hash.get(c.get("ordering_proof"))
+        if not e or e["kind"] != "claim" or e["ref"] != H(claim_core(c)):
+            return "cannot_establish", "a claim's ordering_proof does not resolve to its own entry in the ordering log (C16)"
+        cseq.append(e["seq"])
+    if cseq and min(dseq) > min(cseq):
+        return "false", "the ordering log places the dispute commitment AFTER a claim (C16)"
+    return "true", None
+
+
 def evaluate(pkg):
     m = pkg["manifest"]; acq = m["acquisition"]; req_def = m["requirements"][0]
     out = {"terms": {}, "reasons": [], "state": "AUTHORIZED", "evidence": {}}
@@ -98,9 +136,7 @@ def evaluate(pkg):
     ds = pkg["dispute_state"]
     derived_dispute = H({"manifest_hash": manifest_hash, "contract_id": ds["contract_id"], "dispute_nonce": ds["dispute_nonce"]})
     claims = pkg.get("claims", [])
-    first_claim_at = min((c["accepted_at"] for c in claims), default=None)
-    dispute_ok = (pkg["dispute_id"] == derived_dispute and (first_claim_at is None or ds["committed_at"] < first_claim_at)) \
-        or "C16" in DISABLED
+    derived_ok = pkg["dispute_id"] == derived_dispute
     run_id = H({"manifest_hash": manifest_hash, "dispute_id": pkg["dispute_id"], "requirement_id": req_def["requirement_id"],
                 "judge_id": req_def["judge_id"], "run_index": 0})
     max_att = int(acq["retry_policy"]["max_attempts"])
@@ -113,8 +149,14 @@ def evaluate(pkg):
                 and (_sig_ok(c, prov) or "C18" in DISABLED))
 
     valid_claims = sorted((c for c in claims if claim_valid(c)), key=lambda c: attempt_ids.index(c["attempt_id"]))
-    if not dispute_ok:
-        out["reasons"].append("dispute_id not derived from pre-result committed state, or committed after execution (C16)")
+    order, why = ordering(pkg, acq, ds, valid_claims)
+    if "C16" in DISABLED:
+        derived_ok, order = True, "true"
+    if not derived_ok:
+        out["reasons"].append("dispute_id is not the derivation from committed dispute state (C16, F6)")
+    if why:
+        out["reasons"].append(why)
+    auth16 = "false" if not derived_ok or order == "false" else order       # true / false / cannot_establish
     if not valid_claims:
         T.update(authorized_execution="false" if claims or not subs else "false", exact_request_binding="cannot_establish",
                  unique_terminal_execution="cannot_establish", sufficient_scope="cannot_establish")
@@ -124,6 +166,15 @@ def evaluate(pkg):
             out["reasons"].append("no claim is provider-attested for an enumerated attempt of the authorized slot (C18/C16)")
         return _finish(out, None)
     out["state"] = "CLAIMED"
+    per_attempt = {}
+    for c in valid_claims:
+        per_attempt.setdefault(c["attempt_id"], set()).add(H(c))
+    if any(len(v) > 1 for v in per_attempt.values()) and "C18" not in DISABLED:
+        out["state"] = "EQUIVOCATION"
+        T.update(authorized_execution="false", exact_request_binding="cannot_establish",
+                 unique_terminal_execution="cannot_establish", sufficient_scope="cannot_establish")
+        out["reasons"].append("two distinct authentic claims for one authorized attempt_id; neither may acquire authority (C18, F1b)")
+        return _finish(out, None)
 
     def terminals_for(c):
         crh = H(c)
@@ -136,7 +187,7 @@ def evaluate(pkg):
         distinct = {(t["terminal_status"], t.get("output_hash")) for t in ts}
         if len(distinct) > 1 and "C19" not in DISABLED:
             out["state"] = "EQUIVOCATION"
-            T.update(authorized_execution="true" if dispute_ok else "false", exact_request_binding="cannot_establish",
+            T.update(authorized_execution=auth16, exact_request_binding="cannot_establish",
                      unique_terminal_execution="false", sufficient_scope="cannot_establish")
             out["reasons"].append("conflicting attested terminals for one claimed attempt; none may be chosen (C19)")
             return _finish(out, None)
@@ -161,7 +212,7 @@ def evaluate(pkg):
         chosen = (c, next(t for t in ts), status)
         break
 
-    T["authorized_execution"] = "true" if dispute_ok and not retry_violation else "false"
+    T["authorized_execution"] = "false" if retry_violation else auth16
     if not chosen:
         T.setdefault("exact_request_binding", "cannot_establish"); T.setdefault("unique_terminal_execution", "cannot_establish")
         T.setdefault("sufficient_scope", "cannot_establish")
@@ -172,7 +223,7 @@ def evaluate(pkg):
     T["exact_request_binding"] = "true" if c["request_hash"] == H(req_def["request"]) or "C17" in DISABLED else "false"
     if T["exact_request_binding"] == "false":
         out["reasons"].append("claim binds the right slot to a request_hash that differs from the committed request (C17)")
-    need = set(req_def["required_scope"]); got = set(t.get("observation_scope") or [])
+    need = set(req_def["required_scope"]); got = set(t.get("observed_scope") or [])
     T["sufficient_scope"] = "true" if need <= got or "C21" in DISABLED else "false"
     if T["sufficient_scope"] == "false":
         out["reasons"].append(f"observation scope {sorted(got)} does not cover required_scope {sorted(need)} (C21)")

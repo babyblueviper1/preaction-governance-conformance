@@ -12,9 +12,9 @@ def manifest(text):
     return {"spec": "procedure-manifest", "version": "0.0.3", "contract_id": "contract-pm003-real",
             "acquisition": {"provenance_profile": "invinoveritas-admission-chain-v1",
                             "claim_semantics": "hash-chained admission receipt (receipt_hash over admission_index, accepted_at, request_digest, prev_receipt_hash[, submission_commitment_ref]); periodic Merkle/OpenTimestamps checkpoints",
-                            "retry_policy": {"allowed_after": ["NO_RESULT"], "max_attempts": 1}},
+                            "retry_policy": {"allowed_after": ["ATTESTED_NO_RESULT"], "max_attempts": 1}},
             "requirements": [{"requirement_id": "R1", "judge_id": "J1", "request_text": text,
-                              "required_scope": ["criteria:R1"], "scope_predicate": "covers_all"}]}
+                              "required_scope": ["criteria:R1"]}]}
 def put(name, desc, m, receipt, subs, expect):
     json.dump({"name": name, "description": desc, "real_object": True, "manifest": m, "admission_receipt": receipt,
                "submission_commitments": subs, "expect": expect}, open(os.path.join(OUT, name + ".json"), "w"), indent=1, sort_keys=True)

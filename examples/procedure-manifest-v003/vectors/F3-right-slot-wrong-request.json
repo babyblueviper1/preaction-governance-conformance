@@ -2,15 +2,16 @@
  "claims": [
   {
    "accepted_at": 2000,
-   "attempt_id": "88ebe0454e3de11a5ebb264c3e708c9655b36c65cbdf63682bfd4387df390113",
-   "attestation": "780f1152425bd8a1e8ae7663647eddf87282a0582f938b77484d161bee0e647aab1284e1db74d9998055bf11f43f111295a9de62bd7bd6d5f32d5b391ede398b",
+   "attempt_id": "dcd50389021a147b0cb328659aabe5686d2c307646d77e3bc5ef51da33d2f0cc",
+   "attestation": "d12f9e16ee91ef6de4db8bea5ace618703977d96b286ee742ea333193f0575e92fd6859e258cc072a4428f260b9a0b07c9280955cc7fcea197c365588e629c84",
+   "ordering_proof": "408afba3909b257894b3a8106c3b116811a36064682e41f283085649ab5965d2",
    "provenance_profile": "pm003-bip340-v0",
    "request_hash": "7706295601f1086961b391507a47cc6f258a6b411fb5b6ef237f9dfec4120d3f",
-   "run_id": "fd45e6099a85e3d1f0b09bfbbed869ac9e0e01b7a33f051c5e164513bcc73fb4"
+   "run_id": "2ecf3d3da92c8019f7c8f6a0f51f99a31709fc5178dbaf425ea232730edc5e5c"
   }
  ],
  "description": "Authentic terminal for the authorized run_id, but request_hash covers temperature 0.7 vs committed 0 (C17).",
- "dispute_id": "f31e26ad62b4b1bfbef446adec9578ad223e769ca25f28e8f3079dc670252d57",
+ "dispute_id": "4314b61350474bce87f80fb7b5f72325d11eabe1ca793c0dd2982ccfc9daade3",
  "dispute_state": {
   "committed_at": 1000,
   "contract_id": "contract-pm003-fixture",
@@ -29,11 +30,14 @@
   "acquisition": {
    "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
    "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "ordering_anchor_pubkey": "dd51897a5e5b2791be195c21c63b532481a8e17459786be5c290c113e0c1ca36",
+   "ordering_proof_rule": "hash-chained ordering log; head attested by ordering_anchor_pubkey; log position = order; clock values never compared",
+   "predecessor_authority_rule": "dispute_state committed as a dispute_commitment entry in the ordering log",
    "provenance_profile": "pm003-bip340-v0",
    "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
    "retry_policy": {
     "allowed_after": [
-     "NO_RESULT"
+     "ATTESTED_NO_RESULT"
     ],
     "max_attempts": 1
    },
@@ -59,20 +63,42 @@
      "criteria:R1",
      "evidence:full"
     ],
-    "requirement_id": "R1",
-    "scope_predicate": "covers_all"
+    "requirement_id": "R1"
    }
   ],
   "spec": "procedure-manifest",
   "version": "0.0.3"
  },
  "name": "F3-right-slot-wrong-request",
+ "ordering_log": {
+  "checkpoint": {
+   "attestation": "34e13185b2a0222f56f4d7996c921f653f737e847f0cc0d6287edb870330e4f44efa6e39f2d5f81f70d64abc54b4655eb472accf1a70e783e9e31dbb52d72fb8",
+   "head": "408afba3909b257894b3a8106c3b116811a36064682e41f283085649ab5965d2",
+   "seq": 1
+  },
+  "entries": [
+   {
+    "entry_hash": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "kind": "dispute_commitment",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "ref": "370bcd2d5b8d76f88fb51e64ffd9ab6984787596d2e76c5639bb10c3dd16793e",
+    "seq": 0
+   },
+   {
+    "entry_hash": "408afba3909b257894b3a8106c3b116811a36064682e41f283085649ab5965d2",
+    "kind": "claim",
+    "prev": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "ref": "469cb590d251222f833bdacefbc5011394ff69bfceb06b01214f8097f328d475",
+    "seq": 1
+   }
+  ]
+ },
  "submission_commitments": [],
  "terminals": [
   {
-   "attestation": "96da43a8555357a726d36f01f9523761868eb24d0d789a4d67d342e39a8da281071a305ef96512d83e97119bb16f31410068285e102063aa0d957ab3efd8b687",
-   "claim_receipt_hash": "97641c41c255cd019b43f54a81dddc0b772756f7927a03e0cf041f3cc4eceddd",
-   "observation_scope": [
+   "attestation": "5501e8542ae3c21ba2cd7dcb5cd26924ee4d3aef3d2c006ea01a86cd1a2a1c9e0b55157ba54e031899ea5c3d9c47eb77036a83ddb8140f3ae304a038066f1ef2",
+   "claim_receipt_hash": "33fb0ebf3542a3b15cca5dee0c71bc320476505a25029c93080f06f38ca0c3ae",
+   "observed_scope": [
     "criteria:R1",
     "evidence:full"
    ],

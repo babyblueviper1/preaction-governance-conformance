@@ -3,14 +3,14 @@
   {
    "accepted_at": 2000,
    "attempt_id": "dcd50389021a147b0cb328659aabe5686d2c307646d77e3bc5ef51da33d2f0cc",
-   "attestation": "0d0ab2de69829c000d566c74070037fb3586dcc3347507be0a18a7885d70073be7b5c1415a199ef1110c2163509a625087cc42950b43a4a0445a0f0a8a82722a",
+   "attestation": "4184d5d127f5d192557f4c61c956ca8d2d599825332c663bf010d2c4f165377745dc0143cc5e83d4dd3dfd3c3e399e7125f0aac64deb02bf45ed57bd63df7865",
    "ordering_proof": "43c4fbf24e971827cc4cbc13ca662108679fbdbdae29986b7b2025dcafc26633",
    "provenance_profile": "pm003-bip340-v0",
    "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
    "run_id": "2ecf3d3da92c8019f7c8f6a0f51f99a31709fc5178dbaf425ea232730edc5e5c"
   }
  ],
- "description": "A 'claim' attested by the requester key is submission evidence, not admission (C18).",
+ "description": "The ordering log is well formed but its checkpoint is attested by the provider, not the manifest-pinned ordering anchor -> the order is the executor side's own assertion (C16) -> cannot_establish.",
  "dispute_id": "4314b61350474bce87f80fb7b5f72325d11eabe1ca793c0dd2982ccfc9daade3",
  "dispute_state": {
   "committed_at": 1000,
@@ -21,9 +21,9 @@
  "expect": {
   "eligible": false,
   "run_verdict": "UNRESOLVED",
-  "state": "AUTHORIZED",
+  "state": "TERMINAL_RESULT",
   "terms": {
-   "authorized_execution": "false"
+   "authorized_execution": "cannot_establish"
   }
  },
  "manifest": {
@@ -69,10 +69,10 @@
   "spec": "procedure-manifest",
   "version": "0.0.3"
  },
- "name": "N1-claim-signed-by-requester",
+ "name": "N2-checkpoint-not-by-anchor",
  "ordering_log": {
   "checkpoint": {
-   "attestation": "61012dbbb3e9d96c227e90ca4eccbbbcf54f645b51f92cd9b56a7ecc5b55ba667665011ea705ce08580e07958252d1231d2f528d4b3f6217a843c52ffd0574b3",
+   "attestation": "c2cba3fdccf2ad5cfc07780bfbf4ea62c926eec48b4935b220b36bc14f1451637a078861c804132d2832f302a55be02d2b116c0a04015e501dbdd3e9deb1151b",
    "head": "43c4fbf24e971827cc4cbc13ca662108679fbdbdae29986b7b2025dcafc26633",
    "seq": 1
   },
@@ -96,8 +96,8 @@
  "submission_commitments": [],
  "terminals": [
   {
-   "attestation": "54291e0634da3cc49c9556bd92b72dc21e02e1430ee90ab8d6f6b5547f64a483ed2b3d251454e8030aea0673b0e74db64935a35a3839324beb163c12dc6408c3",
-   "claim_receipt_hash": "2fb691f2d8c163c5a9ec86e500399e2be8c713066cc119919ad93c817308a963",
+   "attestation": "3ac78c36d1357ed6934b37c2c1ad32195ac3779a23e7b9fa7f6b85c0fffeba97aaebc92eda699d77e2efbc36a671d931598076049af6e19c1726577583e783de",
+   "claim_receipt_hash": "81b0031c0d0c106b7ff2661f989c6c4dcf1c13037269c9f53ba91958da2f6456",
    "observed_scope": [
     "criteria:R1",
     "evidence:full"
