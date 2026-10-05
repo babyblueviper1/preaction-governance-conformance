@@ -1,0 +1,531 @@
+{
+ "contract_sha256": {
+  "C": "3943cabb9b2b2a239048eaba48c45a4723405cee7e2313335f2f9c771a0a70ec",
+  "C_NOPIN": "e71df42331829d6620463e585ee99fbefd5b4de517b32474e1e837b076134d9d",
+  "C_OTHER": "6bcd7a89bad68fc68615cb00269034719d7b5b661bfc8cd64c433d9235fb4dee"
+ },
+ "contracts": {
+  "C": {
+   "agreed_at": "2026-09-26T07:23:31Z",
+   "bond": null,
+   "contract_id": "8f113a3ea64a109085de8a83f47121eb",
+   "does_not_establish": [
+    "that HS enforced any of this at runtime; the grant is proved against the records afterwards, never imposed during the walk",
+    "that the contractor obeyed the grant, only that its recorded acts match or deviate from it under a2a-settlement-v1.6",
+    "that HS judges liability or fault; the verdict is a function anyone recomputes from the contract, the records and the headers",
+    "that a prohibited action was impossible, only that performing one is a provable deviation",
+    "that this is a legal contract or determines legal responsibility",
+    "that money moved or is owed; consideration is none and there is no bond",
+    "that the walk result the contractor publishes is correct, only that it is the record the contractor signed",
+    "that either party's key was not stolen"
+   ],
+   "establishes": [
+    "that both parties signed these grant bytes at the stated time",
+    "that the contractor named, by sha256 of these bytes, exactly which actions it is authorized to perform on the principal's a2a endpoint and which it is prohibited from",
+    "that any execution, walk record, settlement or delegation claiming these terms must carry contract_sha256 of these bytes, or it does not claim them"
+   ],
+   "expiry": null,
+   "grant": {
+    "approval_policy": {
+     "allow_unscoped": false,
+     "approvers": [
+      {
+       "actions": [
+        "emit_witness"
+       ],
+       "name": "invinoveritas",
+       "public_key_ed25519_b64": "z25lxvF3kIGkAVLWriJmg076/SBvdsTMbsIk/qECigc="
+      }
+     ]
+    },
+    "authorized_actions": [
+     "read",
+     "observe",
+     "emit_witness"
+    ],
+    "conditional": [
+     {
+      "action": "emit_witness",
+      "requires": "approver"
+     }
+    ],
+    "data_access": [
+     "public_endpoint"
+    ],
+    "delegation": {
+     "allowed": []
+    },
+    "expiry_height": 980000,
+    "finality": {
+     "depth": 6,
+     "max_target_bits": "17080000"
+    },
+    "max_hops": 1,
+    "privacy": "public_record",
+    "prohibited_actions": [
+     "payment",
+     "delete",
+     "redelegate",
+     "send_pii"
+    ],
+    "revocation": {
+     "effective_at": "anchor"
+    },
+    "witnesses": []
+   },
+   "liability_boundary": [
+    "contractor: the signed walk record, its content-addressed serving at /record, and its filing at the intake",
+    "principal: the intake, the ledger entry, the anchor, and the a2a endpoint being walked"
+   ],
+   "lower_bound": {
+    "hash": "00000000000000000001854f11c4d247dba6f61a9e9742a225c78ab328220ff0",
+    "height": 968650,
+    "kind": "bitcoin_block"
+   },
+   "nonce": "eb807d54fdd10b6a24462fe80542131d",
+   "parent_contract": null,
+   "parties": [
+    {
+     "agent_card": "https://gate.horizonshield.dev/.well-known/agent-card.json",
+     "agent_card_sha256": "769df24571c1a0323f6c70cde07fc35854a90010789fb32f24e8c63434dcff5f",
+     "domain": "horizonshield.dev",
+     "key_url": "https://gate.horizonshield.dev/keys/agreement.json",
+     "public_key_ed25519_b64": "Q8DJu/tXWNNzsrmIkIUm4r2cR4MYaXNf1E2j+oZi+oo=",
+     "role": "principal"
+    },
+    {
+     "agent_card": "https://api.babyblueviper.com/.well-known/agent-card.json",
+     "agent_card_sha256": "5306018339599f3a8c7f6c932487b86f4c8d88a9766db3a1c2cec2f832816dac",
+     "domain": "api.babyblueviper.com",
+     "key_url": "https://api.babyblueviper.com/keys/agreement.json",
+     "public_key_ed25519_b64": "poTpqz0G34FMkZ1okV/fd5Dcvq7mCO4v1+qOgqBsje4=",
+     "role": "contractor"
+    }
+   ],
+   "requirements": {
+    "evidence": "nenrin_required",
+    "recovery": "n/a"
+   },
+   "schema": "a2a-contract-v0",
+   "selection_provenance": {
+    "offer_sha256": "42bfa20d8e498740d16c15e1facaac7c6f0b1a7b1cb1f0c7d157ee4785ea1f57",
+    "policy_anchor": {
+     "bitcoin_block": 968542,
+     "ledger_n": 56
+    },
+    "policy_sha256": "c92bf8868a5793e86a93c3351bed00eed7f853eff54437dbcc2e4242576b75c3",
+    "sieve_sha256": "08b735c666538e588d1f651b757194cfa0f826804b85090df73bbadac87cb900"
+   },
+   "settlement": {
+    "layer": "a2a-settlement-v1.6",
+    "note": "settle under a2a-settlement-v1.6 or later: records and approvals bound by contract_sha256, grant key door, delegation narrowed on every axis (Issue #25)",
+    "spine": "a2a-spine-verify-v0"
+   },
+   "task": {
+    "a2a_task_id": null,
+    "description": "HORIZON SHIELD (principal) engages api.babyblueviper.com (contractor) for a second conduct walk of gate.horizonshield.dev/a2a and a witness record, under the grant in this contract. The decision to enter was made by a rule sealed before the offer existed (ledger entry 56); its record is bound in payload.",
+    "payload": "witness walk 2 under the sealed rule; a2a-sieve-v0:08b735c666538e588d1f651b757194cfa0f826804b85090df73bbadac87cb900",
+    "payload_digest": "05e6afe19e44e0faed09110869e9d53dcc5829e0f022f61f74232b2deefd5690",
+    "purpose": "conduct_walk_witness",
+    "subject": "gate.horizonshield.dev/a2a"
+   }
+  },
+  "C_NOPIN": {
+   "agreed_at": "2026-09-26T07:23:31Z",
+   "bond": null,
+   "contract_id": "8f113a3ea64a109085de8a83f47121eb",
+   "does_not_establish": [
+    "that HS enforced any of this at runtime; the grant is proved against the records afterwards, never imposed during the walk",
+    "that the contractor obeyed the grant, only that its recorded acts match or deviate from it under a2a-settlement-v1.6",
+    "that HS judges liability or fault; the verdict is a function anyone recomputes from the contract, the records and the headers",
+    "that a prohibited action was impossible, only that performing one is a provable deviation",
+    "that this is a legal contract or determines legal responsibility",
+    "that money moved or is owed; consideration is none and there is no bond",
+    "that the walk result the contractor publishes is correct, only that it is the record the contractor signed",
+    "that either party's key was not stolen"
+   ],
+   "establishes": [
+    "that both parties signed these grant bytes at the stated time",
+    "that the contractor named, by sha256 of these bytes, exactly which actions it is authorized to perform on the principal's a2a endpoint and which it is prohibited from",
+    "that any execution, walk record, settlement or delegation claiming these terms must carry contract_sha256 of these bytes, or it does not claim them"
+   ],
+   "expiry": null,
+   "grant": {
+    "approval_policy": {
+     "allow_unscoped": false
+    },
+    "authorized_actions": [
+     "read",
+     "observe",
+     "emit_witness"
+    ],
+    "conditional": [
+     {
+      "action": "emit_witness",
+      "requires": "approver"
+     }
+    ],
+    "data_access": [
+     "public_endpoint"
+    ],
+    "delegation": {
+     "allowed": []
+    },
+    "expiry_height": 980000,
+    "finality": {
+     "depth": 6,
+     "max_target_bits": "17080000"
+    },
+    "max_hops": 1,
+    "privacy": "public_record",
+    "prohibited_actions": [
+     "payment",
+     "delete",
+     "redelegate",
+     "send_pii"
+    ],
+    "revocation": {
+     "effective_at": "anchor"
+    },
+    "witnesses": []
+   },
+   "liability_boundary": [
+    "contractor: the signed walk record, its content-addressed serving at /record, and its filing at the intake",
+    "principal: the intake, the ledger entry, the anchor, and the a2a endpoint being walked"
+   ],
+   "lower_bound": {
+    "hash": "00000000000000000001854f11c4d247dba6f61a9e9742a225c78ab328220ff0",
+    "height": 968650,
+    "kind": "bitcoin_block"
+   },
+   "nonce": "eb807d54fdd10b6a24462fe80542131d",
+   "parent_contract": null,
+   "parties": [
+    {
+     "agent_card": "https://gate.horizonshield.dev/.well-known/agent-card.json",
+     "agent_card_sha256": "769df24571c1a0323f6c70cde07fc35854a90010789fb32f24e8c63434dcff5f",
+     "domain": "horizonshield.dev",
+     "key_url": "https://gate.horizonshield.dev/keys/agreement.json",
+     "public_key_ed25519_b64": "Q8DJu/tXWNNzsrmIkIUm4r2cR4MYaXNf1E2j+oZi+oo=",
+     "role": "principal"
+    },
+    {
+     "agent_card": "https://api.babyblueviper.com/.well-known/agent-card.json",
+     "agent_card_sha256": "5306018339599f3a8c7f6c932487b86f4c8d88a9766db3a1c2cec2f832816dac",
+     "domain": "api.babyblueviper.com",
+     "key_url": "https://api.babyblueviper.com/keys/agreement.json",
+     "public_key_ed25519_b64": "poTpqz0G34FMkZ1okV/fd5Dcvq7mCO4v1+qOgqBsje4=",
+     "role": "contractor"
+    }
+   ],
+   "requirements": {
+    "evidence": "nenrin_required",
+    "recovery": "n/a"
+   },
+   "schema": "a2a-contract-v0",
+   "selection_provenance": {
+    "offer_sha256": "42bfa20d8e498740d16c15e1facaac7c6f0b1a7b1cb1f0c7d157ee4785ea1f57",
+    "policy_anchor": {
+     "bitcoin_block": 968542,
+     "ledger_n": 56
+    },
+    "policy_sha256": "c92bf8868a5793e86a93c3351bed00eed7f853eff54437dbcc2e4242576b75c3",
+    "sieve_sha256": "08b735c666538e588d1f651b757194cfa0f826804b85090df73bbadac87cb900"
+   },
+   "settlement": {
+    "layer": "a2a-settlement-v1.6",
+    "note": "settle under a2a-settlement-v1.6 or later: records and approvals bound by contract_sha256, grant key door, delegation narrowed on every axis (Issue #25)",
+    "spine": "a2a-spine-verify-v0"
+   },
+   "task": {
+    "a2a_task_id": null,
+    "description": "HORIZON SHIELD (principal) engages api.babyblueviper.com (contractor) for a second conduct walk of gate.horizonshield.dev/a2a and a witness record, under the grant in this contract. The decision to enter was made by a rule sealed before the offer existed (ledger entry 56); its record is bound in payload.",
+    "payload": "witness walk 2 under the sealed rule; a2a-sieve-v0:08b735c666538e588d1f651b757194cfa0f826804b85090df73bbadac87cb900",
+    "payload_digest": "05e6afe19e44e0faed09110869e9d53dcc5829e0f022f61f74232b2deefd5690",
+    "purpose": "conduct_walk_witness",
+    "subject": "gate.horizonshield.dev/a2a"
+   }
+  },
+  "C_OTHER": {
+   "agreed_at": "2026-09-26T07:23:31Z",
+   "bond": null,
+   "contract_id": "8f113a3ea64a109085de8a83f47121eb",
+   "does_not_establish": [
+    "that HS enforced any of this at runtime; the grant is proved against the records afterwards, never imposed during the walk",
+    "that the contractor obeyed the grant, only that its recorded acts match or deviate from it under a2a-settlement-v1.6",
+    "that HS judges liability or fault; the verdict is a function anyone recomputes from the contract, the records and the headers",
+    "that a prohibited action was impossible, only that performing one is a provable deviation",
+    "that this is a legal contract or determines legal responsibility",
+    "that money moved or is owed; consideration is none and there is no bond",
+    "that the walk result the contractor publishes is correct, only that it is the record the contractor signed",
+    "that either party's key was not stolen"
+   ],
+   "establishes": [
+    "that both parties signed these grant bytes at the stated time",
+    "that the contractor named, by sha256 of these bytes, exactly which actions it is authorized to perform on the principal's a2a endpoint and which it is prohibited from",
+    "that any execution, walk record, settlement or delegation claiming these terms must carry contract_sha256 of these bytes, or it does not claim them"
+   ],
+   "expiry": null,
+   "grant": {
+    "approval_policy": {
+     "allow_unscoped": false,
+     "approvers": [
+      {
+       "actions": [
+        "emit_witness"
+       ],
+       "name": "invinoveritas",
+       "public_key_ed25519_b64": "z25lxvF3kIGkAVLWriJmg076/SBvdsTMbsIk/qECigc="
+      }
+     ]
+    },
+    "authorized_actions": [
+     "read",
+     "observe",
+     "emit_witness"
+    ],
+    "conditional": [
+     {
+      "action": "emit_witness",
+      "requires": "approver"
+     }
+    ],
+    "data_access": [
+     "public_endpoint"
+    ],
+    "delegation": {
+     "allowed": []
+    },
+    "expiry_height": 980001,
+    "finality": {
+     "depth": 6,
+     "max_target_bits": "17080000"
+    },
+    "max_hops": 1,
+    "privacy": "public_record",
+    "prohibited_actions": [
+     "payment",
+     "delete",
+     "redelegate",
+     "send_pii"
+    ],
+    "revocation": {
+     "effective_at": "anchor"
+    },
+    "witnesses": []
+   },
+   "liability_boundary": [
+    "contractor: the signed walk record, its content-addressed serving at /record, and its filing at the intake",
+    "principal: the intake, the ledger entry, the anchor, and the a2a endpoint being walked"
+   ],
+   "lower_bound": {
+    "hash": "00000000000000000001854f11c4d247dba6f61a9e9742a225c78ab328220ff0",
+    "height": 968650,
+    "kind": "bitcoin_block"
+   },
+   "nonce": "eb807d54fdd10b6a24462fe80542131d",
+   "parent_contract": null,
+   "parties": [
+    {
+     "agent_card": "https://gate.horizonshield.dev/.well-known/agent-card.json",
+     "agent_card_sha256": "769df24571c1a0323f6c70cde07fc35854a90010789fb32f24e8c63434dcff5f",
+     "domain": "horizonshield.dev",
+     "key_url": "https://gate.horizonshield.dev/keys/agreement.json",
+     "public_key_ed25519_b64": "Q8DJu/tXWNNzsrmIkIUm4r2cR4MYaXNf1E2j+oZi+oo=",
+     "role": "principal"
+    },
+    {
+     "agent_card": "https://api.babyblueviper.com/.well-known/agent-card.json",
+     "agent_card_sha256": "5306018339599f3a8c7f6c932487b86f4c8d88a9766db3a1c2cec2f832816dac",
+     "domain": "api.babyblueviper.com",
+     "key_url": "https://api.babyblueviper.com/keys/agreement.json",
+     "public_key_ed25519_b64": "poTpqz0G34FMkZ1okV/fd5Dcvq7mCO4v1+qOgqBsje4=",
+     "role": "contractor"
+    }
+   ],
+   "requirements": {
+    "evidence": "nenrin_required",
+    "recovery": "n/a"
+   },
+   "schema": "a2a-contract-v0",
+   "selection_provenance": {
+    "offer_sha256": "42bfa20d8e498740d16c15e1facaac7c6f0b1a7b1cb1f0c7d157ee4785ea1f57",
+    "policy_anchor": {
+     "bitcoin_block": 968542,
+     "ledger_n": 56
+    },
+    "policy_sha256": "c92bf8868a5793e86a93c3351bed00eed7f853eff54437dbcc2e4242576b75c3",
+    "sieve_sha256": "08b735c666538e588d1f651b757194cfa0f826804b85090df73bbadac87cb900"
+   },
+   "settlement": {
+    "layer": "a2a-settlement-v1.6",
+    "note": "settle under a2a-settlement-v1.6 or later: records and approvals bound by contract_sha256, grant key door, delegation narrowed on every axis (Issue #25)",
+    "spine": "a2a-spine-verify-v0"
+   },
+   "task": {
+    "a2a_task_id": null,
+    "description": "HORIZON SHIELD (principal) engages api.babyblueviper.com (contractor) for a second conduct walk of gate.horizonshield.dev/a2a and a witness record, under the grant in this contract. The decision to enter was made by a rule sealed before the offer existed (ledger entry 56); its record is bound in payload.",
+    "payload": "witness walk 2 under the sealed rule; a2a-sieve-v0:08b735c666538e588d1f651b757194cfa0f826804b85090df73bbadac87cb900",
+    "payload_digest": "05e6afe19e44e0faed09110869e9d53dcc5829e0f022f61f74232b2deefd5690",
+    "purpose": "conduct_walk_witness",
+    "subject": "gate.horizonshield.dev/a2a"
+   }
+  }
+ },
+ "description": "a2a-approval-v2 (third-party approver) vectors for MUSUBI settle v1.10, horizon-shield#29. Pair: v2-valid-approval / v2-forged-unpinned-key. CC0-1.0 (vectors); base contract MIT (c) The HORIZONs Co., Ltd.",
+ "test_keys": {
+  "approver_public_key_ed25519_b64": "z25lxvF3kIGkAVLWriJmg076/SBvdsTMbsIk/qECigc=",
+  "forger_public_key_ed25519_b64": "6+cS73zdVO2k35ncnl9tiB9GUioOWg7QRlrwpFbpzvw=",
+  "seed_rule": "sha256(label), labels in build_vectors.py"
+ },
+ "vectors": [
+  {
+   "approval": {
+    "action": "emit_witness",
+    "approver": "invinoveritas",
+    "by": "approver",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sig_b64": "fhr6jY63t9RyCPbv4SN309KewBuIC9ubCGSTYNWtPO/Rmzf3ZoqdwV8vrdN1rKxQC6WA+ADMR5axJCtCvY+2AQ==",
+    "single_use": true,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": null,
+    "result": "approved"
+   },
+   "id": "v2-valid-approval",
+   "what": "signed by the pinned approver over this contract's sha256 and this action"
+  },
+  {
+   "approval": {
+    "action": "emit_witness",
+    "approver": "invinoveritas",
+    "by": "approver",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sig_b64": "sE0fkiCmfiOTXjsy0N0wl2M7ESBWTLV9OlR9qC9YgZL5JH8Z1sDgGeGU50fHR95YfQbCQihQZr8K+CstnokADA==",
+    "single_use": true,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "bad_signature",
+    "result": "approval_unverified"
+   },
+   "id": "v2-forged-unpinned-key",
+   "what": "same fields and approver name, signed by a key the contract does not pin"
+  },
+  {
+   "approval": {
+    "action": "emit_witness",
+    "approver": "invinoveritas",
+    "by": "approver",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sig_b64": "VhcIL4CAeSqxYxp+7FhrWErHmpN2PYxQ9k332npyAEquVErW2vDeV7SQ8SQGNGI7ZYKP25VtbR2Kn2XA+UJvAQ==",
+    "single_use": true,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "bad_signature",
+    "result": "approval_unverified"
+   },
+   "id": "v2-replayed-to-other-contract",
+   "what": "a genuine approval for a contract with different terms (expiry_height+1), presented on this one"
+  },
+  {
+   "approval": {
+    "action": "emit_witness",
+    "approver": "invinoveritas",
+    "by": "approver",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sig_b64": "fhr6jY63t9RyCPbv4SN309KewBuIC9ubCGSTYNWtPO/Rmzf3ZoqdwV8vrdN1rKxQC6WA+ADMR5axJCtCvY+2AQ==",
+    "single_use": false,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "bad_signature",
+    "result": "approval_unverified"
+   },
+   "id": "v2-tampered-after-signing",
+   "what": "single_use flipped after the approver signed"
+  },
+  {
+   "approval": {
+    "action": "payment",
+    "approver": "invinoveritas",
+    "by": "approver",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sig_b64": "QrFPTF8LUdym4fntmz83bIyphus1VJhs7h1EjKMs3lSDioH4aQDROzq/tjKWXUoiop2Mvwbt0zRZzwAfyBtBCA==",
+    "single_use": true,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "action_not_permitted_for_approver",
+    "result": "approval_unverified"
+   },
+   "id": "v2-action-not-permitted",
+   "what": "the pinned approver may approve emit_witness only"
+  },
+  {
+   "approval": {
+    "action": "emit_witness",
+    "approver": "someone-else",
+    "by": "approver",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sig_b64": "fhr6jY63t9RyCPbv4SN309KewBuIC9ubCGSTYNWtPO/Rmzf3ZoqdwV8vrdN1rKxQC6WA+ADMR5axJCtCvY+2AQ==",
+    "single_use": true,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "approver_not_pinned",
+    "result": "approval_unverified"
+   },
+   "id": "v2-approver-not-pinned",
+   "what": ""
+  },
+  {
+   "approval": {
+    "action": "emit_witness"
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "not_an_approver_approval",
+    "result": "approval_unverified"
+   },
+   "id": "v2-bare-action-string",
+   "what": "the v0 shape today's settle counts by action name alone (contract_v0.py L645)"
+  },
+  {
+   "approval": {
+    "action": "emit_witness",
+    "approver": "invinoveritas",
+    "by": "approver",
+    "nonce": "xyz",
+    "sig_b64": "fhr6jY63t9RyCPbv4SN309KewBuIC9ubCGSTYNWtPO/Rmzf3ZoqdwV8vrdN1rKxQC6WA+ADMR5axJCtCvY+2AQ==",
+    "single_use": true,
+    "valid_until_height": 980000
+   },
+   "contract": "C",
+   "expect": {
+    "reason": "malformed",
+    "result": "approval_unverified"
+   },
+   "id": "v2-malformed-nonce",
+   "what": ""
+  },
+  {
+   "approval": null,
+   "contract": "C_NOPIN",
+   "expect": {
+    "reason": null,
+    "result": "approval_self_asserted"
+   },
+   "id": "v2-no-approver-pinned",
+   "what": "contract pins no approver: settle keeps today's reading but reports approval_self_asserted instead of passing silently"
+  }
+ ]
+}
