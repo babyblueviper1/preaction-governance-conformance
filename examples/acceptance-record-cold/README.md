@@ -45,3 +45,7 @@ unchanged: `key_unresolved` versus `signature_invalid`, with the completeness in
 - **Record binding.** Shodai asked for the record-binding condition (A8), and it is now in.
 - **Signed `not_responded`.** Shodai confirmed reading A2: `not_responded` is the relying party's report, so a signed one is rejected.
 - **`acceptance_member_invalid`.** It works as is; -03 may prefer splitting it.
+
+## Changes between versions
+
+**`816afa9` (22 vectors) -> `646588c` (25 vectors).** Added: `acc-record-digest-matches-second-receipt`, `acc-record-digest-mismatch-replayed`, `acc-record-digest-absent` (the `acceptance_record_digest_mismatch` condition, tsc#4). Removed: none. No `expect` changed. **The input bytes of all 22 existing vectors did change:** every `accepted_record` gained `record_id`, and the acceptances now sign a body that includes `accepted_record_sha256`, so their payloads and signatures are new. A runner pinned to `816afa9` is unaffected; comparing the 22 shared cases across the two commits shows 22 byte differences with identical expectations. (Precision from @Tetsurohhori's vector-by-vector diff, tsc#4.)
