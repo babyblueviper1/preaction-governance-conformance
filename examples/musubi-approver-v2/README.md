@@ -1,9 +1,11 @@
 # MUSUBI third-party approver (a2a-approval-v2): fields + vectors for settle v1.10
 
 This is the approver path for MUSUBI conditional actions, built at Toshikatsu Oga's request
-([horizon-shield#29](https://github.com/ogasurfproject-jpg/horizon-shield/issues/29)). Today's settle counts an approval as soon as an entry
-with the right `action` string is present (`contract_v0.py` L641-655 and v1-v1.9, per Oga). This file set pins who may approve and verifies it
-offline. Settle stays a pure recompute.
+([horizon-shield#29](https://github.com/ogasurfproject-jpg/horizon-shield/issues/29)). In settle v0 to v1.3 (`contract_v0.py` L641-655), an approval counted as
+soon as an entry with the right `action` string was present. From v1.4 an approval needs the principal's signature, and from v1.6 that signature
+covers a2a-approval-v2 bytes naming the terms by `contract_sha256` (corrected per Oga, horizon-shield#29, 2026-10-05). Until v1.10 the only key
+that could approve was a party's. This file set pins a third-party approver and verifies it offline. Settle v1.10
+([53bece9f](https://github.com/ogasurfproject-jpg/horizon-shield/commit/53bece9f)) runs these nine vectors 9/9 and vendors `verify_approval_v2.py`. Settle stays a pure recompute.
 
 ## Contract side (both parties sign it)
 
