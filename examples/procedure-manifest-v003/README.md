@@ -63,7 +63,7 @@ the receipt binds that commitment by hash (`submission_commitment_ref`); its `ar
   build against whatever encoding lands upstream.
 - One author wrote the checker and the fixtures. The mutation check shows every rule is load-bearing, but a second, independent
   checker running these vectors is what would make them evidence.
-- The real receipts' OpenTimestamps anchoring is not checked by `check.py`. It can now be checked by anyone, without our database: `GET https://api.babyblueviper.com/admission-chain/inclusion/<receipt_hash>` returns the Merkle path and the `.ots` proof (live since 2026-10-05). The registry entry for this profile, with today's coverage stated honestly and the v2 build that closes it, is [PROFILE-invinoveritas-admission-chain.md](PROFILE-invinoveritas-admission-chain.md).
+- The real receipts' OpenTimestamps anchoring is not checked by `check.py`. It can now be checked by anyone, without our database: `GET https://api.babyblueviper.com/admission-chain/inclusion/<receipt_hash>` returns the Merkle path and the `.ots` proof (live since 2026-10-05). It is served only for receipts that are alone in their checkpoint; for a shared checkpoint it returns 409, because the path would expose other callers' receipt hashes. The registry entry for this profile, with today's coverage stated honestly and the v2 build that closes it, is [PROFILE-invinoveritas-admission-chain.md](PROFILE-invinoveritas-admission-chain.md).
 
 ## Design note: slot authorization on the live `/review` profile (not built yet)
 
