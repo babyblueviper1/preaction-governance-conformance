@@ -7,8 +7,8 @@ someone else issued. The confirming party's key goes through draft-krausz-verifi
 unchanged: `key_unresolved` versus `signature_invalid`, with the completeness input.
 
 - Checker: [`tools/acceptance_record_check.py`](../../tools/acceptance_record_check.py). Stdlib only; Ed25519 verification is `tools/_ed25519.py`.
-- Vectors: `vectors.json` (22), CC0-1.0. Built by `build_vectors.py`, which uses fixed seeds and deterministic Ed25519, so it regenerates byte-identically. Every expectation was written by hand from the condition table, not read back from the checker.
-- Run: `python3 run_vectors.py` reports 22/22. Condition lists compare as sets.
+- Vectors: `vectors.json` (25), CC0-1.0. Built by `build_vectors.py`, which uses fixed seeds and deterministic Ed25519, so it regenerates byte-identically. Every expectation was written by hand from the condition table, not read back from the checker.
+- Run: `python3 run_vectors.py` reports 25/25. Condition lists compare as sets.
 
 ## Result tokens
 
@@ -37,11 +37,11 @@ unchanged: `key_unresolved` versus `signature_invalid`, with the completeness in
   - the confirming party equals the issuer;
   - delegation material binds the signing kid to the issuer.
 - **A6.** Authority resolves if and only if the delegation material (`{party: [kid, ...]}`) lists the signing kid under the confirming party. The comment does not name a delegation format.
+- **A8.** `acceptance_record_digest_mismatch` (added 2026-10-05 at Shodai's request): the acceptance carries `accepted_record_sha256`. That is sha256 over the RFC 8785 (JCS) bytes of the record it accepts. The relying party recomputes it over the record it holds. A mismatch is malformed, and an absent member is `acceptance_member_invalid`. Vector pair: `acc-record-digest-matches-second-receipt` (verified) and `acc-record-digest-mismatch-replayed`. The second is the same acceptance presented against a different receipt with identical terms and outcome digests.
 - **A7.** `acceptance_precedes_outcome` is strict. An acceptance at the outcome's own instant does not precede it (vector `acc-same-instant-as-outcome-ok`).
 
-## Open question for the WG
+## Resolved questions (tsc#4, 2026-10-05)
 
-The acceptance binds the terms and outcome digests, but not *which* record it accepts. Two records with the same
-terms and the same outcome digest (for example, a repeated purchase of the same deliverable) can each be matched
-by one acceptance. Should the acceptance carry a digest of the accepted record itself, with a condition such as
-`acceptance_record_digest_mismatch`? If so, the checker and a vector pair are a small addition.
+- **Record binding.** Shodai asked for the record-binding condition (A8), and it is now in.
+- **Signed `not_responded`.** Shodai confirmed reading A2: `not_responded` is the relying party's report, so a signed one is rejected.
+- **`acceptance_member_invalid`.** It works as is; -03 may prefer splitting it.

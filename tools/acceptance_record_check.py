@@ -25,6 +25,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import _ed25519  # noqa: E402
+import _rfc8785  # noqa: E402
 
 VERSION = "acceptance-record-v0"          # READING A1: provisional; the comment names no version member
 SIGNED_DISPOSITIONS = ("accepted", "rejected", "disputed")
@@ -43,7 +44,14 @@ CONDITIONS = {
     "acceptance_precedes_outcome": MALFORMED,
     "acceptance_authority_unresolved": UNKNOWN,
     "acceptance_member_invalid": MALFORMED,     # PROPOSED (A3): a required member is absent or ill-typed
+    "acceptance_record_digest_mismatch": MALFORMED,   # added 2026-10-05 on Shodai's request (tsc#4): binds WHICH record is accepted
 }
+
+
+def record_digest(rec: dict) -> str:
+    """READING A8: sha256 over the RFC 8785 (JCS) bytes of the accepted record as the relying party holds it."""
+    import hashlib
+    return hashlib.sha256(_rfc8785.jcs(rec).encode("utf-8")).hexdigest()
 
 
 def _valid_ts(s):
@@ -136,7 +144,7 @@ def check(case: dict) -> dict:
         bad.add("confirming_party")
     if p.get("disposition") not in SIGNED_DISPOSITIONS:
         bad.add("disposition")                      # READING A2: a signed 'not_responded' is self-contradictory
-    for k in ("terms_sha256", "outcome_sha256"):
+    for k in ("terms_sha256", "outcome_sha256", "accepted_record_sha256"):
         if not (isinstance(p.get(k), str) and HEX64.match(p[k])):
             bad.add(k)
     if not _valid_ts(p.get("accepted_at")):
@@ -157,6 +165,8 @@ def check(case: dict) -> dict:
         same_party = (isinstance(cp, str) and cp == rec["issuer"]) or rec["issuer"] in _party_of_kid(kid, case.get("delegation"))
         if same_key or same_party:
             conds.append("acceptance_signer_is_issuer")
+        if "accepted_record_sha256" not in bad and p["accepted_record_sha256"] != record_digest(rec):
+            conds.append("acceptance_record_digest_mismatch")
         if "terms_sha256" not in bad and p["terms_sha256"] != rec["terms_sha256"]:
             conds.append("acceptance_terms_digest_mismatch")
         if "outcome_sha256" not in bad and p["outcome_sha256"] != rec["outcome_sha256"]:

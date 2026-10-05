@@ -4,15 +4,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "-cii7G-2U0SLDpEYXWoZWs84eQu40Um9qnSD8HpQfQZF5hrmYgvTSbVLXKTNDMZo5WVZZIqBZToDATv2fNq8Dw"
+     "signature": "Ju0TPXCrekbdZkPgf2VyhzPdw5mPVn5Cx8dZJ2XMJ8OpRhvfc0k6prT0Kt7Ce-CLFGhEhZmxvcj03aGUehT0AA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -58,15 +59,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoicmVqZWN0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJyZWplY3RlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "bltYWK9b5sdWawWpbsF1a-IvNzzAm56O8S2YOtrMTrWwdlYjXfnPybiQz95e_BwqdiJzI-R4ictyWfEadSm7CA"
+     "signature": "HXlCxJB7SAJoC1WGPKTuDOGKoirShDecAAUzMGxqmQKpg_L5e709qd9ejG8Rgd-RS6N0flFmU8zFs5H-t2B-Cg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -112,15 +114,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiZGlzcHV0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJkaXNwdXRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "KqUZNpXU7NLUjLJ-Yx47xse3zs0dBgrmbE3p3zjUPuPevoMg4J3XSIEpp56oDNS-hzScEawD0xldaR4gtIzbDw"
+     "signature": "q2fFRRghR6SXfKEh6_qdJuQBzbBN8VVwIem1MG42cg1RQEmVVC2ZbbxQrSmEnRrzJQht2wqEAux8BHhBBmjpBw"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -170,6 +173,7 @@
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     }
    },
@@ -184,15 +188,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJkaXNwb3NpdGlvbiI6ImFjY2VwdGVkIiwib3V0Y29tZV9zaGEyNTYiOiIxYzI3M2NkYWJjODcyYTM2MTA1NzA5OTAxOGIwOWZlNDc4M2ExZTE2ZTY1YWNhNWQwMTU1NjdiNzc5ODcyZDlkIiwidGVybXNfc2hhMjU2IjoiZDI0YTUyNjQ2Y2FjYTY4ZmY3NGZlMjIzNGViODFjZWE2NTg4ZTcxNjZmYzE5NWQ1NDk2MWVjN2MwYTZhNjUzNSJ9",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "6KwiQT6zHJnyMI25WDNSsP9tVpiNF2otLSSARSY1S1ym7h1WXUTlwTfCPpyBlXsgczIlHNbOJ6k2fRF67ROaAQ"
+     "signature": "OL4Xgtz44LpBCA6ro5_jXKD37u84Md3XiwD2MH45DTl7ya_JRB39OcxRNM1vAkeMsQlMHs3qKspgXnAgO_YtAQ"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -239,15 +244,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6IiIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiIiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "auvcNR0IMb8NQ7sTue_6Qw3_reUAPIpSm6I9lvNz6kycV79yPxaHdUDXEQM_hiQH1TBNWWB-W97pm-_ovyMLDg"
+     "signature": "jO4C25iTcjjG6ddhj8YfqDdusT5gNJcds-BANl1IgZgZnt6iaHPJV97vtyvIVfQMkg0BcM_WpnmXmWVRIBGsBw"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -294,15 +300,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6Imlzcy0xIn0",
-     "signature": "fwWu4Cqp9SGMQ1X6-Qt6AJZ0Tp-v5bfzs3kUsb-ABLimSdBQOi9JZrIPBv3qoQGAUFozPHvKexjOX-hWc86eDg"
+     "signature": "1GpOle9gK1KWaWZOTFsG-znSqGVYX0UwhRNlOWPF3sddvFkFIDKpdDDMPks6jWGlTs_Gxh69srn4pYgGZsQhBA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -349,15 +356,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLXJldXNlZCJ9",
-     "signature": "EkLW_nt5PIkQ7rbEQx71PCFKIrDQY43CwiZnYOwerVXopbt0g-qtujBk44CTWhun7AQsCEm_OoSK6sBidmxMDQ"
+     "signature": "t5uAJqS7FMx0SKNH84ED4_aNQCn_9cCinMWGL9rye_Ff_gO5UdsUk0mM9ySTmt8nUd_fPje2KE8GnK726P_CCg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -404,15 +412,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmlzc3VlciIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6aXNzdWVyIiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "s4TlCgK8wxxmpqbs0xpaZ-9a7ikK4weQ8AduxRKslio7PNDcUsg8zgfiAY4DCEZvwNWzog8k-GzsupUowprNDQ"
+     "signature": "Vck3t48oH6HcOdDa3QS33fAjp8Hb5WsYH88pS5W4hE8jEimR-0_N4Mal7WGlOJcQEfBNyugHHllKCrML5d6dAg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -459,15 +468,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJhMjE3ZTU2YjRiMWY2NjZkZmFiNDkyYjY0ZDgwNzVmMjRlOTUzNjQ0OTA4MWQwNGVjYjQwMzEyOTJkODEwZDRmIn0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImEyMTdlNTZiNGIxZjY2NmRmYWI0OTJiNjRkODA3NWYyNGU5NTM2NDQ5MDgxZDA0ZWNiNDAzMTI5MmQ4MTBkNGYifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "JZ-5U8p6kFY6TqaEOc8fmYEct7_QqqheHXMmXb6HG5TDPWtMWpgqDrxqhcy8XXemCqUmPlNCemLPIJY_XwdmCg"
+     "signature": "zsEnncWxnwvsPJkIq3zSlDwVgbgpRFkCvu2nqFggtHtaQsnqLAjmW4ptq-IK_HFkdERLUGU9hk8RBOvqGxurBA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -514,15 +524,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6ImE2YTY3YTNkOTJmZjA1MDlkZDc0MGQyMGMyMTExYjkxN2ZmZTQ5YmEzOGVmNTRmODhlNGE3ZjZiNmU1YzA4ZDQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiYTZhNjdhM2Q5MmZmMDUwOWRkNzQwZDIwYzIxMTFiOTE3ZmZlNDliYTM4ZWY1NGY4OGU0YTdmNmI2ZTVjMDhkNCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "pVc99tH-wAtRuXiI1E3Jc-2hzR6KvG0EC4JVfV9_wZ9xx-rawLdlvmwvnCtloKypEH5RxvWskxWg-PbwldSVDA"
+     "signature": "tURM2Pcr6gl98D6BNoYUK2a2I-cXMmeYck0Si3DyaYS8YJ6o8YozibcOckY7HStQ6we1D05DR9FHgT5LIyBGBw"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -569,15 +580,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxNzo1OTo1OS45OTlaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxNzo1OTo1OS45OTlaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "h5VEmXQ7mly2tMnTjxwVs6aP7VChwm8tdtC6j5nUHNC_5kDt4fBV9JBc5boHYbJq1sz9QWOZHiTnICP8UjIaBQ"
+     "signature": "3X4IVh9BM_JOuY_ZtRD7dHCTDHU7pHnfg4wJztMouphfQeQ8ad_vII8OcAczUdWP2DrxcUD_pKbJYVLflr9uAQ"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -624,15 +636,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowMDowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowMDowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "hXlFQoQZS8zSwPnOiwlwYUJgbsaX3D48YE1TAgZ6k1_dpT5PgB8QQeYGg5gGAWwrEUNgzwnid4Nm9GUFZy76Dw"
+     "signature": "33ItQCEx8gMdwdsHor0wbu6pU8i5SuLsOstJ7uPHsLrMZusY_lpgyppgaLuJGnwxhXSDUDAnxUvfyPdxUwHkBQ"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -678,15 +691,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "-cii7G-2U0SLDpEYXWoZWs84eQu40Um9qnSD8HpQfQZF5hrmYgvTSbVLXKTNDMZo5WVZZIqBZToDATv2fNq8Dw"
+     "signature": "Ju0TPXCrekbdZkPgf2VyhzPdw5mPVn5Cx8dZJ2XMJ8OpRhvfc0k6prT0Kt7Ce-CLFGhEhZmxvcj03aGUehT0AA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -731,15 +745,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxNzowMDowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJhMjE3ZTU2YjRiMWY2NjZkZmFiNDkyYjY0ZDgwNzVmMjRlOTUzNjQ0OTA4MWQwNGVjYjQwMzEyOTJkODEwZDRmIn0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxNzowMDowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImEyMTdlNTZiNGIxZjY2NmRmYWI0OTJiNjRkODA3NWYyNGU5NTM2NDQ5MDgxZDA0ZWNiNDAzMTI5MmQ4MTBkNGYifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "TC7EQmO0H3hnTVjUgLJJ8vOToAlznSFKE8n4OtiZ684wkcO0Jm00VcnpQF7FWbsTwow0DA2Sr0wcwH69getDBQ"
+     "signature": "ziR3g07qXc_2Um8xLHis8Ja_JWw5O1ACObmSTYDLtWALLNzTaazbHN_vHi4Opr0yh_uH_5AITlThmnUplqZUAg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -787,15 +802,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJub3QtaGV4In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6Im5vdC1oZXgifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "AzSBYE7KXnwhdZvKCMuYdzLL4S2pcEHQeejZxvCcvbBjjExZU0SEKoFJgZBYrXbBXWcmMPae5l4XDGZGHiyLDA"
+     "signature": "jpodtIXS9yI0_I21ldOpxJAWQAQuCPcnhdWaLgsep1L6UgAvrSnOBY0WlH0QhSyXWnoYkRfZ5ntUuzORkhUiCA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -842,15 +858,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoibm90X3Jlc3BvbmRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJub3RfcmVzcG9uZGVkIiwib3V0Y29tZV9zaGEyNTYiOiIxYzI3M2NkYWJjODcyYTM2MTA1NzA5OTAxOGIwOWZlNDc4M2ExZTE2ZTY1YWNhNWQwMTU1NjdiNzc5ODcyZDlkIiwidGVybXNfc2hhMjU2IjoiZDI0YTUyNjQ2Y2FjYTY4ZmY3NGZlMjIzNGViODFjZWE2NTg4ZTcxNjZmYzE5NWQ1NDk2MWVjN2MwYTZhNjUzNSJ9",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "TLX37XuHPA1U_m7700hqvjMrW18o4s1kA1ZOyuOK4oLRVf2gFkAaJeEp_wK4_D3CPIdGiTLLWvuNWKhP1AfnBA"
+     "signature": "VIw77N2pUPoSaJOJnqupWQlk9NGTi6hKicPOrgl7OpmaYnlDjT-5fFgHI_xpK6eujqjOg8ofWao-57rp1FOYCw"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -897,15 +914,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjJkNzExNjQyYjcyNmIwNDQwMTYyN2NhOWZiYWMzMmY1Yzg1MzBmYjE5MDNjYzRkYjAyMjU4NzE3OTIxYTQ4ODEiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMmQ3MTE2NDJiNzI2YjA0NDAxNjI3Y2E5ZmJhYzMyZjVjODUzMGZiMTkwM2NjNGRiMDIyNTg3MTc5MjFhNDg4MSIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "1lh35uHFNSlMGcq0Tn21bnDwrMMi2a-BsrfOifjjL6G05PAns9U4IDbcsZeLJ1pMhORyQWDv8KIWNCD3hElaDA"
+     "signature": "44AKCIrsDCV2PfqDdB96HCdSmb1h6_Pm3WpwNFB8tiuU3ewRXPQ9e_sYC1V99HS2rqHaJzQ5VZPjFURxIwnzBA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {},
@@ -945,15 +963,183 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
-     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTkifQ",
-     "signature": "NYW5ZnQRV-ZXgpAr1HboK2tOYz1tm06alxcv-ufAMyQQBUtrzULT2zYQUkqJxEn6aZh25Iuv0ZIMWv_FTWhCBw"
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODozNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6ImFlNGVkMjY4MmZmYWMzNjkyZmM3YjliZjI5NzRjOWMwNTkwZGExZWEwNWM0MjY2ZmIxMDI4NWY4YzAwOGEwNTYiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "T4mPLL-HrLqvZI39Da1Iuo2f4UP7qraQrSA3aM-CVPSkKc5REldtnL2jfCtYioMkHaw9OXbpQSX_a3n1PRvzCA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:30:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0002",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "accepted",
+    "result": "verified"
+   },
+   "id": "acc-record-digest-matches-second-receipt",
+   "what": "the acceptance names receipt-0002 and is checked against receipt-0002"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODozNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6ImFlNGVkMjY4MmZmYWMzNjkyZmM3YjliZjI5NzRjOWMwNTkwZGExZWEwNWM0MjY2ZmIxMDI4NWY4YzAwOGEwNTYiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "T4mPLL-HrLqvZI39Da1Iuo2f4UP7qraQrSA3aM-CVPSkKc5REldtnL2jfCtYioMkHaw9OXbpQSX_a3n1PRvzCA"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_record_digest_mismatch"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-record-digest-mismatch-replayed",
+   "what": "the SAME acceptance presented against receipt-0001: terms and outcome digests match, the record does not"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "-cii7G-2U0SLDpEYXWoZWs84eQu40Um9qnSD8HpQfQZF5hrmYgvTSbVLXKTNDMZo5WVZZIqBZToDATv2fNq8Dw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_member_invalid"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-record-digest-absent",
+   "what": "no accepted_record_sha256 member: ill-formed, not a mismatch"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTkifQ",
+     "signature": "70LTWSZIQfoI8u5c3MYwouYlhTSdpBITUB3fQKierifEuk10NMMJVuBO5mGUEJBrq9diYw5sdinvWPY2Cu7iDg"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -999,15 +1185,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTkifQ",
-     "signature": "NYW5ZnQRV-ZXgpAr1HboK2tOYz1tm06alxcv-ufAMyQQBUtrzULT2zYQUkqJxEn6aZh25Iuv0ZIMWv_FTWhCBw"
+     "signature": "70LTWSZIQfoI8u5c3MYwouYlhTSdpBITUB3fQKierifEuk10NMMJVuBO5mGUEJBrq9diYw5sdinvWPY2Cu7iDg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -1054,15 +1241,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "qxt3o3yTfx_nAjcjgu7OBdmi2D-i6URZE3LwPQRYgur2CKAJWs4b_chvQwN-Pby2qa8viIK3kGJsLl_JIoxZAQ"
+     "signature": "IAXxtwJyTxj1nbGSBPHLtrYBHKVJXnisTlcnWgFi75FB9vC0zMnx7igBAFjEwgSTyXbmkUIGnIWMsDf_1PYBDg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {
@@ -1110,15 +1298,16 @@
   {
    "case": {
     "acceptance": {
-     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiY29uZmlybWluZ19wYXJ0eSI6ImRpZDpleGFtcGxlOmNvdW50ZXJwYXJ0eSIsImRpc3Bvc2l0aW9uIjoiYWNjZXB0ZWQiLCJvdXRjb21lX3NoYTI1NiI6IjFjMjczY2RhYmM4NzJhMzYxMDU3MDk5MDE4YjA5ZmU0NzgzYTFlMTZlNjVhY2E1ZDAxNTU2N2I3Nzk4NzJkOWQiLCJ0ZXJtc19zaGEyNTYiOiJkMjRhNTI2NDZjYWNhNjhmZjc0ZmUyMjM0ZWI4MWNlYTY1ODhlNzE2NmZjMTk1ZDU0OTYxZWM3YzBhNmE2NTM1In0",
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
      "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
-     "signature": "qxt3o3yTfx_nAjcjgu7OBdmi2D-i6URZE3LwPQRYgur2CKAJWs4b_chvQwN-Pby2qa8viIK3kGJsLl_JIoxZAQ"
+     "signature": "IAXxtwJyTxj1nbGSBPHLtrYBHKVJXnisTlcnWgFi75FB9vC0zMnx7igBAFjEwgSTyXbmkUIGnIWMsDf_1PYBDg"
     },
     "accepted_record": {
      "issuer": "did:example:issuer",
      "issuer_kid": "iss-1",
      "outcome_at": "2026-10-04T18:00:00.000Z",
      "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
      "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
     },
     "delegation": {

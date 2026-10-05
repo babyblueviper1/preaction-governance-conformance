@@ -3,7 +3,9 @@
 deterministic (RFC 8032), so a rerun regenerates the file byte-identically. Needs the `cryptography` package (signing
 only; the checker itself is stdlib and verifies with tools/_ed25519.py). Every expected result below is written by
 hand from the condition table in x402-foundation/tsc#4 (Shodai, 2026-10-04), not read back from the checker."""
-import base64, copy, hashlib, json, os
+import base64, copy, hashlib, json, os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "tools"))
+import _rfc8785
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives import serialization
 
@@ -24,11 +26,14 @@ OTHER_SK, OTHER_PK = key("acceptance-vectors/unlisted")      # a key the relying
 jwk = lambda kid, pk: {"kty": "OKP", "crv": "Ed25519", "kid": kid, "x": b64(pk)}
 JWKS = {"keys": [jwk("iss-1", ISS_PK), jwk("cp-1", CP_PK), jwk("cp-reused", ISS_PK)]}
 DELEG = {"did:example:counterparty": ["cp-1"], "did:example:issuer": ["iss-1"]}
-RECORD = {"issuer": "did:example:issuer", "issuer_kid": "iss-1", "terms_sha256": h("terms v1"),
+RECORD = {"issuer": "did:example:issuer", "issuer_kid": "iss-1", "record_id": "receipt-0001", "terms_sha256": h("terms v1"),
           "outcome_sha256": h("delivered: report.pdf"), "outcome_at": "2026-10-04T18:00:00.000Z"}
+# A second receipt with the SAME terms and outcome (a repeat purchase of the same deliverable): only the record itself differs.
+RECORD2 = {**RECORD, "record_id": "receipt-0002", "outcome_at": "2026-10-04T18:30:00.000Z"}
+rd = lambda rec: hashlib.sha256(_rfc8785.jcs(rec).encode("utf-8")).hexdigest()
 BODY = {"acceptance_version": "acceptance-record-v0", "confirming_party": "did:example:counterparty",
         "disposition": "accepted", "terms_sha256": RECORD["terms_sha256"], "outcome_sha256": RECORD["outcome_sha256"],
-        "accepted_at": "2026-10-04T18:05:00.000Z"}
+        "accepted_at": "2026-10-04T18:05:00.000Z", "accepted_record_sha256": rd(RECORD)}
 
 
 def jws(body, kid="cp-1", sk=CP_SK, raw_payload=None):
@@ -85,6 +90,12 @@ add("acc-signed-not-responded", case(jws(body(disposition="not_responded"))), "m
     what="READING A2: a counterparty-signed 'not_responded' contradicts itself")
 add("acc-malformed-plus-authority", case(jws(body(outcome_sha256=h("x"))), deleg={}), "malformed", ["acceptance_outcome_digest_mismatch"],
     what="a malformed finding is reported; the authority unknown is not added on top of it")
+add("acc-record-digest-matches-second-receipt", case(jws(body(accepted_record_sha256=rd(RECORD2), accepted_at="2026-10-04T18:35:00.000Z")), record=RECORD2),
+    "verified", disposition="accepted", what="the acceptance names receipt-0002 and is checked against receipt-0002")
+add("acc-record-digest-mismatch-replayed", case(jws(body(accepted_record_sha256=rd(RECORD2), accepted_at="2026-10-04T18:35:00.000Z"))), "malformed",
+    ["acceptance_record_digest_mismatch"], what="the SAME acceptance presented against receipt-0001: terms and outcome digests match, the record does not")
+add("acc-record-digest-absent", case(jws(body(accepted_record_sha256=KeyError))), "malformed", ["acceptance_member_invalid"],
+    what="no accepted_record_sha256 member: ill-formed, not a mismatch")
 add("acc-key-unresolved", case(jws(BODY, kid="cp-9", sk=OTHER_SK)), "key_unresolved", [], key_step="key_unresolved",
     what="-03 5.4.2(a): not malformed, not a failed signature, no result")
 add("acc-key-unresolved-declared-complete", case(jws(BODY, kid="cp-9", sk=OTHER_SK), complete=True), "key_unresolved", [],
