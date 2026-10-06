@@ -1,0 +1,306 @@
+{
+ "recipe": "x402-payment-fingerprint/0",
+ "license": "CC0-1.0",
+ "vectors": [
+  {
+   "name": "same-1-buyer-v1",
+   "description": "The buyer's copy: v1 envelope, network alias 'base', checksummed addresses.",
+   "payment_id": "P1",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:15b452a978bae548c6ef71d40cc8824fe27bf01c2070fbd37bae6db83fc6ad53"
+   },
+   "naive_full_payload_sha256": "1cc8a978a73e04d604010b461d218a396002b1f0d2c665a96c19987ae7a681ab"
+  },
+  {
+   "name": "same-1-seller-v2",
+   "description": "The seller's copy of the SAME payment: v2 envelope, CAIP-2 network, lowercase addresses. Same fingerprint.",
+   "payment_id": "P1",
+   "held": {
+    "x402Version": 2,
+    "accepted": {
+     "scheme": "exact",
+     "network": "eip155:8453",
+     "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519e91e3a54538791bdbb0e22373e36b66",
+      "to": "0x209693bc6afc0c5328ba36faf03c514ef312287c",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:15b452a978bae548c6ef71d40cc8824fe27bf01c2070fbd37bae6db83fc6ad53"
+   },
+   "naive_full_payload_sha256": "b21dbfe60faec5c8b1458b281f9263ba7da177adabc950a148bed91b8c3682a7"
+  },
+  {
+   "name": "same-1-malleated-signature",
+   "description": "The same authorization carried with the malleated signature (r, n-s, v flipped) -- both verify. Same fingerprint; a recipe that hashes the signature splits here.",
+   "payment_id": "P1",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1fbc58e788b3a8d4275da52414e4032a2b8582ed4e079009f8040017e7d7791b81c",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:15b452a978bae548c6ef71d40cc8824fe27bf01c2070fbd37bae6db83fc6ad53"
+   },
+   "naive_full_payload_sha256": "da85dc37d43ddb08840f6160c28834409a5bb49014ea461659f1340fda55b22e"
+  },
+  {
+   "name": "same-1-reordered-keys",
+   "description": "The same payment with every object's keys in a different order. Same fingerprint.",
+   "payment_id": "P1",
+   "held": {
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "network": "base",
+    "payload": {
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "value": "10000"
+     },
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b"
+    },
+    "scheme": "exact",
+    "x402Version": 1
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:15b452a978bae548c6ef71d40cc8824fe27bf01c2070fbd37bae6db83fc6ad53"
+   },
+   "naive_full_payload_sha256": "1945c59dac047741cf1674036a1a129e4025455b3574becfa6576afb115301bb"
+  },
+  {
+   "name": "diff-2-other-nonce",
+   "description": "A second payment from the same buyer, same amount, new nonce. Different fingerprint (a repeat purchase is not a duplicate).",
+   "payment_id": "P2",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0x436a6c48809a1363a02aac3c160dbd81750174df3e278a6d8045209c735c812c"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:39ed5b799f005d3902d258a67a44634a4d35eebfeb3fad116a25ac83e13014a5"
+   },
+   "naive_full_payload_sha256": "72288c701e796d63cbbbee5e22a6b5870d9e8c36bb6055e1023ca7a516ab1ba9"
+  },
+  {
+   "name": "diff-3-other-value",
+   "description": "Same nonce, different value: a record describing a different amount must not join.",
+   "payment_id": "P3",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10001",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:5f70adab81c17c2645ed957b6abe686b3694e481ebdf725db3a1b60d73109633"
+   },
+   "naive_full_payload_sha256": "ba75fc0707a4f5fa13ea6608f3c778e0a61497a9b092ed00bc2b0901653eed90"
+  },
+  {
+   "name": "diff-4-other-network",
+   "description": "Same authorization on Base Sepolia: a testnet payment never joins a mainnet record.",
+   "payment_id": "P4",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base-sepolia",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:12fb1f197f142cada27e587a79be803ea6f96463d4ba4c941ba59224fd6c37bd"
+   },
+   "naive_full_payload_sha256": "54022d9f16cc218223d169c29d8a5e06ec23b5b150d38d46e28fa2607839d95c"
+  },
+  {
+   "name": "bad-value-number",
+   "description": "value as a JSON number: parsers differ on large integers, so the recipe only accepts the decimal string.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": 10000,
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "40baeb58105806995dd5cc75c7f7621943354a77aca78769aaf25656f01393d4"
+  },
+  {
+   "name": "bad-value-leading-zero",
+   "description": "value '010000': two spellings of one amount would hash differently, so non-canonical decimals are refused.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "010000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "194170679c62ebec9d03b79ee920bed6541bf490c9c83c75653747c57fdc059b"
+  },
+  {
+   "name": "bad-network-unknown-alias",
+   "description": "An alias with no CAIP-2 mapping is refused rather than guessed.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base-mainnet",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "24d30345a1f8c600b7640c2d60b34761c68c695ca4798406d1bc9a43d407b50e"
+  },
+  {
+   "name": "bad-nonce-short",
+   "description": "EIP-3009 nonces are bytes32.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0x1234"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "9042cded6840fca369cd6f4909e20bc8e6bca2180ee0dd5a8c2334badaf7eae6"
+  }
+ ],
+ "naive_recipe_note": "sha256 over the JSON each party holds gives 4 different digests for the 4 copies of payment P1; the recipe gives 1."
+}
