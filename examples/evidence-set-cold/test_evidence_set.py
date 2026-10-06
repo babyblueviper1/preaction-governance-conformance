@@ -202,6 +202,13 @@ class Dash03Rules(unittest.TestCase):
         e = dict(U("https://d.example/"), snippet_sha256="XYZ")
         self.assertEqual(halt(es1([e])), {"snippet_sha256_not_lowercase_hex64", "snippet_sha256_present_when_unpinned"})
 
+    def test_full_resource_check_still_needs_a_valid_content_kind(self):
+        """Second half of TK's proposed clarification (tsc#4, 2026-10-06): a malformed content_kind still suppresses the dependent
+        resource_sha256_present_for_full_resource check, even with a well-formed non-null digest."""
+        e = dict(A, content_kind="FULL_RESOURCE", resource_sha256=h(b"r"))
+        es = es1([e]); es.update(evidence_root=E.evidence_root(es["sources"]))
+        self.assertNotIn("resource_sha256_present_for_full_resource", halt(es) or set())
+
     def test_malformed_resource_sha256_reports_both_presence_and_form(self):
         # -03: same presence-regardless-of-form reading applied to resource_sha256_present_for_full_resource
         # (Roberto/Nous's open question + TK's proposed clarification, tsc#4 6023275339 / 6024083056; was
