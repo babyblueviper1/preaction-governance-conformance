@@ -1,0 +1,68 @@
+{
+  "delivered": {
+    "evidenceRef": "x402ev/1:sha256:de717d35f610e929f3b0a3e994aa8ea6aee27323f5bca3ee8156c243cbebe37c",
+    "scheme": "x402ev/1",
+    "canonicalization": "RFC8785",
+    "payment": {
+      "network": "eip155:8453",
+      "txHash": "0x4a17c7e97752304fa5e2f9e76a830f75809f7d3a40b9d5e5d36c05dc7ce2decb",
+      "payer": "0x857b06519e91e3a54538791bdbb0e22373e36b66",
+      "payee": "0x209693bc6afc0c5328ba36faf03c514ef312287c",
+      "amount": "10000",
+      "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "fingerprint": "sha256:15b452a978bae548c6ef71d40cc8824fe27bf01c2070fbd37bae6db83fc6ad53"
+    },
+    "request": {
+      "method": "POST",
+      "urlHash": "sha256:99913a6ff6cac19a02e7d9658195888603fabf33187f64009e9bb4afaad4604c",
+      "payloadHash": "sha256:631919ab262b217a40a4efd6e32560dbeaf5390a791e1763541546dafa0adc7a",
+      "clientNonce": "d9f8c4e2a1b073e5",
+      "timestamp": 1791024000
+    },
+    "delivery": {
+      "statusCode": 200,
+      "contentDigest": "sha256:cf819dc86288a4bf3362749bdd3c879b4bc3342fc17f61401dd5700d94eb9e71",
+      "contentType": "application/json",
+      "latencyMs": 42,
+      "timestamp": 1791024001
+    },
+    "signer": {
+      "keyType": "Ed25519",
+      "publicKey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "signature": "base64url:3RXnMPbBmkjiOIqZ1FK4JV0iYkFze40WytG92yfiFcolgOzSMvvfqVeoJ_j2ILBOhcKERN45OoaM8s4EXLFbAw"
+    }
+  },
+  "empty": {
+    "evidenceRef": "x402ev/1:sha256:48eebb23911e8c534457a7ca7d47bdfcd8cf191bc3ed527b233012cce6876941",
+    "scheme": "x402ev/1",
+    "canonicalization": "RFC8785",
+    "payment": {
+      "network": "eip155:8453",
+      "txHash": "0x4a17c7e97752304fa5e2f9e76a830f75809f7d3a40b9d5e5d36c05dc7ce2decb",
+      "payer": "0x857b06519e91e3a54538791bdbb0e22373e36b66",
+      "payee": "0x209693bc6afc0c5328ba36faf03c514ef312287c",
+      "amount": "10000",
+      "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "fingerprint": "sha256:15b452a978bae548c6ef71d40cc8824fe27bf01c2070fbd37bae6db83fc6ad53"
+    },
+    "request": {
+      "method": "POST",
+      "urlHash": "sha256:99913a6ff6cac19a02e7d9658195888603fabf33187f64009e9bb4afaad4604c",
+      "payloadHash": "sha256:631919ab262b217a40a4efd6e32560dbeaf5390a791e1763541546dafa0adc7a",
+      "clientNonce": "a17c3e9b5d0f2864",
+      "timestamp": 1791024000
+    },
+    "delivery": {
+      "statusCode": 200,
+      "contentDigest": "sha256:f28a27b01532278ae73c5c57ecb30575986096fbd7a1beb66ce85d568e0a2d2c",
+      "contentType": "application/json",
+      "latencyMs": 42,
+      "timestamp": 1791024001
+    },
+    "signer": {
+      "keyType": "Ed25519",
+      "publicKey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "signature": "base64url:AYEDU3rluYUUxsgDxM749n_kAZgUbuI9WYm1u7xBl7ojzM9uAGPZ5wPVy77IEuQYHAewQsd3ZW-EQQ73kx2GAQ"
+    }
+  }
+}
