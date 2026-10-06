@@ -408,6 +408,60 @@
     "condition": "value_exceeds_uint256"
    },
    "naive_full_payload_sha256": "74cdafc591152ece837dc7cbb698faa91234a8b32b23cfec82569545f4e278a1"
+  },
+  {
+   "name": "alias-ts-only-abstract",
+   "description": "A payment on Abstract, a v1 TS-only alias not in the old 8-entry table. Pins the normative table resolution of the group's open network-alias question (x402-foundation/tsc#4).",
+   "payment_id": "P5",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "abstract",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xbcd6be916f0a69c6b7560753ff4fd873a8c85bf5bc09fe67a05fe483d1f35b70"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:8fa4a78f92caa5d24851a3600f34f44f5c9d9dfc548008108c1044cb1596ccea"
+   },
+   "naive_full_payload_sha256": "6602183afe372b91d4d6d232bd30b9099e65b4941eee8d9267cbfb65aa813628"
+  },
+  {
+   "name": "alias-go-only-celo",
+   "description": "A payment on Celo, a v1 Go-only alias (absent from the TS NetworkSchema) not in the old 8-entry table. Same normative-table resolution.",
+   "payment_id": "P6",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "celo",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xc478f4072741dd41620670ced33e2d2f9852bb2325f68b9a506f972953a0b61e"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:4b71875f5088dfba11d906cd0460cf9e9a5ca114ebad9028bc693c11f11f7f56"
+   },
+   "naive_full_payload_sha256": "37f113c505b78264c052bb36a4c853bbf9e32f9b2b2599e3546978aa33c17147"
   }
  ],
  "naive_recipe_note": "sha256 over the JSON each party holds gives 4 different digests for the 4 copies of payment P1; the recipe gives 1."

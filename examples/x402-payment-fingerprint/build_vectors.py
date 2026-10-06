@@ -68,6 +68,10 @@ add("bad-scheme-not-exact", None, {**v1(AUTH, sig(R, S, 27)), "scheme": "upto"},
 add("bad-value-exceeds-uint256", None, v1(dict(AUTH, value=str(2**256)), sig(R, S, 27)),
     "value one past uint256 max: ERC-3009 value is a uint256, so a larger canonical-looking decimal string must be refused, not hashed.",
     "malformed", "value_exceeds_uint256")
+add("alias-ts-only-abstract", "P5", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-5").hexdigest()), sig(R, S, 27), network="abstract"),
+    "A payment on Abstract, a v1 TS-only alias not in the old 8-entry table. Pins the normative table resolution of the group's open network-alias question (x402-foundation/tsc#4).")
+add("alias-go-only-celo", "P6", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-6").hexdigest()), sig(R, S, 27), network="celo"),
+    "A payment on Celo, a v1 Go-only alias (absent from the TS NetworkSchema) not in the old 8-entry table. Same normative-table resolution.")
 
 fps = {}
 for v in V:
