@@ -101,8 +101,12 @@ def _check_entry(e, i, conds):
     rs = e.get("resource_sha256")
     if rs is not None and not (isinstance(rs, str) and HEX64.match(rs)):
         conds.add("resource_sha256_not_lowercase_hex64"); bad.add("resource_sha256")
-    # ranges over every entry regardless of pinned; takes content_kind and resource_sha256 as input
-    if ck == "full_resource" and rs is not None and "resource_sha256" not in bad:
+    # ranges over every entry regardless of pinned. A presence rule, evaluated regardless of the digest's
+    # own form -- same reading as snippet_sha256_present_when_unpinned above (tsc#4 5842824265): a malformed
+    # non-null resource_sha256 on a full_resource entry still reports BOTH resource_sha256_not_lowercase_hex64
+    # and resource_sha256_present_for_full_resource (Roberto/Nous question + TK's proposed clarification,
+    # tsc#4 6023275339 / 6024083056; no rev9 vector covered this case).
+    if ck == "full_resource" and rs is not None:
         conds.add("resource_sha256_present_for_full_resource")
     if "pinned" in bad:
         return bad | {"snippet_sha256", "content_kind"}   # every branch rule takes pinned as input

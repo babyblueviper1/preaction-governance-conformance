@@ -202,6 +202,14 @@ class Dash03Rules(unittest.TestCase):
         e = dict(U("https://d.example/"), snippet_sha256="XYZ")
         self.assertEqual(halt(es1([e])), {"snippet_sha256_not_lowercase_hex64", "snippet_sha256_present_when_unpinned"})
 
+    def test_malformed_resource_sha256_reports_both_presence_and_form(self):
+        # -03: same presence-regardless-of-form reading applied to resource_sha256_present_for_full_resource
+        # (Roberto/Nous's open question + TK's proposed clarification, tsc#4 6023275339 / 6024083056; was
+        # previously suppressed by 5.4.1(a) here -- no rev9 vector covered this case)
+        e = dict(A, content_kind="full_resource", resource_sha256="XYZ")
+        self.assertEqual(halt(es1([e], evidence_root=E.evidence_root([e]))),
+                         {"resource_sha256_not_lowercase_hex64", "resource_sha256_present_for_full_resource"})
+
     def test_member_contains_nul_suppresses_nothing(self):
         # -03: a content rule, reported alongside the member's other conditions
         e = dict(U("https://d.example/\x00x"), snippet_sha256=None)
