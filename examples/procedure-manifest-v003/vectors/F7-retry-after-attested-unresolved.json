@@ -1,0 +1,134 @@
+{
+ "claims": [
+  {
+   "accepted_at": 2000,
+   "attempt_id": "e2efe02130576dfcd3fcb151034964320475809b48376f6fd2aba024d8058877",
+   "attestation": "c83d8689a6781139dd7e753cbab691ca223188b6794a9cdbb88e115dda693ebca350e50472b9478f9e747d347ea4e4af7451f80613a57808e20a066e81af76b8",
+   "ordering_proof": "db63f9fd98af3070491db03e72ff499391f2fd50462c07c28d60c0bb11988eca",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "a85d55f0f0bfa446ffae872df67eb0eec2d83e66e767aa0f569fbc4c16ed4792"
+  },
+  {
+   "accepted_at": 2100,
+   "attempt_id": "5a0c8361d76160400047d52152ad7a09e67dfe64c8326447b374bb7834a726ae",
+   "attestation": "22e685086f62d499046d30afd2b477eb838765a6f84063553fbbde7d50c94d3fd56410b43ed1b1e8e34f79c2921217149c15a52d479e2421f6518c0702f7c9f4",
+   "ordering_proof": "77465b32c2a9c81b7ac9c0f3de0171a31ced4d72a852b7c8aba7031a0526225d",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "a85d55f0f0bfa446ffae872df67eb0eec2d83e66e767aa0f569fbc4c16ed4792"
+  }
+ ],
+ "description": "Attempt 0 has a provider-attested TERMINAL_UNRESOLVED; attempt 1 is then claimed and returns RESULT. UNRESOLVED consumes the run and MUST NOT authorize another attempt (section 7, C20) -> UNRESOLVED.",
+ "dispute_id": "5dcaec9cba96923267812352b8aee0bba4e25abdf028926189ec911ddb875ae6",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "TERMINAL_UNRESOLVED",
+  "terms": {
+   "authorized_execution": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "ordering_anchor_pubkey": "dd51897a5e5b2791be195c21c63b532481a8e17459786be5c290c113e0c1ca36",
+   "ordering_proof_rule": "hash-chained ordering log; head attested by ordering_anchor_pubkey; log position = order; clock values never compared",
+   "predecessor_authority_rule": "dispute_state committed as a dispute_commitment entry in the ordering log",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "ATTESTED_NO_RESULT"
+    ],
+    "max_attempts": 2
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "F7-retry-after-attested-unresolved",
+ "ordering_log": {
+  "checkpoint": {
+   "attestation": "04bba395880f4ce83af5ebc9dae08268bbb0f6bfbe573e5b79fb132dec38523dd9eb95a20a06f10ce7ad195cb59eedcd925e8eccbe8d5f4a15d3d4f92715878d",
+   "head": "77465b32c2a9c81b7ac9c0f3de0171a31ced4d72a852b7c8aba7031a0526225d",
+   "seq": 2
+  },
+  "entries": [
+   {
+    "entry_hash": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "kind": "dispute_commitment",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "ref": "370bcd2d5b8d76f88fb51e64ffd9ab6984787596d2e76c5639bb10c3dd16793e",
+    "seq": 0
+   },
+   {
+    "entry_hash": "db63f9fd98af3070491db03e72ff499391f2fd50462c07c28d60c0bb11988eca",
+    "kind": "claim",
+    "prev": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "ref": "148e053640f14c3b89bdc2f2206d7c758d397de5124858ecc169fa628a0790a8",
+    "seq": 1
+   },
+   {
+    "entry_hash": "77465b32c2a9c81b7ac9c0f3de0171a31ced4d72a852b7c8aba7031a0526225d",
+    "kind": "claim",
+    "prev": "db63f9fd98af3070491db03e72ff499391f2fd50462c07c28d60c0bb11988eca",
+    "ref": "1b3a82b1bb8926ee3024006f214eeda96e4805b948dba6460524cc9c4cc3b3d2",
+    "seq": 2
+   }
+  ]
+ },
+ "submission_commitments": [],
+ "terminals": [
+  {
+   "attestation": "d9177c8b68db5afe749282091dab507fda1f12e45c73f55ce7b374ac96849fa7a5de1c5b0122458a3bf0f58c26785c6536fc2550e114fb0defc61b1be8a9a05a",
+   "claim_receipt_hash": "e37a31c08ff1eedc1a65ba74e01320d13eba76b31e168edd1e706095eab8ef1a",
+   "observed_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "terminal_status": "UNRESOLVED"
+  },
+  {
+   "attestation": "f2bcf9108206b58caf8b24357c1ddbf342a7472e270f6ba31dacc80048c6beb417251234c7acc05ddf983b9c98de453e131ab61f1296ca738d4b4ce1a154522d",
+   "claim_receipt_hash": "1dea6e4b7b889658c498a086b4851829b3d87c402fcc335c1df1bc7d87e7e922",
+   "observed_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "output_hash": "32e3c0215358a1f45d846a4a2d924cf7901caa608db81c166e70fc4ac2fecd9a",
+   "terminal_status": "RESULT"
+  }
+ ]
+}

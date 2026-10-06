@@ -26,7 +26,7 @@ REQUEST = {"evidence_root": "sha256:" + "5a" * 32, "prompt_or_material_digest": 
 ZERO = "0" * 64
 
 
-def manifest(max_attempts=1):
+def manifest(max_attempts=1, allowed_after=("ATTESTED_NO_RESULT",)):
     return {"spec": "procedure-manifest", "version": "0.0.3", "contract_id": "contract-pm003-fixture",
             "acquisition": {"dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
                             "predecessor_authority_rule": "dispute_state committed as a dispute_commitment entry in the ordering log",
@@ -36,7 +36,7 @@ def manifest(max_attempts=1):
                             "provenance_profile": "pm003-bip340-v0", "provider_pubkey": PUB["provider"],
                             "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
                             "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash",
-                            "retry_policy": {"allowed_after": ["ATTESTED_NO_RESULT"], "max_attempts": max_attempts}},
+                            "retry_policy": {"allowed_after": list(allowed_after), "max_attempts": max_attempts}},
             "requirements": [{"requirement_id": "R1", "judge_id": "J1", "request": REQUEST,
                               "required_scope": ["criteria:R1", "evidence:full"]}]}
 
@@ -150,6 +150,18 @@ pkg("F6b-unauthoritative-predecessor-ordering", "Derivation is consistent and co
 pkg("F6c-log-orders-dispute-after-claim", "The clocks say the dispute came first (committed_at 1000 < accepted_at 2000), but the attested ordering log places the dispute commitment AFTER the claim -> false (C16).",
     m1, d1, [claim(r1, 0)], [(0, "RESULT", "PASS", FULL)], dispute_pos=1,
     expect=UNRES("TERMINAL_RESULT", authorized_execution="false"))
+# ---- section 7 retry predicate (formulary-systems/spec#5 final, 2026-10-06)
+pkg("F7-retry-after-attested-unresolved", "Attempt 0 has a provider-attested TERMINAL_UNRESOLVED; attempt 1 is then claimed and returns RESULT. UNRESOLVED consumes the run and MUST NOT authorize another attempt (section 7, C20) -> UNRESOLVED.",
+    m2, d2, [claim(r2, 0), claim(r2, 1, at=2100)], [(0, "UNRESOLVED", None, FULL), (1, "RESULT", "PASS", FULL)],
+    expect=UNRES("TERMINAL_UNRESOLVED", authorized_execution="false"))
+m2n = manifest(2, allowed_after=()); d2n, r2n = slot(m2n)
+pkg("F8-retry-predicate-not-committed", "max_attempts is 2 but the manifest commits no retry predicate (allowed_after empty). Attempt 0 is attested NO_RESULT; the retry is not authorized because nothing committed NO_RESULT as a retry condition before execution (section 7, C20) -> UNRESOLVED.",
+    m2n, d2n, [claim(r2n, 0), claim(r2n, 1, at=2100)], [(0, "NO_RESULT", None, FULL), (1, "RESULT", "PASS", FULL)],
+    expect=UNRES("ATTESTED_NO_RESULT", authorized_execution="false"))
+m2u = manifest(2, allowed_after=("ATTESTED_NO_RESULT", "TERMINAL_UNRESOLVED")); d2u, r2u = slot(m2u)
+pkg("F9-manifest-commits-retry-after-unresolved", "The manifest's retry_policy lists TERMINAL_UNRESOLVED as a retry condition. That contradicts section 7 (UNRESOLVED consumes the run), so the manifest is refused at formation even though this run's single attempt returned RESULT (C20).",
+    m2u, d2u, [claim(r2u, 0)], [(0, "RESULT", "PASS", FULL)],
+    expect=UNRES("FORMATION_REFUSED", authorized_execution="false"))
 pkg("N1-claim-signed-by-requester", "A 'claim' attested by the requester key is submission evidence, not admission (C18).",
     m1, d1, [claim(r1, 0)], [(0, "RESULT", "PASS", FULL)], claim_signer="requester", expect=UNRES("AUTHORIZED", authorized_execution="false"))
 pkg("N2-checkpoint-not-by-anchor", "The ordering log is well formed but its checkpoint is attested by the provider, not the manifest-pinned ordering anchor -> the order is the executor side's own assertion (C16) -> cannot_establish.",

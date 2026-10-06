@@ -1,0 +1,110 @@
+{
+ "claims": [
+  {
+   "accepted_at": 2000,
+   "attempt_id": "af84a1379b5294f9644ce633cbe9ee2a55ec1a0742178db236a95f3294acc4fa",
+   "attestation": "98ad9bd21af55999b67bb5d1d063ada152c09e54c72f81e386a9ae71ea1ffe5705fb21002a8de7c44beb3d6fee9031f3f3c67a40cd204e520c1a5e989ed949c3",
+   "ordering_proof": "dce452d3d60410cc080cd980e9e10e16ead5e82687d8d284c3565ece7cd407f6",
+   "provenance_profile": "pm003-bip340-v0",
+   "request_hash": "2a0ef22a1d5991239aafb227dcf99eaaa9b62a64dc81c5b121c31ff901554449",
+   "run_id": "ee9c2cf9506a878a0c32959008268c8a639eae34f0c2104da3d3762096a53183"
+  }
+ ],
+ "description": "The manifest's retry_policy lists TERMINAL_UNRESOLVED as a retry condition. That contradicts section 7 (UNRESOLVED consumes the run), so the manifest is refused at formation even though this run's single attempt returned RESULT (C20).",
+ "dispute_id": "f44f36c48c3da6881c64709e30465d8a18612ff8e01e3358a638d2b7534d82e1",
+ "dispute_state": {
+  "committed_at": 1000,
+  "contract_id": "contract-pm003-fixture",
+  "dispute_nonce": "dispute-nonce-1"
+ },
+ "executor_assertions": [],
+ "expect": {
+  "eligible": false,
+  "run_verdict": "UNRESOLVED",
+  "state": "FORMATION_REFUSED",
+  "terms": {
+   "authorized_execution": "false"
+  }
+ },
+ "manifest": {
+  "acquisition": {
+   "claim_semantics": "provider-attested single-use claim per enumerated attempt_id",
+   "dispute_id_rule": "H(manifest_hash, contract_id, dispute_nonce)",
+   "ordering_anchor_pubkey": "dd51897a5e5b2791be195c21c63b532481a8e17459786be5c290c113e0c1ca36",
+   "ordering_proof_rule": "hash-chained ordering log; head attested by ordering_anchor_pubkey; log position = order; clock values never compared",
+   "predecessor_authority_rule": "dispute_state committed as a dispute_commitment entry in the ordering log",
+   "provenance_profile": "pm003-bip340-v0",
+   "provider_pubkey": "ac0f315f43c6a654aec179cf4283e18c6bc427272548e8ba6eba0328da63c33a",
+   "retry_policy": {
+    "allowed_after": [
+     "ATTESTED_NO_RESULT",
+     "TERMINAL_UNRESOLVED"
+    ],
+    "max_attempts": 2
+   },
+   "run_id_rule": "manifest+dispute+requirement+judge+run_index",
+   "terminal_semantics": "provider-attested terminal bound to claim_receipt_hash"
+  },
+  "contract_id": "contract-pm003-fixture",
+  "requirements": [
+   {
+    "judge_id": "J1",
+    "request": {
+     "evidence_root": "sha256:5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "judge_execution_profile": "pm003-judge-v1",
+     "model_version_or_weights_pin": "judge-weights-2026-09",
+     "prompt_or_material_digest": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+     "sampling_parameters": {
+      "seed": 7,
+      "temperature": 0,
+      "top_p": 1
+     }
+    },
+    "required_scope": [
+     "criteria:R1",
+     "evidence:full"
+    ],
+    "requirement_id": "R1"
+   }
+  ],
+  "spec": "procedure-manifest",
+  "version": "0.0.3"
+ },
+ "name": "F9-manifest-commits-retry-after-unresolved",
+ "ordering_log": {
+  "checkpoint": {
+   "attestation": "a42bec1581a2ae48488d564f4b9d8272075b41351138aaa27a437f82d0ae6def6dc351768e7ab87866a74c0643e5fbb2cf6578a8817fd7e1348e3f61019f5c49",
+   "head": "dce452d3d60410cc080cd980e9e10e16ead5e82687d8d284c3565ece7cd407f6",
+   "seq": 1
+  },
+  "entries": [
+   {
+    "entry_hash": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "kind": "dispute_commitment",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "ref": "370bcd2d5b8d76f88fb51e64ffd9ab6984787596d2e76c5639bb10c3dd16793e",
+    "seq": 0
+   },
+   {
+    "entry_hash": "dce452d3d60410cc080cd980e9e10e16ead5e82687d8d284c3565ece7cd407f6",
+    "kind": "claim",
+    "prev": "4b38424e4078f4c533a336ddc1e06206480d67be2f295bdec9a56b3fb424ff93",
+    "ref": "545aeb30c066c4fa3d1f8f26cc6e63bb5f4f7e2c835b6ea6aaa8b56fa10906a4",
+    "seq": 1
+   }
+  ]
+ },
+ "submission_commitments": [],
+ "terminals": [
+  {
+   "attestation": "97e20c9379c893e9d52139bfcceda03771386bd927d2abf09ceb229b5ff705e03da2608681e86d88d81f80f6220b195c7499414f3dd33315e2d121b4b74bfcc9",
+   "claim_receipt_hash": "fa59ee752c2e6e162e4469790373306460508422a2d6fcdadca30d25bd9d758c",
+   "observed_scope": [
+    "criteria:R1",
+    "evidence:full"
+   ],
+   "output_hash": "32e3c0215358a1f45d846a4a2d924cf7901caa608db81c166e70fc4ac2fecd9a",
+   "terminal_status": "RESULT"
+  }
+ ]
+}

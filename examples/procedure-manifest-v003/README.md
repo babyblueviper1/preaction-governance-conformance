@@ -40,6 +40,9 @@ each term reported as `true` / `false` / `cannot_establish`. Anything short of f
 | F6b unauthoritative predecessor ordering | UNRESOLVED, `cannot_establish` | C16: `committed_at` < `accepted_at` but no ordering proof |
 | F6c log orders dispute after claim | UNRESOLVED, `false` | C16: the clocks say before, the attested log says after |
 | N2 checkpoint not by anchor | UNRESOLVED, `cannot_establish` | C16: a provider-attested order is the executor side's own assertion |
+| F7 retry after attested UNRESOLVED | UNRESOLVED, `authorized_execution: false` | §7 / C20: TERMINAL_UNRESOLVED consumes the run; the next attempt is not authorized |
+| F8 retry predicate not committed | UNRESOLVED, state ATTESTED_NO_RESULT | §7 / C20: `max_attempts` 2 but `allowed_after` empty; a NO_RESULT opens a retry only if the manifest committed it |
+| F9 manifest commits retry after UNRESOLVED | UNRESOLVED, state FORMATION_REFUSED | §7 / C20: `allowed_after` lists TERMINAL_UNRESOLVED, so the manifest is refused at formation |
 | N1 claim signed by requester | UNRESOLVED | C18 |
 | **R-F3 real receipt, wrong request** | UNRESOLVED, binding **false** | a **live** `/review` admission receipt (index 240, 2026-09-28) vs a manifest committing a different model pin |
 | **R-P real receipt, exact request** | UNRESOLVED, binding **true** | same live receipt, exact request |

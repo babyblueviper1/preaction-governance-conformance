@@ -132,6 +132,18 @@ def evaluate(pkg):
             T["unique_terminal_execution"] = "cannot_establish"; T["sufficient_scope"] = "cannot_establish"
         return _finish(out, None)
 
+    # ---- section 7 (formulary-systems/spec#5 final, 2026-10-06): the manifest commits the retry predicate; it may only be
+    # ATTESTED_NO_RESULT. TERMINAL_UNRESOLVED consumes the run and can never open a retry -> a manifest that says otherwise is refused at formation.
+    allowed = list(acq["retry_policy"].get("allowed_after", []))
+    retry_committed = "ATTESTED_NO_RESULT" in allowed
+    if any(x != "ATTESTED_NO_RESULT" for x in allowed) and "C20" not in DISABLED:
+        out["state"] = "FORMATION_REFUSED"
+        T.update(authorized_execution="false", exact_request_binding="cannot_establish",
+                 unique_terminal_execution="cannot_establish", sufficient_scope="cannot_establish")
+        out["reasons"].append(f"retry_policy.allowed_after {sorted(allowed)} commits a retry predicate other than ATTESTED_NO_RESULT; "
+                              "TERMINAL_UNRESOLVED consumes the run (section 7, C20) -> refused at formation")
+        return _finish(out, None)
+
     manifest_hash = H(m)
     ds = pkg["dispute_state"]
     derived_dispute = H({"manifest_hash": manifest_hash, "contract_id": ds["contract_id"], "dispute_nonce": ds["dispute_nonce"]})
@@ -196,7 +208,13 @@ def evaluate(pkg):
         if status == "NO_RESULT":
             if not later:
                 out["state"] = "ATTESTED_NO_RESULT"
-            continue                                   # an attested absence is the only thing that opens the next attempt
+            if retry_committed or "C20" in DISABLED or not later:
+                continue                               # an attested absence opens the next attempt only if the manifest committed that predicate
+            out["state"] = "ATTESTED_NO_RESULT"
+            retry_violation = True
+            out["reasons"].append("retry after an attested NO_RESULT, but the manifest committed no ATTESTED_NO_RESULT retry predicate "
+                                  "(section 7, C20)")
+            break
         if later and "C20" not in DISABLED:
             retry_violation = True
             out["reasons"].append("retry after an attempt that was not provider-attested NO_RESULT: caller timeout or "
