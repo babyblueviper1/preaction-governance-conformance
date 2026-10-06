@@ -194,6 +194,87 @@
    "naive_full_payload_sha256": "54022d9f16cc218223d169c29d8a5e06ec23b5b150d38d46e28fa2607839d95c"
   },
   {
+   "name": "diff-7-max-value",
+   "description": "value 2^256-1, the largest uint256: accepted and fingerprinted (the uint256 bound is inclusive).",
+   "payment_id": "P7",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:b92f4e49e89036daaeb82ad8f0c9859927ce4d7d381d1fec37988ed920495fc1"
+   },
+   "naive_full_payload_sha256": "3cfedb9c853f540b2499104b54d9ba7f23a6d51b126babc1beb8619711edb4fd"
+  },
+  {
+   "name": "diff-8-uppercase-nonce",
+   "description": "A nonce written in uppercase hex: accepted, and the preimage holds it lowercased, so it fingerprints like the lowercase spelling.",
+   "payment_id": "P8",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0x4923FB5B035BD80D5D97B95F2019A371F6D06D39ED0601C831D02FFE056CD5EE"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:3f3bf905c6034e689abcdb11897bc0b3df35c1400820fde36f2fa98076537533"
+   },
+   "naive_full_payload_sha256": "cfb02c9a838dce298961919861c50998162aae0cfd0c33502e7e8aa9cf1a8460"
+  },
+  {
+   "name": "diff-9-reference-32-chars",
+   "description": "A CAIP-2 reference of exactly 32 characters: accepted (CAIP-2 allows 1-32, the bound is inclusive).",
+   "payment_id": "P9",
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "eip155:11111111111111111111111111111111",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "ok",
+    "fingerprint": "sha256:d711bbe75403d6968598c76e10c4c54c0dddb3e06391aa5318d52ea91e72ecec"
+   },
+   "naive_full_payload_sha256": "57e45a177d07aff127f4009d2334823ee8cf728392222622f2717846afb87e8a"
+  },
+  {
    "name": "bad-value-number",
    "description": "value as a JSON number: parsers differ on large integers, so the recipe only accepts the decimal string.",
    "payment_id": null,
@@ -434,6 +515,913 @@
     "condition": "scheme_not_exact"
    },
    "naive_full_payload_sha256": "1f09667be09b5b5c99a886bedde3a7dd1b1e0db4d94e16dd3230847d6a4c8c9e"
+  },
+  {
+   "name": "bad-address-trailing-newline",
+   "description": "authorization.from plus a final newline: refused, not lowercased and hashed as a different payment.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66\n",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "from_not_evm_address"
+   },
+   "naive_full_payload_sha256": "224f04fa5e6836bf22464d67ab2715d98a4dcbe26251d7be33b99cd3eaf33bb0"
+  },
+  {
+   "name": "bad-network-chain-zero",
+   "description": "eip155:0: the chain-id reference must start with 1-9, so chain id 0 is refused.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "eip155:0",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "d8b515b0473cb9bc19150ae43fd6ca6812b0ede8b69b5c77133b64b64fd05655"
+  },
+  {
+   "name": "bad-network-reference-too-long",
+   "description": "A CAIP-2 reference of 33 characters: CAIP-2 allows 1-32.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "eip155:111111111111111111111111111111111",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "909814a861b9868c1878d1309f4a800d3345f25aac57932cd876f68c3421943d"
+  },
+  {
+   "name": "bad-network-trailing-newline",
+   "description": "network 'eip155:8453' plus a final newline: refused, neither stripped to Base nor hashed as another chain.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "eip155:8453\n",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "6203d289c415d7a5b45861a21ee1cbb550f8c9e62718cfa560c4196bdfc8b1d3"
+  },
+  {
+   "name": "bad-network-number",
+   "description": "network as a JSON number: refused with the network condition, not looked up and not an unreadable envelope.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": 8453,
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "a6856cd38dbada55ab9a65ae6ac46022f82a613985718aaca51227514a6c4a9d"
+  },
+  {
+   "name": "bad-network-not-eip155",
+   "description": "A CAIP-2 id outside the eip155 namespace with a numeric reference: the recipe is EVM only.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "xrpl:1",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "8e95212c1506dc3c3d900afc97a07fb68ecfa568cd9a6007b9c69c04b9258c5f"
+  },
+  {
+   "name": "bad-network-hex-reference",
+   "description": "eip155:0x2105 (Base's chain id in hex, as EIP-1193 wallets report it): the CAIP-2 reference is decimal.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "eip155:0x2105",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "fc49c0aa2e2469c5433a806ab9fec6198b4c317a0a04c7aa1e55e07fb7d84284"
+  },
+  {
+   "name": "bad-network-alias-uppercase",
+   "description": "'Base': the alias table is matched exactly, so a differently-cased alias is refused rather than guessed.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "Base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "8ff9d5a5a0f272d8b8809a51bd92dd90c5693086fb05699423a5abed8dd70b05"
+  },
+  {
+   "name": "bad-asset-41-hex",
+   "description": "asset with 41 hex digits: addresses are 20 bytes.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA029130",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "asset_not_evm_address"
+   },
+   "naive_full_payload_sha256": "c8ef9fd04a2da54d5d11bccfc84959e496da6eaef5ea0a47af1b23036bf4fb43"
+  },
+  {
+   "name": "bad-address-39-hex",
+   "description": "authorization.from with 39 hex digits.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b6",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "from_not_evm_address"
+   },
+   "naive_full_payload_sha256": "082ca66b374a08f76d0449f1bf137a8799273134c8942bbbe37c20c28ed60bcf"
+  },
+  {
+   "name": "bad-address-uppercase-prefix",
+   "description": "authorization.to with the prefix '0X': the prefix is '0x'.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0X209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "to_not_evm_address"
+   },
+   "naive_full_payload_sha256": "34c68fb7cc1b5131d907c575ba6d7936f77c2d09c7850cd7f1d0ad9977896d34"
+  },
+  {
+   "name": "bad-address-no-prefix",
+   "description": "authorization.to as 40 hex digits without '0x'.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "to_not_evm_address"
+   },
+   "naive_full_payload_sha256": "b350b2d7b509d96e4ddac8256e4d9d9d8f0f728e021590c0df0a48ad31710143"
+  },
+  {
+   "name": "bad-address-leading-space",
+   "description": "authorization.from with a leading space: refused, like the trailing newline (an end-anchored-only check would accept it).",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": " 0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "from_not_evm_address"
+   },
+   "naive_full_payload_sha256": "693cb529dfd31814292848e50a6d9149c9b2ba5f5d808acf10866d8da8096e07"
+  },
+  {
+   "name": "bad-nonce-63-hex",
+   "description": "nonce with 63 hex digits.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb606"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "f8d2234ce09b05c5f08636255743fc1c859577cfdbb312a4c08dc06ab08c32aa"
+  },
+  {
+   "name": "bad-nonce-65-hex",
+   "description": "nonce with 65 hex digits.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb60600"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "a214557c0fa60ac5f0776b3bc402feedf5f6f6688d39ddc05ce25dbb0bf51a68"
+  },
+  {
+   "name": "bad-nonce-uppercase-prefix",
+   "description": "nonce with the prefix '0X': the prefix is '0x' (only the hex digits may be uppercase).",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0Xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "56a7a80d3826c0a59a77df185e83113fdfeadd58a5c222984741622b1ba90245"
+  },
+  {
+   "name": "bad-value-negative",
+   "description": "value '-1': uint256 has no sign.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "-1",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "ef87e19f7f41ba46ff9983a152aa70fac5f0d4ada64e6d9056db4e2872b4e695"
+  },
+  {
+   "name": "bad-value-79-digits",
+   "description": "value 10^78, 79 digits: past uint256 max by length alone.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "1000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_exceeds_uint256"
+   },
+   "naive_full_payload_sha256": "5f25c62f643715c41d1711112c5132fa3b5a9158c69765e73ba73a0ad9cdbc1a"
+  },
+  {
+   "name": "bad-value-5000-digits",
+   "description": "value of 5000 digits: refused by length before int(), which by default refuses to parse more than 4300 digits.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_exceeds_uint256"
+   },
+   "naive_full_payload_sha256": "d7567893bf453324602c67fa4c603777d1ed9e7a5bdfbccba853b57cb480657c"
+  },
+  {
+   "name": "bad-scheme-uppercase",
+   "description": "scheme 'EXACT': the scheme name is matched exactly.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "EXACT",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "scheme_not_exact"
+   },
+   "naive_full_payload_sha256": "0d3c90bdc66c173e39d5da57082407392a01d0395de5a885289b76151d8d48b9"
+  },
+  {
+   "name": "bad-scheme-trailing-newline",
+   "description": "scheme 'exact' plus a final newline: matched exactly, not stripped.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact\n",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "scheme_not_exact"
+   },
+   "naive_full_payload_sha256": "1530eefb3ab4898b881e1d36e734e44ec532f1c6033e6c4ef9635c3b374fa8af"
+  },
+  {
+   "name": "bad-authorization-not-object",
+   "description": "authorization is a string, not an object: refused with the recipe's own condition.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b"
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "authorization_missing"
+   },
+   "naive_full_payload_sha256": "4e6dac9049d84a1783467eb24dc542f571983c7cc14eb3462659886b6e4d398f"
+  },
+  {
+   "name": "bad-authorization-missing-from",
+   "description": "authorization without from: refused with the from condition, not as an unreadable envelope (the bad-scheme-missing rule, applied to the authorization fields).",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "from_not_evm_address"
+   },
+   "naive_full_payload_sha256": "213f3bd01e82f3dd94d8e50daafe2500f3001695c3fd64dea5ffa0ae8e60c39c"
+  },
+  {
+   "name": "bad-authorization-missing-to",
+   "description": "authorization without to: refused with the to condition.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "to_not_evm_address"
+   },
+   "naive_full_payload_sha256": "2f351ae8aafdd453ef951f170857c21ce888febd9ab618c2a0dabf9c3fc918d0"
+  },
+  {
+   "name": "bad-authorization-missing-value",
+   "description": "authorization without value: refused with the value condition (a missing value is not 0).",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "966cf69e4c8aa177189c60a0aad57dbd3289fe429a98547a0c57c91e20ddeca7"
+  },
+  {
+   "name": "bad-authorization-missing-nonce",
+   "description": "authorization without nonce: refused with the nonce condition.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "251885949b168eeb41686b12c7d73f6d112dd80d5b4ff5f72e73c25b5d7a7708"
+  },
+  {
+   "name": "bad-address-non-hex",
+   "description": "authorization.from with a non-hex character ('g') in place of a hex digit: the alphabet is 0-9a-fA-F.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b6g",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "from_not_evm_address"
+   },
+   "naive_full_payload_sha256": "48bfe1c90be8b8ef876ae1701a0b21102136e9828744fc8724b6a38744fa31c5"
+  },
+  {
+   "name": "bad-nonce-non-hex",
+   "description": "nonce with a non-hex character ('g') in place of a hex digit.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb606g"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "72ac0c7fad7df4500962eedaf82a7ee5b24f785f9cf1fd531a551bc1d3e3b0c4"
+  },
+  {
+   "name": "bad-nonce-no-prefix",
+   "description": "nonce as 64 hex digits without '0x'.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "d771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "24292a27e78dae391feeaf58709cd15bfbbe02e6a87bde5520bc61bbb1a4c47f"
+  },
+  {
+   "name": "bad-nonce-number",
+   "description": "nonce as a JSON number: refused with the nonce condition, not an unreadable envelope.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": 1234
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "db2e18e2841e3525f9c972a836370384c547b4b1ec03e35d402e17dc310aab3e"
+  },
+  {
+   "name": "bad-value-unicode-digits",
+   "description": "value '1' followed by four Arabic-Indic zeros (U+0660): refused; a Unicode-aware digit class (Python's \\d) or int() alone would read it as 10000.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "1\u0660\u0660\u0660\u0660",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "371b8e63d1bb15a608e7aea45a82404263fb82e376f6206cf86ce1b63a5cb9e8"
+  },
+  {
+   "name": "bad-value-underscore",
+   "description": "value '10_000': refused; int() alone would accept the underscore.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10_000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "e239df4946cac0b2576ce27760d968b6bce7333c7af386157378ba71c06fcbe1"
+  },
+  {
+   "name": "bad-network-unicode-digits",
+   "description": "eip155:8 followed by Arabic-Indic digits (U+0664 U+0665 U+0663, '8453' in mixed scripts): the CAIP-2 reference is ASCII; a Unicode-aware digit class would accept it.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "eip155:8\u0664\u0665\u0663",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "ff64e7df6cd9b94fb1d216aa8af691c47a9362982de8f7634ffee66fadf0c392"
+  },
+  {
+   "name": "bad-network-namespace-uppercase",
+   "description": "'EIP155:8453': the CAIP-2 namespace is lowercase and matched exactly.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "EIP155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "network_not_caip2_mappable"
+   },
+   "naive_full_payload_sha256": "116ad473fe6b63026930d64916177dcaa3b34ac4e6294018c2536446d79beff2"
   },
   {
    "name": "alias-ts-only-abstract",

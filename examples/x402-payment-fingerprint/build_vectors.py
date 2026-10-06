@@ -49,6 +49,12 @@ add("diff-3-other-value", "P3", v1(dict(AUTH, value="10001"), sig(R, S, 27)),
     "Same nonce, different value: a record describing a different amount must not join.")
 add("diff-4-other-network", "P4", v1(AUTH, sig(R, S, 27), network="base-sepolia"),
     "Same authorization on Base Sepolia: a testnet payment never joins a mainnet record.")
+add("diff-7-max-value", "P7", v1(dict(AUTH, value=str(2**256 - 1)), sig(R, S, 27)),
+    "value 2^256-1, the largest uint256: accepted and fingerprinted (the uint256 bound is inclusive).")
+add("diff-8-uppercase-nonce", "P8", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-8").hexdigest().upper()), sig(R, S, 27)),
+    "A nonce written in uppercase hex: accepted, and the preimage holds it lowercased, so it fingerprints like the lowercase spelling.")
+add("diff-9-reference-32-chars", "P9", v1(AUTH, sig(R, S, 27), network="eip155:" + "1" * 32),
+    "A CAIP-2 reference of exactly 32 characters: accepted (CAIP-2 allows 1-32, the bound is inclusive).")
 add("bad-value-number", None, v1(dict(AUTH, value=10000), sig(R, S, 27)),
     "value as a JSON number: parsers differ on large integers, so the recipe only accepts the decimal string.", "malformed", "value_not_canonical_decimal_string")
 add("bad-value-leading-zero", None, v1(dict(AUTH, value="010000"), sig(R, S, 27)),
@@ -74,6 +80,79 @@ add("bad-scheme-missing", None, _noscheme,
     "Envelope with no scheme at all: refused as scheme_not_exact (only an explicit 'exact' fingerprints), not as an unreadable envelope. "
     "Pins the condition name raised by Noûs (x402-foundation/tsc#4, 2026-10-06).",
     "malformed", "scheme_not_exact")
+add("bad-address-trailing-newline", None, v1(dict(AUTH, **{"from": BUYER + "\n"}), sig(R, S, 27)),
+    "authorization.from plus a final newline: refused, not lowercased and hashed as a different payment.", "malformed", "from_not_evm_address")
+add("bad-network-chain-zero", None, v1(AUTH, sig(R, S, 27), network="eip155:0"),
+    "eip155:0: the chain-id reference must start with 1-9, so chain id 0 is refused.", "malformed", "network_not_caip2_mappable")
+add("bad-network-reference-too-long", None, v1(AUTH, sig(R, S, 27), network="eip155:" + "1" * 33),
+    "A CAIP-2 reference of 33 characters: CAIP-2 allows 1-32.", "malformed", "network_not_caip2_mappable")
+add("bad-network-trailing-newline", None, v1(AUTH, sig(R, S, 27), network="eip155:8453\n"),
+    "network 'eip155:8453' plus a final newline: refused, neither stripped to Base nor hashed as another chain.", "malformed", "network_not_caip2_mappable")
+add("bad-network-number", None, v1(AUTH, sig(R, S, 27), network=8453),
+    "network as a JSON number: refused with the network condition, not looked up and not an unreadable envelope.", "malformed", "network_not_caip2_mappable")
+add("bad-network-not-eip155", None, v1(AUTH, sig(R, S, 27), network="xrpl:1"),
+    "A CAIP-2 id outside the eip155 namespace with a numeric reference: the recipe is EVM only.", "malformed", "network_not_caip2_mappable")
+add("bad-network-hex-reference", None, v1(AUTH, sig(R, S, 27), network="eip155:0x2105"),
+    "eip155:0x2105 (Base's chain id in hex, as EIP-1193 wallets report it): the CAIP-2 reference is decimal.", "malformed", "network_not_caip2_mappable")
+add("bad-network-alias-uppercase", None, v1(AUTH, sig(R, S, 27), network="Base"),
+    "'Base': the alias table is matched exactly, so a differently-cased alias is refused rather than guessed.", "malformed", "network_not_caip2_mappable")
+add("bad-asset-41-hex", None, v1(AUTH, sig(R, S, 27), asset=USDC + "0"),
+    "asset with 41 hex digits: addresses are 20 bytes.", "malformed", "asset_not_evm_address")
+add("bad-address-39-hex", None, v1(dict(AUTH, **{"from": BUYER[:-1]}), sig(R, S, 27)),
+    "authorization.from with 39 hex digits.", "malformed", "from_not_evm_address")
+add("bad-address-uppercase-prefix", None, v1(dict(AUTH, to="0X" + SELLER[2:]), sig(R, S, 27)),
+    "authorization.to with the prefix '0X': the prefix is '0x'.", "malformed", "to_not_evm_address")
+add("bad-address-no-prefix", None, v1(dict(AUTH, to=SELLER[2:]), sig(R, S, 27)),
+    "authorization.to as 40 hex digits without '0x'.", "malformed", "to_not_evm_address")
+add("bad-address-leading-space", None, v1(dict(AUTH, **{"from": " " + BUYER}), sig(R, S, 27)),
+    "authorization.from with a leading space: refused, like the trailing newline (an end-anchored-only check would accept it).",
+    "malformed", "from_not_evm_address")
+add("bad-nonce-63-hex", None, v1(dict(AUTH, nonce=NONCE[:-1]), sig(R, S, 27)),
+    "nonce with 63 hex digits.", "malformed", "nonce_not_bytes32_hex")
+add("bad-nonce-65-hex", None, v1(dict(AUTH, nonce=NONCE + "0"), sig(R, S, 27)),
+    "nonce with 65 hex digits.", "malformed", "nonce_not_bytes32_hex")
+add("bad-nonce-uppercase-prefix", None, v1(dict(AUTH, nonce="0X" + NONCE[2:]), sig(R, S, 27)),
+    "nonce with the prefix '0X': the prefix is '0x' (only the hex digits may be uppercase).", "malformed", "nonce_not_bytes32_hex")
+add("bad-value-negative", None, v1(dict(AUTH, value="-1"), sig(R, S, 27)),
+    "value '-1': uint256 has no sign.", "malformed", "value_not_canonical_decimal_string")
+add("bad-value-79-digits", None, v1(dict(AUTH, value="1" + "0" * 78), sig(R, S, 27)),
+    "value 10^78, 79 digits: past uint256 max by length alone.", "malformed", "value_exceeds_uint256")
+add("bad-value-5000-digits", None, v1(dict(AUTH, value="9" * 5000), sig(R, S, 27)),
+    "value of 5000 digits: refused by length before int(), which by default refuses to parse more than 4300 digits.",
+    "malformed", "value_exceeds_uint256")
+add("bad-scheme-uppercase", None, {**v1(AUTH, sig(R, S, 27)), "scheme": "EXACT"},
+    "scheme 'EXACT': the scheme name is matched exactly.", "malformed", "scheme_not_exact")
+add("bad-scheme-trailing-newline", None, {**v1(AUTH, sig(R, S, 27)), "scheme": "exact\n"},
+    "scheme 'exact' plus a final newline: matched exactly, not stripped.", "malformed", "scheme_not_exact")
+add("bad-authorization-not-object", None, {**v1(AUTH, sig(R, S, 27)), "payload": {"signature": sig(R, S, 27), "authorization": sig(R, S, 27)}},
+    "authorization is a string, not an object: refused with the recipe's own condition.", "malformed", "authorization_missing")
+add("bad-authorization-missing-from", None, v1({k: v for k, v in AUTH.items() if k != "from"}, sig(R, S, 27)),
+    "authorization without from: refused with the from condition, not as an unreadable envelope (the bad-scheme-missing rule, applied to the authorization fields).",
+    "malformed", "from_not_evm_address")
+add("bad-authorization-missing-to", None, v1({k: v for k, v in AUTH.items() if k != "to"}, sig(R, S, 27)),
+    "authorization without to: refused with the to condition.", "malformed", "to_not_evm_address")
+add("bad-authorization-missing-value", None, v1({k: v for k, v in AUTH.items() if k != "value"}, sig(R, S, 27)),
+    "authorization without value: refused with the value condition (a missing value is not 0).", "malformed", "value_not_canonical_decimal_string")
+add("bad-authorization-missing-nonce", None, v1({k: v for k, v in AUTH.items() if k != "nonce"}, sig(R, S, 27)),
+    "authorization without nonce: refused with the nonce condition.", "malformed", "nonce_not_bytes32_hex")
+add("bad-address-non-hex", None, v1(dict(AUTH, **{"from": BUYER[:-1] + "g"}), sig(R, S, 27)),
+    "authorization.from with a non-hex character ('g') in place of a hex digit: the alphabet is 0-9a-fA-F.", "malformed", "from_not_evm_address")
+add("bad-nonce-non-hex", None, v1(dict(AUTH, nonce=NONCE[:-1] + "g"), sig(R, S, 27)),
+    "nonce with a non-hex character ('g') in place of a hex digit.", "malformed", "nonce_not_bytes32_hex")
+add("bad-nonce-no-prefix", None, v1(dict(AUTH, nonce=NONCE[2:]), sig(R, S, 27)),
+    "nonce as 64 hex digits without '0x'.", "malformed", "nonce_not_bytes32_hex")
+add("bad-nonce-number", None, v1(dict(AUTH, nonce=1234), sig(R, S, 27)),
+    "nonce as a JSON number: refused with the nonce condition, not an unreadable envelope.", "malformed", "nonce_not_bytes32_hex")
+add("bad-value-unicode-digits", None, v1(dict(AUTH, value="1\u0660\u0660\u0660\u0660"), sig(R, S, 27)),
+    "value '1' followed by four Arabic-Indic zeros (U+0660): refused; a Unicode-aware digit class (Python's \\d) or int() alone would read it as 10000.",
+    "malformed", "value_not_canonical_decimal_string")
+add("bad-value-underscore", None, v1(dict(AUTH, value="10_000"), sig(R, S, 27)),
+    "value '10_000': refused; int() alone would accept the underscore.", "malformed", "value_not_canonical_decimal_string")
+add("bad-network-unicode-digits", None, v1(AUTH, sig(R, S, 27), network="eip155:8\u0664\u0665\u0663"),
+    "eip155:8 followed by Arabic-Indic digits (U+0664 U+0665 U+0663, '8453' in mixed scripts): the CAIP-2 reference is ASCII; a Unicode-aware digit class would accept it.",
+    "malformed", "network_not_caip2_mappable")
+add("bad-network-namespace-uppercase", None, v1(AUTH, sig(R, S, 27), network="EIP155:8453"),
+    "'EIP155:8453': the CAIP-2 namespace is lowercase and matched exactly.", "malformed", "network_not_caip2_mappable")
 add("alias-ts-only-abstract", "P5", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-5").hexdigest()), sig(R, S, 27), network="abstract"),
     "A payment on Abstract, a v1 TS-only alias not in the old 8-entry table. Pins the normative table resolution of the group's open network-alias question (x402-foundation/tsc#4).")
 add("alias-go-only-celo", "P6", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-6").hexdigest()), sig(R, S, 27), network="celo"),
