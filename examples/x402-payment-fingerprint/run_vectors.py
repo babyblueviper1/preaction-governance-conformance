@@ -6,8 +6,13 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from fingerprint import fingerprint  # noqa: E402
 doc = json.load(open(os.path.join(HERE, "vectors.json"))); bad = 0; fp = {}
 for v in doc["vectors"]:
-    held = v["held"]; acc = held.get("accepted", held)
-    out, val = fingerprint({"network": acc["network"], "asset": acc["asset"], "authorization": held["payload"]["authorization"]})
+    held = v["held"]
+    try:
+        acc = held.get("accepted", held)
+        out, val = fingerprint({"network": acc["network"], "asset": acc["asset"], "scheme": acc["scheme"],
+                                 "authorization": held["payload"]["authorization"]})
+    except (KeyError, TypeError, AttributeError):
+        out, val = "malformed", "envelope_unreadable"
     exp = v["expect"]; ok = out == exp["outcome"] and val == exp.get("fingerprint", exp.get("condition"))
     bad += not ok; print(("ok  " if ok else "FAIL"), v["name"], out, val[:24] if out == "ok" else val)
     if out == "ok": fp.setdefault(v["payment_id"], set()).add(val)

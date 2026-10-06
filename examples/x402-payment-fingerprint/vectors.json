@@ -300,6 +300,114 @@
     "condition": "nonce_not_bytes32_hex"
    },
    "naive_full_payload_sha256": "9042cded6840fca369cd6f4909e20bc8e6bca2180ee0dd5a8c2334badaf7eae6"
+  },
+  {
+   "name": "bad-value-trailing-newline",
+   "description": "A trailing newline on value must not be silently accepted (it would otherwise hash as a distinct, valid fingerprint).",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000\n",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_not_canonical_decimal_string"
+   },
+   "naive_full_payload_sha256": "19cf6638eaedbc5077a21075a7ed3c83595f73270e62300b23509c319c1f3c31"
+  },
+  {
+   "name": "bad-nonce-trailing-newline",
+   "description": "Same class of bug on nonce: a trailing newline must be refused, not hashed as a different fingerprint.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060\n"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "nonce_not_bytes32_hex"
+   },
+   "naive_full_payload_sha256": "ac8289ef49b1b173958972823f5094fb69c0d502a29879987a2861dbe4457521"
+  },
+  {
+   "name": "bad-scheme-not-exact",
+   "description": "scheme='upto' is Permit2-only on EVM (EIP-3009 transferWithAuthorization is not supported for it); it must not fingerprint as if it were 'exact'.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "upto",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "scheme_not_exact"
+   },
+   "naive_full_payload_sha256": "3daf0044f9ee572a9743158fa474b60d67260e9ee89e7678daf6917c5b21f171"
+  },
+  {
+   "name": "bad-value-exceeds-uint256",
+   "description": "value one past uint256 max: ERC-3009 value is a uint256, so a larger canonical-looking decimal string must be refused, not hashed.",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "scheme": "exact",
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "115792089237316195423570985008687907853269984665640564039457584007913129639936",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "value_exceeds_uint256"
+   },
+   "naive_full_payload_sha256": "74cdafc591152ece837dc7cbb698faa91234a8b32b23cfec82569545f4e278a1"
   }
  ],
  "naive_recipe_note": "sha256 over the JSON each party holds gives 4 different digests for the 4 copies of payment P1; the recipe gives 1."

@@ -22,9 +22,9 @@ def v2(auth, signature, network="eip155:8453", asset=USDC):
     return {"x402Version": 2, "accepted": {"scheme": "exact", "network": network, "asset": asset},
             "payload": {"signature": signature, "authorization": auth}}
 def view(p):
-    """The fingerprint input both versions reduce to: network + asset + authorization."""
+    """The fingerprint input both versions reduce to: network + asset + scheme + authorization."""
     acc = p.get("accepted", p)
-    return {"network": acc["network"], "asset": acc["asset"], "authorization": p["payload"]["authorization"]}
+    return {"network": acc["network"], "asset": acc["asset"], "scheme": acc["scheme"], "authorization": p["payload"]["authorization"]}
 
 V = []
 def add(name, payment_id, held, desc, expect_outcome="ok", condition=None):
@@ -56,6 +56,18 @@ add("bad-network-unknown-alias", None, v1(AUTH, sig(R, S, 27), network="base-mai
     "An alias with no CAIP-2 mapping is refused rather than guessed.", "malformed", "network_not_caip2_mappable")
 add("bad-nonce-short", None, v1(dict(AUTH, nonce="0x1234"), sig(R, S, 27)),
     "EIP-3009 nonces are bytes32.", "malformed", "nonce_not_bytes32_hex")
+add("bad-value-trailing-newline", None, v1(dict(AUTH, value="10000\n"), sig(R, S, 27)),
+    "A trailing newline on value must not be silently accepted (it would otherwise hash as a distinct, valid fingerprint).",
+    "malformed", "value_not_canonical_decimal_string")
+add("bad-nonce-trailing-newline", None, v1(dict(AUTH, nonce=AUTH["nonce"] + "\n"), sig(R, S, 27)),
+    "Same class of bug on nonce: a trailing newline must be refused, not hashed as a different fingerprint.",
+    "malformed", "nonce_not_bytes32_hex")
+add("bad-scheme-not-exact", None, {**v1(AUTH, sig(R, S, 27)), "scheme": "upto"},
+    "scheme='upto' is Permit2-only on EVM (EIP-3009 transferWithAuthorization is not supported for it); it must not fingerprint as if it were 'exact'.",
+    "malformed", "scheme_not_exact")
+add("bad-value-exceeds-uint256", None, v1(dict(AUTH, value=str(2**256)), sig(R, S, 27)),
+    "value one past uint256 max: ERC-3009 value is a uint256, so a larger canonical-looking decimal string must be refused, not hashed.",
+    "malformed", "value_exceeds_uint256")
 
 fps = {}
 for v in V:
