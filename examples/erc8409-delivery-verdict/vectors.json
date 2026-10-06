@@ -1,0 +1,163 @@
+{
+ "spec": "ERC-8409 Signed Service Payment Quotes, ethereum/ERCs PR #1990 @ 0ee33230ca9f9f41a714382552a47cd860465ca7",
+ "note": "Synthetic example data; the issuer key is the ERC's public test key 0x...01. No real payment was made.",
+ "requestScheme_note": "org.invinoveritas.example.http-json/1 is an EXAMPLE scheme for this vector only: canonical request bytes = RFC 8785 JCS({method, url, body}), requestHash = keccak256(those bytes).",
+ "verifier_pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+ "verifier_keys_url": "https://api.babyblueviper.com/.well-known/verifier-keys.json",
+ "envelope": {
+  "chainId": "8453",
+  "quote": {
+   "issuer": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf",
+   "payer": "0x2222222222222222222222222222222222222222",
+   "recipient": "0x3333333333333333333333333333333333333333",
+   "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+   "amount": "1000000",
+   "requestScheme": "org.invinoveritas.example.http-json/1",
+   "requestHash": "0xc888f978fdb3654ed21b4638af05af6dbe7e5163be31dad5a0d9b2e7a5d9ba47",
+   "quoteId": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+   "validAfter": "1788372000",
+   "validUntil": "1788372300"
+  },
+  "signature": "0x37902d9bc241e7ed13fa8b563148c03c0fda6823382d45e2d539f22e4c6c41436edc41258aa76536cee8b5c6f8efdfcec215c4f29d6bf0e9d24aca6edc796fca1b"
+ },
+ "canonicalRequest": "{\"body\":{\"city\":\"Santiago\",\"days\":7},\"method\":\"POST\",\"url\":\"https://api.example.com/v1/forecast\"}",
+ "quoteDigest": "0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f",
+ "cases": {
+  "delivered": {
+   "deliveryRecord": {
+    "scheme": "invinoveritas.delivery-record/1",
+    "quote": {
+     "chainId": "8453",
+     "quoteDigest": "0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f",
+     "quoteId": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+     "issuer": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf",
+     "requestScheme": "org.invinoveritas.example.http-json/1",
+     "requestHash": "0xc888f978fdb3654ed21b4638af05af6dbe7e5163be31dad5a0d9b2e7a5d9ba47"
+    },
+    "request": {
+     "method": "POST",
+     "url": "https://api.example.com/v1/forecast",
+     "body": {
+      "city": "Santiago",
+      "days": 7
+     }
+    },
+    "response": {
+     "status": 200,
+     "contentType": "application/json",
+     "body": "{\"city\":\"Santiago\",\"days\":7,\"forecast\":[{\"date\":\"2028-09-03\",\"tmax_c\":18,\"tmin_c\":6},{\"date\":\"2028-09-04\",\"tmax_c\":19,\"tmin_c\":7},{\"date\":\"2028-09-05\",\"tmax_c\":20,\"tmin_c\":8},{\"date\":\"2028-09-06\",\"tmax_c\":21,\"tmin_c\":9},{\"date\":\"2028-09-07\",\"tmax_c\":22,\"tmin_c\":10},{\"date\":\"2028-09-08\",\"tmax_c\":23,\"tmin_c\":11},{\"date\":\"2028-09-09\",\"tmax_c\":24,\"tmin_c\":12}]}",
+     "bodySha256": "99d3ea58d35107e36abc1b7e6f9c34edb271231617a4df4b3acec008de3a47f2"
+    },
+    "question": "Does this response deliver what the quoted request asked for?"
+   },
+   "deliveryRecordSha256": "ab2294fdd462835eda26daf33765100ab5269c17d2f92ce79eac083073e5a313",
+   "receiptField": {
+    "deliveryVerdict": {
+     "scheme": "invinoveritas.delivery-verdict/1",
+     "quoteDigest": "0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f",
+     "deliveryRecordSha256": "ab2294fdd462835eda26daf33765100ab5269c17d2f92ce79eac083073e5a313",
+     "verdict": "approve",
+     "proofEventId": "4f00342066fd8bbdcb4259488fb862fff16ccfd3753d5a763c4ca6718a5ae2ef",
+     "proof": {
+      "id": "4f00342066fd8bbdcb4259488fb862fff16ccfd3753d5a763c4ca6718a5ae2ef",
+      "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+      "created_at": 1791306882,
+      "kind": 30078,
+      "tags": [
+       [
+        "d",
+        "invinoveritas-proof-ab2294fdd462835eda26daf33765100ab5269c17d2f92ce79eac083073e5a313-1791306882-766480f0"
+       ],
+       [
+        "t",
+        "invinoveritas"
+       ],
+       [
+        "t",
+        "proof"
+       ],
+       [
+        "schema",
+        "invinoveritas.verdict_proof.v1"
+       ]
+      ],
+      "content": "{\"artifact_hash\":\"ab2294fdd462835eda26daf33765100ab5269c17d2f92ce79eac083073e5a313\",\"artifact_type\":\"agent_output\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.99,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:d031c3beb7f7fd153aa8c095c707053a1d4f3990a975a4b03c7e6e7b609e8ed1\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"ERC-8409 delivery-verdict test vector (delivered): quoteDigest 0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f, deliveryRecord sha256 ab2294fdd462835eda26daf33765100ab5269c17d2f92ce79eac083073e5a313. Synthetic example data, no real payment.\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791306707,\"hash\":\"00000000000000000001faef29f54ab264f36360602bfa798f1e3c83d20f6940\",\"height\":970205,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:3dbfebce5aa026f4131b5e9cd5b1c884ef1e1130eaffbba0dbd8e22d76683b11\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"adc2bde2a59315d18bc18b386e789a55619787111eeb6edbd8b1e9eac9a28902\",\"verdict\":\"approve\",\"verified_at\":1791306882,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \u00b7  pip install invinoveritas-verify  \u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+      "sig": "37f96f26d8349342e94264c30ea50f7a76d602912f51c05701ba730278a897f03bcf278c835ea0bec9dfbcfb7a930d03fcba17f986290226af944d099a7a13ab"
+     }
+    }
+   },
+   "expected": {
+    "verdict": "approve",
+    "acg_outcome_evidence": "delivered"
+   }
+  },
+  "paid_not_delivered": {
+   "deliveryRecord": {
+    "scheme": "invinoveritas.delivery-record/1",
+    "quote": {
+     "chainId": "8453",
+     "quoteDigest": "0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f",
+     "quoteId": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+     "issuer": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf",
+     "requestScheme": "org.invinoveritas.example.http-json/1",
+     "requestHash": "0xc888f978fdb3654ed21b4638af05af6dbe7e5163be31dad5a0d9b2e7a5d9ba47"
+    },
+    "request": {
+     "method": "POST",
+     "url": "https://api.example.com/v1/forecast",
+     "body": {
+      "city": "Santiago",
+      "days": 7
+     }
+    },
+    "response": {
+     "status": 200,
+     "contentType": "application/json",
+     "body": "{\"city\":\"Santiago\",\"days\":7,\"forecast\":[]}",
+     "bodySha256": "9a679a0e0a4c31e9ff5fc9660afa00aa5e27704c3025639c69f5dc41bbc5a07e"
+    },
+    "question": "Does this response deliver what the quoted request asked for?"
+   },
+   "deliveryRecordSha256": "23d9564f03e9b23c08d90c6bc3335d81d2e405d42363f88232fa8a734f27ace1",
+   "receiptField": {
+    "deliveryVerdict": {
+     "scheme": "invinoveritas.delivery-verdict/1",
+     "quoteDigest": "0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f",
+     "deliveryRecordSha256": "23d9564f03e9b23c08d90c6bc3335d81d2e405d42363f88232fa8a734f27ace1",
+     "verdict": "reject",
+     "proofEventId": "50df238aa8e1e281cf5459b31a46eb523c8590972102f6d42f89182baa4ab400",
+     "proof": {
+      "id": "50df238aa8e1e281cf5459b31a46eb523c8590972102f6d42f89182baa4ab400",
+      "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+      "created_at": 1791306886,
+      "kind": 30078,
+      "tags": [
+       [
+        "d",
+        "invinoveritas-proof-23d9564f03e9b23c08d90c6bc3335d81d2e405d42363f88232fa8a734f27ace1-1791306886-ac337fdb"
+       ],
+       [
+        "t",
+        "invinoveritas"
+       ],
+       [
+        "t",
+        "proof"
+       ],
+       [
+        "schema",
+        "invinoveritas.verdict_proof.v1"
+       ]
+      ],
+      "content": "{\"artifact_hash\":\"23d9564f03e9b23c08d90c6bc3335d81d2e405d42363f88232fa8a734f27ace1\",\"artifact_type\":\"agent_output\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.99,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:95cbacf0d06e7968680888aa1632edb7123cc08e566bbf3aec830ccb96609e39\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"ERC-8409 delivery-verdict test vector (paid_not_delivered): quoteDigest 0x48f1be2181771208981ebac78f2c01a5f224c7942e6149085c3e0f05dc81948f, deliveryRecord sha256 23d9564f03e9b23c08d90c6bc3335d81d2e405d42363f88232fa8a734f27ace1. Synthetic example data, no real payment.\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791306707,\"hash\":\"00000000000000000001faef29f54ab264f36360602bfa798f1e3c83d20f6940\",\"height\":970205,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:3dbfebce5aa026f4131b5e9cd5b1c884ef1e1130eaffbba0dbd8e22d76683b11\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e4f5ff383c47b53c0c54b007055573c874470c43709f52574e475f81be483875\",\"verdict\":\"reject\",\"verified_at\":1791306885,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \u00b7  pip install invinoveritas-verify  \u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+      "sig": "77afa755362bae590f22f8b90aa3a9b2fbf8b4c473f02d10fae218f6dac6e3745a2c425cddf578244cff84310abc8b0d85513cd1c3dcc4bcd03f3a66ee5587a9"
+     }
+    }
+   },
+   "expected": {
+    "verdict": "reject",
+    "acg_outcome_evidence": "paid_not_delivered"
+   }
+  }
+ }
+}
