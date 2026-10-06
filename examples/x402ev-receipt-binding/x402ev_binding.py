@@ -12,6 +12,7 @@ This file shows the failure under reading (a) and pins one closing rule (PROPOSE
   signature   = Ed25519 over JCS(body)
   body.payment.fingerprint = x402-payment-fingerprint/0 of the EIP-3009 authorization (tsc#4), so the delivery receipt joins the
               acceptance record and the buyer's / seller's records by one shared key, also before a txHash exists.
+              A matching fingerprint correlates; it does NOT establish settlement (that stays the txHash check).
 
   python x402ev_binding.py            -> builds vectors.json and runs the checks (ALL PASS)
 """
@@ -91,6 +92,11 @@ def main():
     naive1, naive2 = "x402ev/1:" + r1["delivery"]["contentDigest"], "x402ev/1:" + r2["delivery"]["contentDigest"]
     t("reading (a) evidenceRef = contentDigest: two distinct paid calls get the SAME evidenceRef (collision)", naive1 == naive2)
     t("proposed rule: the two paid calls get distinct evidenceRefs", r1["evidenceRef"] != r2["evidenceRef"])
+    t("invariant (nutstrut, #3682): evidenceRef equality != contentDigest equality -- same delivered bytes, different evidence records",
+      r1["delivery"]["contentDigest"] == r2["delivery"]["contentDigest"] and r1["evidenceRef"] != r2["evidenceRef"]
+      and r1["evidenceRef"].split(":", 1)[1] != r1["delivery"]["contentDigest"])
+    t("the excluded set is exactly {evidenceRef, signer.signature, transparency}: every other info field is in the signed body",
+      set(body_of(r1)) == set(r1) - {"evidenceRef"} and set(body_of(r1)["signer"]) == set(r1["signer"]) - {"signature"})
     t("proposed rule: both receipts verify against the bytes the client holds", check(r1, cached) == [] and check(r2, cached) == [])
     logged = dict(r1, transparency={"logId": "https://scitt.example.org", "entryNumber": 94821, "inclusionProof": "base64url:AAAA"})
     t("adding the transparency inclusion proof after signing changes neither evidenceRef nor signature validity", check(logged, cached) == [])
