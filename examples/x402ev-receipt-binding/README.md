@@ -26,3 +26,11 @@ The payment fingerprint lets the delivery receipt join the buyer's, the seller's
 - The payment fingerprint matches across the records.
 
 The signing key is a test-only Ed25519 key (seed `00 01 .. 1f`). The checks need the `cryptography` package.
+
+## A concrete example for the spec (`spec_example.py` -> `spec_example.json`)
+
+PR #3682's example at `e7b7c607` uses placeholder values (`0x1234...abcd`, `sha256:b5a2c6d8e0f1...`), so its stated `evidenceRef` does not
+recompute under its own Receipt Body rule. `spec_example.json` is the same shape with every value real: the payment is the EIP-3009
+authorization of fingerprint vector P1 (so `payment.fingerprint` recomputes), the request and response digests are over the bytes in the
+script, and the signature is by the test key. `python spec_example.py` re-derives `evidenceRef`, verifies the signature, and checks that
+attaching `transparency` changes neither. Deterministic.
