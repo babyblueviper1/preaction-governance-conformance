@@ -6,12 +6,20 @@
   R2 PER-ORIGIN  convergence is checked per origin and per namespace the origin declares: every participating node holds the complete
                  set that origin produced in that namespace. Node totals are not a valid predicate (locally-originated records make two
                  correct nodes differ, and two broken ones can match).
-  R3 ENVELOPE    every field a peer acts on (nodeType included) is inside the signed envelope. A behaviour-affecting field outside it is
-                 an unverifiable claim (NONCONFORMANT); a served value that differs from the signed one is a MISMATCH (fail closed).
+  R3 ENVELOPE    every field DECLARED in acted_on is inside the signed envelope. A declared behaviour-affecting field outside it is
+                 an unverifiable claim (NONCONFORMANT); a served value that differs from the signed one is a MISMATCH (fail closed). This
+                 is scoped deliberately narrow: envelope() only sees what acted_on declares, so it cannot by itself prove acted_on is
+                 complete -- an adapter can omit a field it really branches on (e.g. nodeType) and still read CONFORMANT. See R3b.
+  R3b COMPLETE   acted_on must cover the implementation's real decision_surface (the fields it actually branches on, bound separately --
+                 code review or static extraction, not invented by this fixture). A missing surface field is its own NONCONFORMANT,
+                 distinct from R3's signed-ness verdict; no decision_surface bound is UNVERIFIABLE, not COMPLETE -- silence is not
+                 evidence of completeness.
 
 Findings by Echo (damon:receiptos, topic 16, 2026-10-05/06): the silently clamped page, the hidden namespace, the per-origin predicate,
-nodeType outside the signed envelope. Vectors are STRUCTURAL: they test the rules over record ids and declared field sets, not the
-signature scheme itself.
+nodeType outside the signed envelope. R3b boundary by Pavlo (same thread, 2026-10-06): R3's own mechanical claim does not establish
+acted_on's completeness w.r.t. what the implementation actually uses -- checking every declared dependency does not prove none was
+omitted (the same boundary as the guarantee-preservation dependency-basis discussion). Vectors are STRUCTURAL: they test the rules over
+record ids and declared field sets, not the signature scheme itself.
 
 usage: python3 check_mesh_sync.py [vectors.json]   -> one line per vector, exit 1 on any mismatch with the expected result"""
 import json, sys
@@ -71,7 +79,8 @@ def totals_equal(v):
 
 
 def envelope(v):
-    """R3: {"signed_fields": {...}, "served_fields": {...}, "acted_on": [...]}."""
+    """R3: {"signed_fields": {...}, "served_fields": {...}, "acted_on": [...]}. Only checks fields DECLARED in
+    acted_on -- see acted_on_complete() for whether that declaration itself is complete."""
     signed, served = v["signed_fields"], v["served_fields"]
     for f in v["acted_on"]:
         if f not in signed:
@@ -79,6 +88,18 @@ def envelope(v):
         if f in served and served[f] != signed[f]:
             return f"MISMATCH:{f}"
     return "CONFORMANT"
+
+
+def acted_on_complete(v):
+    """R3b: {"acted_on": [...], "decision_surface": [...] | absent}. decision_surface is the implementation's real
+    branch set, bound separately from this fixture (code review / static extraction) -- it is a provenance claim,
+    not something envelope() can derive from acted_on alone. Absent decision_surface is UNVERIFIABLE, never COMPLETE:
+    the absence of a binding is not evidence the declaration is complete."""
+    surface = v.get("decision_surface")
+    if surface is None:
+        return "UNVERIFIABLE:no_decision_surface_bound"
+    missing = sorted(set(surface) - set(v["acted_on"]))
+    return f"NONCONFORMANT:acted_on_incomplete:{missing[0]}" if missing else "COMPLETE"
 
 
 def run(path):
@@ -92,7 +113,7 @@ def run(path):
             st, det = per_origin(v)
             got = {"per_origin": st, "detail": det, "totals_equal": totals_equal(v)}
         elif k == "envelope":
-            got = {"result": envelope(v)}
+            got = {"result": envelope(v), "acted_on_complete": acted_on_complete(v)}
         else:
             got = {"error": "unknown kind"}
         exp = v["expected"]
@@ -108,24 +129,27 @@ def run(path):
 # --- mutation gate (companion §10): each rule's checker, broken on purpose, must turn at least one of its vectors RED ---
 def _mutants(path):
     import copy
-    global enumerate_pages, per_origin, envelope
-    real = (enumerate_pages, per_origin, envelope)
+    global enumerate_pages, per_origin, envelope, acted_on_complete
+    real = (enumerate_pages, per_origin, envelope, acted_on_complete)
     def m1(pages):                       # M1: read one page and call it complete (the silent-clamp trap)
         return "COMPLETE", pages[pages["start"]]["records"]
     def m2(v):                           # M2: totals predicate instead of per-origin
         return ("CONVERGED" if totals_equal(v) else "NOT_CONVERGED"), {}
     def m3(v):                           # M3: ignore whether acted-on fields are signed
         return "CONFORMANT"
+    def m4(v):                           # M4: ignore the decision-surface binding, claim completeness regardless
+        return "COMPLETE"
     res = {}
-    for name, patch in (("M1-single-page-read", ("enumerate_pages", m1)), ("M2-totals-predicate", ("per_origin", m2)), ("M3-unsigned-field-accepted", ("envelope", m3))):
-        enumerate_pages, per_origin, envelope = real
+    for name, patch in (("M1-single-page-read", ("enumerate_pages", m1)), ("M2-totals-predicate", ("per_origin", m2)),
+                         ("M3-unsigned-field-accepted", ("envelope", m3)), ("M4-acted-on-completeness-ignored", ("acted_on_complete", m4))):
+        enumerate_pages, per_origin, envelope, acted_on_complete = real
         globals()[patch[0]] = patch[1]
         import io, contextlib
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = run(path)
         res[name] = "KILLED" if rc else "SURVIVED"
-    enumerate_pages, per_origin, envelope = real
+    enumerate_pages, per_origin, envelope, acted_on_complete = real
     for k, s in res.items(): print(f"{s} {k}")
     return 0 if all(s == "KILLED" for s in res.values()) else 1
 

@@ -54,6 +54,22 @@ V.append({"id": "N3-served-role-differs-from-signed", "kind": "envelope", "rule"
 V.append({"id": "N4-non-behavioural-field-may-sit-outside", "kind": "envelope", "rule": "R3",
           "signed_fields": {"nodeId": "0xab", "nodeType": "Origin"}, "served_fields": {"nodeId": "0xab", "nodeType": "Origin", "displayName": "ENSBoiler"},
           "acted_on": ["nodeId", "nodeType"], "expected": {"result": "CONFORMANT"}})
-json.dump({"schema": "erc8309-mesh-sync-vectors-v0", "rules": ["R1 ENUMERATE", "R2 PER-ORIGIN", "R3 ENVELOPE"], "vectors": V},
+# R3b (Pavlo, damon:receiptos topic 16, 2026-10-06): R3's envelope() only checks fields the adapter DECLARES in acted_on; it
+# cannot see a field the real implementation branches on but omits from that declaration. decision_surface is that real
+# branch set, bound separately (code review / static extraction, not invented by this fixture) -- acted_on_complete() flags
+# the gap as its own NONCONFORMANT, distinct from envelope()'s signed-ness verdict.
+V.append({"id": "N5-acted-on-omits-real-decision-field", "kind": "envelope", "rule": "R3b",
+          "signed_fields": {"nodeId": "0xab", "signer": "0xcd"}, "served_fields": {"nodeId": "0xab", "signer": "0xcd", "nodeType": "Router"},
+          "acted_on": ["nodeId"], "decision_surface": ["nodeId", "nodeType"],
+          "expected": {"result": "CONFORMANT", "acted_on_complete": "NONCONFORMANT:acted_on_incomplete:nodeType"}})
+V.append({"id": "N6-decision-surface-fully-declared", "kind": "envelope", "rule": "R3b",
+          "signed_fields": {"nodeId": "0xab", "nodeType": "Router", "signer": "0xcd"}, "served_fields": {"nodeId": "0xab", "nodeType": "Router", "signer": "0xcd"},
+          "acted_on": ["nodeId", "nodeType"], "decision_surface": ["nodeId", "nodeType"],
+          "expected": {"result": "CONFORMANT", "acted_on_complete": "COMPLETE"}})
+V.append({"id": "N7-no-decision-surface-bound", "kind": "envelope", "rule": "R3b",
+          "signed_fields": {"nodeId": "0xab", "nodeType": "Router", "signer": "0xcd"}, "served_fields": {"nodeId": "0xab", "nodeType": "Router", "signer": "0xcd"},
+          "acted_on": ["nodeId", "nodeType"],
+          "expected": {"result": "CONFORMANT", "acted_on_complete": "UNVERIFIABLE:no_decision_surface_bound"}})
+json.dump({"schema": "erc8309-mesh-sync-vectors-v0", "rules": ["R1 ENUMERATE", "R2 PER-ORIGIN", "R3 ENVELOPE", "R3b ACTED-ON-COMPLETENESS"], "vectors": V},
           open("vectors.json", "w"), indent=1, sort_keys=True)
 print("wrote", len(V), "vectors")

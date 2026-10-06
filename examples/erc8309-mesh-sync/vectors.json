@@ -2,7 +2,8 @@
  "rules": [
   "R1 ENUMERATE",
   "R2 PER-ORIGIN",
-  "R3 ENVELOPE"
+  "R3 ENVELOPE",
+  "R3b ACTED-ON-COMPLETENESS"
  ],
  "schema": "erc8309-mesh-sync-vectors-v0",
  "vectors": [
@@ -12964,6 +12965,81 @@
    "signed_fields": {
     "nodeId": "0xab",
     "nodeType": "Origin"
+   }
+  },
+  {
+   "acted_on": [
+    "nodeId"
+   ],
+   "decision_surface": [
+    "nodeId",
+    "nodeType"
+   ],
+   "expected": {
+    "acted_on_complete": "NONCONFORMANT:acted_on_incomplete:nodeType",
+    "result": "CONFORMANT"
+   },
+   "id": "N5-acted-on-omits-real-decision-field",
+   "kind": "envelope",
+   "rule": "R3b",
+   "served_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router",
+    "signer": "0xcd"
+   },
+   "signed_fields": {
+    "nodeId": "0xab",
+    "signer": "0xcd"
+   }
+  },
+  {
+   "acted_on": [
+    "nodeId",
+    "nodeType"
+   ],
+   "decision_surface": [
+    "nodeId",
+    "nodeType"
+   ],
+   "expected": {
+    "acted_on_complete": "COMPLETE",
+    "result": "CONFORMANT"
+   },
+   "id": "N6-decision-surface-fully-declared",
+   "kind": "envelope",
+   "rule": "R3b",
+   "served_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router",
+    "signer": "0xcd"
+   },
+   "signed_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router",
+    "signer": "0xcd"
+   }
+  },
+  {
+   "acted_on": [
+    "nodeId",
+    "nodeType"
+   ],
+   "expected": {
+    "acted_on_complete": "UNVERIFIABLE:no_decision_surface_bound",
+    "result": "CONFORMANT"
+   },
+   "id": "N7-no-decision-surface-bound",
+   "kind": "envelope",
+   "rule": "R3b",
+   "served_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router",
+    "signer": "0xcd"
+   },
+   "signed_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router",
+    "signer": "0xcd"
    }
   }
  ]
