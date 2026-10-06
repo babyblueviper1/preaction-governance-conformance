@@ -410,6 +410,32 @@
    "naive_full_payload_sha256": "74cdafc591152ece837dc7cbb698faa91234a8b32b23cfec82569545f4e278a1"
   },
   {
+   "name": "bad-scheme-missing",
+   "description": "Envelope with no scheme at all: refused as scheme_not_exact (only an explicit 'exact' fingerprints), not as an unreadable envelope. Pins the condition name raised by No\u00fbs (x402-foundation/tsc#4, 2026-10-06).",
+   "payment_id": null,
+   "held": {
+    "x402Version": 1,
+    "network": "base",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payload": {
+     "signature": "0x454349e422f05297191ead13e21d3db520e5abef52055e4964b82fb213f593a1043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf891b",
+     "authorization": {
+      "from": "0x857b06519E91e3A54538791bDbb0E22373e36b66",
+      "to": "0x209693Bc6afc0C5328bA36FaF03C514EF312287C",
+      "value": "10000",
+      "validAfter": "0",
+      "validBefore": "1790000000",
+      "nonce": "0xd771852687c4fed0a9c85221e089394ae2cc344ab9e32487e80bcaffbcbb6060"
+     }
+    }
+   },
+   "expect": {
+    "outcome": "malformed",
+    "condition": "scheme_not_exact"
+   },
+   "naive_full_payload_sha256": "1f09667be09b5b5c99a886bedde3a7dd1b1e0db4d94e16dd3230847d6a4c8c9e"
+  },
+  {
    "name": "alias-ts-only-abstract",
    "description": "A payment on Abstract, a v1 TS-only alias not in the old 8-entry table. Pins the normative table resolution of the group's open network-alias question (x402-foundation/tsc#4).",
    "payment_id": "P5",

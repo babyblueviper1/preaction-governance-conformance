@@ -9,7 +9,7 @@ for v in doc["vectors"]:
     held = v["held"]
     try:
         acc = held.get("accepted", held)
-        out, val = fingerprint({"network": acc["network"], "asset": acc["asset"], "scheme": acc["scheme"],
+        out, val = fingerprint({"network": acc.get("network"), "asset": acc.get("asset"), "scheme": acc.get("scheme"),
                                  "authorization": held["payload"]["authorization"]})
     except (KeyError, TypeError, AttributeError):
         out, val = "malformed", "envelope_unreadable"

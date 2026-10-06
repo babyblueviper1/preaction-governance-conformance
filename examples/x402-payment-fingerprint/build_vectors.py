@@ -24,7 +24,8 @@ def v2(auth, signature, network="eip155:8453", asset=USDC):
 def view(p):
     """The fingerprint input both versions reduce to: network + asset + scheme + authorization."""
     acc = p.get("accepted", p)
-    return {"network": acc["network"], "asset": acc["asset"], "scheme": acc["scheme"], "authorization": p["payload"]["authorization"]}
+    # a missing network/asset/scheme reaches fingerprint() as None, so it gets the recipe's own specific condition (2026-10-06, Noûs)
+    return {"network": acc.get("network"), "asset": acc.get("asset"), "scheme": acc.get("scheme"), "authorization": p["payload"]["authorization"]}
 
 V = []
 def add(name, payment_id, held, desc, expect_outcome="ok", condition=None):
@@ -68,6 +69,11 @@ add("bad-scheme-not-exact", None, {**v1(AUTH, sig(R, S, 27)), "scheme": "upto"},
 add("bad-value-exceeds-uint256", None, v1(dict(AUTH, value=str(2**256)), sig(R, S, 27)),
     "value one past uint256 max: ERC-3009 value is a uint256, so a larger canonical-looking decimal string must be refused, not hashed.",
     "malformed", "value_exceeds_uint256")
+_noscheme = v1(AUTH, sig(R, S, 27)); _noscheme.pop("scheme")
+add("bad-scheme-missing", None, _noscheme,
+    "Envelope with no scheme at all: refused as scheme_not_exact (only an explicit 'exact' fingerprints), not as an unreadable envelope. "
+    "Pins the condition name raised by Noûs (x402-foundation/tsc#4, 2026-10-06).",
+    "malformed", "scheme_not_exact")
 add("alias-ts-only-abstract", "P5", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-5").hexdigest()), sig(R, S, 27), network="abstract"),
     "A payment on Abstract, a v1 TS-only alias not in the old 8-entry table. Pins the normative table resolution of the group's open network-alias question (x402-foundation/tsc#4).")
 add("alias-go-only-celo", "P6", v1(dict(AUTH, nonce="0x" + hashlib.sha256(b"x402-fp-fixture-nonce-6").hexdigest()), sig(R, S, 27), network="celo"),
