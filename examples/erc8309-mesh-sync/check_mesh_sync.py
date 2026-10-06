@@ -6,8 +6,12 @@
   R2 PER-ORIGIN  convergence is checked per origin and per namespace the origin declares: every participating node holds the complete
                  set that origin produced in that namespace. Node totals are not a valid predicate (locally-originated records make two
                  correct nodes differ, and two broken ones can match).
-  R3 ENVELOPE    every field a peer acts on (nodeType included) is inside the signed envelope. A behaviour-affecting field outside it is
-                 an unverifiable claim (NONCONFORMANT); a served value that differs from the signed one is a MISMATCH (fail closed).
+  R3 ENVELOPE    every field DECLARED behaviour-affecting is inside the signed envelope; a served value differing from the signed one is
+                 a MISMATCH (fail closed); and every served field outside the envelope is declared, either in acted_on or as inert.
+                 R3 does NOT establish that acted_on is complete with respect to the implementation's real decision surface — a field it
+                 acts on but does not declare is out of reach of any check over declared sets (Pavlo, topic 16, 2026-10-06). What the
+                 inert requirement buys is that such a field can no longer conform by OMISSION, only by a false inert assertion, which
+                 is an accountable claim rather than a silent gap. Completeness stays a code-binding/provenance obligation.
 
 Findings by Echo (damon:receiptos, topic 16, 2026-10-05/06): the silently clamped page, the hidden namespace, the per-origin predicate,
 nodeType outside the signed envelope. Vectors are STRUCTURAL: they test the rules over record ids and declared field sets, not the
@@ -71,13 +75,23 @@ def totals_equal(v):
 
 
 def envelope(v):
-    """R3: {"signed_fields": {...}, "served_fields": {...}, "acted_on": [...]}."""
+    """R3: {"signed_fields": {...}, "served_fields": {...}, "acted_on": [...], "inert": [...]}."""
     signed, served = v["signed_fields"], v["served_fields"]
-    for f in v["acted_on"]:
+    acted_on, inert = v["acted_on"], v.get("inert", [])
+    # A field cannot be both acted on and inert. An incoherent declaration is not a pass.
+    for f in sorted(set(acted_on) & set(inert)):
+        return f"NONCONFORMANT:contradictory_declaration:{f}"
+    for f in acted_on:
         if f not in signed:
             return f"NONCONFORMANT:unsigned_behaviour_field:{f}"
         if f in served and served[f] != signed[f]:
             return f"MISMATCH:{f}"
+    # Anything served from outside the envelope must be accounted for. Signed fields need no
+    # declaration: they are inside the envelope and carry no unverifiable claim. This is what
+    # stops a field conforming by being left out of acted_on.
+    for f in sorted(served):
+        if f not in signed and f not in acted_on and f not in inert:
+            return f"NONCONFORMANT:undeclared_served_field:{f}"
     return "CONFORMANT"
 
 
@@ -116,8 +130,16 @@ def _mutants(path):
         return ("CONVERGED" if totals_equal(v) else "NOT_CONVERGED"), {}
     def m3(v):                           # M3: ignore whether acted-on fields are signed
         return "CONFORMANT"
+    def m4(v):                           # M4: accept a served field that is declared nowhere (the omission trap)
+        signed, served = v["signed_fields"], v["served_fields"]
+        for f in v["acted_on"]:
+            if f not in signed:
+                return f"NONCONFORMANT:unsigned_behaviour_field:{f}"
+            if f in served and served[f] != signed[f]:
+                return f"MISMATCH:{f}"
+        return "CONFORMANT"
     res = {}
-    for name, patch in (("M1-single-page-read", ("enumerate_pages", m1)), ("M2-totals-predicate", ("per_origin", m2)), ("M3-unsigned-field-accepted", ("envelope", m3))):
+    for name, patch in (("M1-single-page-read", ("enumerate_pages", m1)), ("M2-totals-predicate", ("per_origin", m2)), ("M3-unsigned-field-accepted", ("envelope", m3)), ("M4-undeclared-field-accepted", ("envelope", m4))):
         enumerate_pages, per_origin, envelope = real
         globals()[patch[0]] = patch[1]
         import io, contextlib

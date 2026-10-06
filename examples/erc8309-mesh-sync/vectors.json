@@ -12953,7 +12953,10 @@
    "expected": {
     "result": "CONFORMANT"
    },
-   "id": "N4-non-behavioural-field-may-sit-outside",
+   "id": "N4-non-behavioural-field-may-sit-outside-if-declared-inert",
+   "inert": [
+    "displayName"
+   ],
    "kind": "envelope",
    "rule": "R3",
    "served_fields": {
@@ -12964,6 +12967,68 @@
    "signed_fields": {
     "nodeId": "0xab",
     "nodeType": "Origin"
+   }
+  },
+  {
+   "acted_on": [
+    "nodeId"
+   ],
+   "expected": {
+    "result": "NONCONFORMANT:undeclared_served_field:nodeType"
+   },
+   "id": "N5-undeclared-unsigned-field-is-not-a-pass",
+   "kind": "envelope",
+   "rule": "R3",
+   "served_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router"
+   },
+   "signed_fields": {
+    "nodeId": "0xab"
+   }
+  },
+  {
+   "acted_on": [
+    "nodeId"
+   ],
+   "expected": {
+    "result": "CONFORMANT"
+   },
+   "id": "N6-inert-assertion-conforms-and-is-the-residual-gap",
+   "inert": [
+    "nodeType"
+   ],
+   "kind": "envelope",
+   "rule": "R3",
+   "served_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router"
+   },
+   "signed_fields": {
+    "nodeId": "0xab"
+   }
+  },
+  {
+   "acted_on": [
+    "nodeId",
+    "nodeType"
+   ],
+   "expected": {
+    "result": "NONCONFORMANT:contradictory_declaration:nodeType"
+   },
+   "id": "N7-field-cannot-be-both-acted-on-and-inert",
+   "inert": [
+    "nodeType"
+   ],
+   "kind": "envelope",
+   "rule": "R3",
+   "served_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router"
+   },
+   "signed_fields": {
+    "nodeId": "0xab",
+    "nodeType": "Router"
    }
   }
  ]

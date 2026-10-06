@@ -51,9 +51,25 @@ V.append({"id": "N2-nodeType-inside-envelope", "kind": "envelope", "rule": "R3",
 V.append({"id": "N3-served-role-differs-from-signed", "kind": "envelope", "rule": "R3",
           "signed_fields": {"nodeId": "0xab", "nodeType": "Router"}, "served_fields": {"nodeId": "0xab", "nodeType": "Origin"},
           "acted_on": ["nodeType"], "expected": {"result": "MISMATCH:nodeType"}})
-V.append({"id": "N4-non-behavioural-field-may-sit-outside", "kind": "envelope", "rule": "R3",
+V.append({"id": "N4-non-behavioural-field-may-sit-outside-if-declared-inert", "kind": "envelope", "rule": "R3",
           "signed_fields": {"nodeId": "0xab", "nodeType": "Origin"}, "served_fields": {"nodeId": "0xab", "nodeType": "Origin", "displayName": "ENSBoiler"},
-          "acted_on": ["nodeId", "nodeType"], "expected": {"result": "CONFORMANT"}})
+          "acted_on": ["nodeId", "nodeType"], "inert": ["displayName"], "expected": {"result": "CONFORMANT"}})
+# N5 is Pavlo's counterexample (topic 16, 2026-10-06): the adapter simply leaves nodeType out of
+# acted_on. Under R3 as originally written this passed, while the implementation still acted on an
+# unsigned nodeType — the exact case R3 exists to catch, defeated one level up by the declaration.
+V.append({"id": "N5-undeclared-unsigned-field-is-not-a-pass", "kind": "envelope", "rule": "R3",
+          "signed_fields": {"nodeId": "0xab"}, "served_fields": {"nodeId": "0xab", "nodeType": "Router"},
+          "acted_on": ["nodeId"], "expected": {"result": "NONCONFORMANT:undeclared_served_field:nodeType"}})
+# N6 is the residual gap, kept visible on purpose: declaring nodeType inert conforms, because no
+# check over declared sets can refute the assertion. The omission has become an accountable claim;
+# its truthfulness is a code-binding/provenance obligation, not a conformance one.
+V.append({"id": "N6-inert-assertion-conforms-and-is-the-residual-gap", "kind": "envelope", "rule": "R3",
+          "signed_fields": {"nodeId": "0xab"}, "served_fields": {"nodeId": "0xab", "nodeType": "Router"},
+          "acted_on": ["nodeId"], "inert": ["nodeType"], "expected": {"result": "CONFORMANT"}})
+V.append({"id": "N7-field-cannot-be-both-acted-on-and-inert", "kind": "envelope", "rule": "R3",
+          "signed_fields": {"nodeId": "0xab", "nodeType": "Router"}, "served_fields": {"nodeId": "0xab", "nodeType": "Router"},
+          "acted_on": ["nodeId", "nodeType"], "inert": ["nodeType"],
+          "expected": {"result": "NONCONFORMANT:contradictory_declaration:nodeType"}})
 json.dump({"schema": "erc8309-mesh-sync-vectors-v0", "rules": ["R1 ENUMERATE", "R2 PER-ORIGIN", "R3 ENVELOPE"], "vectors": V},
           open("vectors.json", "w"), indent=1, sort_keys=True)
 print("wrote", len(V), "vectors")
