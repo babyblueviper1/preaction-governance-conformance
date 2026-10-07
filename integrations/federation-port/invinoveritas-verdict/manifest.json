@@ -1,0 +1,78 @@
+{
+  "contract": "federation-port/v0",
+  "id": "invinoveritas/verdict-check",
+  "publisher": {
+    "name": "invinoveritas",
+    "contact": "https://invinoveritas.dev"
+  },
+  "maintainer": {
+    "name": "babyblueviper1",
+    "contact": "https://github.com/babyblueviper1"
+  },
+  "artifact": {
+    "version": "0.1.0",
+    "entry": "adapter.ts",
+    "files": [
+      "adapter.ts",
+      "bip340.ts"
+    ],
+    "digest": "sha256:9c11769fd9f4e1d42584ae1f79ba4c77334db11222643185f36edd28fc9ba6d3"
+  },
+  "role": "action_evaluation",
+  "schemas": {
+    "check_evidence": {
+      "media_type": "application/json",
+      "description": "An invinoveritas verdict proof: the signed NIP-01 event (kind 30078, tag schema=invinoveritas.verdict_proof.v1) returned by POST /review with sign=true, either bare or as {\"event\": ...}. Issued on the canonical JSON of the action (sorted keys, no spaces)."
+    },
+    "output_evidence": {
+      "media_type": "application/json",
+      "description": "The presented verdict bytes, unmodified"
+    }
+  },
+  "claims": [
+    {
+      "id": "invinoveritas.verdict_authentic",
+      "establishes": "The presented event's id recomputes from its fields, it is an invinoveritas verdict proof, and its BIP-340 signature verifies under the pinned invinoveritas key.",
+      "limits": [
+        "Says nothing about the action unless verdict_covers_action is also established",
+        "Trusts the pinned key; key rotation or revocation is not checked in this version"
+      ]
+    },
+    {
+      "id": "invinoveritas.verdict_covers_action",
+      "establishes": "The verdict was issued on exactly this action: its artifact_hash equals SHA-256 of the action's sorted-key JSON.",
+      "limits": [
+        "Binds the action bytes only, not the tenant, approval id or operation id",
+        "The same verdict can be presented again for the same action; single use is the approval's job"
+      ]
+    },
+    {
+      "id": "invinoveritas.verdict_permits_action",
+      "establishes": "The verdict on this exact action is one the customer accepts (accept_verdicts, default approve) and was signed no more than max_age_s (default 900) before the evaluation instant.",
+      "limits": [
+        "A verdict is an independent judgement, not a guarantee that the action is correct or safe",
+        "Freshness uses the event's signed created_at and the runtime's clock; there is no trusted time source"
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "id": "invinoveritas.verdict_proof.v1",
+      "description": "NIP-01 event, kind 30078, BIP-340 over the event id, content.artifact_hash = sha256 hex of the reviewed artifact bytes"
+    }
+  ],
+  "privileges_requested": [],
+  "data_destinations": [],
+  "keys": [
+    {
+      "id": "invinoveritas-verdict-key",
+      "purpose": "verify verdict signatures (public key 6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7, published at https://api.babyblueviper.com/.well-known/nostr.json)",
+      "held_by": "publisher",
+      "lifecycle": "pinned in config; no rotation in v0.1"
+    }
+  ],
+  "license": {
+    "spdx": "MIT",
+    "attribution": "invinoveritas (Invinoveritas SpA)"
+  }
+}
