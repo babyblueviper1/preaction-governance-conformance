@@ -24,9 +24,9 @@ from _bip340_nostr import schnorr_verify  # noqa: E402
 
 TYPE, VERSION = "submission_commitment", "v0"
 BODY_FIELDS = ("type", "version", "request_digest", "attempt_id", "sent_at", "requester_pubkey")
-_HEX64 = re.compile(r"^[0-9a-f]{64}$")
-_HEX128 = re.compile(r"^[0-9a-f]{128}$")
-_ATTEMPT = re.compile(r"^[A-Za-z0-9_\-]{8,128}$")
+_HEX64 = re.compile(r"^[0-9a-f]{64}\Z")
+_HEX128 = re.compile(r"^[0-9a-f]{128}\Z")
+_ATTEMPT = re.compile(r"^[A-Za-z0-9_\-]{8,128}\Z")
 MAX_FUTURE_SKEW_S = 300
 
 

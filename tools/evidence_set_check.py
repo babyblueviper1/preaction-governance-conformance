@@ -28,8 +28,8 @@ CONTENT_KINDS = ("snippet", "excerpt", "full_resource")
 UNPINNED_REASONS = ("no_content_returned", "provider_metadata_only")
 # 5.3.2: "UTC with the Z designator and exactly three fractional-second digits".
 # -03 5.3.2: must also denote a valid instant; seconds 00-59 (":60" not permitted).
-TS_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$")
-HEX64 = re.compile(r"^[0-9a-f]{64}$")
+TS_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z\Z")
+HEX64 = re.compile(r"^[0-9a-f]{64}\Z")
 
 RESOLVED, UNKNOWN, HALT = "resolved", "unknown", "halt"
 

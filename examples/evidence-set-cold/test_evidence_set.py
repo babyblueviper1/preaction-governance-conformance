@@ -249,5 +249,26 @@ class NousTsc4Inputs(unittest.TestCase):
         self.assertIsNone(halt(es))
 
 
+class TrailingNewline(unittest.TestCase):
+    """Issue #12 (Nous / Roberto Locatelli, 2026-10-07): Python's `$` also matches before a final "\n", so a form check written as
+    `^...$` + .match let a value with ONE trailing newline through. Patterns now end in \Z. Each case recomputes the root with our own
+    evidence_root, so the run reaches the form check instead of halting on root_not_recomputable_from_sources."""
+
+    def _with(self, **change):
+        e = dict(A, **change)
+        es = es1([e, B]); es.update(evidence_root=E.evidence_root(es["sources"]))
+        return halt(es)
+
+    def test_snippet_sha256_trailing_newline_halts_on_form(self):
+        self.assertIn("snippet_sha256_not_lowercase_hex64", self._with(snippet_sha256=A["snippet_sha256"] + "\n") or set())
+
+    def test_retrieved_at_trailing_newline_halts_on_form(self):
+        self.assertIn("retrieved_at_not_canonical_form", self._with(retrieved_at=A["retrieved_at"] + "\n") or set())
+
+    def test_clean_values_still_pass(self):
+        es = es1([A, B]); es.update(evidence_root=E.evidence_root(es["sources"]))
+        self.assertIsNone(halt(es))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

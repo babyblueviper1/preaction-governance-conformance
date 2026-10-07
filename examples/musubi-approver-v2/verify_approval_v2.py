@@ -21,7 +21,7 @@ import _ed25519  # noqa: E402
 
 CONTRACT_CONTEXT = b"a2a-contract-v0\n"
 APPROVAL_V2_CONTEXT = b"a2a-approval-v2\n"
-HEX32 = re.compile(r"^[0-9a-f]{32}$")
+HEX32 = re.compile(r"^[0-9a-f]{32}\Z")
 
 
 def canonical(obj):

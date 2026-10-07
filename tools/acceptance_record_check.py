@@ -30,8 +30,8 @@ import _rfc8785  # noqa: E402
 VERSION = "acceptance-record-v0"          # READING A1: provisional; the comment names no version member
 SIGNED_DISPOSITIONS = ("accepted", "rejected", "disputed")
 NOT_RESPONDED = "not_responded"
-TS_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$")   # -03 5.3.2 timestamp form
-HEX64 = re.compile(r"^[0-9a-f]{64}$")
+TS_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z\Z")   # -03 5.3.2 timestamp form
+HEX64 = re.compile(r"^[0-9a-f]{64}\Z")
 
 VERIFIED, UNKNOWN, MALFORMED, KEY_UNRESOLVED, NO_RECORD = "verified", "unknown", "malformed", "key_unresolved", "no_record"
 
