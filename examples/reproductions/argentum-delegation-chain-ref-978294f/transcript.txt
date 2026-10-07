@@ -1,0 +1,21 @@
+built on 7b92265
+includes c277309b
+== mid-hop-revocation
+4/4 passed
+
+DIFFERENTIAL CHECK (fresh replay registry per vector):
+  mid-hop-revocation-001-baseline == mid-hop-revocation-001-with-revocation -> True (both PASS, expected PASS)
+  mid-hop-revocation-002-broken-continuity-baseline == mid-hop-revocation-002-broken-continuity-with-revocation -> True (both FAIL, expected FAIL)
+Revocation metadata for hops[1] changed neither the passing verdict nor the failing one. This is the structural verdict only: it says nothing about whether the chain still authorizes the leaf, about cascade rejection, or about future-use blocking.
+vectors.json sha256 7be1c87cd6ef1c13015cf20878706cd4d210cef908548aba01d137495f18d2da -> rebuild 7be1c87cd6ef1c13015cf20878706cd4d210cef908548aba01d137495f18d2da
+rebuild byte-identical
+== partial-chain-recovery
+  ✓ [PASS] recovery-005-resubmission-after-restoration  -> FAIL
+         replay_detected: chain_id='chain-partial-chain-recovery-001' (or one of its hop delegation_ref values) was already submitted
+         registry after: {'chain_ids': 1, 'delegation_refs': 3}
+
+5/5 passed
+Byte restoration under the original reference and failed-attempt replay handling only. Nothing here recovers authority, retrieves missing artifacts, or resolves parent_delegation_ref.
+vectors.json sha256 f9efaff94303b87acdf777364cc43c2068d068d6529c582ef03a0c7d265a5a75 -> rebuild f9efaff94303b87acdf777364cc43c2068d068d6529c582ef03a0c7d265a5a75
+rebuild byte-identical
+222 passed, 4 skipped, 110 warnings in 12.08s
