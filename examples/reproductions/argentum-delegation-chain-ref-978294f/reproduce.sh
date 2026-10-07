@@ -5,6 +5,8 @@
 set -euo pipefail
 PIN=978294f24a5cb43ef834e1e541f41c33d2729961
 W="$(mktemp -d)"
+trap 'rm -rf "$W"' EXIT   # leave nothing behind (clones, venv, node_modules)
+mkdir -p "$W/tmp" && export TMPDIR="$W/tmp"   # the test suites' own temp files go inside $W too
 git clone -q https://github.com/TKCollective/argentum-core "$W/ac" && git -C "$W/ac" checkout -q "$PIN"
 git -C "$W/ac" merge-base --is-ancestor 7b92265 HEAD && echo "built on 7b92265"
 git -C "$W/ac" merge-base --is-ancestor c277309b HEAD && echo "includes c277309b"

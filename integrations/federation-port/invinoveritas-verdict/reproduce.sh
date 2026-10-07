@@ -5,6 +5,8 @@ set -euo pipefail
 PIN=92d5078
 HERE="$(cd "$(dirname "$0")" && pwd)"
 W="$(mktemp -d)"
+trap 'rm -rf "$W"' EXIT   # leave nothing behind (clones, venv, node_modules)
+mkdir -p "$W/tmp" && export TMPDIR="$W/tmp"   # the test suites' own temp files go inside $W too
 git clone -q https://github.com/aeoess/federation-port "$W/fp" && git -C "$W/fp" checkout -q "$PIN"
 mkdir -p "$W/fp/adapters/invinoveritas-verdict" "$W/fp/test/fixtures/invinoveritas"
 cp "$HERE"/adapter.ts "$HERE"/bip340.ts "$HERE"/manifest.json "$W/fp/adapters/invinoveritas-verdict/"
