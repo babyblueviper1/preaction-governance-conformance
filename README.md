@@ -31,6 +31,19 @@ a real second checker has to reach the verdict on its own).
 node tools/independent_checker_js/run_conformance.js   # same bar, independent implementation
 ```
 
+## Run by others
+
+- **Nightly, by an independent board.** Horizon Shield's [tsunagi board](https://github.com/ogasurfproject-jpg/horizon-shield/blob/main/ops/tsunagi/BOARD.md)
+  clones this repository at its default-branch head every night, runs our approval checker against their
+  `musubi-approval-v2` corpus, and records the commit it ran. Their own `settle_v1.10` checker runs on the same board, and the two
+  agree on all 9 vectors, result and reason. The first run was [37648725555](https://github.com/ogasurfproject-jpg/horizon-shield/actions/runs/37648725555) at `bcf65929`,
+  and the latest at the time of writing is at `5f56bf3d`, again 9/9. The board follows our default branch on purpose, so a change here that broke
+  their corpus would show up there the next morning.
+- **On the federation boundary map.** This run is edge E11 (invinoveritas → Horizon Shield, `reproduced`) on the
+  [agent-governance-vocabulary boundary map](https://github.com/aeoess/agent-governance-vocabulary/pull/179) (`5592d54`).
+  Both sides confirmed it.
+- **We run others too.** For third-party vector sets we have reproduced cold, see [`examples/reproductions`](examples/reproductions).
+
 ## The three joined invariants
 
 Recompute the canonical envelope hash **once**, then test three joins against that single byte commitment:
