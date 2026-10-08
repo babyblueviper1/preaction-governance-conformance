@@ -42,8 +42,9 @@ curl -s https://api.babyblueviper.com/review -H 'Authorization: Bearer ivv_...' 
 
 ## Verified
 
-Run `./reproduce.sh`. It clones `aeoess/federation-port` at `92d5078`, adds this component without touching `src/`, seals it with
-the repo's own `scripts/seal.ts`, and runs the full suite: **51/51 (the 44 existing tests plus 7 here)**. It then runs BIP-340's
+Run `./reproduce.sh`. It clones `aeoess/federation-port` at `3a2f6ce` (re-pinned 2026-10-08 after the runtime changes merged that day;
+first run at `92d5078`, 51/51), adds this component without touching `src/`, seals it with
+the repo's own `scripts/seal.ts`, and runs the full suite: **61/61 (the 54 existing tests plus 7 here)**. It then runs BIP-340's
 official test vectors through `bip340.ts`: **15/15** (the 4 vectors with non-32-byte messages are skipped, since event ids are
 always 32 bytes). The repo's `tsc -p tsconfig.json` reports 0 errors. Sealed digests: artifact
 `sha256:9c11769fd9f4e1d42584ae1f79ba4c77334db11222643185f36edd28fc9ba6d3`, manifest

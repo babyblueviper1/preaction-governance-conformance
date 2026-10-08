@@ -2,7 +2,7 @@
 # Reproduce: run this adapter through federation-port's UNMODIFIED core at the pinned commit, plus BIP-340's official vectors.
 # Needs git + Node >= 22 (type stripping). Node 24 runs it without the flag.
 set -euo pipefail
-PIN=92d5078
+PIN=3a2f6ce
 HERE="$(cd "$(dirname "$0")" && pwd)"
 W="$(mktemp -d)"
 trap 'rm -rf "$W"' EXIT   # leave nothing behind (clones, venv, node_modules)
