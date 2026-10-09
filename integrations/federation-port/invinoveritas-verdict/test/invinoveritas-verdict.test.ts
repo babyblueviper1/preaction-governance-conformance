@@ -8,7 +8,8 @@ import { join } from 'node:path'
 import { APS, APS_CLAIMS, ROOT, pinFromDisk, request, setup } from './helpers.ts'
 
 const ID = 'invinoveritas/verdict-check'
-const C = { auth: 'invinoveritas.verdict_authentic', covers: 'invinoveritas.verdict_covers_action', permits: 'invinoveritas.verdict_permits_action' }
+const C = { auth: 'invinoveritas.verdict_authentic', covers: 'invinoveritas.verdict_covers_action', permits: 'invinoveritas.verdict_permits_action',
+            target: 'invinoveritas.verdict_covers_target' }
 const V = JSON.parse(readFileSync(join(ROOT, 'test/fixtures/invinoveritas/verdicts.json'), 'utf8'))
 const bytes = (o: unknown) => new Uint8Array(Buffer.from(JSON.stringify(o)))
 const apsRequired = APS_CLAIMS.map(claim => ({ component: APS, claim }))
@@ -122,4 +123,78 @@ test('I07 as an optional component it never blocks: admitted without a verdict, 
     assert.equal((await e.rt.submit(req)).status, 'provider_confirmed')
     assert.deepEqual(claims(e, req.operation_id), { [C.auth]: 'not_established', [C.covers]: 'not_established', [C.permits]: 'not_established' })
   } finally { await e.close() }
+})
+
+// Target coverage (I08-I11). The runtime's refund workflow has no target and its approval binds the exact refund args, so these
+// call the component's check() directly. The verdicts are signed here with a BIP-340 TEST key (pubkey override in config), the
+// same event shape /review returns; the production key path is covered by I01-I07 with real verdicts.
+const { createAdapter, subjectOf } = await import('../adapters/invinoveritas-verdict/adapter.ts')
+const { createHash } = await import('node:crypto')
+const P = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2fn, N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141n
+type Pt = [bigint, bigint] | null
+const md = (a: bigint, m = P) => ((a % m) + m) % m
+const pw = (b: bigint, e: bigint): bigint => { let r = 1n; b = md(b); while (e > 0n) { if (e & 1n) r = r * b % P; b = b * b % P; e >>= 1n } return r }
+const ad = (a: Pt, b: Pt): Pt => {
+  if (a === null) return b; if (b === null) return a
+  if (a[0] === b[0] && md(a[1] + b[1]) === 0n) return null
+  const l = a[0] === b[0] && a[1] === b[1] ? md(3n * a[0] * a[0] * pw(2n * a[1], P - 2n)) : md((b[1] - a[1]) * pw(b[0] - a[0], P - 2n))
+  const x = md(l * l - a[0] - b[0]); return [x, md(l * (a[0] - x) - a[1])]
+}
+const ml = (p: Pt, k: bigint): Pt => { let r: Pt = null; for (let i = 255; i >= 0; i--) { r = ad(r, r); if ((k >> BigInt(i)) & 1n) r = ad(r, p) } return r }
+const G: Pt = [0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798n, 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8n]
+const b32 = (x: bigint) => Buffer.from(x.toString(16).padStart(64, '0'), 'hex')
+const int = (b: Uint8Array) => BigInt('0x' + Buffer.from(b).toString('hex'))
+const th = (tag: string, ...parts: Uint8Array[]) => { const t = createHash('sha256').update(tag).digest(); const h = createHash('sha256').update(t).update(t); for (const x of parts) h.update(x); return h.digest() }
+/** BIP-340 signing, zero aux randomness (spec section "Default Signing"). Test key only. */
+function sign(sk: bigint, msg: Buffer): Buffer {
+  const Pk = ml(G, sk)!; const d = Pk[1] % 2n === 0n ? sk : N - sk
+  const t = Buffer.from(b32(d).map((v, i) => v ^ th('BIP0340/aux', Buffer.alloc(32))[i]))
+  const k0 = md(int(th('BIP0340/nonce', t, b32(Pk[0]), msg)), N); const R = ml(G, k0)!; const k = R[1] % 2n === 0n ? k0 : N - k0
+  const e = md(int(th('BIP0340/challenge', b32(R[0]), b32(Pk[0]), msg)), N)
+  return Buffer.concat([b32(R[0]), b32(md(k + e * d, N))])
+}
+const SK = md(int(createHash('sha256').update('invinoveritas-verdict target test key').digest()), N)
+const TEST_PUB = b32(ml(G, SK)![0]).toString('hex')
+function verdictOn(action: unknown, verdict = 'approve') {
+  const ev: any = { pubkey: TEST_PUB, created_at: 1791407712, kind: 30078, tags: [['schema', 'invinoveritas.verdict_proof.v1']],
+                    content: JSON.stringify({ artifact_hash: subjectOf(action).action_sha256, verdict }) }
+  ev.id = createHash('sha256').update(JSON.stringify([0, ev.pubkey, ev.created_at, ev.kind, ev.tags, ev.content])).digest('hex')
+  ev.sig = sign(SK, Buffer.from(ev.id, 'hex')).toString('hex')
+  return ev
+}
+const A = 'https://a.example/mcp', B = 'https://b.example/mcp'
+const act = (target?: string) => ({ tool: 'refund', args: { payment_id: 'pay_A', amount_minor: 4000, currency: 'EUR', ...(target ? { target } : {}) } })
+async function run(config: Record<string, unknown>, action: unknown, ev: unknown) {
+  const a = createAdapter({ config: { pubkey: TEST_PUB, max_age_s: LONG, ...config }, secrets: {}, fetch })
+  const out = await a.check!({ operation_id: 'op', workflow: 'refund', action: action as any, evidence: bytes(ev), now: '2026-10-09T00:00:00.000Z' })
+  return Object.fromEntries(out.claims.map((c: any) => [c.claim, [c.status, c.reason]]))
+}
+
+test('I08 target inside the hashed action and equal to the declared target: covered, subject reports action hash and target', async () => {
+  const r = await run({ declared_target: A }, act(A), verdictOn(act(A)))
+  assert.deepEqual(r[C.auth], ['established', undefined])
+  assert.deepEqual(r[C.covers], ['established', `subject:action_sha256=${subjectOf(act(A)).action_sha256}`])
+  assert.deepEqual(r[C.target], ['established', `subject:target=${A}`])
+  assert.equal(r[C.permits][0], 'established')
+})
+
+test('I09 target outside the hashed action: the verdict still covers the action, the target is not_established', async () => {
+  const r = await run({ declared_target: A }, act(), verdictOn(act()))
+  assert.equal(r[C.covers][0], 'established')
+  assert.deepEqual(r[C.target], ['not_established', 'target_not_in_hashed_action'])
+  const none = await run({}, act(A), verdictOn(act(A)))   // in the hash, but no declared target to compare with
+  assert.deepEqual(none[C.target], ['not_established', 'no_declared_target'])
+})
+
+test('I10 a verdict issued for target A, presented for an action sent to target B, fails coverage', async () => {
+  const r = await run({ declared_target: B }, act(B), verdictOn(act(A)))
+  assert.deepEqual(r[C.covers], ['not_established', 'verdict_is_for_a_different_action'])
+  assert.deepEqual(r[C.permits], ['not_established', 'verdict_is_for_a_different_action'])
+  assert.deepEqual(r[C.target], ['not_established', 'verdict_is_for_a_different_action'])
+})
+
+test('I11 the action and its verdict name target A while the workflow declares B: the target claim is refused', async () => {
+  const r = await run({ declared_target: B }, act(A), verdictOn(act(A)))
+  assert.equal(r[C.covers][0], 'established')
+  assert.deepEqual(r[C.target], ['not_established', 'verdict_target_is_not_the_declared_target'])
 })

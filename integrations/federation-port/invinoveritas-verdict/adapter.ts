@@ -13,6 +13,8 @@ const KIND = 30078
 const C_AUTH = 'invinoveritas.verdict_authentic'
 const C_COVERS = 'invinoveritas.verdict_covers_action'
 const C_PERMITS = 'invinoveritas.verdict_permits_action'
+const C_TARGET = 'invinoveritas.verdict_covers_target'
+const REASON_MAX = 120   // the runtime's bound on a reason code
 
 /** Sorted-key JSON, the same construction as the runtime's canonicalJson (the action bytes the verdict was issued on). */
 function canonical(v: unknown): string {
@@ -31,11 +33,24 @@ const HEX64 = /^[0-9a-f]{64}$/, HEX128 = /^[0-9a-f]{128}$/
 type Event = { id: string; pubkey: string; created_at: number; kind: number; tags: string[][]; content: string; sig: string }
 
 function all(status: ClaimResult['status'], reason: string, evidence: Uint8Array = new Uint8Array()): CheckOutput {
-  return { evidence, claims: [C_AUTH, C_COVERS, C_PERMITS].map(claim => ({ claim, status, reason })) }
+  return { evidence, claims: [C_AUTH, C_COVERS, C_PERMITS, C_TARGET].map(claim => ({ claim, status, reason })) }
+}
+
+/**
+ * Subject fields this component can establish, read from the action bytes the verdict was issued on: the action hash always,
+ * the target only when it is a member of the hashed action (args[target_field]). v0 has no subject field, so check() reports
+ * these as the reason code of the established claim.
+ */
+export function subjectOf(action: unknown, targetField = 'target'): { action_sha256: string; target?: string } {
+  const out: { action_sha256: string; target?: string } = { action_sha256: sha256hex(canonical(action)) }
+  const args = (action as { args?: Record<string, unknown> } | null)?.args
+  const t = args && typeof args === 'object' ? args[targetField] : undefined
+  if (typeof t === 'string') out.target = t
+  return out
 }
 
 export function createAdapter(ctx: AdapterContext): Adapter {
-  const cfg = (ctx.config ?? {}) as { pubkey?: string; accept_verdicts?: string[]; max_age_s?: number }
+  const cfg = (ctx.config ?? {}) as { pubkey?: string; accept_verdicts?: string[]; max_age_s?: number; declared_target?: string; target_field?: string }
   const pubkey = (cfg.pubkey ?? INVINOVERITAS_PUBKEY).toLowerCase()
   const accept = cfg.accept_verdicts ?? ['approve']
   const maxAgeS = cfg.max_age_s ?? 900
@@ -65,16 +80,27 @@ export function createAdapter(ctx: AdapterContext): Adapter {
       else auth = { claim: C_AUTH, status: 'established' }
       if (auth.status !== 'established') {
         return { evidence: bytes, claims: [auth, { claim: C_COVERS, status: 'not_established', reason: 'verdict_not_authentic' },
-                                                  { claim: C_PERMITS, status: 'not_established', reason: 'verdict_not_authentic' }] }
+                                                  { claim: C_PERMITS, status: 'not_established', reason: 'verdict_not_authentic' },
+                                                  { claim: C_TARGET, status: 'not_established', reason: 'verdict_not_authentic' }] }
       }
       let content: { artifact_hash?: unknown; verdict?: unknown }
       try { content = JSON.parse(ev.content) } catch { return all('failed', 'content_not_json', bytes) }
       // 2. coverage: the verdict was issued on the exact action the runtime will dispatch
-      let actionHash: string
-      try { actionHash = sha256hex(canonical(input.action)) } catch { return all('failed', 'action_not_canonicalizable', bytes) }
-      const covers: ClaimResult = content.artifact_hash === actionHash
-        ? { claim: C_COVERS, status: 'established' }
+      let subject: ReturnType<typeof subjectOf>
+      try { subject = subjectOf(input.action, cfg.target_field) } catch { return all('failed', 'action_not_canonicalizable', bytes) }
+      const covers: ClaimResult = content.artifact_hash === subject.action_sha256
+        ? { claim: C_COVERS, status: 'established', reason: `subject:action_sha256=${subject.action_sha256}` }
         : { claim: C_COVERS, status: 'not_established', reason: 'verdict_is_for_a_different_action' }
+      // 2b. target: established only when the target is inside the hashed action and equals the declared dispatch target
+      let target: ClaimResult
+      if (covers.status !== 'established') target = { claim: C_TARGET, status: 'not_established', reason: 'verdict_is_for_a_different_action' }
+      else if (subject.target === undefined) target = { claim: C_TARGET, status: 'not_established', reason: 'target_not_in_hashed_action' }
+      else if (typeof cfg.declared_target !== 'string') target = { claim: C_TARGET, status: 'not_established', reason: 'no_declared_target' }
+      else if (subject.target !== cfg.declared_target) target = { claim: C_TARGET, status: 'not_established', reason: 'verdict_target_is_not_the_declared_target' }
+      else {
+        const r = `subject:target=${subject.target}`
+        target = { claim: C_TARGET, status: 'established', reason: r.length <= REASON_MAX ? r : `subject:target_sha256=${sha256hex(subject.target)}` }
+      }
       // 3. permission: accepted verdict, on this action, still fresh
       const nowMs = Date.parse(input.now)
       const expiresMs = (ev.created_at + maxAgeS) * 1000
@@ -83,7 +109,7 @@ export function createAdapter(ctx: AdapterContext): Adapter {
       else if (typeof content.verdict !== 'string' || !accept.includes(content.verdict)) permits = { claim: C_PERMITS, status: 'not_established', reason: `verdict_${String(content.verdict)}` }
       else if (!(nowMs <= expiresMs)) permits = { claim: C_PERMITS, status: 'not_established', reason: 'verdict_older_than_max_age' }
       else permits = { claim: C_PERMITS, status: 'established' }
-      const out: CheckOutput = { evidence: bytes, claims: [auth, covers, permits] }
+      const out: CheckOutput = { evidence: bytes, claims: [auth, covers, permits, target] }
       if (permits.status === 'established') out.valid_until = new Date(expiresMs).toISOString()
       return out
     },

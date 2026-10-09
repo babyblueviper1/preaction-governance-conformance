@@ -10,13 +10,13 @@
     "contact": "https://github.com/babyblueviper1"
   },
   "artifact": {
-    "version": "0.1.0",
+    "version": "0.2.0",
     "entry": "adapter.ts",
     "files": [
       "adapter.ts",
       "bip340.ts"
     ],
-    "digest": "sha256:9c11769fd9f4e1d42584ae1f79ba4c77334db11222643185f36edd28fc9ba6d3"
+    "digest": "sha256:918e4ee5acf9d0a1495cbba95ae443befd0c8090173ab6789b97524e50abedd9"
   },
   "role": "action_evaluation",
   "schemas": {
@@ -40,7 +40,7 @@
     },
     {
       "id": "invinoveritas.verdict_covers_action",
-      "establishes": "The verdict was issued on exactly this action: its artifact_hash equals SHA-256 of the action's sorted-key JSON.",
+      "establishes": "The verdict was issued on exactly this action: its artifact_hash equals SHA-256 of the action's sorted-key JSON. The established result's reason carries the subject, subject:action_sha256=<hex>.",
       "limits": [
         "Binds the action bytes only, not the tenant, approval id or operation id",
         "The same verdict can be presented again for the same action; single use is the approval's job"
@@ -52,6 +52,15 @@
       "limits": [
         "A verdict is an independent judgement, not a guarantee that the action is correct or safe",
         "Freshness uses the event's signed created_at and the runtime's clock; there is no trusted time source"
+      ]
+    },
+    {
+      "id": "invinoveritas.verdict_covers_target",
+      "establishes": "The verdict covers this action and the dispatch target is inside the hashed action (args[target_field], default \"target\") and equals the declared_target in config, exact string. The established result's reason carries the subject, subject:target=<target>.",
+      "limits": [
+        "A target outside the hashed action is never covered: not_established with target_not_in_hashed_action",
+        "Exact string match only: no redirect following, no alias or normalization rules",
+        "Says nothing about what the executor actually dispatches to"
       ]
     }
   ],
