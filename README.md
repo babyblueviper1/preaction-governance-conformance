@@ -1,6 +1,8 @@
 # Pre-action governance — conformance fixtures
 
 [![conformance](https://github.com/babyblueviper1/preaction-governance-conformance/actions/workflows/conformance.yml/badge.svg)](https://github.com/babyblueviper1/preaction-governance-conformance/actions/workflows/conformance.yml)
+[![TSUNAGI babyblueviper1-nenrin-cleanroom](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ogasurfproject-jpg/horizon-shield/main/ops/tsunagi/badges/babyblueviper1-nenrin-cleanroom.json)](https://github.com/ogasurfproject-jpg/horizon-shield/blob/main/ops/tsunagi/BOARD.md)
+[![TSUNAGI babyblueviper1-approval-v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ogasurfproject-jpg/horizon-shield/main/ops/tsunagi/badges/babyblueviper1-approval-v2.json)](https://github.com/ogasurfproject-jpg/horizon-shield/blob/main/ops/tsunagi/BOARD.md)
 
 A portable, implementation-independent conformance suite for the pre-action governance receipt model
 discussed in [vercel/ai#13215](https://github.com/vercel/ai/issues/13215): a verifier should be able to
@@ -39,6 +41,14 @@ node tools/independent_checker_js/run_conformance.js   # same bar, independent i
   agree on all 9 vectors, result and reason. The first run was [37648725555](https://github.com/ogasurfproject-jpg/horizon-shield/actions/runs/37648725555) at `bcf65929`,
   and the latest at the time of writing is at `5f56bf3d`, again 9/9. The board follows our default branch on purpose, so a change here that broke
   their corpus would show up there the next morning.
+- **Refereed by the board, not self-reported (2026-10-09).** Two of our implementations are now scored by the board itself, which
+  hands each one the fixtures and compares every answer with its own pinned expectations. The clean-room NENRIN verifier
+  ([`examples/nenrin-cleanroom-verifier`](examples/nenrin-cleanroom-verifier), written from `VERIFIER.md` alone) was registered in
+  [horizon-shield#36](https://github.com/ogasurfproject-jpg/horizon-shield/pull/36), reproduced by the maintainer before merging, and scores
+  5/5, 13/13 and 36/36. On 40 freshly signed adversarial bundles it is one of five independent implementations (with the reference, Go,
+  PyPI and kuangmi-bit's) that agree 40 of 40. The approval checker runs through its batch entrypoint
+  (`batch_approval_v2.py @in @out`) against the board's own pinned copy of our vectors, 9/9 and in agreement with `settle_v1.10`
+  ([horizon-shield#34](https://github.com/ogasurfproject-jpg/horizon-shield/issues/34)). The badges above are the board's live counts.
 - **On the federation boundary map.** This run is edge E11 (invinoveritas → Horizon Shield, `reproduced`) on the
   [agent-governance-vocabulary boundary map](https://github.com/aeoess/agent-governance-vocabulary/pull/179) (`5592d54`).
   Both sides confirmed it.
