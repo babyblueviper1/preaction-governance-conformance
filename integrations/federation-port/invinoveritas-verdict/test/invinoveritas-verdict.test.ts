@@ -164,9 +164,11 @@ function verdictOn(action: unknown, verdict = 'approve') {
 }
 const A = 'https://a.example/mcp', B = 'https://b.example/mcp'
 const act = (target?: string) => ({ tool: 'refund', args: { payment_id: 'pay_A', amount_minor: 4000, currency: 'EUR', ...(target ? { target } : {}) } })
-async function run(config: Record<string, unknown>, action: unknown, ev: unknown) {
+async function run(config: Record<string, unknown>, action: unknown, ev: unknown, runtimeTarget?: string) {
   const a = createAdapter({ config: { pubkey: TEST_PUB, max_age_s: LONG, ...config }, secrets: {}, fetch })
-  const out = await a.check!({ operation_id: 'op', workflow: 'refund', action: action as any, evidence: bytes(ev), now: '2026-10-09T00:00:00.000Z' })
+  const input: any = { operation_id: 'op', workflow: 'refund', action: action as any, evidence: bytes(ev), now: '2026-10-09T00:00:00.000Z' }
+  if (runtimeTarget !== undefined) input.target = runtimeTarget   // CheckInput.target, proposed for v1 (#177)
+  const out = await a.check!(input)
   return Object.fromEntries(out.claims.map((c: any) => [c.claim, [c.status, c.reason]]))
 }
 
@@ -183,7 +185,7 @@ test('I09 target outside the hashed action: the verdict still covers the action,
   assert.equal(r[C.covers][0], 'established')
   assert.deepEqual(r[C.target], ['not_established', 'target_not_in_hashed_action'])
   const none = await run({}, act(A), verdictOn(act(A)))   // in the hash, but no declared target to compare with
-  assert.deepEqual(none[C.target], ['not_established', 'no_declared_target'])
+  assert.deepEqual(none[C.target], ['not_established', 'no_runtime_target'])
 })
 
 test('I10 a verdict issued for target A, presented for an action sent to target B, fails coverage', async () => {
@@ -197,4 +199,12 @@ test('I11 the action and its verdict name target A while the workflow declares B
   const r = await run({ declared_target: B }, act(A), verdictOn(act(A)))
   assert.equal(r[C.covers][0], 'established')
   assert.deepEqual(r[C.target], ['not_established', 'verdict_target_is_not_the_declared_target'])
+})
+
+test('I12 a runtime target (CheckInput.target, proposed v1) is compared instead of config, and wins over a disagreeing config', async () => {
+  const ok = await run({}, act(A), verdictOn(act(A)), A)
+  assert.deepEqual(ok[C.target], ['established', `subject:target=${A}`])
+  const signedAruntimeB = await run({ declared_target: A }, act(A), verdictOn(act(A)), B)   // config says A, the runtime dispatches to B
+  assert.equal(signedAruntimeB[C.covers][0], 'established')
+  assert.deepEqual(signedAruntimeB[C.target], ['not_established', 'verdict_target_is_not_the_runtime_target'])
 })

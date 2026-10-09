@@ -13,12 +13,12 @@ reviewed the action's sorted-key JSON. The component reports four claims, so a p
 | `invinoveritas.verdict_authentic` | the event id recomputes from its fields, it is a verdict proof, and the BIP-340 signature verifies under the pinned key `6786e18a…6922fbb7` (published at `api.babyblueviper.com/.well-known/nostr.json`) |
 | `invinoveritas.verdict_covers_action` | `content.artifact_hash == sha256(sortedKeyJson(action))`: the verdict was issued on this action and no other |
 | `invinoveritas.verdict_permits_action` | it covers this action, the verdict is in `accept_verdicts` (default `["approve"]`), and it is no older than `max_age_s` (default 900). `valid_until` is set to signing time + `max_age_s`, so the runtime's admission deadline enforces freshness |
-| `invinoveritas.verdict_covers_target` | it covers this action, the dispatch target is a member of the hashed action (`args[target_field]`, default `target`), and it equals `declared_target` in config, exact string |
+| `invinoveritas.verdict_covers_target` | it covers this action, the dispatch target is a member of the hashed action (`args[target_field]`, default `target`), and it equals the runtime's dispatch target, exact string: `CheckInput.target` when the runtime passes one (proposed for v1 in [#177](https://github.com/aeoess/agent-governance-vocabulary/issues/177)), otherwise `declared_target` in config, the v0 stand-in |
 
 Malformed input (bytes that are not JSON, not an event, or content that is not JSON) is reported as `failed`. Anything else that
 does not hold is `not_established`, each with a specific reason: `no_verdict_presented`, `event_id_does_not_recompute`,
 `signer_is_not_the_pinned_key`, `signature_invalid`, `verdict_is_for_a_different_action`, `verdict_<value>`,
-`verdict_older_than_max_age`, `target_not_in_hashed_action`, `no_declared_target` or `verdict_target_is_not_the_declared_target`.
+`verdict_older_than_max_age`, `target_not_in_hashed_action`, `no_runtime_target`, `verdict_target_is_not_the_runtime_target` or `verdict_target_is_not_the_declared_target`.
 
 **Subject.** The subject is read from the bytes the verdict was issued on, never from config: `subject:action_sha256=<hex>` on an
 established `verdict_covers_action`, and `subject:target=<target>` on an established `verdict_covers_target`. v0 has no subject
@@ -52,11 +52,11 @@ curl -s https://api.babyblueviper.com/review -H 'Authorization: Bearer ivv_...' 
 
 Run `./reproduce.sh`. It clones `aeoess/federation-port` at `3a2f6ce` (re-pinned 2026-10-08 after the runtime changes merged that day;
 first run at `92d5078`, 51/51), adds this component without touching `src/`, seals it with
-the repo's own `scripts/seal.ts`, and runs the full suite: **65/65 (the 54 existing tests plus 11 here)**. It then runs BIP-340's
+the repo's own `scripts/seal.ts`, and runs the full suite: **66/66 (the 54 existing tests plus 12 here)**. It then runs BIP-340's
 official test vectors through `bip340.ts`: **15/15** (the 4 vectors with non-32-byte messages are skipped, since event ids are
-always 32 bytes). The repo's `tsc -p tsconfig.json` reports 0 errors. Sealed digests (0.2.0): artifact
-`sha256:918e4ee5acf9d0a1495cbba95ae443befd0c8090173ab6789b97524e50abedd9`, manifest
-`sha256:4a35b285ec3ddd79cd2792a2b7a37c326157f74e7b34d635afae10574227811a`.
+always 32 bytes). The repo's `tsc -p tsconfig.json` reports 0 errors. Sealed digests (0.3.0): artifact
+`sha256:126160033d88056f16ec2f67c6bf3ee8c4d66fcef11303b34642955b3a16281f`, manifest
+`sha256:41499a39d17f760e6da004811b299091beed89fce249a9d10e1e4445c6298199`.
 
 I01-I07 run on two real verdict proofs from the live API (`test/fixtures/verdicts.json`, issued 2026-10-07):
 - **The sim's approved refund:** verdict `approve_with_concerns`.
@@ -67,10 +67,10 @@ another action refused on coverage; the reject verdict refused on the verdict; a
 signature bit each refused on authenticity; no verdict, malformed bytes and a stale verdict each refused with their own reason;
 and, as an optional component, never blocking. In every refused case the provider receives no request.
 
-I08-I11 cover the target. The runtime's refund workflow has no target, so they call `check()` directly, on verdicts signed in the
+I08-I12 cover the target. The runtime's refund workflow has no target, so they call `check()` directly, on verdicts signed in the
 test with a BIP-340 test key (same event shape, `pubkey` override): target inside the hashed action and equal to the declared
 target is established with both subject fields; a target outside the hashed action is `target_not_in_hashed_action` (and
-`no_declared_target` when nothing is declared); a verdict issued for target A on an action sent to target B fails
-`verdict_covers_action`; an action and verdict naming A under a declared B fail `verdict_covers_target`.
+`no_runtime_target` when there is neither a runtime target nor a declared one); a verdict issued for target A on an action sent to target B fails
+`verdict_covers_action`; an action and verdict naming A under a declared B fail `verdict_covers_target`; a runtime target passed as `CheckInput.target` is compared instead of config and wins over a disagreeing config (`verdict_target_is_not_the_runtime_target`).
 
 MIT. invinoveritas (Invinoveritas SpA).

@@ -10,13 +10,13 @@
     "contact": "https://github.com/babyblueviper1"
   },
   "artifact": {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "entry": "adapter.ts",
     "files": [
       "adapter.ts",
       "bip340.ts"
     ],
-    "digest": "sha256:918e4ee5acf9d0a1495cbba95ae443befd0c8090173ab6789b97524e50abedd9"
+    "digest": "sha256:126160033d88056f16ec2f67c6bf3ee8c4d66fcef11303b34642955b3a16281f"
   },
   "role": "action_evaluation",
   "schemas": {
@@ -56,10 +56,11 @@
     },
     {
       "id": "invinoveritas.verdict_covers_target",
-      "establishes": "The verdict covers this action and the dispatch target is inside the hashed action (args[target_field], default \"target\") and equals the declared_target in config, exact string. The established result's reason carries the subject, subject:target=<target>.",
+      "establishes": "The verdict covers this action and the dispatch target is inside the hashed action (args[target_field], default \"target\") and equals the runtime dispatch target, exact string: CheckInput.target when the runtime passes one (proposed for v1), otherwise declared_target in config (the v0 stand-in). The established result's reason carries the subject, subject:target=<target>.",
       "limits": [
         "A target outside the hashed action is never covered: not_established with target_not_in_hashed_action",
         "Exact string match only: no redirect following, no alias or normalization rules",
+        "With neither a runtime target nor declared_target: not_established with no_runtime_target",
         "Says nothing about what the executor actually dispatches to"
       ]
     }

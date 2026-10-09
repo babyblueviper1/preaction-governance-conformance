@@ -91,12 +91,17 @@ export function createAdapter(ctx: AdapterContext): Adapter {
       const covers: ClaimResult = content.artifact_hash === subject.action_sha256
         ? { claim: C_COVERS, status: 'established', reason: `subject:action_sha256=${subject.action_sha256}` }
         : { claim: C_COVERS, status: 'not_established', reason: 'verdict_is_for_a_different_action' }
-      // 2b. target: established only when the target is inside the hashed action and equals the declared dispatch target
+      // 2b. target: established only when the target is inside the hashed action and equals the runtime's dispatch target.
+      // The runtime target is CheckInput.target (proposed for v1 in #177); v0 has no such field, so config.declared_target
+      // stands in for it there. When both are present the runtime's wins: config can't show where the executor dispatches.
+      const runtimeTarget = (input as { target?: unknown }).target
+      const dispatchTarget = typeof runtimeTarget === 'string' ? runtimeTarget : cfg.declared_target
+      const fromRuntime = typeof runtimeTarget === 'string'
       let target: ClaimResult
       if (covers.status !== 'established') target = { claim: C_TARGET, status: 'not_established', reason: 'verdict_is_for_a_different_action' }
       else if (subject.target === undefined) target = { claim: C_TARGET, status: 'not_established', reason: 'target_not_in_hashed_action' }
-      else if (typeof cfg.declared_target !== 'string') target = { claim: C_TARGET, status: 'not_established', reason: 'no_declared_target' }
-      else if (subject.target !== cfg.declared_target) target = { claim: C_TARGET, status: 'not_established', reason: 'verdict_target_is_not_the_declared_target' }
+      else if (typeof dispatchTarget !== 'string') target = { claim: C_TARGET, status: 'not_established', reason: 'no_runtime_target' }
+      else if (subject.target !== dispatchTarget) target = { claim: C_TARGET, status: 'not_established', reason: fromRuntime ? 'verdict_target_is_not_the_runtime_target' : 'verdict_target_is_not_the_declared_target' }
       else {
         const r = `subject:target=${subject.target}`
         target = { claim: C_TARGET, status: 'established', reason: r.length <= REASON_MAX ? r : `subject:target_sha256=${sha256hex(subject.target)}` }
