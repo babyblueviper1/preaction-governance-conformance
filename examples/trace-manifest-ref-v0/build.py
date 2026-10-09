@@ -45,7 +45,8 @@ def sign(rec):
 
 def with_manifest(extra=None):
     r = copy.deepcopy(BASE)
-    r["manifest"] = {"id": MID, "digest": digest(M_RAN), "media_type": "application/json", **(extra or {})}
+    r["manifest"] = {"id": MID, "digest": digest(M_RAN), "media_type": "application/json"}
+    r.update(extra or {})
     return r
 
 added_after = sign(BASE); added_after["manifest"] = {"id": MID, "digest": digest(M_RAN), "media_type": "application/json"}
@@ -57,9 +58,9 @@ CASES = [
     {"id": "m2-digest-mismatch", "record": sign(with_manifest()), "resolver": {MID: M_LATER},
      "expect": {"record": "VALID", "manifest": "MISMATCH:manifest-digest-mismatch"},
      "why": "the id now resolves to a later deployment (1.5.0 adds wire_transfer); the record ran under 1.4.0"},
-    {"id": "m3-mismatch-with-asserted-result", "record": sign(with_manifest({"verification_result": "verified"})),
+    {"id": "m3-mismatch-with-asserted-result", "record": sign(with_manifest({"manifest_verification_result": "verified"})),
      "resolver": {MID: M_LATER}, "expect": {"record": "VALID", "manifest": "MISMATCH:manifest-digest-mismatch"},
-     "why": "the producer also wrote verification_result=verified; a verifier recomputes and does not carry it forward"},
+     "why": "the producer also wrote manifest_verification_result=verified (the Agent Manifest s6.3.2 field), signed; a verifier recomputes and does not carry it forward"},
     {"id": "m4-unresolvable", "record": sign(with_manifest()), "resolver": {},
      "expect": {"record": "VALID", "manifest": "NOT_ESTABLISHED:manifest-unresolved"},
      "why": "not a pass and not a reason to reject the record (the s3.1.2 rule 3 posture for pointers)"},

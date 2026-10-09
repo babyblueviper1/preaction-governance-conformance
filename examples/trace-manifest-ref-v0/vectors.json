@@ -144,10 +144,10 @@
     "manifest": {
      "id": "urn:example:agent-manifest:payments-agent",
      "digest": "sha256:a773501007076390d7532a16294e4ee8c1ae07aa030f90c85cf513fdeeeeb472",
-     "media_type": "application/json",
-     "verification_result": "verified"
+     "media_type": "application/json"
     },
-    "signature": "4xo-D9yKcvBl_3xz5kOYWZWDE1iayuqSvYAX9VtVbg3t-WtH1P4e0HosDNgX_SpvLL0eey_K2eX8tTwulzzVAw"
+    "manifest_verification_result": "verified",
+    "signature": "6i9nltz5j8ZeiVN-_Htg8v5qrmfm8w82EeKRHj-3rz3BB8EK68pWrKM96kY_U2ZvEtgahRUArceT1oSeYQy_AQ"
    },
    "resolver": {
     "urn:example:agent-manifest:payments-agent": "{\"manifest_id\":\"urn:example:agent-manifest:payments-agent\",\"version\":\"1.5.0\",\"tools\":[\"refund\",\"lookup_payment\",\"wire_transfer\"],\"model_id\":\"example-model-1\"}"
@@ -156,7 +156,7 @@
     "record": "VALID",
     "manifest": "MISMATCH:manifest-digest-mismatch"
    },
-   "why": "the producer also wrote verification_result=verified; a verifier recomputes and does not carry it forward"
+   "why": "the producer also wrote manifest_verification_result=verified (the Agent Manifest s6.3.2 field), signed; a verifier recomputes and does not carry it forward"
   },
   {
    "id": "m4-unresolvable",

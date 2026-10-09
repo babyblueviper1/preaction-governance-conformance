@@ -4,7 +4,7 @@
 For each case: (1) the record signature verifies over RFC 8785 JCS of the record with `signature` absent, under
 cnf.jwk, BEFORE any other field is read (TRACE v0.2 s3.3 step 1); (2) the manifest reference is appraised by
 recomputing sha256 over the bytes the resolver returns for manifest.id and comparing with the signed digest.
-A `verification_result` the producer wrote is never read. Outcomes:
+A `manifest_verification_result` the producer wrote is never read. Outcomes:
   ESTABLISHED                           digest recomputes over the resolved bytes
   MISMATCH:manifest-digest-mismatch     resolved bytes differ from what the record names
   NOT_ESTABLISHED:manifest-unresolved   the id does not resolve (not a pass; the record is not rejected for it)
@@ -39,7 +39,7 @@ def check(case, mutant=None):
         return {"record": "REJECTED:signature-invalid", "manifest": "NOT_EVALUATED"}
     m = rec.get("manifest")
     if m is None: return {"record": "VALID", "manifest": "NOT_ESTABLISHED:no-manifest-named"}
-    if mutant == "M1_trust_asserted_result" and m.get("verification_result") == "verified":
+    if mutant == "M1_trust_asserted_result" and rec.get("manifest_verification_result") == "verified":
         return {"record": "VALID", "manifest": "ESTABLISHED"}
     if m.get("id") not in store:
         if mutant == "M2_unresolved_is_pass": return {"record": "VALID", "manifest": "ESTABLISHED"}
