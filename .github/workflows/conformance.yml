@@ -65,3 +65,5 @@ jobs:
         run: python3 examples/verdict-ref-v1-adapter/build_verdict_object.py
       - name: Cross-layer call_digest vectors (microsoft/autogen#7405, giskard09 action_ref parity + provider/gate join + rewrite + not_reached)
         run: python3 examples/cross-layer-call-digest-vectors/check_cross_layer.py
+      - name: TRACE manifest-ref vectors (agentrust-io/trace-spec#483 -- reference-only manifest digest, 6 cases + 4 mutants killed)
+        run: pip install -q cryptography && python3 examples/trace-manifest-ref-v0/check.py --mutants
