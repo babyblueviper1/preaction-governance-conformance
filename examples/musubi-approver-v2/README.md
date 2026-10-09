@@ -70,3 +70,16 @@ The keys are TEST keys from fixed seeds, so the file regenerates byte-identicall
 
 `contract_v0.check_terms` currently accepts `approval_policy` only as `{allow_unscoped}`, so it must also accept `approvers[]`
 (each entry: `name`, a canonical 32-byte `public_key_ed25519_b64` like `witnesses[]`, and a non-empty `actions[]`).
+
+## Batch entrypoint (for a board-refereed run)
+
+    python3 batch_approval_v2.py IN OUT
+
+`IN` is a JSON array `[{"name", "contract", "approval" | null}, ...]`. `OUT` gets one answer per fixture,
+`{"<name>": {"result", "reason"}}`, or `{"<name>": {"error"}}` for a fixture it could not evaluate. No expected value is read, so a
+referee can hold the answers and compare them itself, the shape of the TSUNAGI batch contract. `approval: null` is answered with the
+contract's policy reading. The logic is `verify_approval_v2.py` imported unchanged.
+
+`python3 referee_selftest.py` runs it the way a referee would: the 9 fixtures without their `expect` fields go into one batch file,
+the command runs as a subprocess, and every answer is compared with `expect` (9/9), plus a malformed fixture that must come back as
+`{"error"}` without ending the batch.

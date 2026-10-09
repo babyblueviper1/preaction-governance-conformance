@@ -67,3 +67,5 @@ jobs:
         run: python3 examples/cross-layer-call-digest-vectors/check_cross_layer.py
       - name: TRACE manifest-ref vectors (agentrust-io/trace-spec#483 -- reference-only manifest digest, 6 cases + 4 mutants killed)
         run: pip install -q cryptography && python3 examples/trace-manifest-ref-v0/check.py --mutants
+      - name: a2a-approval-v2 batch entrypoint, referee-compared (horizon-shield TSUNAGI batch contract, 9 fixtures without expect)
+        run: python3 examples/musubi-approver-v2/referee_selftest.py
