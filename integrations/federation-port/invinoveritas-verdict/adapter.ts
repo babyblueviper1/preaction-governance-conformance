@@ -15,6 +15,10 @@ const C_COVERS = 'invinoveritas.verdict_covers_action'
 const C_PERMITS = 'invinoveritas.verdict_permits_action'
 const C_TARGET = 'invinoveritas.verdict_covers_target'
 const REASON_MAX = 120   // the runtime's bound on a reason code
+/** ClaimResult plus the structured subject proposed for v1 (aeoess/federation-port#5, section 5). v0 runtimes ignore the extra member. */
+type ClaimResultV1 = ClaimResult & { subject?: { target: string } }
+/** A valid target (v1 draft section 3): a non-empty string with no lone surrogates. Only a valid target is ever reported. */
+export const isValidTarget = (t: unknown): t is string => typeof t === 'string' && t !== '' && !/\p{Cs}/u.test(t)
 
 /** Sorted-key JSON, the same construction as the runtime's canonicalJson (the action bytes the verdict was issued on). */
 function canonical(v: unknown): string {
@@ -97,14 +101,20 @@ export function createAdapter(ctx: AdapterContext): Adapter {
       const runtimeTarget = (input as { target?: unknown }).target
       const dispatchTarget = typeof runtimeTarget === 'string' ? runtimeTarget : cfg.declared_target
       const fromRuntime = typeof runtimeTarget === 'string'
-      let target: ClaimResult
+      // v1 draft (aeoess/federation-port#5, section 5): the covered target travels as the structured subject.target, which the
+      // runtime compares. It is reported whenever the verdict covers this action and the hashed target is valid, because that is
+      // what the evidence covers, whatever the runtime target. The status stays established only on an exact match, so a v0
+      // runtime that never compares still fails closed. v0 ignores subject; the established reason keeps subject:target=<value>.
+      const subj = covers.status === 'established' && isValidTarget(subject.target) ? { subject: { target: subject.target } } : {}
+      let target: ClaimResultV1
       if (covers.status !== 'established') target = { claim: C_TARGET, status: 'not_established', reason: 'verdict_is_for_a_different_action' }
       else if (subject.target === undefined) target = { claim: C_TARGET, status: 'not_established', reason: 'target_not_in_hashed_action' }
-      else if (typeof dispatchTarget !== 'string') target = { claim: C_TARGET, status: 'not_established', reason: 'no_runtime_target' }
-      else if (subject.target !== dispatchTarget) target = { claim: C_TARGET, status: 'not_established', reason: fromRuntime ? 'verdict_target_is_not_the_runtime_target' : 'verdict_target_is_not_the_declared_target' }
+      else if (!isValidTarget(subject.target)) target = { claim: C_TARGET, status: 'not_established', reason: 'target_not_valid' }
+      else if (typeof dispatchTarget !== 'string') target = { claim: C_TARGET, status: 'not_established', reason: 'no_runtime_target', ...subj }
+      else if (subject.target !== dispatchTarget) target = { claim: C_TARGET, status: 'not_established', reason: fromRuntime ? 'verdict_target_is_not_the_runtime_target' : 'verdict_target_is_not_the_declared_target', ...subj }
       else {
         const r = `subject:target=${subject.target}`
-        target = { claim: C_TARGET, status: 'established', reason: r.length <= REASON_MAX ? r : `subject:target_sha256=${sha256hex(subject.target)}` }
+        target = { claim: C_TARGET, status: 'established', reason: r.length <= REASON_MAX ? r : `subject:target_sha256=${sha256hex(subject.target)}`, ...subj }
       }
       // 3. permission: accepted verdict, on this action, still fresh
       const nowMs = Date.parse(input.now)

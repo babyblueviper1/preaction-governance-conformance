@@ -208,3 +208,39 @@ test('I12 a runtime target (CheckInput.target, proposed v1) is compared instead 
   assert.equal(signedAruntimeB[C.covers][0], 'established')
   assert.deepEqual(signedAruntimeB[C.target], ['not_established', 'verdict_target_is_not_the_runtime_target'])
 })
+
+test('I13 v1 draft structured subject (aeoess/federation-port#5 section 5): subject.target whenever the verdict covers the action and its target is valid', async () => {
+  const raw = async (action: unknown, ev: unknown, runtimeTarget?: string) => {
+    const a = createAdapter({ config: { pubkey: TEST_PUB, max_age_s: LONG }, secrets: {}, fetch })
+    const input: any = { operation_id: 'op', workflow: 'refund', action: action as any, evidence: bytes(ev), now: '2026-10-09T00:00:00.000Z' }
+    if (runtimeTarget !== undefined) input.target = runtimeTarget
+    return Object.fromEntries((await a.check!(input)).claims.map((c: any) => [c.claim, c]))
+  }
+  const ok = await raw(act(A), verdictOn(act(A)), A)
+  assert.deepEqual([ok[C.target].status, ok[C.target].subject], ['established', { target: A }])
+  assert.equal(ok[C.target].reason, `subject:target=${A}`)                     // the v0 stand-in is still there
+  for (const c of [C.auth, C.covers, C.permits]) assert.equal(ok[c].subject, undefined)   // only the target-bound claim reports one
+  const mis = await raw(act(A), verdictOn(act(A)), B)                          // fail closed, still says what the verdict covers
+  assert.deepEqual([mis[C.target].status, mis[C.target].reason, mis[C.target].subject], ['not_established', 'verdict_target_is_not_the_runtime_target', { target: A }])
+  const none = await raw(act(A), verdictOn(act(A)))
+  assert.deepEqual([none[C.target].status, none[C.target].reason, none[C.target].subject], ['not_established', 'no_runtime_target', { target: A }])
+  const slash = await raw(act(A + '/'), verdictOn(act(A + '/')), A)           // exact string: no trailing-slash normalization
+  assert.deepEqual([slash[C.target].status, slash[C.target].subject], ['not_established', { target: A + '/' }])
+  const other = await raw(act(B), verdictOn(act(A)), B)                        // verdict on another action: nothing covered, nothing reported
+  assert.deepEqual([other[C.target].status, other[C.target].subject], ['not_established', undefined])
+  const absent = await raw(act(), verdictOn(act()), A)
+  assert.deepEqual([absent[C.target].reason, absent[C.target].subject], ['target_not_in_hashed_action', undefined])
+  for (const bad of ['', 'https://a.example/\uD800', 'https://a.example/\uDC00x']) {   // empty, lone high and lone low surrogate
+    const action = { tool: 'refund', args: { payment_id: 'pay_A', amount_minor: 4000, currency: 'EUR', target: bad } }
+    const r = await raw(action, verdictOn(action), bad)
+    assert.equal(r[C.covers].status, 'established')
+    assert.deepEqual([r[C.target].status, r[C.target].reason, r[C.target].subject], ['not_established', 'target_not_valid', undefined])
+  }
+  const pair = 'https://a.example/\uD83D\uDE00'                                // a well-formed surrogate pair is a valid target
+  const pr = await raw(act(pair), verdictOn(act(pair)), pair)
+  assert.deepEqual([pr[C.target].status, pr[C.target].subject], ['established', { target: pair }])
+  const long = 'https://a.example/' + 'x'.repeat(200)                         // past the 120-unit reason bound: the subject is whole
+  const lr = await raw(act(long), verdictOn(act(long)), long)
+  assert.deepEqual([lr[C.target].status, lr[C.target].subject], ['established', { target: long }])
+  assert.equal(lr[C.target].reason, `subject:target_sha256=${createHash('sha256').update(long).digest('hex')}`)
+})

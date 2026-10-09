@@ -18,11 +18,21 @@ reviewed the action's sorted-key JSON. The component reports four claims, so a p
 Malformed input (bytes that are not JSON, not an event, or content that is not JSON) is reported as `failed`. Anything else that
 does not hold is `not_established`, each with a specific reason: `no_verdict_presented`, `event_id_does_not_recompute`,
 `signer_is_not_the_pinned_key`, `signature_invalid`, `verdict_is_for_a_different_action`, `verdict_<value>`,
-`verdict_older_than_max_age`, `target_not_in_hashed_action`, `no_runtime_target`, `verdict_target_is_not_the_runtime_target` or `verdict_target_is_not_the_declared_target`.
+`verdict_older_than_max_age`, `target_not_in_hashed_action`, `target_not_valid`, `no_runtime_target`, `verdict_target_is_not_the_runtime_target` or `verdict_target_is_not_the_declared_target`.
 
 **Subject.** The subject is read from the bytes the verdict was issued on, never from config: `subject:action_sha256=<hex>` on an
 established `verdict_covers_action`, and `subject:target=<target>` on an established `verdict_covers_target`. v0 has no subject
-field, so both travel as the established claim's reason code. A target that is not inside the hashed action is never reported:
+field, so both travel as the established claim's reason code. From 0.4.0 the target claim also returns the structured
+`subject: { target }` proposed for v1 in [aeoess/federation-port#5](https://github.com/aeoess/federation-port/pull/5) (section 5),
+whenever the verdict covers this action and the hashed target is valid: on a match, on a mismatch and with no runtime target, since
+that is what the evidence covers. The status is `established` only on an exact match, so a v0 runtime, which ignores `subject` and
+never compares, still fails closed. The structured subject is never cut, unlike the reason, which falls back to
+`subject:target_sha256=<hex>` past the runtime's 120-unit bound. A target that is empty or contains a lone surrogate (not valid under
+the draft's section 3) is never reported: `not_established` with `target_not_valid`.
+
+**Binds (v1 draft, section 4).** Each claim in `manifest.json` declares `binds`: `verdict_authentic` is `context` (it holds for the
+signed event, not for this action), `verdict_covers_action` and `verdict_permits_action` are `action`, and `verdict_covers_target`
+is `target`. v0 ignores the member. A target that is not inside the hashed action is never reported:
 the verdict says nothing about where the action is sent unless the target was part of what was reviewed. A verdict issued for
 target A fails coverage on an action sent to target B, because the action hash differs.
 
@@ -52,11 +62,11 @@ curl -s https://api.babyblueviper.com/review -H 'Authorization: Bearer ivv_...' 
 
 Run `./reproduce.sh`. It clones `aeoess/federation-port` at `3a2f6ce` (re-pinned 2026-10-08 after the runtime changes merged that day;
 first run at `92d5078`, 51/51), adds this component without touching `src/`, seals it with
-the repo's own `scripts/seal.ts`, and runs the full suite: **66/66 (the 54 existing tests plus 12 here)**. It then runs BIP-340's
+the repo's own `scripts/seal.ts`, and runs the full suite: **67/67 (the 54 existing tests plus 13 here)**. It then runs BIP-340's
 official test vectors through `bip340.ts`: **15/15** (the 4 vectors with non-32-byte messages are skipped, since event ids are
-always 32 bytes). The repo's `tsc -p tsconfig.json` reports 0 errors. Sealed digests (0.3.0): artifact
-`sha256:126160033d88056f16ec2f67c6bf3ee8c4d66fcef11303b34642955b3a16281f`, manifest
-`sha256:41499a39d17f760e6da004811b299091beed89fce249a9d10e1e4445c6298199`.
+always 32 bytes). The repo's `tsc -p tsconfig.json` reports 0 errors. Sealed digests (0.4.0): artifact
+`sha256:252ba0061c1cd4a3f8712ebf41460b5fc388a68f6cbefc2473b6b91c8866feb0`, manifest
+`sha256:7352b7b947b33f83687d4c02a1b285fdcba9dcfe0184cace14a5762ccb0a2ccb`.
 
 I01-I07 run on two real verdict proofs from the live API (`test/fixtures/verdicts.json`, issued 2026-10-07):
 - **The sim's approved refund:** verdict `approve_with_concerns`.
@@ -72,5 +82,10 @@ test with a BIP-340 test key (same event shape, `pubkey` override): target insid
 target is established with both subject fields; a target outside the hashed action is `target_not_in_hashed_action` (and
 `no_runtime_target` when there is neither a runtime target nor a declared one); a verdict issued for target A on an action sent to target B fails
 `verdict_covers_action`; an action and verdict naming A under a declared B fail `verdict_covers_target`; a runtime target passed as `CheckInput.target` is compared instead of config and wins over a disagreeing config (`verdict_target_is_not_the_runtime_target`).
+
+I13 covers the structured subject: `subject.target` on a match, a mismatch and with no runtime target, only on the target claim; none
+when the verdict is for another action or the target is outside the hash; `target_not_valid` and no subject for an empty target and
+for a lone high or low surrogate; a well-formed surrogate pair accepted; a 218-character target reported whole in `subject` while the
+reason falls back to the digest form.
 
 MIT. invinoveritas (Invinoveritas SpA).
