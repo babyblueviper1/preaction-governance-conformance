@@ -1,0 +1,725 @@
+{
+ "name": "resolution-payment-pair-v0",
+ "claim": "payment P executed under the authority of verdict V",
+ "discussion": "https://ethereum-magicians.org/t/29846",
+ "synthetic_test_pubkey": "7d2757545b4d2c4793bbee01266d60dd4b37e8a44103201223f928871eecc1dc",
+ "real_issuer_pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+ "cases": [
+  {
+   "id": "exhibit-2-random-nonce",
+   "class": "real",
+   "chain": "eip155:8453",
+   "tx_hash": "0xd105a8f5290fbe841da419db402659d07bafa21070be370d81d19b1e29d9d112",
+   "note": "EIP-3009 nonce = 32 random bytes from the x402 Python SDK (create_nonce: os.urandom(32)); the bound args carry the signed authorization, nonce included",
+   "verdict_event": {
+    "id": "5219fe8d35adeaa317b59734634d75930b4e6f29c762a6b16e40c4c77c005912",
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "created_at": 1791469288,
+    "kind": 30078,
+    "tags": [
+     [
+      "d",
+      "invinoveritas-proof-0c71e3eb5bbf7658add711c06252d16092a44a91f3582763eb8cce9428970b0c-1791469288-89bc122c"
+     ],
+     [
+      "t",
+      "invinoveritas"
+     ],
+     [
+      "t",
+      "proof"
+     ],
+     [
+      "schema",
+      "invinoveritas.verdict_proof.v1"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:a8d13c6d164973dbeb1ca10f85d46ab96346d50ee7b00932c68413c10329061b\",\"action_binding_nonce\":\"68b1ab62e29c7513beeaa5bbd81ddd25\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"0c71e3eb5bbf7658add711c06252d16092a44a91f3582763eb8cce9428970b0c\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.9,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:ccba020a09bd9f1b2010dc86ee5a72425620186fb5f7cf116064917a6031372e\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 2: gated 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791467710,\"hash\":\"00000000000000000001683a72df9a22322b2117aab9a1b264c5284045702d51\",\"height\":970498,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:7af7a91d3be7f9b3e5566811a9d40527a5de53ba8680b2e49122bd941588a88d\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"2546a36365c290cea39eefd2d62b27a690d5ce54540f8c9078c3c7124bf842be\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) — it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791469288,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "sig": "5f6167d732566be008a0a5a8152775040ebe7460153a3c79dd338dc467dda0d8bcdfe43bf07beb2aea097a564761fc7cb7c6e244bf822b6cfcb22c5415a7acdd"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "1000000",
+    "authorization": {
+     "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+     "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+     "value": "1000000",
+     "validAfter": "1791468651",
+     "validBefore": "1791469551",
+     "nonce": "0x944f3c8387e6577890f2a7fba29fdf206363c2e9f04a10f5464170791da6b5fb"
+    },
+    "authorization_signature": "0x9f7076435c07139a509ce46b94b440d2e679241aa8142da71d2578373e0eeee97ca9455a9f44e3355ba10c585d80991f329061d9cccfbd48f8c51d89ed7f7d221b",
+    "recipient_control_message": "invinoveritas pilot exhibit 2: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791469251",
+    "recipient_control_signature": "73878f9783b904b1048f3097498fa9029ec2034736f55643915c0665db6cb6fe119bf7fb7a8f64c7b81779a07610099c46170fff5a3a6c25909199bc725d25ed1c"
+   },
+   "receipt": {
+    "transactionHash": "0xd105a8f5290fbe841da419db402659d07bafa21070be370d81d19b1e29d9d112",
+    "status": "0x1",
+    "blockNumber": "0x31ea504",
+    "blockHash": "0xe24aa95fd23a7cd6bae2e6a0de5a04440fa3fe73193beab6f25e7fd296cc2496",
+    "block_timestamp": "0x6ac7a6eb",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x944f3c8387e6577890f2a7fba29fdf206363c2e9f04a10f5464170791da6b5fb"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x000000000000000000000000d34282184c5dd34f3bbef381d3a1e02b315ebb0a"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "execution_policy_not_committed",
+     "payment_does_not_carry_verdict"
+    ]
+   }
+  },
+  {
+   "id": "exhibit-3-nonce-is-decision-ref",
+   "class": "real",
+   "chain": "eip155:8453",
+   "tx_hash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+   "note": "authorization signed after the verdict with nonce = the verdict's decision_ref",
+   "verdict_event": {
+    "id": "a5321b7db8ca0b2ac106a39f5cdef4fb1669d1e9c4d9d621629a2281af019d19",
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "created_at": 1791481057,
+    "kind": 30078,
+    "tags": [
+     [
+      "d",
+      "invinoveritas-proof-4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d-1791481057-3954f553"
+     ],
+     [
+      "t",
+      "invinoveritas"
+     ],
+     [
+      "t",
+      "proof"
+     ],
+     [
+      "schema",
+      "invinoveritas.verdict_proof.v1"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:30af1bc4a6380c35d85bf4fa400066ab8715586c107637eb35a9e8740a055869\",\"action_binding_nonce\":\"5f8180a99a8b1de524ca8bd099bdc195\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.89,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:b1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 3: verdict-bound 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791479935,\"hash\":\"000000000000000000001b89a4d963a7495cdc712eda85a6214f618b59f22a5a\",\"height\":970514,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:cb8820783b7b6f5048d47c3956252ad44771d5469281ee3f624002d5ec187143\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e981a77071f7fe80d16429bf7abdc115ac6f56ba4ebdba8b95ec3b945302acae\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) — it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791481056,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "sig": "c5f7ae232baff962434000ed068dd36c7857c753905cda35bc35cb6706ceafc92b6476f4504a7e0cd8476b32da1813d0e9c57f4dbddc3f3d40584ecb0dd1312a"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "1000000",
+    "valid_after": "1791480947",
+    "valid_before": "1791481607",
+    "nonce_rule": "eip3009_nonce = this verdict's decision_ref",
+    "recipient_control_message": "invinoveritas pilot exhibit 3: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791481007",
+    "recipient_control_signature": "b361728243792f499f300a25b5410de241b7811801cc55c52e66acde2309a3282ac5a0f3a37737b4e95504a22b5f254042e67fa4b8e38d671eeb24883bc5f95d1c"
+   },
+   "receipt": {
+    "transactionHash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+    "status": "0x1",
+    "blockNumber": "0x31ebc00",
+    "blockHash": "0xb8c0146605b692c83fa0cbec3f9d24770938e0abd8956855df850f76a2c512a1",
+    "block_timestamp": "0x6ac7d4e3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0xb1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x000000000000000000000000d34282184c5dd34f3bbef381d3a1e02b315ebb0a"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "execution_policy_not_committed"
+    ]
+   }
+  },
+  {
+   "id": "s1-approve-carried-policy-permits",
+   "class": "synthetic",
+   "chain": "eip155:8453",
+   "tx_hash": "0xd5bf26c54ffda8d70cd375689f4711fbeaefdb0539e83864d1366acc8d69655a",
+   "note": "exhibit 3's shape plus a declared execution policy inside the bound args",
+   "verdict_event": {
+    "pubkey": "7d2757545b4d2c4793bbee01266d60dd4b37e8a44103201223f928871eecc1dc",
+    "created_at": 1791500000,
+    "kind": 30078,
+    "tags": [
+     [
+      "t",
+      "synthetic-test-vector"
+     ]
+    ],
+    "content": "{\"action_binding_args_hash\":\"sha256:82226b13f9a8392c32fbcf80e176b3ef744f6d03078bfd982fa4c38ceb1323b4\",\"artifact_hash\":\"66141f87ab6669d9a1828676d1a59f19a11cfb4dd6bc74516ed0ceb33633b75c\",\"decision_ref\":\"sha256:f28fb2d1709ccc56ba86952dec039055b7027c21efeb36afb715c2418a9854de\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"verdict\",\"verified_at\",\"action_binding_args_hash\",\"synthetic_test_vector\"],\"schema\":\"invinoveritas.verdict_proof.v1\",\"synthetic_test_vector\":\"SYNTHETIC: signed by a public TEST key, not issued by invinoveritas\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791500000}",
+    "id": "11660d4eaf446ad1e7660509b8572c1d5efb29588e52a08fb0b87ccff79c3701",
+    "sig": "208e93080fdaf01b7bbe5f8fb6125c28bf9821a9b02c74ec68a948e574f3f0c704a4f3b1075f20923f665d9a43b92a16246c678757fe4d81527d6104abf6c37f"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x1111111111111111111111111111111111111111",
+    "to": "0x2222222222222222222222222222222222222222",
+    "amount_atomic": "1000000",
+    "proceed_on": [
+     "approve",
+     "approve_with_concerns"
+    ],
+    "accountable_party": "synthetic payer (test vector)"
+   },
+   "receipt": {
+    "transactionHash": "0xd5bf26c54ffda8d70cd375689f4711fbeaefdb0539e83864d1366acc8d69655a",
+    "status": "0x1",
+    "blockNumber": "0x0",
+    "blockHash": null,
+    "block_timestamp": "0x6ac81ee3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x0000000000000000000000001111111111111111111111111111111111111111",
+       "0xf28fb2d1709ccc56ba86952dec039055b7027c21efeb36afb715c2418a9854de"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x0000000000000000000000001111111111111111111111111111111111111111",
+       "0x0000000000000000000000002222222222222222222222222222222222222222"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "AUTHORIZED",
+    "reasons": []
+   }
+  },
+  {
+   "id": "s2-reject-carried-as-nonce",
+   "class": "synthetic",
+   "chain": "eip155:8453",
+   "tx_hash": "0x90a020cb8f03bebfc98fcd28f5ea4443d688be6b24494b89a722a7eb4ab27470",
+   "note": "a REJECT verdict whose decision_ref the payer used as the nonce anyway: the payment provably carried a verdict the declared policy does not let it execute on",
+   "verdict_event": {
+    "pubkey": "7d2757545b4d2c4793bbee01266d60dd4b37e8a44103201223f928871eecc1dc",
+    "created_at": 1791500000,
+    "kind": 30078,
+    "tags": [
+     [
+      "t",
+      "synthetic-test-vector"
+     ]
+    ],
+    "content": "{\"action_binding_args_hash\":\"sha256:82226b13f9a8392c32fbcf80e176b3ef744f6d03078bfd982fa4c38ceb1323b4\",\"artifact_hash\":\"b69e544ea2e473f37df9dd9df8bd94c53662b0b550c81744c5638c1de50ee9da\",\"decision_ref\":\"sha256:7f93b85076670634a6e3205267d67458abf211dbb8097000e6d43f38d4d78447\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"verdict\",\"verified_at\",\"action_binding_args_hash\",\"synthetic_test_vector\"],\"schema\":\"invinoveritas.verdict_proof.v1\",\"synthetic_test_vector\":\"SYNTHETIC: signed by a public TEST key, not issued by invinoveritas\",\"verdict\":\"reject\",\"verified_at\":1791500000}",
+    "id": "6cdf2f53cfc7b906d1c2383799871fc2de17601c3d9603b10ead346e635dff0e",
+    "sig": "3bd9670b58721e162481eb22d4ca7d20bb0498c821440bf1c57683971ad8f88e78ed28e9d549390e4cc043c5700acc409e54d5530407b2ecff8c568312efab0d"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x1111111111111111111111111111111111111111",
+    "to": "0x2222222222222222222222222222222222222222",
+    "amount_atomic": "1000000",
+    "proceed_on": [
+     "approve",
+     "approve_with_concerns"
+    ],
+    "accountable_party": "synthetic payer (test vector)"
+   },
+   "receipt": {
+    "transactionHash": "0x90a020cb8f03bebfc98fcd28f5ea4443d688be6b24494b89a722a7eb4ab27470",
+    "status": "0x1",
+    "blockNumber": "0x0",
+    "blockHash": null,
+    "block_timestamp": "0x6ac81ee3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x0000000000000000000000001111111111111111111111111111111111111111",
+       "0x7f93b85076670634a6e3205267d67458abf211dbb8097000e6d43f38d4d78447"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x0000000000000000000000001111111111111111111111111111111111111111",
+       "0x0000000000000000000000002222222222222222222222222222222222222222"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNAUTHORIZED",
+    "reasons": [
+     "executed_on_verdict_outside_policy"
+    ]
+   }
+  },
+  {
+   "id": "s3-random-nonce-policy-permits",
+   "class": "synthetic",
+   "chain": "eip155:8453",
+   "tx_hash": "0x413970da6acedf628bfb816ec17986e972a52b00eb66d4d3f4dfc30b09bddd8c",
+   "note": "exhibit 2's shape plus a declared policy: the policy edge is committed, the binding edge is not",
+   "verdict_event": {
+    "pubkey": "7d2757545b4d2c4793bbee01266d60dd4b37e8a44103201223f928871eecc1dc",
+    "created_at": 1791500000,
+    "kind": 30078,
+    "tags": [
+     [
+      "t",
+      "synthetic-test-vector"
+     ]
+    ],
+    "content": "{\"action_binding_args_hash\":\"sha256:82226b13f9a8392c32fbcf80e176b3ef744f6d03078bfd982fa4c38ceb1323b4\",\"artifact_hash\":\"6c7a4b948bb1620ebcd03917cd266b27ede043ead42d4e91a8f9d0acf26b2760\",\"decision_ref\":\"sha256:d88b26c68c148db027de0a23c7ba75ddf2e6a4bc8bc1f9ac87b6e8b8fb1b2c37\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"verdict\",\"verified_at\",\"action_binding_args_hash\",\"synthetic_test_vector\"],\"schema\":\"invinoveritas.verdict_proof.v1\",\"synthetic_test_vector\":\"SYNTHETIC: signed by a public TEST key, not issued by invinoveritas\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791500000}",
+    "id": "61be49a267e2bb5013d810b94497fc9d160d494698fa89ce12e065028d6e0af9",
+    "sig": "a827b80f666158796fde8f01bbd89fb731c99f4435d4fe0cb3fa59ab95afea6c62b1a9a901f91a30823d8260908308099dddb9961348975a7b53638dd2c96dcd"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x1111111111111111111111111111111111111111",
+    "to": "0x2222222222222222222222222222222222222222",
+    "amount_atomic": "1000000",
+    "proceed_on": [
+     "approve",
+     "approve_with_concerns"
+    ],
+    "accountable_party": "synthetic payer (test vector)"
+   },
+   "receipt": {
+    "transactionHash": "0x413970da6acedf628bfb816ec17986e972a52b00eb66d4d3f4dfc30b09bddd8c",
+    "status": "0x1",
+    "blockNumber": "0x0",
+    "blockHash": null,
+    "block_timestamp": "0x6ac81ee3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x0000000000000000000000001111111111111111111111111111111111111111",
+       "0x01c1c3c9176a4279359cfc3f97d38ccf5851d101c5453a08dd8368fa0493856b"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x0000000000000000000000001111111111111111111111111111111111111111",
+       "0x0000000000000000000000002222222222222222222222222222222222222222"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "payment_does_not_carry_verdict"
+    ]
+   }
+  },
+  {
+   "id": "n1-args-amount-altered",
+   "class": "negative (altered copy of exhibit-3-nonce-is-decision-ref)",
+   "chain": "eip155:8453",
+   "tx_hash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+   "note": "the bound args claim a different amount than the verdict signed",
+   "verdict_event": {
+    "id": "a5321b7db8ca0b2ac106a39f5cdef4fb1669d1e9c4d9d621629a2281af019d19",
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "created_at": 1791481057,
+    "kind": 30078,
+    "tags": [
+     [
+      "d",
+      "invinoveritas-proof-4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d-1791481057-3954f553"
+     ],
+     [
+      "t",
+      "invinoveritas"
+     ],
+     [
+      "t",
+      "proof"
+     ],
+     [
+      "schema",
+      "invinoveritas.verdict_proof.v1"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:30af1bc4a6380c35d85bf4fa400066ab8715586c107637eb35a9e8740a055869\",\"action_binding_nonce\":\"5f8180a99a8b1de524ca8bd099bdc195\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.89,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:b1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 3: verdict-bound 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791479935,\"hash\":\"000000000000000000001b89a4d963a7495cdc712eda85a6214f618b59f22a5a\",\"height\":970514,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:cb8820783b7b6f5048d47c3956252ad44771d5469281ee3f624002d5ec187143\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e981a77071f7fe80d16429bf7abdc115ac6f56ba4ebdba8b95ec3b945302acae\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) — it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791481056,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "sig": "c5f7ae232baff962434000ed068dd36c7857c753905cda35bc35cb6706ceafc92b6476f4504a7e0cd8476b32da1813d0e9c57f4dbddc3f3d40584ecb0dd1312a"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "2000000",
+    "valid_after": "1791480947",
+    "valid_before": "1791481607",
+    "nonce_rule": "eip3009_nonce = this verdict's decision_ref",
+    "recipient_control_message": "invinoveritas pilot exhibit 3: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791481007",
+    "recipient_control_signature": "b361728243792f499f300a25b5410de241b7811801cc55c52e66acde2309a3282ac5a0f3a37737b4e95504a22b5f254042e67fa4b8e38d671eeb24883bc5f95d1c"
+   },
+   "receipt": {
+    "transactionHash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+    "status": "0x1",
+    "blockNumber": "0x31ebc00",
+    "blockHash": "0xb8c0146605b692c83fa0cbec3f9d24770938e0abd8956855df850f76a2c512a1",
+    "block_timestamp": "0x6ac7d4e3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0xb1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x000000000000000000000000d34282184c5dd34f3bbef381d3a1e02b315ebb0a"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "verdict_does_not_cover_payment"
+    ]
+   }
+  },
+  {
+   "id": "n2-verdict-content-altered",
+   "class": "negative (altered copy of exhibit-3-nonce-is-decision-ref)",
+   "chain": "eip155:8453",
+   "tx_hash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+   "note": "one byte of the signed verdict changed (verdict upgraded to approve)",
+   "verdict_event": {
+    "id": "a5321b7db8ca0b2ac106a39f5cdef4fb1669d1e9c4d9d621629a2281af019d19",
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "created_at": 1791481057,
+    "kind": 30078,
+    "tags": [
+     [
+      "d",
+      "invinoveritas-proof-4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d-1791481057-3954f553"
+     ],
+     [
+      "t",
+      "invinoveritas"
+     ],
+     [
+      "t",
+      "proof"
+     ],
+     [
+      "schema",
+      "invinoveritas.verdict_proof.v1"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:30af1bc4a6380c35d85bf4fa400066ab8715586c107637eb35a9e8740a055869\",\"action_binding_nonce\":\"5f8180a99a8b1de524ca8bd099bdc195\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.89,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:b1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 3: verdict-bound 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791479935,\"hash\":\"000000000000000000001b89a4d963a7495cdc712eda85a6214f618b59f22a5a\",\"height\":970514,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:cb8820783b7b6f5048d47c3956252ad44771d5469281ee3f624002d5ec187143\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e981a77071f7fe80d16429bf7abdc115ac6f56ba4ebdba8b95ec3b945302acae\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) — it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve\",\"verified_at\":1791481056,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "sig": "c5f7ae232baff962434000ed068dd36c7857c753905cda35bc35cb6706ceafc92b6476f4504a7e0cd8476b32da1813d0e9c57f4dbddc3f3d40584ecb0dd1312a"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "1000000",
+    "valid_after": "1791480947",
+    "valid_before": "1791481607",
+    "nonce_rule": "eip3009_nonce = this verdict's decision_ref",
+    "recipient_control_message": "invinoveritas pilot exhibit 3: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791481007",
+    "recipient_control_signature": "b361728243792f499f300a25b5410de241b7811801cc55c52e66acde2309a3282ac5a0f3a37737b4e95504a22b5f254042e67fa4b8e38d671eeb24883bc5f95d1c"
+   },
+   "receipt": {
+    "transactionHash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+    "status": "0x1",
+    "blockNumber": "0x31ebc00",
+    "blockHash": "0xb8c0146605b692c83fa0cbec3f9d24770938e0abd8956855df850f76a2c512a1",
+    "block_timestamp": "0x6ac7d4e3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0xb1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x000000000000000000000000d34282184c5dd34f3bbef381d3a1e02b315ebb0a"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "verdict_does_not_cover_payment"
+    ]
+   }
+  },
+  {
+   "id": "n3-policy-added-after-verdict",
+   "class": "negative (altered copy of exhibit-3-nonce-is-decision-ref)",
+   "chain": "eip155:8453",
+   "tx_hash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+   "note": "proceed_on written into exhibit 3's args after the verdict: the rule no longer predates the payment",
+   "verdict_event": {
+    "id": "a5321b7db8ca0b2ac106a39f5cdef4fb1669d1e9c4d9d621629a2281af019d19",
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "created_at": 1791481057,
+    "kind": 30078,
+    "tags": [
+     [
+      "d",
+      "invinoveritas-proof-4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d-1791481057-3954f553"
+     ],
+     [
+      "t",
+      "invinoveritas"
+     ],
+     [
+      "t",
+      "proof"
+     ],
+     [
+      "schema",
+      "invinoveritas.verdict_proof.v1"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:30af1bc4a6380c35d85bf4fa400066ab8715586c107637eb35a9e8740a055869\",\"action_binding_nonce\":\"5f8180a99a8b1de524ca8bd099bdc195\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.89,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:b1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 3: verdict-bound 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791479935,\"hash\":\"000000000000000000001b89a4d963a7495cdc712eda85a6214f618b59f22a5a\",\"height\":970514,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:cb8820783b7b6f5048d47c3956252ad44771d5469281ee3f624002d5ec187143\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e981a77071f7fe80d16429bf7abdc115ac6f56ba4ebdba8b95ec3b945302acae\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) — it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791481056,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "sig": "c5f7ae232baff962434000ed068dd36c7857c753905cda35bc35cb6706ceafc92b6476f4504a7e0cd8476b32da1813d0e9c57f4dbddc3f3d40584ecb0dd1312a"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "1000000",
+    "valid_after": "1791480947",
+    "valid_before": "1791481607",
+    "nonce_rule": "eip3009_nonce = this verdict's decision_ref",
+    "recipient_control_message": "invinoveritas pilot exhibit 3: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791481007",
+    "recipient_control_signature": "b361728243792f499f300a25b5410de241b7811801cc55c52e66acde2309a3282ac5a0f3a37737b4e95504a22b5f254042e67fa4b8e38d671eeb24883bc5f95d1c",
+    "proceed_on": [
+     "approve",
+     "approve_with_concerns"
+    ],
+    "accountable_party": "added after the fact"
+   },
+   "receipt": {
+    "transactionHash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+    "status": "0x1",
+    "blockNumber": "0x31ebc00",
+    "blockHash": "0xb8c0146605b692c83fa0cbec3f9d24770938e0abd8956855df850f76a2c512a1",
+    "block_timestamp": "0x6ac7d4e3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0xb1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x000000000000000000000000d34282184c5dd34f3bbef381d3a1e02b315ebb0a"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "verdict_does_not_cover_payment"
+    ]
+   }
+  },
+  {
+   "id": "n4-verdict-signed-by-another-key",
+   "class": "negative (altered copy of exhibit-3-nonce-is-decision-ref)",
+   "chain": "eip155:8453",
+   "tx_hash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+   "note": "exhibit 3's verdict content re-signed by a different key (the synthetic TEST key)",
+   "verdict_event": {
+    "pubkey": "7d2757545b4d2c4793bbee01266d60dd4b37e8a44103201223f928871eecc1dc",
+    "created_at": 1791481057,
+    "kind": 30078,
+    "tags": [
+     [
+      "t",
+      "synthetic-test-vector"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:30af1bc4a6380c35d85bf4fa400066ab8715586c107637eb35a9e8740a055869\",\"action_binding_nonce\":\"5f8180a99a8b1de524ca8bd099bdc195\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.89,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:b1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 3: verdict-bound 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791479935,\"hash\":\"000000000000000000001b89a4d963a7495cdc712eda85a6214f618b59f22a5a\",\"height\":970514,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:cb8820783b7b6f5048d47c3956252ad44771d5469281ee3f624002d5ec187143\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e981a77071f7fe80d16429bf7abdc115ac6f56ba4ebdba8b95ec3b945302acae\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) \\u2014 it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791481056,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "id": "6dece0fe5bc5246e58c0d55646db2265f6075bc653f35019d50b314b922d314c",
+    "sig": "fb7f94db6d97a24b0369116e4563246032abae66244f97e39aa8f4d385f730aa08163d9dcbee0c24158e16a8d615b0d2cc4ea14da2857adb507297ef5262cb60"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "1000000",
+    "valid_after": "1791480947",
+    "valid_before": "1791481607",
+    "nonce_rule": "eip3009_nonce = this verdict's decision_ref",
+    "recipient_control_message": "invinoveritas pilot exhibit 3: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791481007",
+    "recipient_control_signature": "b361728243792f499f300a25b5410de241b7811801cc55c52e66acde2309a3282ac5a0f3a37737b4e95504a22b5f254042e67fa4b8e38d671eeb24883bc5f95d1c"
+   },
+   "receipt": {
+    "transactionHash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+    "status": "0x1",
+    "blockNumber": "0x31ebc00",
+    "blockHash": "0xb8c0146605b692c83fa0cbec3f9d24770938e0abd8956855df850f76a2c512a1",
+    "block_timestamp": "0x6ac7d4e3",
+    "logs": [
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0xb1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95"
+      ],
+      "data": "0x"
+     },
+     {
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x000000000000000000000000161dbdd73d025e9aedd4918a67c28e5bf9a87fb9",
+       "0x000000000000000000000000d34282184c5dd34f3bbef381d3a1e02b315ebb0a"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240"
+     }
+    ]
+   },
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "verdict_does_not_cover_payment"
+    ]
+   }
+  },
+  {
+   "id": "n5-receipt-unavailable",
+   "class": "negative (altered copy of exhibit-3-nonce-is-decision-ref)",
+   "chain": "eip155:8453",
+   "tx_hash": "0x2afb35e24a20fdee74c35937feb59b86358d45c8029a91d065d59825c3e7c4a7",
+   "note": "the receipt could not be obtained (RPC down, wrong chain, not mined)",
+   "verdict_event": {
+    "id": "a5321b7db8ca0b2ac106a39f5cdef4fb1669d1e9c4d9d621629a2281af019d19",
+    "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+    "created_at": 1791481057,
+    "kind": 30078,
+    "tags": [
+     [
+      "d",
+      "invinoveritas-proof-4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d-1791481057-3954f553"
+     ],
+     [
+      "t",
+      "invinoveritas"
+     ],
+     [
+      "t",
+      "proof"
+     ],
+     [
+      "schema",
+      "invinoveritas.verdict_proof.v1"
+     ]
+    ],
+    "content": "{\"action_binding_agent_id\":\"invinoveritas_treasury_onchain_pilot\",\"action_binding_args_hash\":\"sha256:30af1bc4a6380c35d85bf4fa400066ab8715586c107637eb35a9e8740a055869\",\"action_binding_nonce\":\"5f8180a99a8b1de524ca8bd099bdc195\",\"action_binding_tool_hash\":\"sha256:6ad7f8f07cc3fc50519d4ed6c51dde5a4cda06b879ba8cfe17aa450377eca887\",\"artifact_hash\":\"4f854d0da47b015440813eebdef54b91c739afaa68dbddbd63d1402ea800e66d\",\"artifact_type\":\"onchain_action\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.89,\"confidentiality_tier\":\"partial_disclosure\",\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:b1a8be58323f5b5ac0c5bf3d6da21a647399dcf074dc6baf6e870f7bf80f0e95\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"disclosed_summary\":\"pilot exhibit 3: verdict-bound 1.00 USDC transfer 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 -> 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A on Base\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1791479935,\"hash\":\"000000000000000000001b89a4d963a7495cdc712eda85a6214f618b59f22a5a\",\"height\":970514,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:cb8820783b7b6f5048d47c3956252ad44771d5469281ee3f624002d5ec187143\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"e981a77071f7fe80d16429bf7abdc115ac6f56ba4ebdba8b95ec3b945302acae\",\"vantage_limitation\":\"source_class=agent_reported: nothing external confirms this /review call happened, or could not be bypassed, before the action it governs. Recomputability makes this record internally consistent (an occurrence claim) — it is not an absence/completeness claim, which needs a vantage the acting agent doesn't control. This note is derived from source_class and artifact_type only: it does not establish that the source classification is true or that execution cannot bypass this check. Treat this proof as advisory input, not standalone authorization, until paired with an independent mediation-point integration.\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1791481056,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+    "sig": "c5f7ae232baff962434000ed068dd36c7857c753905cda35bc35cb6706ceafc92b6476f4504a7e0cd8476b32da1813d0e9c57f4dbddc3f3d40584ecb0dd1312a"
+   },
+   "args": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "from": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "to": "0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A",
+    "amount_atomic": "1000000",
+    "valid_after": "1791480947",
+    "valid_before": "1791481607",
+    "nonce_rule": "eip3009_nonce = this verdict's decision_ref",
+    "recipient_control_message": "invinoveritas pilot exhibit 3: the holder of this key controls 0xD34282184C5Dd34f3bBEf381d3A1E02B315ebb0A and accepts 1.00 USDC from 0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9 at 1791481007",
+    "recipient_control_signature": "b361728243792f499f300a25b5410de241b7811801cc55c52e66acde2309a3282ac5a0f3a37737b4e95504a22b5f254042e67fa4b8e38d671eeb24883bc5f95d1c"
+   },
+   "receipt": null,
+   "expect": {
+    "outcome": "UNRESOLVED",
+    "reasons": [
+     "evidence_unavailable"
+    ]
+   }
+  }
+ ]
+}

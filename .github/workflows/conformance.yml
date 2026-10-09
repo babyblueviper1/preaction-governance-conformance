@@ -73,3 +73,5 @@ jobs:
         run: |
           pip install -q nenrin-verify
           for c in nenrin-interop-v0 nenrin-interop-v0.1 nenrin-interop-v0.2-edge; do nenrin-tsunagi run "$c" -- "python3 examples/nenrin-cleanroom-verifier/nenrin_cleanroom.py {in} {out}" | tail -1; done
+      - name: Resolution payment pair (ethereum-magicians t/29846; 2 real Base payments + synthetic + negatives, 10 cases, 5 mutants)
+        run: python3 examples/resolution-payment-pair-v0/check.py --mutants
