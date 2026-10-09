@@ -69,3 +69,7 @@ jobs:
         run: pip install -q cryptography && python3 examples/trace-manifest-ref-v0/check.py --mutants
       - name: a2a-approval-v2 batch entrypoint, referee-compared (horizon-shield TSUNAGI batch contract, 9 fixtures without expect)
         run: python3 examples/musubi-approver-v2/referee_selftest.py
+      - name: NENRIN clean-room verifier, refereed by nenrin-tsunagi (horizon-shield#34; interop v0 5/5, v0.1 13/13, v0.2-edge 36/36)
+        run: |
+          pip install -q nenrin-verify
+          for c in nenrin-interop-v0 nenrin-interop-v0.1 nenrin-interop-v0.2-edge; do nenrin-tsunagi run "$c" -- "python3 examples/nenrin-cleanroom-verifier/nenrin_cleanroom.py {in} {out}" | tail -1; done
