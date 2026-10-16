@@ -48,8 +48,11 @@ does: it turns the narrowed set into a single row. The commitment is not unlinka
 
 - The salt MUST be 32 bytes from a cryptographically secure random source, generated per payment. It MUST NOT be
   derived from the nonce, the payer, or any other field of the receipt, offer or payment.
-- The salt is returned to the buyer outside the signed payload, as an unsigned envelope field (the pattern §4.1.1
-  uses for `acceptIndex`). The receipt does not contain it.
+- The salt is returned to the buyer outside the signed payload, at `extensions["offer-receipt"].info.authorizationSalt`,
+  and is never a field of the receipt object, signed or unsigned: forwarding the receipt must not forward the link
+  (placement made explicit after holistis's review of x402#3827).
+- The receipt does not carry `asset`. A later verifier needs the offer, the paid `accepts` entry, or the `asset` stored
+  with the salt; the receipt and the salt alone do not link.
 - A rail with no identifier the seller holds before settlement omits both fields. It does not reuse them with another
   meaning.
 - §5.3: the version-2 EIP-712 `Receipt` type appends `authorizationMethod` and `authorizationCommitment` (`string`),
