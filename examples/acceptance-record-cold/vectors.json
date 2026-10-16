@@ -2743,6 +2743,230 @@
    },
    "id": "acc-mixed-order-r-real-key",
    "what": "sentence 9: cp-1's real key; R = [r]B plus an order-8 torsion point, S = r + k*a: the cofactored equation accepts it, the cofactorless one rejects it; a mixed-order R is signature_invalid"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6IkQyNEE1MjY0NkNBQ0E2OEZGNzRGRTIyMzRFQjgxQ0VBNjU4OEU3MTY2RkMxOTVENTQ5NjFFQzdDMEE2QTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "9CA4-tdOGWyZFrND60fawMSAdG-FmhZ2E1hMAlEFyIUFnq_133QQ2AAdxJRw46bMXLyLQFT-iw3u6_2e_3-HCQ"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_member_invalid"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-terms-digest-uppercase-hex",
+   "what": "sentence 2: a *_sha256 member is exactly 64 LOWERCASE hex characters; the same digest in upper case is ill-typed, and the mismatch it would otherwise cause is suppressed"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDAwMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "VNYE6UXhF3aW4B8hmDrfrdC1AjgXJDFexLWy-yHFqjlW94CeVrkvb29jURrHMnGAOTiTb2KeTEL2pIXNwFVIBA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_member_invalid"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-accepted-at-six-fraction-digits",
+   "what": "sentence 5: three fractional digits exactly; six digits naming the same instant is another spelling, so ill-typed"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODowNTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6IjUzMDIyYWZlMjZjZGJlMDhkNThjZWUwYTVmNmE3NDA5MDhlYmFiZTVlYmVkYzhmNGJjOGQzZGVkYzU1ZjZhNjgiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "Ju0TPXCrekbdZkPgf2VyhzPdw5mPVn5Cx8dZJ2XMJ8OpRhvfc0k6prT0Kt7Ce-CLFGhEhZmxvcj03aGUehT0AA"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:00:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "receipt-0001",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1",
+      "cp-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [
+     "acceptance_signer_is_issuer"
+    ],
+    "result": "malformed"
+   },
+   "id": "acc-signer-is-issuer-by-delegation",
+   "what": "A5 third reading: the delegation material also binds the signing kid (cp-1) to the issuer, so the signer is the issuer even though the key bytes and the confirming party differ"
+  },
+  {
+   "case": {
+    "acceptance": {
+     "payload": "eyJhY2NlcHRhbmNlX3ZlcnNpb24iOiJhY2NlcHRhbmNlLXJlY29yZC12MCIsImFjY2VwdGVkX2F0IjoiMjAyNi0xMC0wNFQxODo0NTowMC4wMDBaIiwiYWNjZXB0ZWRfcmVjb3JkX3NoYTI1NiI6ImZkN2Q5OTBlODY3YTgxNDJjYThhMWJjNzQ3YzJhNzgxN2FkNjZkYzRjMzM2ZTlmMDViOWJmMmVmNWM5ZDgzZWIiLCJjb25maXJtaW5nX3BhcnR5IjoiZGlkOmV4YW1wbGU6Y291bnRlcnBhcnR5IiwiZGlzcG9zaXRpb24iOiJhY2NlcHRlZCIsIm91dGNvbWVfc2hhMjU2IjoiMWMyNzNjZGFiYzg3MmEzNjEwNTcwOTkwMThiMDlmZTQ3ODNhMWUxNmU2NWFjYTVkMDE1NTY3Yjc3OTg3MmQ5ZCIsInRlcm1zX3NoYTI1NiI6ImQyNGE1MjY0NmNhY2E2OGZmNzRmZTIyMzRlYjgxY2VhNjU4OGU3MTY2ZmMxOTVkNTQ5NjFlYzdjMGE2YTY1MzUifQ",
+     "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImNwLTEifQ",
+     "signature": "8H9naZLjehDuruT6MRAR1GUHOPENYslKx8v2m8JsOM4S0GcQX1rPkejzxAlCvUk453rdYb1eVMEbXeHyG0X2Aw"
+    },
+    "accepted_record": {
+     "issuer": "did:example:issuer",
+     "issuer_kid": "iss-1",
+     "outcome_at": "2026-10-04T18:40:00.000Z",
+     "outcome_sha256": "1c273cdabc872a361057099018b09fe4783a1e16e65aca5d015567b779872d9d",
+     "record_id": "re\u0301ceipt-0003 \u00e9t\u00e9",
+     "terms_sha256": "d24a52646caca68ff74fe2234eb81cea6588e7166fc195d54961ec7c0a6a6535"
+    },
+    "delegation": {
+     "did:example:counterparty": [
+      "cp-1"
+     ],
+     "did:example:issuer": [
+      "iss-1"
+     ]
+    },
+    "trust_material": {
+     "keys": [
+      {
+       "crv": "Ed25519",
+       "kid": "iss-1",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-1",
+       "kty": "OKP",
+       "x": "7TF4CaxY0kCA1MRX4vL3ujKNySAtpxEjHl4OE-J3n_g"
+      },
+      {
+       "crv": "Ed25519",
+       "kid": "cp-reused",
+       "kty": "OKP",
+       "x": "n9kGbhc28mdbPzaBTcYOakAIwZH0Q6VUybeWUh8OHeQ"
+      }
+     ]
+    },
+    "trust_material_complete": false
+   },
+   "expect": {
+    "conditions": [],
+    "disposition": "accepted",
+    "result": "verified"
+   },
+   "id": "acc-record-digest-non-ascii-verified",
+   "what": "A8: the record digest is over RFC 8785 bytes, where non-ASCII strings are written as UTF-8, not as \\u escapes; a checker that escapes them computes a different digest and reports a mismatch"
   }
  ]
 }

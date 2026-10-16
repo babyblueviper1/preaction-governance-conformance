@@ -279,6 +279,27 @@ add("acc-mixed-order-r-real-key", case({**SAME, "signature": b64(_SIG_R3)}), "ma
     what="sentence 9: cp-1's real key; R = [r]B plus an order-8 torsion point, S = r + k*a: the cofactored equation accepts it, "
     "the cofactorless one rejects it; a mixed-order R is signature_invalid")
 
+# Four rules the README states that no vector pinned: a checker that broke any one of them still scored 50/50. Found by
+# mutating an independent checker (actaseal/x402-acceptance-check-cold) and asking the corpus which mutants it kills.
+add("acc-terms-digest-uppercase-hex", case(jws(body(terms_sha256=RECORD["terms_sha256"].upper()))), "malformed",
+    ["acceptance_member_invalid"],
+    what="sentence 2: a *_sha256 member is exactly 64 LOWERCASE hex characters; the same digest in upper case is ill-typed, "
+    "and the mismatch it would otherwise cause is suppressed")
+add("acc-accepted-at-six-fraction-digits", case(jws(body(accepted_at="2026-10-04T18:05:00.000000Z"))), "malformed",
+    ["acceptance_member_invalid"],
+    what="sentence 5: three fractional digits exactly; six digits naming the same instant is another spelling, so ill-typed")
+add("acc-signer-is-issuer-by-delegation",
+    case(jws(BODY), deleg={"did:example:counterparty": ["cp-1"], "did:example:issuer": ["iss-1", "cp-1"]}), "malformed",
+    ["acceptance_signer_is_issuer"],
+    what="A5 third reading: the delegation material also binds the signing kid (cp-1) to the issuer, so the signer is the "
+    "issuer even though the key bytes and the confirming party differ")
+RECORD_NA = {**RECORD, "record_id": "re\u0301ceipt-0003 \u00e9t\u00e9", "outcome_at": "2026-10-04T18:40:00.000Z"}
+add("acc-record-digest-non-ascii-verified",
+    case(jws(body(accepted_record_sha256=rd(RECORD_NA), accepted_at="2026-10-04T18:45:00.000Z")), record=RECORD_NA),
+    "verified", disposition="accepted",
+    what="A8: the record digest is over RFC 8785 bytes, where non-ASCII strings are written as UTF-8, not as \\u escapes; "
+    "a checker that escapes them computes a different digest and reports a mismatch")
+
 out = {"description": "Acceptance-record vectors for Shodai's condition set (x402-foundation/tsc#4, 2026-10-04), keys per "
        "draft-krausz-verification-state-03 5.4.2. Conditions compare as SETS. Built by build_vectors.py; CC0-1.0.",
        "vectors": V}
