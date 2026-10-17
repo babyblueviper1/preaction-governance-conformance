@@ -95,3 +95,8 @@ linked: nonce 0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83
 [x402#3830](https://github.com/x402-foundation/x402/pull/3830), written from the spec text alone. It agrees with the
 proposer's kit ([holistis/tokenizen@5bad82c](https://github.com/holistis/tokenizen/tree/5bad82c/examples/x402-svm-memo-commitment), 22/22)
 on both commit vectors: `python3 svm_memo_crosscheck.py` gives 2/2.
+
+## Opened privately to one verifier
+
+[`../x402-receipt-private-opening`](../x402-receipt-private-opening) is the middle tier: the rater opens the commitment to one named
+verifier instead of publishing the salt, and the verifier signs what it found without the nonce, transaction or salt.
