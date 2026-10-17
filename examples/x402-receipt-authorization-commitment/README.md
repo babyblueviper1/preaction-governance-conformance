@@ -100,3 +100,21 @@ on both commit vectors: `python3 svm_memo_crosscheck.py` gives 2/2.
 
 [`../x402-receipt-private-opening`](../x402-receipt-private-opening) is the middle tier: the rater opens the commitment to one named
 verifier instead of publishing the salt, and the verifier signs what it found without the nonce, transaction or salt.
+
+## Live interop with a v2 emitter (2026-10-17)
+
+holistis runs a seller that signs payload version 2 receipts over HTTP (`https://api.tokenizen.nl/api/paid/verify-ownership`)
+and published three real Base Sepolia receipts in [holistis/agent-receipt-verify@5719e7a](https://github.com/holistis/agent-receipt-verify/tree/5719e7a/examples).
+They carry only what §5.6.4 says a later verifier has: the receipt, its salt and the asset. The three payments have the same
+payer, payee, amount and resource, minutes apart. `check_live.py`, which shares no code with his JavaScript verifier,
+resolves each one to the settlement he listed, from the payer's full set of 15 consumed nonces:
+
+| receipt | settlement our check reached |
+|---|---|
+| `receipt-live-base-sepolia.json` | `0xed87b09b…dfeb30` |
+| `receipt-live-base-sepolia-2.json` | `0x2898d0ce…acfe36b` |
+| `receipt-live-base-sepolia-3.json` | `0x2a9e95d6…8d7199` |
+
+Exit codes follow §5.6.4 as amended in x402#3827 (faa611f): `0` linked, `1` the candidate set was obtained and nothing
+matched, `2` incomplete check (the candidate set or `authorizationState` could not be obtained). A rate-limited or failed
+log query is never reported as "does not link".
