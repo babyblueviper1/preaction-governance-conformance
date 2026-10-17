@@ -101,6 +101,12 @@ on both commit vectors: `python3 svm_memo_crosscheck.py` gives 2/2.
 [`../x402-receipt-private-opening`](../x402-receipt-private-opening) is the middle tier: the rater opens the commitment to one named
 verifier instead of publishing the salt, and the verifier signs what it found without the nonce, transaction or salt.
 
+## Consent: an AP2 mandate (2026-10-17)
+
+[`../x402-receipt-ap2-mandate`](../x402-receipt-ap2-mandate) follows the same settlement back to the user's consent. In AP2's
+embedded x402 flow the user-signed PaymentMandate contains this authorization, so the nonce the user consented to is the
+nonce the commitment names. One check covers user consent, merchant cart, terms, receipt and settlement (12 vectors).
+
 ## Live interop with a v2 emitter (2026-10-17)
 
 holistis runs a seller that signs payload version 2 receipts over HTTP (`https://api.tokenizen.nl/api/paid/verify-ownership`)
