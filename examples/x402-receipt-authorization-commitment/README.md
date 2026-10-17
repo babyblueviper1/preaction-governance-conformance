@@ -107,6 +107,22 @@ verifier instead of publishing the salt, and the verifier signs what it found wi
 embedded x402 flow the user-signed PaymentMandate contains this authorization, so the nonce the user consented to is the
 nonce the commitment names. One check covers user consent, merchant cart, terms, receipt and settlement (12 vectors).
 
+## Settlement leg on Arc mainnet (2026-10-17)
+
+The chain leg runs unchanged on Arc mainnet (`eip155:5042`; `eth_chainId` returns `0x13b2`). The payment is a real x402 settlement
+through Circle's facilitator, shared by Marce (Lupa): tx `0x5f34e350…01f8d`, block 26020802, status 1. It calls
+`transferWithAuthorization` (the `bytes` signature form, selector `0xcf092995`) on Arc's USDC at `0x3600…0000`. In the same transaction:
+
+- `AuthorizationUsed(authorizer 0x933c…501c, nonce 0xece747ce…95f4)` at logIndex 2;
+- `Transfer(0x933c…501c -> 0x5b61…9c28, 10000)` at logIndex 4, i.e. 0.01 USDC at 6 decimals. Arc also logs the same movement in its
+  native 18-decimal unit (logIndex 3, from `0xff…fe`, 1e16).
+
+The receipt is v1, so there is no commitment to open: the result stops at "settled". One property matters for a v2 receipt on Arc.
+The public RPC limits `eth_getLogs` to 10,000 blocks, and blocks are fast (about 26 million since mainnet opened on 2026-09-16), while the
+explorer API sits behind a bot challenge. A verifier given only the salt therefore cannot cheaply list the payer's consumed nonces, and
+under §5.6.4 it reports an incomplete check, not "does not link". A block locator in the receipt (as in holistis's v2 emitter) makes
+the opening a one-block query.
+
 ## Live interop with a v2 emitter (2026-10-17)
 
 holistis runs a seller that signs payload version 2 receipts over HTTP (`https://api.tokenizen.nl/api/paid/verify-ownership`)
