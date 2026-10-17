@@ -18,7 +18,10 @@ For one receipt, privately opened with its salt, the verifier checks three thing
 2. That `payer` is the rater.
 3. The settlement's transfer paid a wallet bound to the rated agent.
 
-The finding is one of `opens_to_settlement`, `no_settlement`, `payer_is_not_rater` or `payto_not_bound_to_agent`.
+The finding is one of `opens_to_settlement`, `no_settlement`, `payer_is_not_rater`, `payto_not_bound_to_agent` or
+`incomplete_check`. The last means the verifier could not read the chain (a failed or rate-limited log query, or a
+settlement whose transfers it could not read). It is never reported as `no_settlement`, and it counts toward nothing
+(x402#3827 §5.6.4 as amended). Vector `assess-chain-unavailable`; mutant `unavailable_as_no_settlement`.
 
 ```
 { type, receipt_sha256, commitment, method, network, asset, rater, agent, result, checked_at, seq, prev, verifier, signature }
@@ -59,13 +62,14 @@ derived from a fixed seed.
 |---|---|
 | `statement.py` | `assess`, `make_statement`, `signature_ok`, `leaks`, `log_ok`, `challenge`, `grounded_pairs` |
 | `ed25519_ref.py` | Ed25519 (RFC 8032 §5.1), pure Python; not constant-time, for checking only |
-| `vectors.json` | 11 vectors: 4 assess, 1 privacy, 3 challenge, 2 log, 1 count |
+| `vectors.json` | 12 vectors: 5 assess, 1 privacy, 3 challenge, 2 log, 1 count |
 | `build_vectors.py` / `run_vectors.py` | regenerate / check |
 
 ```
 $ python3 run_vectors.py
   PASS ed25519 RFC 8032 TEST 1
-  ... 11/11 vectors
+  ... 12/12 vectors
+  caught unavailable_as_no_settlement: assess-chain-unavailable
   caught skips_rater_check: assess-rater-not-payer
   caught leaks_nonce: statement-no-leak
   caught unbound_statement: challenge-not-bound

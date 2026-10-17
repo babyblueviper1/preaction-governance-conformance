@@ -3,42 +3,42 @@
   "nonces": {
    "0x0595f36571b4610779641845485a82f38b730b96530f526f56ccdb20b0a367a8": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0x98f4d101d834572b01c98159e7da650da73cff2a17ed68878e3a0783827069cd"
    },
    "0x0ebdd524053e670e693ba1a799c16a9cfb1469583a4d7c8c67419a5b85e5924f": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0x6523f177ce3103fb2e09eec8a5d1219b30e4ad89d795d4779484dedbb913cafa"
    },
    "0x3888dc79a737cde8db05746f12a79a9b4e0e869fe4809d9a83894cf3c709baef": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0x39698950ea4a7aaa1a7c21206c0bdff6dbbd9fd221839e3ab27711227b624fdf"
    },
    "0x62e97573e21917d1efa7d8ecf86f96ff3eb4618a4870162b864f4cbfc1689668": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0x07c9a1dc4937f25fa758928b22a9512ee221676553782eb35fe1e47de569b6c9"
    },
    "0x650d2accc405a4aaa5e8083f450ed75eef8c3daa974dd39a409b74f94dca48f0": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0xa71888ed83c6336c93ca8e233389add1290eafbace7de810b55b83f1b7a14c4a"
    },
    "0x746ea7ca9e2c81f8a3856eb430f4009ea71c91f127408e950f18269a6c3381a2": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0xdacee843963c2772904eee58f770633bb5d9a71311fc5c3c1968039227131120"
    },
    "0x7bd3f97b7c66807ade38920072b1db2ee1eb69d5f98a74d4a19e24871c93a677": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0x40f4bb3f7898bb70711bdd373a490aa84d175e976a8b39161380d80351e352cf"
    },
    "0xbad0d2c8c94df800c67bb382f5e8aa04f6ec50bca0be40d53d25131af839da8c": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0xd22cfc2d0707b8fa159e6f70ba7a75e8eb83349374797d0e252c9ff3d2ecc749"
    },
    "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83": {
@@ -54,17 +54,17 @@
    },
    "0xc34dcb45baa814daf4f43591dc500d1b1e33482c2eb4af6be83e4cd3a9095ae9": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0xd2349f9b879591e511c873fbc1f74b205b2fb7e1e808a5d2c10b43339a80d9bc"
    },
    "0xf24709b92dde0d79bcf949b42c4f7c9d9ec259a90ffa19366078fdb0ea01135c": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0x1a49341e25e864bc3fc1747d5d6ecf63b8e83fc6398b558d3081b1f91e633d43"
    },
    "0xf25cffad0451af5962eab00a9947c7f35422ad32776eca757165e4cfc2753a49": {
     "status": 1,
-    "transfers": [],
+    "transfers": null,
     "tx": "0xde64fd46466a1fab3943933365e8dbaeb7b3a4238f7e2081882ea5fbe5bf425b"
    }
   },
@@ -168,6 +168,34 @@
     "resourceUrl": "https://seller.example/api/resource"
    },
    "why": "a real settlement, but it paid a wallet the rated agent does not hold"
+  },
+  {
+   "agent_wallets": [
+    "0x2888f36548a900b9b08d584524e1f73bc563ec26"
+   ],
+   "chain": {
+    "available": false,
+    "error": "rate limited"
+   },
+   "expect": {
+    "result": "incomplete_check"
+   },
+   "id": "assess-chain-unavailable",
+   "kind": "assess",
+   "opening": {
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e",
+    "salt": "0x23c8d831fdb7486693098aadf31d35a2ef18da729b3e29e905b977db1a054e6a"
+   },
+   "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+   "receipt": {
+    "authorizationCommitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
+    "authorizationMethod": "eip3009",
+    "issuedAt": 1776000000,
+    "network": "eip155:84532",
+    "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "resourceUrl": "https://seller.example/api/resource"
+   },
+   "why": "the log query failed: an incomplete check, never no_settlement (x402#3827 sec 5.6.4); it counts toward nothing"
   },
   {
    "expect": {

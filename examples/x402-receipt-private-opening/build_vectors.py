@@ -27,7 +27,7 @@ ASSET, PAYER, NONCE_A = cA["asset"], cA["authorizer"], cA["nonce"]
 TX_A = "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88"
 PAYTO_A = "0x2888f36548a900b9b08d584524e1f73bc563ec26"
 CHAIN = {"source": snap["source"] + "; settlement A transfers from eth_getTransactionReceipt (sepolia.base.org)",
-         "nonces": {c["nonce"]: {"tx": c["tx"], "status": 1, "transfers": []} for c in snap["candidates"]}}
+         "nonces": {c["nonce"]: {"tx": c["tx"], "status": 1, "transfers": None} for c in snap["candidates"]}}  # None = not read
 CHAIN["nonces"][NONCE_A] = {"tx": TX_A, "status": 1, "transfers": [{"to": PAYTO_A, "amount": "1000", "log_index": 181}]}
 
 RECEIPT = {"payer": PAYER, "resourceUrl": "https://seller.example/api/resource", "network": "eip155:84532",
@@ -51,6 +51,9 @@ def vectors():
         out.append({"id": vid, "kind": "assess", "receipt": RECEIPT, "opening": opening, "rater": rater,
                     "agent_wallets": wallets, "expect": {"result": want}, "why": why})
 
+    out.append({"id": "assess-chain-unavailable", "kind": "assess", "receipt": RECEIPT, "opening": OPEN_A, "rater": PAYER,
+                "agent_wallets": WALLETS, "chain": {"available": False, "error": "rate limited"}, "expect": {"result": "incomplete_check"},
+                "why": "the log query failed: an incomplete check, never no_settlement (x402#3827 sec 5.6.4); it counts toward nothing"})
     s0 = S.make_statement(RECEIPT, "opens_to_settlement", PAYER, AGENT, ASSET, T0, 0, S.ZERO, SECRET)
     out.append({"id": "statement-no-leak", "kind": "privacy", "statement": s0, "secrets": [NONCE_A, TX_A, OPEN_A["salt"]],
                 "expect": {"leaks": []}, "why": "the signed statement names the receipt, rater, agent and result, never the nonce, tx or salt"})

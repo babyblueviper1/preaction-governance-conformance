@@ -20,7 +20,7 @@ CHAIN = D["chain"]
 def run(v, impl):
     k = v["kind"]
     if k == "assess":
-        return {"result": impl["assess"](v["receipt"], v["opening"], v["rater"], v["agent_wallets"], CHAIN)}
+        return {"result": impl["assess"](v["receipt"], v["opening"], v["rater"], v["agent_wallets"], v.get("chain", CHAIN))}
     if k == "privacy":
         return {"leaks": impl["leaks"](impl["restate"](v["statement"]), v["secrets"])}
     if k == "challenge":
@@ -54,7 +54,13 @@ def _nonce_of(st):
     return {**st, "nonce": n}
 
 
+def _unavailable_as_no_settlement(receipt, opening, rater, wallets, chain):
+    r = S.assess(receipt, opening, rater, wallets, chain)
+    return "no_settlement" if r == "incomplete_check" else r
+
+
 MUTANTS = {
+    "unavailable_as_no_settlement": {**HONEST, "assess": _unavailable_as_no_settlement},
     "skips_rater_check": {**HONEST, "assess": _skips_rater},
     "leaks_nonce": {**HONEST, "restate": _nonce_of},
     "unbound_statement": {**HONEST, "challenge": _unbound},

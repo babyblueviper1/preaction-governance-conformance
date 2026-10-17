@@ -39,7 +39,7 @@ sys.path.insert(0, _HERE)
 import ed25519_ref as ed  # noqa: E402
 
 TYPE = "x402-receipt-private-opening/0"
-RESULTS = ("opens_to_settlement", "no_settlement", "payer_is_not_rater", "payto_not_bound_to_agent")
+RESULTS = ("opens_to_settlement", "no_settlement", "payer_is_not_rater", "payto_not_bound_to_agent", "incomplete_check")
 ZERO = "0" * 64
 
 
@@ -67,6 +67,10 @@ def assess(receipt: dict, opening: dict, rater: str, agent_wallets: list[str], c
     payer = receipt["payer"].lower()
     if payer != rater.lower():
         return "payer_is_not_rater"
+    # x402#3827 sec 5.6.4 (as amended): a verifier that could not obtain the candidate set reports an INCOMPLETE CHECK,
+    # never "no settlement". chain = None / {"available": False} means the log query failed or was rate limited.
+    if not isinstance(chain, dict) or chain.get("available") is False or not isinstance(chain.get("nonces"), dict):
+        return "incomplete_check"
     try:
         r = link(receipt["authorizationCommitment"], opening["salt"], receipt["authorizationMethod"], opening["asset"],
                  payer, list(chain["nonces"]))
@@ -77,8 +81,10 @@ def assess(receipt: dict, opening: dict, rater: str, agent_wallets: list[str], c
     s = chain["nonces"][r["nonce"]]
     if s.get("status") != 1:
         return "no_settlement"
+    if s.get("transfers") is None:          # settlement found, but its transfers were not read: payTo cannot be confirmed
+        return "incomplete_check"
     bound = {w.lower() for w in agent_wallets}
-    if not any(t["to"].lower() in bound for t in s.get("transfers", [])):
+    if not any(t["to"].lower() in bound for t in s["transfers"]):
         return "payto_not_bound_to_agent"
     return "opens_to_settlement"
 
@@ -120,12 +126,15 @@ def log_ok(statements: list[dict]) -> bool:
 
 
 def challenge(st: dict, receipt: dict, public_opening: dict, agent_wallets: list[str], chain: dict) -> str:
-    """After the rater opens in public: upheld | refuted | not_bound (statement is about another receipt) | bad_signature."""
+    """After the rater opens in public: upheld | refuted | not_bound (statement is about another receipt) | bad_signature |
+    incomplete (the challenger could not read the chain; never read as upheld or refuted)."""
     if not signature_ok(st):
         return "bad_signature"
     if st.get("receipt_sha256") != receipt_sha256(receipt):
         return "not_bound"
     again = assess(receipt, public_opening, st["rater"], agent_wallets, chain)
+    if again == "incomplete_check":                # the challenger could not read the chain: no verdict either way
+        return "incomplete"
     return "upheld" if again == st["result"] else "refuted"
 
 
