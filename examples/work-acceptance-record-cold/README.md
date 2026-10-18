@@ -7,7 +7,7 @@ Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`
 
 ```
 python3 war_check.py upstream_vectors/*.json     # 11/11 agree with upstream `expected` (profile 1.2.1, f7d8984)
-python3 war_check.py proposed_vectors/*.json     # 7/7 (06-11 now upstream; 22 is ours)
+python3 war_check.py proposed_vectors/*.json     # 8/8 (06-11 now upstream; 22 and 23 are ours)
 python3 lax_check.py upstream_vectors            # each lax verifier passes all 5
 python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
@@ -76,6 +76,12 @@ the criteria token says 12:30, and a covering record token says 13:00. Under 1.2
 `criteria_committed_before_check: yes`, although the checker's own signed issue time is before the criteria existed. This checker
 uses the **earlier** of `issued_utc` and the covering token's genTime, and 22 expects `no`. `WAR_REF_RULE=1.2.1` reproduces the profile
 as written (then 21 of 22 upstream + Hori vectors agree, 12 aside, and 22 says `yes`).
+
+## Proposed vector 23: the imprint algorithm OID
+Vector 01 with the criteria token's `messageImprint.hashAlgorithm` changed from SHA-256 (`2.16.840.1.101.3.4.2.1`) to SHA-384
+(`...2.2`). The two OIDs encode to the same length, so the DER structure is unchanged and the 32 imprint bytes still equal
+`criteria.sha256`. A verifier that ignores the OID reports a clean match. This checker reports `CRITERIA_TIMESTAMP_MISMATCH` and falls
+back to `committed_at` with `CRITERIA_COMMITMENT_UNVERIFIED`.
 
 ## What it does not check
 - **Timestamp-authority signatures.** The upstream tokens are unsigned by design, and so are ours, so only the imprint and the time are read.

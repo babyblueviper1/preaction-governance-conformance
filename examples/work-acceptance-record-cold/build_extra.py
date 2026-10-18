@@ -81,6 +81,13 @@ def vectors():
                 "criteria token says 12:30, the record token (over this record) says 13:00. Profile 1.2.1 step 5 takes the reference "
                 "from the covering token (13:00) and says committed first; the record's own signed issue time says the check came "
                 "first. Proposed rule: reference = the earlier of issued_utc and a covering token's genTime. Expected: no."))
+
+    i = copy.deepcopy(V1["inputs"])
+    sha256_oid = bytes.fromhex("0609608648016503040201")                 # 2.16.840.1.101.3.4.2.1
+    i["criteria_tsr_base64"] = swap_in_token(i["criteria_tsr_base64"], sha256_oid, bytes.fromhex("0609608648016503040202"))
+    out.append(("23-criteria-token-imprint-oid-sha384", i,
+                "Vector 01 with the criteria token's messageImprint hashAlgorithm changed to SHA-384 (same DER lengths; the 32 imprint "
+                "bytes still equal criteria.sha256). A verifier that ignores the algorithm OID calls it a match."))
     return [{"description": d, "inputs": i, "expected": {k: v for k, v in W.check(i).items() if not k.startswith("_")},
              "expected_is": "proposed by invinoveritas, not upstream"} | {"name": n} for n, i, d in out]
 
