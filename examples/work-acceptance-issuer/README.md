@@ -22,3 +22,21 @@ python3 ../work-acceptance-record-cold/war_check.py selftest-pass.json
 
 What a record attests: our check of that file against those committed criteria. It is a model judgment per criterion (the record's
 `tools` field names it), not a warranty that the work is fit for every purpose.
+
+## horizon-shield#51 rehearsal (2026-10-18)
+
+Two real records for case A of the three-record pilot in
+[ogasurfproject-jpg/horizon-shield#51](https://github.com/ogasurfproject-jpg/horizon-shield/issues/51), issued on the smoke-call
+bytes its organiser published at `rehearsal/live_smoke/` (commit `dcbdc5d`, test keys). **Neither is the pilot record**; that one is
+issued only on the first logged call. Both are against the committed criteria `6d62ca38…`, and the signed bindings sidecar ties
+each one to the responder's execution receipt (`1c01ea21…`) and the request occurrence (`69546501…`, `live-smoke-0`).
+
+- `hs51-rehearsal-caseA-audit-only.json`: the audit judged alone. Criterion c2 (one entry per fixture line) is **not-evaluated**:
+  the judge could not see the fixture. The verdict is `incomplete`, not a guessed pass.
+- `hs51-rehearsal-caseA-with-fixture.json`: the same audit with the frozen fixture given as a **reference input**. A reference is
+  accepted only when its sha256 appears in the committed criteria (here c1 names `c2ed811e…`), so it was fixed before the work.
+  All four criteria pass. The reference is named in the receipt's `tools` and in the sidecar.
+
+```
+python3 ../work-acceptance-record-cold/war_check.py hs51-rehearsal-caseA-audit-only.json hs51-rehearsal-caseA-with-fixture.json
+```
