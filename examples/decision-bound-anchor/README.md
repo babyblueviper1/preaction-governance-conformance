@@ -6,7 +6,7 @@ The verifier, the 20 synthetic vectors and the mutation battery live in that rep
 
 - `anchor_live/decision.json`: the decision preimage and its `decision_id`, anchored at 11:57:26Z. The OTS proof is in Bitcoin block 971996.
 - `anchor_live/write-1.json`: written 98 s after the decision, in the same block, so the order is `WITNESS_ORDER_UNRESOLVED`.
-- `anchor_live/write-2.json`: written after the decision's proof was in a block, so the decision is `DECISION_WITNESSED_FIRST` on RFC 3161 (18,914 s apart). Its own OTS proof was pending at bind time.
+- `anchor_live/write-2.json`: written after the decision's proof was in a block, so the decision is `DECISION_WITNESSED_FIRST` on both kinds: RFC 3161 (18,914 s apart) and OTS (block 972032).
 - `vectors_anchor_live.json`: both cases as bound.
 
 The anchors came from `POST https://api.babyblueviper.com/work-acceptance/criteria` (free). Checking them needs no call to us: the tokens are FreeTSA's and DigiCert's own, and the proofs replay to Bitcoin headers.
