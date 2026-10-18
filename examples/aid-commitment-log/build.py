@@ -115,5 +115,83 @@ def start():
     print(json.dumps(st, indent=1))
 
 
+OTS_BIN = "/root/invinoveritas/venv/bin/ots"
+
+
+def _complete(b64):
+    """(complete b64, header_hex, hash_display) once the proof carries a Bitcoin attestation, else (b64, None, None).
+    The header is fetched from a public explorer and checked: sha256d(header) reversed == block hash, merkle root == attested msg."""
+    import subprocess, tempfile, urllib.request
+    from opentimestamps.core.timestamp import DetachedTimestampFile
+    from opentimestamps.core.notary import BitcoinBlockHeaderAttestation
+    from opentimestamps.core.serialize import BytesDeserializationContext
+    with tempfile.NamedTemporaryFile(suffix=".ots", delete=False) as f:
+        f.write(base64.b64decode(b64)); fn = f.name
+    subprocess.run([OTS_BIN, "upgrade", fn], capture_output=True, timeout=120)
+    raw = open(fn, "rb").read(); os.unlink(fn)
+    dtf = DetachedTimestampFile.deserialize(BytesDeserializationContext(raw))
+    for msg, att in dtf.timestamp.all_attestations():
+        if isinstance(att, BitcoinBlockHeaderAttestation):
+            h = urllib.request.urlopen(f"https://mempool.space/api/block-height/{att.height}", timeout=15).read().decode().strip()
+            hdr = urllib.request.urlopen(f"https://mempool.space/api/block/{h}/header", timeout=15).read().decode().strip()
+            hb = bytes.fromhex(hdr)
+            assert hashlib.sha256(hashlib.sha256(hb).digest()).digest()[::-1].hex() == h, "header does not hash to the block"
+            assert hb[36:68] == msg, "attested message is not this header's merkle root"
+            return base64.b64encode(raw).decode(), hdr, h, att.height
+    return base64.b64encode(raw).decode(), None, None, None
+
+
+def upgrade():
+    """Complete every pending proof: envelopes (committedAt.proof) and log heads (entries[].anchor)."""
+    st = json.load(open(ST)); done = True
+    for name in sorted(n for n in os.listdir(HERE) if n.startswith("envelope-")):
+        env = json.load(open(os.path.join(HERE, name))); pr = env["committedAt"]["proof"]
+        if not pr.get("blockHeader"):
+            b64, hdr, bh, ht = _complete(pr["ots"])
+            pr["ots"] = b64
+            if hdr: pr.update({"blockHeader": hdr, "blockHash": bh}); print(name, "confirmed at height", ht)
+            else: done = False; print(name, "still pending")
+            write(name, env)
+    log = json.load(open(os.path.join(HERE, "log.json")))
+    for e in log["entries"]:
+        a = e["anchor"]
+        if a.get("status") != "confirmed":
+            b64, hdr, bh, ht = _complete(a["ots"])
+            a["ots"] = b64
+            if hdr:
+                t = int.from_bytes(bytes.fromhex(hdr)[68:72], "little")
+                a.update({"status": "confirmed", "blockHeader": hdr, "blockHash": bh, "height": ht, "provenAt": t})
+                print("head", e["position"], "confirmed at height", ht, "time", t)
+            else: done = False; print("head", e["position"], "still pending")
+    write("log.json", log)
+    print("ALL CONFIRMED" if done else "some proofs still pending")
+
+
+def supersede():
+    """After subjectWindow.until: facet 2 replaces facet 1 (same issuer, same tag) as log entry 2; stamp facet 2 and head 2."""
+    st = json.load(open(ST)); now = int(time.time())
+    if now <= st["until"] + 60:
+        raise SystemExit(f"too early: until={st['until']} now={now}")
+    if "d2" in st:
+        raise SystemExit("already superseded")
+    env1 = json.load(open(os.path.join(HERE, "envelope-1.json"))); c1 = json.load(open(os.path.join(HERE, "facet-1.json")))
+    win = env1["subjectWindow"]
+    content2 = {**c1, "verdict": "not-in-force", "issuedAt": now, "supersedes": st["d1"],
+                "reason": "revised after the window closed (the late supersession the ERC-8434 timing rule must surface)"}
+    d2 = sha256hex(jcs(content2))
+    log = json.load(open(os.path.join(HERE, "log.json")))
+    prev = log["entries"][-1]
+    h2 = head_of(prev["tag"], d2, st["d1"], prev["head"])
+    ots_f2, _ = ots_stamp(d2); ots_h2, _ = ots_stamp(h2)
+    env2 = {**{k: v for k, v in env1.items() if k != "committedAt"}, "observedAt": now, "digest": d2, "supersedes": st["d1"],
+            "uri": RAW + "facet-2.json",
+            "committedAt": {"anchor": "ots", "proof": {"ots": ots_f2}, "log": {"uri": LOG_URI, "position": 2}}}
+    log["entries"].append({"position": 2, "tag": prev["tag"], "content": d2, "supersedes": st["d1"], "head": h2, "prev": prev["head"],
+                           "headSig": sign_head(h2), "anchor": {"kind": "ots", "ots": ots_h2, "status": "pending"}})
+    write("facet-2.json", content2); write("envelope-2.json", env2); write("log.json", log)
+    st.update({"d2": d2, "h2": h2, "t2": now}); write("state.json", st)
+    print(json.dumps({"d2": d2, "h2": h2, "t2": now}, indent=1))
+
+
 if __name__ == "__main__":
-    {"start": start}[sys.argv[1]]()
+    {"start": start, "upgrade": upgrade, "supersede": supersede}[sys.argv[1]]()
