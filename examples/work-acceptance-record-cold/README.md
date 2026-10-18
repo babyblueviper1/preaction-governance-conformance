@@ -6,8 +6,8 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
-python3 war_check.py upstream_vectors/*.json     # 5/5 agree with the upstream `expected`
-python3 war_check.py proposed_vectors/*.json     # 6/6 (our expectations)
+python3 war_check.py upstream_vectors/*.json     # 11/11 agree with upstream `expected` (profile 1.2.1, f7d8984)
+python3 war_check.py proposed_vectors/*.json     # 7/7 (06-11 now upstream; 22 is ours)
 python3 lax_check.py upstream_vectors            # each lax verifier passes all 5
 python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
@@ -54,18 +54,28 @@ disagreeing `committed_at` is `COMMITTED_AT_MISMATCH`, while without a token the
 (this checker emits `COMMITMENT_UNVERIFIED`, a placeholder name: none was given, and no vector exercises it yet); a required `fail`
 gives `fail`, over `incomplete`. The checker and the proposed vectors' expectations follow those rulings.
 
-## Points for the README (each is where this checker had to choose)
-1. **`CRITERIA_COMMITTED_AFTER_CHECK`: problem or warning?** Step 7 lists it as a warning example, but vector 02 has it in
-   `problem_codes`. This checker follows the vector.
-2. **What decides "committed first"?** Property 2 makes the RFC 3161 token the commitment, but step 4 compares
-   `criteria.committed_at`, which the checker writes into its own receipt. This checker reads the token's genTime when a
-   token over `criteria.sha256` is supplied. A `committed_at` that disagrees with it is a problem (`COMMITTED_AT_MISMATCH`), and a token over other bytes is `CRITERIA_TOKEN_NOT_FOR_THESE_CRITERIA` (our name). Vector 10 is the case.
-3. **A required `fail`.** The verdict rule covers `not-evaluated` and `error` but not `fail`. This checker returns `fail`, and
-   `fail` over `incomplete` when both occur.
-4. **Code names.** `SIGNATURE_INVALID` and a code for a receipt-token imprint mismatch are not named. This checker emits
-   `SIGNATURE_INVALID` and reports the imprint only in `receipt_timestamp`.
-5. **Composition (vector 06 upstream):** a counterparty acceptance that references this record by digest is the case
-   [`../acceptance-record-cold`](../acceptance-record-cold) would test from the acceptance side once the charter reserves it.
+## Profile 1.2.1 (upstream f7d8984): 11/11 agree
+`upstream_vectors/` is now an unmodified copy of upstream `vectors/` at f7d8984 (CC0 1.0), which includes 06-11. The checker uses
+1.2.1's code names (`CRITERIA_TIME_MISMATCH`, `CRITERIA_TIMESTAMP_MISMATCH`, `CRITERIA_COMMITMENT_UNVERIFIED`, `CHECKER_NOT_SIGNER`,
+`INDEPENDENCE_INCONSISTENT`, `CRITERIA_RESULTS_MISMATCH`, `RESULT_VOCABULARY`, `PRODUCER_UNDECLARED`) and refuses with
+`{"refused": true, "reason": ...}`.
+
+Against the ten vectors Tetsuroh Hori proposed in [aos-standard/catalog@4f6cf49](https://github.com/aos-standard/catalog/blob/4f6cf49/docs/runs/work-acceptance-record-cold/RUN.md)
+(12-21, not copied here): **9/10 agree**, including his three choices (15: a criteria token over other bytes is
+`CRITERIA_TIMESTAMP_MISMATCH` plus the `committed_at` fallback and its warning; 19: a result outside the vocabulary counts as not-pass;
+21: the refusal shape). The one difference is 12:
+
+- **12:** the signature envelope names `hori-cold-test-2`, the signed `receipt.key_id` names `hori-cold-test-1`. This checker verifies with
+  the key the signed bytes name and requires the envelope to agree, so it reports `SIGNATURE_INVALID`. Rebuilding 12 with
+  `receipt.key_id` and the envelope both naming test-2, and only `parties.checker.key_id` naming test-1, isolates `CHECKER_NOT_SIGNER`.
+
+## Proposed vector 22: the reference time (`proposed_vectors/22-...`)
+1.2.1 step 5 takes the reference time from the record's own token when it covers the record, else `issued_utc`. A covering token
+only proves the record existed by its genTime, so it can be later than the check. In 22 the signed record says it checked at 12:00,
+the criteria token says 12:30, and a covering record token says 13:00. Under 1.2.1 as written the record is problem-free and says
+`criteria_committed_before_check: yes`, although the checker's own signed issue time is before the criteria existed. This checker
+uses the **earlier** of `issued_utc` and the covering token's genTime, and 22 expects `no`. `WAR_REF_RULE=1.2.1` reproduces the profile
+as written (then 21 of 22 upstream + Hori vectors agree, 12 aside, and 22 says `yes`).
 
 ## What it does not check
 - **Timestamp-authority signatures.** The upstream tokens are unsigned by design, and so are ours, so only the imprint and the time are read.

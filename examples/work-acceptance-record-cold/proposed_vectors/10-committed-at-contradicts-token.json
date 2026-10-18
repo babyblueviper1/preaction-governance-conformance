@@ -5,7 +5,7 @@
   "criteria_hash": "match",
   "independence": "independent",
   "problem_codes": [
-   "COMMITTED_AT_MISMATCH",
+   "CRITERIA_TIME_MISMATCH",
    "CRITERIA_COMMITTED_AFTER_CHECK"
   ],
   "receipt_timestamp": "none",

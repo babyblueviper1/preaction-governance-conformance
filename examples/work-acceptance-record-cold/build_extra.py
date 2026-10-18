@@ -68,6 +68,19 @@ def vectors():
         r["verdict"] = "fail"
     out.append(("11-required-criterion-fails", resign(V1["inputs"], required_fail),
                 "A required criterion fails. The README does not say the verdict; we propose fail (and fail over incomplete)."))
+
+    def criteria_after_issue(r):
+        r["criteria"]["committed_at"] = "2026-06-01T12:30:00Z"   # issued_utc stays 2026-06-01T12:00:00Z
+    i = resign(V1["inputs"], criteria_after_issue)
+    i["criteria_tsr_base64"] = swap_in_token(V1["inputs"]["criteria_tsr_base64"], b"20260301000000Z", b"20260601123000Z")
+    tok = swap_in_token(V1["inputs"]["receipt_tsr_base64"], bytes.fromhex(V1["inputs"]["receipt"]["timestamp"]["digest_sha256"]),
+                        hashlib.sha256(W.jcs(i["receipt"]["receipt"])).digest())
+    i["receipt_tsr_base64"] = swap_in_token(tok, b"20260601120005Z", b"20260601130000Z")
+    out.append(("22-matching-record-token-later-than-issued", i,
+                "Vector 18 with the record token MATCHING: the signed record says the check happened at 12:00 (issued_utc), the "
+                "criteria token says 12:30, the record token (over this record) says 13:00. Profile 1.2.1 step 5 takes the reference "
+                "from the covering token (13:00) and says committed first; the record's own signed issue time says the check came "
+                "first. Proposed rule: reference = the earlier of issued_utc and a covering token's genTime. Expected: no."))
     return [{"description": d, "inputs": i, "expected": {k: v for k, v in W.check(i).items() if not k.startswith("_")},
              "expected_is": "proposed by invinoveritas, not upstream"} | {"name": n} for n, i, d in out]
 

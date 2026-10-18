@@ -1,5 +1,5 @@
-"""Clean-room verifier for the work-acceptance record (trilatic.acceptance-receipt/1.2), written from the README of
-maximusrufus/work-acceptance-record @ d78865c alone (draft, CC0). Standard library only; Ed25519 from ../x402-receipt-private-opening.
+"""Clean-room verifier for the work-acceptance record (trilatic.acceptance-receipt/1.2, profile 1.2.1), first written from the README of
+maximusrufus/work-acceptance-record @ d78865c alone, updated to the 1.2.1 README @ f7d8984 (draft, CC0). Standard library only; Ed25519 from ../x402-receipt-private-opening.
 
     python3 war_check.py <vector.json>...      # prints our result next to the vector's `expected`, field by field
 
@@ -22,6 +22,7 @@ SCHEMAS = {"trilatic.acceptance-receipt/1.2"}
 RESULTS = {"pass", "fail", "not-evaluated", "error"}
 OID_TSTINFO = "1.2.840.113549.1.9.16.1.4"
 OID_SHA256 = "2.16.840.1.101.3.4.2.1"
+REF_RULE = os.environ.get("WAR_REF_RULE", "earlier")   # "1.2.1" = profile as written; see step 5
 
 
 def jcs(v):
@@ -101,69 +102,87 @@ def _iso(t):
 
 
 def check(inputs):
+    """Profile 1.2.1 (README @ f7d8984). Step numbers below are that README's."""
     rec = inputs["receipt"]
     r = rec["receipt"]
     out = {"problem_codes": [], "warning_codes": []}
+    P, W = out["problem_codes"].append, out["warning_codes"].append
+    # step 1
     if r.get("schema") not in SCHEMAS or r.get("canonicalization") != "JCS-RFC8785" or \
             r.get("suite") != {"digest": "sha-256", "signature": "Ed25519"}:
-        return {"refused": "unknown schema, canonicalization or suite"}
-    # step 2: signature over the canonical inner `receipt`, key by key_id
+        return {"refused": True, "reason": "unknown schema, canonicalization or suite"}
+    # step 2: signature over the canonical inner `receipt`, with the key the SIGNED receipt names (receipt.key_id). An envelope
+    # signature.key_id that names a different key is not accepted: the signed bytes would then misname their own signer.
     keys = {k["key_id"]: base64.b64decode(k["public_key_base64"]) for k in inputs["keys"]["keys"]}
     pub = keys.get(r.get("key_id"))
     sig = base64.b64decode(rec["signature"]["value"])
     out["signature_valid"] = bool(pub) and rec["signature"].get("key_id") == r.get("key_id") and ed.verify(pub, jcs(r), sig)
     if not out["signature_valid"]:
-        out["problem_codes"].append("SIGNATURE_INVALID")           # ASSUMED code name (README lists examples only)
-    # step 4: criteria document hash; committed-before-check
+        P("SIGNATURE_INVALID")
+    checker, producer = r["parties"]["checker"], r["parties"].get("producer") or {}
+    if out["signature_valid"] and checker.get("key_id") != r.get("key_id"):
+        P("CHECKER_NOT_SIGNER")
+    # step 4: criteria document hash, then results against the criteria
     cb = base64.b64decode(inputs["criteria_file_base64"]) if inputs.get("criteria_file_base64") else None
     out["criteria_hash"] = "absent" if cb is None else (
         "match" if hashlib.sha256(cb).hexdigest() == r["criteria"]["sha256"] else "mismatch")
     if out["criteria_hash"] == "mismatch":
-        out["problem_codes"].append("CRITERIA_HASH_MISMATCH")
-    before_decl = _iso(r["criteria"]["committed_at"]) < _iso(r["issued_utc"])          # README step 4, literally
-    ct = tst(inputs.get("criteria_tsr_base64"))
-    out["_criteria_token"] = None if ct is None else {
-        "imprint_is_criteria_sha256": ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"],
-        "gen_time": ct[2], "before_issue": _iso(ct[2]) < _iso(r["issued_utc"]),
-        "matches_committed_at": _iso(ct[2]) == _iso(r["criteria"]["committed_at"])}
-    # Property 2: the commitment IS the RFC 3161 token over the criteria hash. Ruled upstream 2026-10-17 (tsc#4): when a token
-    # over criteria.sha256 is supplied its genTime is authoritative and a disagreeing committed_at is COMMITTED_AT_MISMATCH;
-    # without a token the verifier falls back to committed_at and warns (COMMITMENT_UNVERIFIED -- our name, none was given).
-    if ct is not None and out["_criteria_token"]["imprint_is_criteria_sha256"]:
-        before = out["_criteria_token"]["before_issue"]
-        if not out["_criteria_token"]["matches_committed_at"]:
-            out["problem_codes"].append("COMMITTED_AT_MISMATCH")
-    elif ct is not None:
-        before = False
-        out["problem_codes"].append("CRITERIA_TOKEN_NOT_FOR_THESE_CRITERIA")      # our name
-    else:
-        before = before_decl
-        out["warning_codes"].append("COMMITMENT_UNVERIFIED")
-    out["criteria_committed_before_check"] = "yes" if before else "no"
-    if not before:
-        out["problem_codes"].append("CRITERIA_COMMITTED_AFTER_CHECK")   # vector 02 has it as a problem; README lists it as a warning
-    # independence (property 3)
-    ck, pk = r["parties"]["checker"].get("key_id"), r["parties"]["producer"].get("key_id")
-    collision = pk is not None and pk == ck
-    if collision:
-        out["problem_codes"].append("KEY_COLLISION")
-    self_checked = r.get("independence") == "self-checked" or collision
-    out["independence"] = "self-checked" if self_checked else "independent"
-    if self_checked:
-        out["warning_codes"].append("SELF_CHECKED")
-    # step 5: receipt timestamp imprint
+        P("CRITERIA_HASH_MISMATCH")
+    elif out["criteria_hash"] == "match":
+        crit = {c["id"]: bool(c.get("required")) for c in json.loads(cb)["criteria"]}
+        got = {x["id"]: bool(x.get("required")) for x in r["results"]}
+        if got != crit:                                   # ASSUMED: same ids, same required flags, one result each
+            P("CRITERIA_RESULTS_MISMATCH")
+    # step 6 (needed by step 5's reference time): the record's own token
     rt = tst(inputs.get("receipt_tsr_base64"))
     out["receipt_timestamp"] = "none" if rt is None else (
         "imprint_match" if rt[0] == OID_SHA256 and rt[1] == hashlib.sha256(jcs(r)).hexdigest() else "imprint_mismatch")
-    # step 6: verdict. ASSUMED: a required `fail` gives `fail`, and fail outranks incomplete (README is silent on fail)
+    # step 5: criteria commitment. Token over criteria.sha256 is authoritative; a token over other bytes is
+    # CRITERIA_TIMESTAMP_MISMATCH and is not evidence of time, so fall back to committed_at with the unverified warning.
+    ct = tst(inputs.get("criteria_tsr_base64"))
+    if ct is not None and ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"]:
+        commit = _iso(ct[2])
+        if commit != _iso(r["criteria"]["committed_at"]):
+            P("CRITERIA_TIME_MISMATCH")
+    else:
+        if ct is not None:
+            P("CRITERIA_TIMESTAMP_MISMATCH")
+        commit = _iso(r["criteria"]["committed_at"])
+        W("CRITERIA_COMMITMENT_UNVERIFIED")
+    # Reference time. 1.2.1 says: a covering token's genTime, else issued_utc. PROPOSED (vector 22): the EARLIER of the two. A covering
+    # token only bounds the check from above; issued_utc is the checker's own signed statement of when it checked, and a checker has no
+    # reason to state an earlier time than the truth. Taking the later token time lets criteria committed after the signed check time
+    # count as "committed first". Set REF_RULE = "1.2.1" to reproduce the profile as written.
+    issued = _iso(r["issued_utc"])
+    if out["receipt_timestamp"] == "imprint_match":
+        ref = _iso(rt[2]) if REF_RULE == "1.2.1" else min(issued, _iso(rt[2]))
+    else:
+        ref = issued
+    out["_times"] = {"commitment": commit, "reference": ref, "issued_utc": _iso(r["issued_utc"])}
+    before = commit < ref
+    out["criteria_committed_before_check"] = "yes" if before else "no"
+    if not before:
+        P("CRITERIA_COMMITTED_AFTER_CHECK")
+    # independence (property 3)
+    collision = producer.get("key_id") is not None and producer.get("key_id") == checker.get("key_id")
+    if collision:
+        P("KEY_COLLISION")
+    self_checked = r.get("independence") == "self-checked" or collision
+    out["independence"] = "self-checked" if self_checked else "independent"
+    if self_checked:
+        W("SELF_CHECKED")
+    elif producer.get("name") is not None and producer.get("name") == checker.get("name"):
+        P("INDEPENDENCE_INCONSISTENT")                    # labelled independent, same party named on both sides
+    if not producer.get("name") and not producer.get("key_id"):
+        W("PRODUCER_UNDECLARED")
+    # step 7: verdict (property 4). A result outside the vocabulary is RESULT_VOCABULARY and counts as not-pass.
+    if any(x["result"] not in RESULTS for x in r["results"]):
+        P("RESULT_VOCABULARY")
     req = [x["result"] for x in r["results"] if x.get("required")]
-    if any(x not in RESULTS for x in (y["result"] for y in r["results"])):
-        out["problem_codes"].append("UNKNOWN_RESULT")
-    out["verdict_recomputed"] = "fail" if "fail" in req else (
-        "incomplete" if any(x in ("not-evaluated", "error") for x in req) else "pass")
+    out["verdict_recomputed"] = "fail" if "fail" in req else ("pass" if all(x == "pass" for x in req) else "incomplete")
     out["verdict_stated"] = r.get("verdict")
     if out["verdict_recomputed"] != out["verdict_stated"]:
-        out["problem_codes"].append("VERDICT_MISMATCH")
+        P("VERDICT_MISMATCH")
     return out
 
 
@@ -176,8 +195,8 @@ def main(paths):
         diffs = {k: (got.get(k), exp[k]) for k in exp if norm(got.get(k)) != norm(exp[k])}
         agree_all &= not diffs
         print(f"{'agree' if not diffs else 'DISAGREE'} {os.path.basename(p)}" + "".join(f"\n    {k}: ours {a!r} vector {b!r}" for k, (a, b) in diffs.items()))
-        if got.get("_criteria_token"):
-            print(f"    criteria token: {got['_criteria_token']}")
+        if diffs and got.get("_times"):
+            print(f"    times: {got['_times']}")
     return 0 if agree_all else 1
 
 
