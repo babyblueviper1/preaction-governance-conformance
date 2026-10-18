@@ -1,0 +1,31 @@
+{
+ "access": {
+  "mode": "PUBLIC"
+ },
+ "committedAt": {
+  "anchor": "ots",
+  "log": {
+   "position": 2,
+   "uri": "https://raw.githubusercontent.com/babyblueviper1/preaction-governance-conformance/main/examples/aid-commitment-log/log.json"
+  },
+  "proof": {
+   "ots": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEIvRApSQHxi7Nfn6IvLM+tkksF7n0grgQGmmIJFDSfI5z/8BASb6N/7EnJhyF6rK+zIGAoCPAgT4loy8TVjrxogsd6TrERJv5X62GeG+dbaoftKea4mMII8CB6GJlQLvJjAZqUJtdvrq/XkaIcOec0vBY2sC9lXnxBRAjwICqYHMDf7P3T/QAYMjzDavN3DaUd1K+PY+h5gDIKGRtCCPAgEGRBnYOuoKExcPh5c1vWuDpLXuuOQwzRgLHrHmv/0WsI8QRq1I098AhbjVMbF94E0wCD3+MNLvkMjikoaHR0cHM6Ly9maW5uZXkuY2FsZW5kYXIuZXRlcm5pdHl3YWxsLmNvbf/wCDx5hhHVtme8CPAQ3MmEClzjZMWsuMy7oQ/8JwjxIGBPk7x5/p4tMIFO9m31V7cSwHKBGcGxCaME4chc2xyOCPEgqmMbmFL3yPwFvEC+WrJcC4QHgZHGea9wx3pAmb7PlLAI8QRq1I078AjUZkZXdz9vOgCD3+MNLvkMjiwraHR0cHM6Ly9ib2IuYnRjLmNhbGVuZGFyLm9wZW50aW1lc3RhbXBzLm9yZ//wCJmh3dAGju3UCPEgPdFI9EYbqWcizMRvxTZ67fv+rKrPQ2bZIZvOo6ANK6YI8BADc0r0LwcxzblLtswsi+JmCPEguV24N09P2uUw1iXBSuzic6FX6MOFoGTNM0zqaFru57wI8CDsIjhZkyX4rB0EUWbMpHVvcKHdpMQ2cbQingPG2vFLDwjxIKuhw2F1VMUGgPVOxQYDCRqelRKY8IoRhlpiFmQ6EcetCPAgqufW4q4nqfgTJgNRnYQWa9l8nuvVenQWzI4QfAEzDb0I8QRq1I078AhAO7kJ9gUCAwCD3+MNLvkMji4taHR0cHM6Ly9hbGljZS5idGMuY2FsZW5kYXIub3BlbnRpbWVzdGFtcHMub3Jn8BC93kJb/xkL3t4HSoXDnfgYCPEgnTVnySFi0YOIEwcQtkffZraZYNDCK9Ye/Hen9TRqTZQI8CD8lIFM6l91XIcJE3ipixGg/pi5OU0XAxBjYpwYMdvKPgjwILmlAWebj0ZyQwjAyOskvKUGYSdRF7Eu7gIV+ZLWHmg6CPEEatSNPvAIHPuG4f5UXDYAg9/jDS75DI4jImh0dHBzOi8vYnRjLmNhbGVuZGFyLmNhdGFsbGF4eS5jb20="
+  }
+ },
+ "digest": "0xbd10294901f18bb35f9fa22f2ccfad924b05ee7d20ae04069a620914349f239c",
+ "facetType": "aid:behavior/verification-verdict/v1",
+ "finality": "final",
+ "issuer": "eip155:11155111:0x4AA351E5f00eBe168E5C6f823f2940553d164991",
+ "observedAt": 1792314682,
+ "provenance": "ATTESTED",
+ "resolver": {
+  "kind": "uri"
+ },
+ "subjectWindow": {
+  "from": 1792196556,
+  "until": 1792311756
+ },
+ "supersedes": "0x71b3cdabb45904d398ec19feef08df05fcfa431935f2dab682625cdb20c457d2",
+ "uri": "https://raw.githubusercontent.com/babyblueviper1/preaction-governance-conformance/main/examples/aid-commitment-log/facet-2.json",
+ "validUntil": 1794874956
+}

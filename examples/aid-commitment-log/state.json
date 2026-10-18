@@ -10,11 +10,14 @@
   "https://btc.calendar.catallaxy.com"
  ],
  "d1": "0x71b3cdabb45904d398ec19feef08df05fcfa431935f2dab682625cdb20c457d2",
+ "d2": "0xbd10294901f18bb35f9fa22f2ccfad924b05ee7d20ae04069a620914349f239c",
  "docDigest": "0x61a6051f1c1a105435fb4b8c8179e75c2b96a7ae4a7d0e238663c5ed7596006b",
  "h1": "0xe9ce9c3b39e3ae6233080ee05fe66fef9095442a4566fc3fee392b83f3682b95",
- "t0": 1792282956,
- "until": 1792311756,
- "setDocTx": "0xe0fea7292a0d0c79fe8968be72de81f0db55f8f7cc3dd76b8fa6ddd5257401fb",
+ "h2": "0x19a10a220beefe10fed19f8b6280a56ee7597891725e70f3009a02e8775f4fad",
  "setDocBlock": 11937503,
- "setDocTime": 1792283028
+ "setDocTime": 1792283028,
+ "setDocTx": "0xe0fea7292a0d0c79fe8968be72de81f0db55f8f7cc3dd76b8fa6ddd5257401fb",
+ "t0": 1792282956,
+ "t2": 1792314682,
+ "until": 1792311756
 }
