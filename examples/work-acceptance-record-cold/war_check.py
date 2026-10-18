@@ -1,5 +1,5 @@
 """Clean-room verifier for the work-acceptance record (trilatic.acceptance-receipt/1.2, profile 1.2.1), first written from the README of
-maximusrufus/work-acceptance-record @ d78865c alone, updated to the 1.2.1 README @ f7d8984 (draft, CC0). Standard library only; Ed25519 from ../x402-receipt-private-opening.
+maximusrufus/work-acceptance-record @ d78865c alone, updated to the 1.2.1 README @ f7d8984 and to profile 1.3 @ 270e9fe (draft, CC0). Standard library only; Ed25519 from ../x402-receipt-private-opening.
 
     python3 war_check.py <vector.json>...      # prints our result next to the vector's `expected`, field by field
 
@@ -23,6 +23,17 @@ RESULTS = {"pass", "fail", "not-evaluated", "error"}
 OID_TSTINFO = "1.2.840.113549.1.9.16.1.4"
 OID_SHA256 = "2.16.840.1.101.3.4.2.1"
 REF_RULE = os.environ.get("WAR_REF_RULE", "earlier")   # "1.2.1" = profile as written; see step 5
+
+
+def key_ok(pub):
+    """Profile 1.3 step 2 key rule: a canonical encoding (y < p) of a point of prime order L. The neutral point, small-order and
+    mixed-order points and non-canonical encodings are refused (KEY_REJECTED) before any signature check. RFC 8032 does not require
+    this and the bare verification equation accepts R = neutral, S = 0 under a neutral-point key for any message (vector 26)."""
+    if len(pub) != 32 or (int.from_bytes(pub, "little") & ((1 << 255) - 1)) >= ed.p:
+        return False
+    P = ed._decompress(pub)
+    O = (0, 1, 1, 0)
+    return P is not None and not ed._equal(P, O) and ed._equal(ed._mul(ed.L, P), O)
 
 
 def jcs(v):
@@ -116,9 +127,15 @@ def check(inputs):
     keys = {k["key_id"]: base64.b64decode(k["public_key_base64"]) for k in inputs["keys"]["keys"]}
     pub = keys.get(r.get("key_id"))
     sig = base64.b64decode(rec["signature"]["value"])
-    out["signature_valid"] = bool(pub) and rec["signature"].get("key_id") == r.get("key_id") and ed.verify(pub, jcs(r), sig)
-    if not out["signature_valid"]:
-        P("SIGNATURE_INVALID")
+    # 1.3: the key rule applies to the key the signed receipt.key_id names only (other key-file entries do not matter, vector 28);
+    # a rejected key is a finding about the key list, not tampering, so no signature check is run and SIGNATURE_INVALID is not added.
+    if pub is not None and not key_ok(pub):
+        out["signature_valid"] = False
+        P("KEY_REJECTED")
+    else:
+        out["signature_valid"] = bool(pub) and rec["signature"].get("key_id") == r.get("key_id") and ed.verify(pub, jcs(r), sig)
+        if not out["signature_valid"]:
+            P("SIGNATURE_INVALID")
     checker, producer = r["parties"]["checker"], r["parties"].get("producer") or {}
     if out["signature_valid"] and checker.get("key_id") != r.get("key_id"):
         P("CHECKER_NOT_SIGNER")
@@ -175,6 +192,10 @@ def check(inputs):
         P("INDEPENDENCE_INCONSISTENT")                    # labelled independent, same party named on both sides
     if not producer.get("name") and not producer.get("key_id"):
         W("PRODUCER_UNDECLARED")
+        # ASSUMED reading of 1.3 step 8 (vector 20): with no producer named, independence cannot be derived, so a record that
+        # states "independent" anyway is INDEPENDENCE_INCONSISTENT.
+        if r.get("independence") == "independent":
+            P("INDEPENDENCE_INCONSISTENT")
     # step 7: verdict (property 4). A result outside the vocabulary is RESULT_VOCABULARY and counts as not-pass.
     if any(x["result"] not in RESULTS for x in r["results"]):
         P("RESULT_VOCABULARY")

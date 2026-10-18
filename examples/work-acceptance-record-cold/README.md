@@ -6,12 +6,24 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
+python3 war_check.py upstream_vectors_1_3/*.json # 28/28 agree with upstream `expected` (profile 1.3, 270e9fe)
 python3 war_check.py upstream_vectors/*.json     # 11/11 agree with upstream `expected` (profile 1.2.1, f7d8984)
 python3 war_check.py proposed_vectors/*.json     # 8/8 (06-11 now upstream; 22 and 23 are ours)
 python3 lax_check.py upstream_vectors            # each lax verifier passes all 5
 python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
 ```
+
+## Profile 1.3 (270e9fe): 28/28 agree
+`upstream_vectors_1_3/` is an unmodified copy of upstream `vectors/` at 270e9fe (CC0 1.0); our run is `upstream_vectors_1_3_run.txt`.
+Before this update this checker gave 25/28 on that corpus, and the misses are published here rather than hidden:
+- 26 (neutral-point key) was accepted, because the bundled Ed25519 accepts R = neutral, S = 0 under that key for any message.
+- 27 (non-canonical key) was reported as `SIGNATURE_INVALID` instead of `KEY_REJECTED`.
+- 20 did not report `INDEPENDENCE_INCONSISTENT`.
+
+The fixes:
+- `key_ok()` applies the step-2 key rule (canonical y < p, prime order) to the key the signed `receipt.key_id` names, before any signature check. Vector 28 shows other key-file entries do not matter.
+- 20 follows our ASSUMED reading of step 8, noted in the code.
 
 ## Result on the five upstream vectors: 5/5 agree
 `upstream_vectors/` is an unmodified copy of upstream `vectors/` at d78865c (CC0 1.0).
