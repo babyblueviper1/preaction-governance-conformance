@@ -126,18 +126,19 @@ def check(inputs):
         "imprint_is_criteria_sha256": ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"],
         "gen_time": ct[2], "before_issue": _iso(ct[2]) < _iso(r["issued_utc"]),
         "matches_committed_at": _iso(ct[2]) == _iso(r["criteria"]["committed_at"])}
-    # Property 2: the commitment IS the RFC 3161 token over the criteria hash. README step 4 compares the receipt's own
-    # `committed_at`, which the checker writes itself. ASSUMED: when a token over criteria.sha256 is supplied, its genTime
-    # decides, and a declared committed_at that disagrees with it is a problem (CRITERIA_TIME_MISMATCH, our name).
+    # Property 2: the commitment IS the RFC 3161 token over the criteria hash. Ruled upstream 2026-10-17 (tsc#4): when a token
+    # over criteria.sha256 is supplied its genTime is authoritative and a disagreeing committed_at is COMMITTED_AT_MISMATCH;
+    # without a token the verifier falls back to committed_at and warns (COMMITMENT_UNVERIFIED -- our name, none was given).
     if ct is not None and out["_criteria_token"]["imprint_is_criteria_sha256"]:
         before = out["_criteria_token"]["before_issue"]
         if not out["_criteria_token"]["matches_committed_at"]:
-            out["problem_codes"].append("CRITERIA_TIME_MISMATCH")
+            out["problem_codes"].append("COMMITTED_AT_MISMATCH")
     elif ct is not None:
         before = False
         out["problem_codes"].append("CRITERIA_TOKEN_NOT_FOR_THESE_CRITERIA")      # our name
     else:
         before = before_decl
+        out["warning_codes"].append("COMMITMENT_UNVERIFIED")
     out["criteria_committed_before_check"] = "yes" if before else "no"
     if not before:
         out["problem_codes"].append("CRITERIA_COMMITTED_AFTER_CHECK")   # vector 02 has it as a problem; README lists it as a warning

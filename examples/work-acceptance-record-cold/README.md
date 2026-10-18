@@ -47,13 +47,19 @@ The README names `CRITERIA_HASH_MISMATCH` and `VERDICT_MISMATCH`, but no vector 
 
 Each of the five lax verifiers fails at least one of 06-11.
 
+## Resolved upstream (2026-10-17, x402-foundation/tsc#4)
+Trilatic took vectors 06-11 as contributed, with credit, and ruled on the three choices below the way this checker read them:
+`CRITERIA_COMMITTED_AFTER_CHECK` is a problem everywhere; a token over `criteria.sha256` makes its genTime authoritative and a
+disagreeing `committed_at` is `COMMITTED_AT_MISMATCH`, while without a token the verifier falls back to `committed_at` and warns
+(this checker emits `COMMITMENT_UNVERIFIED`, a placeholder name: none was given, and no vector exercises it yet); a required `fail`
+gives `fail`, over `incomplete`. The checker and the proposed vectors' expectations follow those rulings.
+
 ## Points for the README (each is where this checker had to choose)
 1. **`CRITERIA_COMMITTED_AFTER_CHECK`: problem or warning?** Step 7 lists it as a warning example, but vector 02 has it in
    `problem_codes`. This checker follows the vector.
 2. **What decides "committed first"?** Property 2 makes the RFC 3161 token the commitment, but step 4 compares
    `criteria.committed_at`, which the checker writes into its own receipt. This checker reads the token's genTime when a
-   token over `criteria.sha256` is supplied. A `committed_at` that disagrees with it is a problem (`CRITERIA_TIME_MISMATCH`,
-   our name), and a token over other bytes is `CRITERIA_TOKEN_NOT_FOR_THESE_CRITERIA` (our name). Vector 10 is the case.
+   token over `criteria.sha256` is supplied. A `committed_at` that disagrees with it is a problem (`COMMITTED_AT_MISMATCH`), and a token over other bytes is `CRITERIA_TOKEN_NOT_FOR_THESE_CRITERIA` (our name). Vector 10 is the case.
 3. **A required `fail`.** The verdict rule covers `not-evaluated` and `error` but not `fail`. This checker returns `fail`, and
    `fail` over `incomplete` when both occur.
 4. **Code names.** `SIGNATURE_INVALID` and a code for a receipt-token imprint mismatch are not named. This checker emits

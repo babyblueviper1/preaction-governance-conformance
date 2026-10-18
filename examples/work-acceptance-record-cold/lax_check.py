@@ -29,7 +29,7 @@ def lax(skip):
             r = inputs["receipt"]["receipt"]
             ok = W._iso(r["criteria"]["committed_at"]) < W._iso(r["issued_utc"])
             out["criteria_committed_before_check"] = "yes" if ok else "no"
-            out["problem_codes"] = [c for c in out["problem_codes"] if c not in ("CRITERIA_TIME_MISMATCH", "CRITERIA_COMMITTED_AFTER_CHECK")] \
+            out["problem_codes"] = [c for c in out["problem_codes"] if c not in ("COMMITTED_AT_MISMATCH", "CRITERIA_COMMITTED_AFTER_CHECK")] \
                 + ([] if ok else ["CRITERIA_COMMITTED_AFTER_CHECK"])
         if skip == "receipt_timestamp":
             out["receipt_timestamp"] = "imprint_match" if out["receipt_timestamp"] != "none" else "none"
