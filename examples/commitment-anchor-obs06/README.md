@@ -13,6 +13,7 @@ A commitment of the record to a clock the recording party does not control. It c
 
 - `mechanism`: the anchor type, for example `rfc3161`, `transparency-log` or `opentimestamps-bitcoin`.
 - `digest` and `digest_rule`: the digest that was anchored, and how a verifier recomputes it from the record.
+  `digest_rule` MUST name a deterministic procedure: a named canonicalization and hash (for example `nip01-event-id`, or JCS (RFC 8785) then SHA-256), so that any two implementations of the same `digest_rule` produce the same digest from the same record. A rule that leaves the serialization open (key order, whitespace, number format) establishes nothing.
 - `proof_ref`: where the proof can be retrieved. Verifying the proof MUST NOT require trusting the recording party.
 - `anchor_time`: the time the proof attests, as the mechanism reports it.
 - `anchor_time_rule`: how the latest possible anchoring time (the ceiling) is derived. One of:
@@ -28,6 +29,8 @@ A commitment of the record to a clock the recording party does not control. It c
 - it MUST list `precedence_before_outcome` in `does_not_assert`, so the limitation is declared rather than silently absent (the same move `coverage_denominator` makes for completeness).
 
 A record whose anchored digest does not recompute from the record has no anchor for this rule.
+
+Precedence is about *when* the record was fixed, not *how* its claims were obtained. An anchor that predates the outcome does not upgrade the record's `observation_vantage`: a record built from data the executor could influence stays that, however early it was anchored. The two are assessed separately.
 
 The field is mechanism-neutral. Any externally verifiable existence proof satisfies it, at different cost and trust points.
 
