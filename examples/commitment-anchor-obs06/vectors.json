@@ -556,6 +556,157 @@
     "result": "NONCONFORMING_UNSUPPORTED_PRECEDENCE_CLAIM",
     "precedence_established": false
    }
+  },
+  {
+   "id": "control-backdated-header-moves-the-ceiling",
+   "kind": "control",
+   "record": {
+    "subject": {
+     "id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "created_at": 1782653806,
+     "kind": 30078,
+     "tags": [
+      [
+       "d",
+       "invinoveritas-proof-d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960-1782653806-b3c0aff0"
+      ],
+      [
+       "t",
+       "invinoveritas"
+      ],
+      [
+       "t",
+       "proof"
+      ],
+      [
+       "schema",
+       "invinoveritas.verdict_proof.v1"
+      ]
+     ],
+     "content": "{\"artifact_hash\":\"d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960\",\"artifact_type\":\"plan\",\"confidence\":0.85,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"summary_hash\":\"1d88d680fa5fbbd9f68636546e7afe718acbd1a471561029324d67ab899d0878\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1782653806,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+     "sig": "7205cfea38ef35886ad83142ed5d08a7545c50eed39f714592ba03280dafb0ac8051fd1b87135c41d188acbc48e5e0ad16ea208eaaa00912e1439137dd493a0b"
+    },
+    "commitment_anchor": {
+     "mechanism": "opentimestamps-bitcoin",
+     "digest": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "digest_rule": "nip01-event-id",
+     "proof_ref": "38.ots (also https://api.babyblueviper.com/ledger/38/ots)",
+     "anchor_time": 1782651081,
+     "anchor_time_source": "Bitcoin block 955810 (hash 000000000000000000019fdeb888e25607352136ed1a3391d0521ad4b7848036), header time field as the miner could have written it (synthetic)",
+     "anchor_time_tolerance_s": 7200,
+     "anchor_time_rule": "header_time_plus_tolerance"
+    },
+    "outcome_time": 1782658282,
+    "asserts_precedence": true,
+    "does_not_assert": [],
+    "note": "SYNTHETIC header time: 1782651081 is the earliest time consensus lets the miner of 955810 write (median time past of 955799-955809 is 1782651080, plus one second); the real header says 1782654639. Same block, same proof, same outcome as the next vector: only the miner's choice of the time field differs, and under header_time_plus_tolerance it decides the verdict."
+   },
+   "expect": {
+    "result": "CONFORMING",
+    "precedence_established": true
+   }
+  },
+  {
+   "id": "control-honest-header-same-outcome",
+   "kind": "control",
+   "record": {
+    "subject": {
+     "id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "created_at": 1782653806,
+     "kind": 30078,
+     "tags": [
+      [
+       "d",
+       "invinoveritas-proof-d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960-1782653806-b3c0aff0"
+      ],
+      [
+       "t",
+       "invinoveritas"
+      ],
+      [
+       "t",
+       "proof"
+      ],
+      [
+       "schema",
+       "invinoveritas.verdict_proof.v1"
+      ]
+     ],
+     "content": "{\"artifact_hash\":\"d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960\",\"artifact_type\":\"plan\",\"confidence\":0.85,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"summary_hash\":\"1d88d680fa5fbbd9f68636546e7afe718acbd1a471561029324d67ab899d0878\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1782653806,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+     "sig": "7205cfea38ef35886ad83142ed5d08a7545c50eed39f714592ba03280dafb0ac8051fd1b87135c41d188acbc48e5e0ad16ea208eaaa00912e1439137dd493a0b"
+    },
+    "commitment_anchor": {
+     "mechanism": "opentimestamps-bitcoin",
+     "digest": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "digest_rule": "nip01-event-id",
+     "proof_ref": "38.ots (also https://api.babyblueviper.com/ledger/38/ots)",
+     "anchor_time": 1782654639,
+     "anchor_time_source": "Bitcoin block 955810 (hash 000000000000000000019fdeb888e25607352136ed1a3391d0521ad4b7848036) header time",
+     "anchor_time_tolerance_s": 7200,
+     "anchor_time_rule": "header_time_plus_tolerance"
+    },
+    "outcome_time": 1782658282,
+    "asserts_precedence": true,
+    "does_not_assert": [],
+    "note": "the real header time, the outcome of the previous vector: the ceiling is 3558 s later and precedence is not established"
+   },
+   "expect": {
+    "result": "NONCONFORMING_UNSUPPORTED_PRECEDENCE_CLAIM",
+    "precedence_established": false
+   }
+  },
+  {
+   "id": "later-median-independent-of-the-header-field",
+   "kind": "pair",
+   "record": {
+    "subject": {
+     "id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "created_at": 1782653806,
+     "kind": 30078,
+     "tags": [
+      [
+       "d",
+       "invinoveritas-proof-d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960-1782653806-b3c0aff0"
+      ],
+      [
+       "t",
+       "invinoveritas"
+      ],
+      [
+       "t",
+       "proof"
+      ],
+      [
+       "schema",
+       "invinoveritas.verdict_proof.v1"
+      ]
+     ],
+     "content": "{\"artifact_hash\":\"d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960\",\"artifact_type\":\"plan\",\"confidence\":0.85,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"summary_hash\":\"1d88d680fa5fbbd9f68636546e7afe718acbd1a471561029324d67ab899d0878\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1782653806,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+     "sig": "7205cfea38ef35886ad83142ed5d08a7545c50eed39f714592ba03280dafb0ac8051fd1b87135c41d188acbc48e5e0ad16ea208eaaa00912e1439137dd493a0b"
+    },
+    "commitment_anchor": {
+     "mechanism": "opentimestamps-bitcoin",
+     "digest": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "digest_rule": "nip01-event-id",
+     "proof_ref": "38.ots (also https://api.babyblueviper.com/ledger/38/ots)",
+     "anchor_time": 1782654639,
+     "anchor_time_source": "Bitcoin block 955810 (hash 000000000000000000019fdeb888e25607352136ed1a3391d0521ad4b7848036) header time",
+     "anchor_time_rule": "later_median",
+     "anchor_ceiling_time": 1782657732,
+     "anchor_ceiling_source": "median time of Bitcoin blocks 955811-955821 (mediantime of 955821)"
+    },
+    "outcome_time": 1782658282,
+    "asserts_precedence": true,
+    "does_not_assert": [],
+    "note": "the same outcome under later_median: the ceiling comes from the eleven later headers, so the anchor block's own time field, honest or backdated, does not move it"
+   },
+   "expect": {
+    "result": "CONFORMING",
+    "precedence_established": true
+   }
   }
  ]
 }
