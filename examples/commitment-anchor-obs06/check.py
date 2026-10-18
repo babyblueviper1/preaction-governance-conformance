@@ -5,7 +5,8 @@ commitment_anchor.digest; (2) decide whether precedence is established under the
   header_time_plus_tolerance  anchor_time + anchor_time_tolerance_s strictly before outcome_time (the default when absent);
   later_median                anchor_ceiling_time (median time of the 11 blocks after the anchor) strictly before outcome_time;
   height                      anchor_height strictly below outcome_height (outcome ordered by the same chain; no clock);
-a rule whose inputs are missing, or an unknown rule, establishes nothing; (3) check the record's own claim: it may assert precedence only if established,
+a rule whose inputs are missing, or an unknown rule, establishes nothing (no commitment_anchor, an unknown digest_rule or a
+digest that does not recompute is ANCHOR_DOES_NOT_COVER_RECORD); (3) check the record's own claim: it may assert precedence only if established,
 and if not established it must list "precedence_before_outcome" in does_not_assert.
 
 What this does NOT check: that the proof really commits the digest at anchor_time, or that anchor_ceiling_time /
@@ -15,14 +16,34 @@ Usage: python3 check.py [vectors.json]
 """
 import hashlib, json, sys
 
+NIP01_ESCAPES = {"\n": "\\n", "\"": "\\\"", "\\": "\\\\", "\r": "\\r", "\t": "\\t", "\b": "\\b", "\f": "\\f"}
+
+def nip01_str(s):
+    # NIP-01: only these seven are escaped; every other character (other C0 controls, non-ASCII) is written as itself.
+    return '"' + "".join(NIP01_ESCAPES.get(c, c) for c in s) + '"'
+
+def nip01_json(x):
+    if isinstance(x, str):
+        return nip01_str(x)
+    if isinstance(x, bool) or x is None:
+        raise ValueError("not a NIP-01 event field")
+    if isinstance(x, int):
+        return str(x)
+    if isinstance(x, list):
+        return "[" + ",".join(nip01_json(i) for i in x) + "]"
+    raise ValueError("not a NIP-01 event field")
+
 def digest_of(record):
-    rule = record["commitment_anchor"]["digest_rule"]
-    if rule == "nip01-event-id":
-        e = record["subject"]
-        ser = json.dumps([0, e["pubkey"], e["created_at"], e["kind"], e["tags"], e["content"]],
-                         separators=(",", ":"), ensure_ascii=False)
-        return hashlib.sha256(ser.encode("utf-8")).hexdigest()
-    raise ValueError(f"unsupported digest_rule {rule}")
+    """Recompute under digest_rule. None = the verifier cannot recompute (no anchor, unknown rule, malformed event)."""
+    a = record.get("commitment_anchor")
+    if not isinstance(a, dict) or a.get("digest_rule") != "nip01-event-id":
+        return None
+    e = record["subject"]
+    try:
+        ser = nip01_json([0, e["pubkey"], e["created_at"], e["kind"], e["tags"], e["content"]])
+    except (KeyError, ValueError):
+        return None
+    return hashlib.sha256(ser.encode("utf-8")).hexdigest()
 
 def ceiling_before_outcome(a, record):
     rule = a.get("anchor_time_rule", "header_time_plus_tolerance")
@@ -38,8 +59,9 @@ def ceiling_before_outcome(a, record):
     return False
 
 def evaluate(record):
-    a = record["commitment_anchor"]
-    if digest_of(record) != a["digest"]:
+    a = record.get("commitment_anchor")
+    d = digest_of(record)
+    if d is None or d != a.get("digest"):
         return {"result": "ANCHOR_DOES_NOT_COVER_RECORD", "precedence_established": False}
     established = ceiling_before_outcome(a, record)
     asserts = record.get("asserts_precedence", False)
