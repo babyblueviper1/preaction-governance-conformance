@@ -1,0 +1,30 @@
+{
+ "aid": "eip155:11155111:0x4AA351E5f00eBe168E5C6f823f2940553d164991",
+ "commitmentLog": {
+  "anchorKinds": [
+   "ots"
+  ],
+  "declaredAt": 1792282956,
+  "hash": "keccak256",
+  "headSigner": "0x4AA351E5f00eBe168E5C6f823f2940553d164991",
+  "uri": "https://raw.githubusercontent.com/babyblueviper1/preaction-governance-conformance/main/examples/aid-commitment-log/log.json",
+  "witnesses": [
+   {
+    "endpoint": "https://alice.btc.calendar.opentimestamps.org",
+    "kind": "ots"
+   },
+   {
+    "endpoint": "https://bob.btc.calendar.opentimestamps.org",
+    "kind": "ots"
+   },
+   {
+    "endpoint": "https://github.com/babyblueviper1/preaction-governance-conformance",
+    "kind": "git"
+   }
+  ]
+ },
+ "did": "did:aid:eip155:11155111:0x4AA351E5f00eBe168E5C6f823f2940553d164991",
+ "facets": [],
+ "updatedAt": 1792282956,
+ "version": "aid-document/v1"
+}

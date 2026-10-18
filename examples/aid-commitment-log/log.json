@@ -1,0 +1,23 @@
+{
+ "entries": [
+  {
+   "anchor": {
+    "kind": "ots",
+    "ots": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEI6c6cOznjrmIzCA7gX+Zv75CVRCpFZvw/7jkrg/NoK5X/8BAkugoe4q64CN8sBf2gP7C5CPAgfha2SEoqqzgQaOBL9m3M/ray8yPWnb1yAT0MwU1PHQ0I8CAApBuYP7Vv5GlzwooUBRJ2zAM1tVUTUZOqC9brZg5dMwjxIAk09GQmGY7Od5ItavQ84JdOkA1KyVKUDOR1UHqNAtxsCPEEatQRU/AIZhhf6v43ezAAg9/jDS75DI4pKGh0dHBzOi8vZmlubmV5LmNhbGVuZGFyLmV0ZXJuaXR5d2FsbC5jb23/8BCxg/b0s/oWa6LIk5FArSVQCPEgYVHweq21thWOIx0H4OMgH/wRc7fFwmqNBwUGI3pADRwI8QRq1BFU8AhFtsYPpt5XdQCD3+MNLvkMjiMiaHR0cHM6Ly9idGMuY2FsZW5kYXIuY2F0YWxsYXh5LmNvbf/wCLNqvUGUlTWzCPAgYmBw3LbHUjGMLporRhPJYTuUQAES+snlxl/oeBjvDoYI8SDBliVj5CyY5cdpUqtLluPhbY8yw7CXVtnJjYq0HFVOGQjwEAaMa4BI+eg/Lpomyv6xzjMI8CBIVPAOx+tZ0xQcGOOwWfFmPRqLl1bZ55G+UpHxOt9lowjxIEzhGCOJUE4guUbCW7v0GsyQorT99jR86awPa0uQmwwqCPEEatQRUvAIKFJJoAcScDQAg9/jDS75DI4uLWh0dHBzOi8vYWxpY2UuYnRjLmNhbGVuZGFyLm9wZW50aW1lc3RhbXBzLm9yZ/AI/gMvEJHcq/EI8CA/01z8mEG9oZJ1Y8lDnlpp9odrQWA7SjVMSgvqXuFvkQjxIPq66vDzxyC03cMdp6thNoId0jWv/yiq5h8HyL8le+60CPAQXtuDc393raudnS09jnLeugjxICyul/TYU461sbbsoyd0xspCRBBnxaj2haRcG/XBrMdFCPEEatQRUvAIyuQdAZ9D90EAg9/jDS75DI4sK2h0dHBzOi8vYm9iLmJ0Yy5jYWxlbmRhci5vcGVudGltZXN0YW1wcy5vcmc=",
+    "status": "pending"
+   },
+   "content": "0x71b3cdabb45904d398ec19feef08df05fcfa431935f2dab682625cdb20c457d2",
+   "head": "0xe9ce9c3b39e3ae6233080ee05fe66fef9095442a4566fc3fee392b83f3682b95",
+   "headSig": "bab7519baf757ab6c9d2acb6a7093911c10418082da89d22b5a3364b68a6c6d35d1cb739920e5dee50aa80bd2c3b00747fb46ffdad3c51233f717b2e2282f3241c",
+   "position": 1,
+   "prev": null,
+   "supersedes": null,
+   "tag": "0xcfb5df3802cae51bb97a832b0a501a8197adcf69cfa337edd4db4850551bd503"
+  }
+ ],
+ "hash": "keccak256",
+ "head_rule": "head_n = keccak256(abi.encode(bytes32 tag, bytes32 content, bytes32 supersedes, bytes32 head_{n-1})), zero = none",
+ "issuer": "eip155:11155111:0x4AA351E5f00eBe168E5C6f823f2940553d164991",
+ "tag_rule": "keccak256(abi.encode(string subject, string facetType, uint64 subjectWindow.from, uint64 subjectWindow.until))",
+ "version": "invinoveritas.aid-commitment-log/v1"
+}

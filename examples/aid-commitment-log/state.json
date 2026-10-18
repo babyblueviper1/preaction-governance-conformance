@@ -1,0 +1,17 @@
+{
+ "cal": [
+  "https://alice.btc.calendar.opentimestamps.org",
+  "https://bob.btc.calendar.opentimestamps.org",
+  "https://finney.calendar.eternitywall.com",
+  "https://btc.calendar.catallaxy.com",
+  "https://alice.btc.calendar.opentimestamps.org",
+  "https://bob.btc.calendar.opentimestamps.org",
+  "https://finney.calendar.eternitywall.com",
+  "https://btc.calendar.catallaxy.com"
+ ],
+ "d1": "0x71b3cdabb45904d398ec19feef08df05fcfa431935f2dab682625cdb20c457d2",
+ "docDigest": "0x61a6051f1c1a105435fb4b8c8179e75c2b96a7ae4a7d0e238663c5ed7596006b",
+ "h1": "0xe9ce9c3b39e3ae6233080ee05fe66fef9095442a4566fc3fee392b83f3682b95",
+ "t0": 1792282956,
+ "until": 1792311756
+}

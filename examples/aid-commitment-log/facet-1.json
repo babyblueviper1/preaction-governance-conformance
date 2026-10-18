@@ -1,0 +1,12 @@
+{
+ "issuedAt": 1792282956,
+ "notice": "worked example for ERC-8434 section 7 commitment-log profile; not an assessment of any real agent",
+ "question": "is B's binding to ERC-8004 agent 11039 in force for its stated window?",
+ "subject": "eip155:11155111:0xd6b24DF77E6f5e7BEFf51460a1d60C2fb7ac9eb2",
+ "subjectWindow": {
+  "from": 1792196556,
+  "until": 1792311756
+ },
+ "type": "invinoveritas.verification-verdict/v1",
+ "verdict": "in-force"
+}

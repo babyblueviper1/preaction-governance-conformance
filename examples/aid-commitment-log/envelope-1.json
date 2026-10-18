@@ -1,0 +1,30 @@
+{
+ "access": {
+  "mode": "PUBLIC"
+ },
+ "committedAt": {
+  "anchor": "ots",
+  "log": {
+   "position": 1,
+   "uri": "https://raw.githubusercontent.com/babyblueviper1/preaction-governance-conformance/main/examples/aid-commitment-log/log.json"
+  },
+  "proof": {
+   "ots": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEIcbPNq7RZBNOY7Bn+7wjfBfz6Qxk18tq2gmJc2yDEV9L/8BBAkJrANnM/OPVohgKkgzF+CPEgqIqfPVr6+70w0vUeTZB+lnh/7ScDU2ro87J+NmlhTeYI8QRq1BFQ8AhbbeOQo+CG3QCD3+MNLvkMjiMiaHR0cHM6Ly9idGMuY2FsZW5kYXIuY2F0YWxsYXh5LmNvbf/wCHULU0H6n1IvCPAQzY4kDeDwFrRpjzno0YIi7QjwIJgV0qudKIrMT6KMYXjTi6jvxLlD7dVW9gY2I8HtK8a+CPAgUG1CPt3u60aSbGzeITGg0AAqP/u/moRYHXp1cDguyc4I8CD4CtALzn+2dsUaPP3pAhm2odExNzW9OoLqLhCWyoE3UgjxBGrUEU7wCLuLGqW8Bmq2AIPf4w0u+QyOLCtodHRwczovL2JvYi5idGMuY2FsZW5kYXIub3BlbnRpbWVzdGFtcHMub3Jn//AIiEzBZ4p5wRkI8CBG3nnGbxm8MeAND9h4xHxKAgXh0ZKqb2txCbpdw+PyZgjwEFP6ntzO+yZMvKqEUDACGWYI8SBqb5wI7pRLKUbwh+U33+otnsA5A3CuMAHuZEHpW2YmtAjxBGrUEU3wCNiifNFaRhyAAIPf4w0u+QyOLi1odHRwczovL2FsaWNlLmJ0Yy5jYWxlbmRhci5vcGVudGltZXN0YW1wcy5vcmfwEMhZzr22oAs7xkzwpEveoK0I8SBSA55xNAbg9YBLhzKf7JOFb1etx15rStd8bhD6ScBRLAjwILYEYNLWpr6TMt3srYzWkG+tfMeM+EuukV8O90v6w6cMCPEgWMeiXfFfooIvHPo8XnUOcmeL1mXuj+OhgIgCc5idA7UI8QRq1BFP8AhdtH6mViC7YgCD3+MNLvkMjikoaHR0cHM6Ly9maW5uZXkuY2FsZW5kYXIuZXRlcm5pdHl3YWxsLmNvbQ=="
+  }
+ },
+ "digest": "0x71b3cdabb45904d398ec19feef08df05fcfa431935f2dab682625cdb20c457d2",
+ "facetType": "aid:behavior/verification-verdict/v1",
+ "finality": "final",
+ "issuer": "eip155:11155111:0x4AA351E5f00eBe168E5C6f823f2940553d164991",
+ "observedAt": 1792282956,
+ "provenance": "ATTESTED",
+ "resolver": {
+  "kind": "uri"
+ },
+ "subjectWindow": {
+  "from": 1792196556,
+  "until": 1792311756
+ },
+ "uri": "https://raw.githubusercontent.com/babyblueviper1/preaction-governance-conformance/main/examples/aid-commitment-log/facet-1.json",
+ "validUntil": 1794874956
+}
