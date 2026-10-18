@@ -1,5 +1,8 @@
 {
  "chain": {
+  "canonical": {
+   "48164856": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98"
+  },
   "nonces": {
    "0x0595f36571b4610779641845485a82f38b730b96530f526f56ccdb20b0a367a8": {
     "status": 1,
@@ -71,7 +74,7 @@
   "source": "Blockscout base-sepolia getLogs, AuthorizationUsed(authorizer=0x87f344b6ec48a936373d774d3de8649deeb66ee1) on USDC 0x036cbd53842c5426634e7929541ec2318f3dcf7e, fromBlock 0, snapshot 2026-10-15T21:00Z; settlement A transfers from eth_getTransactionReceipt (sepolia.base.org)"
  },
  "license": "CC0-1.0",
- "name": "x402-receipt-private-opening/0",
+ "name": "x402-receipt-private-opening/1",
  "vectors": [
   {
    "agent_wallets": [
@@ -206,7 +209,8 @@
    "secrets": [
     "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
     "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88",
-    "0x23c8d831fdb7486693098aadf31d35a2ef18da729b3e29e905b977db1a054e6a"
+    "0x23c8d831fdb7486693098aadf31d35a2ef18da729b3e29e905b977db1a054e6a",
+    "0xbb8c63ebfad08e91405d09391a734eb2c23dc0abd047217350748de348f46016"
    ],
    "statement": {
     "agent": "eip155:84532:erc8004:agent/7",
@@ -217,14 +221,18 @@
     "network": "eip155:84532",
     "prev": "0000000000000000000000000000000000000000000000000000000000000000",
     "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "read_at": {
+     "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+     "number": 48164856
+    },
     "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
     "result": "opens_to_settlement",
     "seq": 0,
-    "signature": "PY2bquNYMldCU3OHXlk-MjppMRoBwd4LsGGNcfC3TrP8eQ8QZP89ajF9lRSzw8hqugpTWozjP2-g2Dk1ixt-Ag",
-    "type": "x402-receipt-private-opening/0",
+    "signature": "KHc5JRcwwHKU_4tRNSXevMLpQAyboNdqVSPuC_QWSj8qPMPevYeqLDpeRdZ-GU1ip3B4RCi7IYG0Y6x7arDQCg",
+    "type": "x402-receipt-private-opening/1",
     "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
    },
-   "why": "the signed statement names the receipt, rater, agent and result, never the nonce, tx or salt"
+   "why": "the signed statement names the receipt, rater, agent, result and the head it read through, never the nonce, tx, salt or settlement block"
   },
   {
    "agent_wallets": [
@@ -256,11 +264,15 @@
     "network": "eip155:84532",
     "prev": "0000000000000000000000000000000000000000000000000000000000000000",
     "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "read_at": {
+     "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+     "number": 48164856
+    },
     "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
     "result": "opens_to_settlement",
     "seq": 0,
-    "signature": "PY2bquNYMldCU3OHXlk-MjppMRoBwd4LsGGNcfC3TrP8eQ8QZP89ajF9lRSzw8hqugpTWozjP2-g2Dk1ixt-Ag",
-    "type": "x402-receipt-private-opening/0",
+    "signature": "KHc5JRcwwHKU_4tRNSXevMLpQAyboNdqVSPuC_QWSj8qPMPevYeqLDpeRdZ-GU1ip3B4RCi7IYG0Y6x7arDQCg",
+    "type": "x402-receipt-private-opening/1",
     "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
    },
    "why": "the rater later publishes the salt; anyone recomputes the same finding"
@@ -295,11 +307,15 @@
     "network": "eip155:84532",
     "prev": "0000000000000000000000000000000000000000000000000000000000000000",
     "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "read_at": {
+     "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+     "number": 48164856
+    },
     "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
     "result": "opens_to_settlement",
     "seq": 0,
-    "signature": "yk8e7Z8586YXUWcaK3DJ3BeXMYBf_bCDDS21CSyIksXyYSLEfHV0PluOAk-fIBkkPkx17gZ3dwFOQFcdHVPRBQ",
-    "type": "x402-receipt-private-opening/0",
+    "signature": "TGNXUfLEftBErcL9dDqFB11N3sEYHADOlpjxcxRETKG9bRcLt5QmhefLZ76LvI0_bLmiUSuiQJSsPyZVqJv8DQ",
+    "type": "x402-receipt-private-opening/1",
     "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
    },
    "why": "the verifier signed opens_to_settlement for an agent whose wallets the payment never reached; the public opening shows it"
@@ -334,14 +350,61 @@
     "network": "eip155:84532",
     "prev": "0000000000000000000000000000000000000000000000000000000000000000",
     "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "read_at": {
+     "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+     "number": 48164856
+    },
     "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
     "result": "opens_to_settlement",
     "seq": 0,
-    "signature": "PY2bquNYMldCU3OHXlk-MjppMRoBwd4LsGGNcfC3TrP8eQ8QZP89ajF9lRSzw8hqugpTWozjP2-g2Dk1ixt-Ag",
-    "type": "x402-receipt-private-opening/0",
+    "signature": "KHc5JRcwwHKU_4tRNSXevMLpQAyboNdqVSPuC_QWSj8qPMPevYeqLDpeRdZ-GU1ip3B4RCi7IYG0Y6x7arDQCg",
+    "type": "x402-receipt-private-opening/1",
     "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
    },
    "why": "a statement cannot be replayed onto another receipt: it binds sha256 of the receipt it opened"
+  },
+  {
+   "agent_wallets": [
+    "0x2888f36548a900b9b08d584524e1f73bc563ec26"
+   ],
+   "expect": {
+    "result": "reorged"
+   },
+   "id": "challenge-reorged",
+   "kind": "challenge",
+   "public_opening": {
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e",
+    "salt": "0x23c8d831fdb7486693098aadf31d35a2ef18da729b3e29e905b977db1a054e6a"
+   },
+   "receipt": {
+    "authorizationCommitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
+    "authorizationMethod": "eip3009",
+    "issuedAt": 1776000000,
+    "network": "eip155:84532",
+    "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "resourceUrl": "https://seller.example/api/resource"
+   },
+   "statement": {
+    "agent": "eip155:84532:erc8004:agent/7",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e",
+    "checked_at": "2026-10-17T01:00:00Z",
+    "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
+    "method": "eip3009",
+    "network": "eip155:84532",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+    "read_at": {
+     "hash": "0xcbe82c4862af847b898e9c4eae6c67ae7fa2bcdf0123634b54223160b5717495",
+     "number": 48164856
+    },
+    "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
+    "result": "opens_to_settlement",
+    "seq": 0,
+    "signature": "jSDNqa7kqRG2Nco-ydNF5g4Qa_q3WgSuTbsjUNw8JAhTd6Lb-gYDHhFXZhjEvs5R4Bq_wwz-S2FDhwVK_n0gAw",
+    "type": "x402-receipt-private-opening/1",
+    "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
+   },
+   "why": "the block the verifier read through is no longer canonical: a reorg, re-checked, never counted as a wrong answer"
   },
   {
    "expect": {
@@ -359,11 +422,15 @@
      "network": "eip155:84532",
      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 0,
-     "signature": "PY2bquNYMldCU3OHXlk-MjppMRoBwd4LsGGNcfC3TrP8eQ8QZP89ajF9lRSzw8hqugpTWozjP2-g2Dk1ixt-Ag",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "KHc5JRcwwHKU_4tRNSXevMLpQAyboNdqVSPuC_QWSj8qPMPevYeqLDpeRdZ-GU1ip3B4RCi7IYG0Y6x7arDQCg",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -373,13 +440,17 @@
      "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
      "method": "eip3009",
      "network": "eip155:84532",
-     "prev": "416b249a67198669bdacc30bb912b3195ed704a16be9945abb2df384e0af4cf1",
+     "prev": "44c4419c7e6d66418c3b3e34ed043dbdc85a1ea3457db7f609c40d5cd4291eaf",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 1,
-     "signature": "2sPFy1ZnMjvlo8oR1y8IJIhDAYA8d-mSuDQJ5O-LDOwREvhxizJvOK5-uXunhXzbM7F5q9x6bsQUA-BfB3iTDA",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "GX0cMGCxZEW0bBa6vWL-EiiJPF4EEw7ccxTWJqRT7aTl_dhuevgg0QV3PcuejgWRq6DKjYdUg9i-WU9ggDxjDg",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -389,13 +460,17 @@
      "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
      "method": "eip3009",
      "network": "eip155:84532",
-     "prev": "d51fc8651f0dc75256f1d7b9d7b2114e1f492223ad23582413fcaa32a98f3514",
+     "prev": "aee438659387313357b6cbd0fe494ce01cca255aed395f40724406ba2d4d894a",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 2,
-     "signature": "sMU14MQe_dXaQ0gSxZ6DBYc2S7PUHXhEgjpBbgcEQL4o-aAcBMiqpkLDfThLKwwcIj2Iz49PrGzovMbRZocsDg",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "Q_yCAWzTJywcCP1DdQd7_1PC0Xf1grZCXxYDUMi_VpisghHyAoec0swvpjk01dhyJJLkaMs6YI5Na2yvA9taAw",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     }
    ],
@@ -417,11 +492,15 @@
      "network": "eip155:84532",
      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 0,
-     "signature": "PY2bquNYMldCU3OHXlk-MjppMRoBwd4LsGGNcfC3TrP8eQ8QZP89ajF9lRSzw8hqugpTWozjP2-g2Dk1ixt-Ag",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "KHc5JRcwwHKU_4tRNSXevMLpQAyboNdqVSPuC_QWSj8qPMPevYeqLDpeRdZ-GU1ip3B4RCi7IYG0Y6x7arDQCg",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -431,13 +510,17 @@
      "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
      "method": "eip3009",
      "network": "eip155:84532",
-     "prev": "416b249a67198669bdacc30bb912b3195ed704a16be9945abb2df384e0af4cf1",
+     "prev": "44c4419c7e6d66418c3b3e34ed043dbdc85a1ea3457db7f609c40d5cd4291eaf",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "no_settlement",
      "seq": 1,
-     "signature": "2sPFy1ZnMjvlo8oR1y8IJIhDAYA8d-mSuDQJ5O-LDOwREvhxizJvOK5-uXunhXzbM7F5q9x6bsQUA-BfB3iTDA",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "GX0cMGCxZEW0bBa6vWL-EiiJPF4EEw7ccxTWJqRT7aTl_dhuevgg0QV3PcuejgWRq6DKjYdUg9i-WU9ggDxjDg",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -447,13 +530,17 @@
      "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
      "method": "eip3009",
      "network": "eip155:84532",
-     "prev": "d51fc8651f0dc75256f1d7b9d7b2114e1f492223ad23582413fcaa32a98f3514",
+     "prev": "aee438659387313357b6cbd0fe494ce01cca255aed395f40724406ba2d4d894a",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 2,
-     "signature": "sMU14MQe_dXaQ0gSxZ6DBYc2S7PUHXhEgjpBbgcEQL4o-aAcBMiqpkLDfThLKwwcIj2Iz49PrGzovMbRZocsDg",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "Q_yCAWzTJywcCP1DdQd7_1PC0Xf1grZCXxYDUMi_VpisghHyAoec0swvpjk01dhyJJLkaMs6YI5Na2yvA9taAw",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     }
    ],
@@ -484,11 +571,15 @@
      "network": "eip155:84532",
      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 0,
-     "signature": "PY2bquNYMldCU3OHXlk-MjppMRoBwd4LsGGNcfC3TrP8eQ8QZP89ajF9lRSzw8hqugpTWozjP2-g2Dk1ixt-Ag",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "KHc5JRcwwHKU_4tRNSXevMLpQAyboNdqVSPuC_QWSj8qPMPevYeqLDpeRdZ-GU1ip3B4RCi7IYG0Y6x7arDQCg",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -498,13 +589,17 @@
      "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
      "method": "eip3009",
      "network": "eip155:84532",
-     "prev": "416b249a67198669bdacc30bb912b3195ed704a16be9945abb2df384e0af4cf1",
+     "prev": "44c4419c7e6d66418c3b3e34ed043dbdc85a1ea3457db7f609c40d5cd4291eaf",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 1,
-     "signature": "2sPFy1ZnMjvlo8oR1y8IJIhDAYA8d-mSuDQJ5O-LDOwREvhxizJvOK5-uXunhXzbM7F5q9x6bsQUA-BfB3iTDA",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "GX0cMGCxZEW0bBa6vWL-EiiJPF4EEw7ccxTWJqRT7aTl_dhuevgg0QV3PcuejgWRq6DKjYdUg9i-WU9ggDxjDg",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -514,13 +609,17 @@
      "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
      "method": "eip3009",
      "network": "eip155:84532",
-     "prev": "d51fc8651f0dc75256f1d7b9d7b2114e1f492223ad23582413fcaa32a98f3514",
+     "prev": "aee438659387313357b6cbd0fe494ce01cca255aed395f40724406ba2d4d894a",
      "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 2,
-     "signature": "sMU14MQe_dXaQ0gSxZ6DBYc2S7PUHXhEgjpBbgcEQL4o-aAcBMiqpkLDfThLKwwcIj2Iz49PrGzovMbRZocsDg",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "Q_yCAWzTJywcCP1DdQd7_1PC0Xf1grZCXxYDUMi_VpisghHyAoec0swvpjk01dhyJJLkaMs6YI5Na2yvA9taAw",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     },
     {
@@ -532,18 +631,38 @@
      "network": "eip155:84532",
      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
      "rater": "0x2222222222222222222222222222222222222222",
+     "read_at": {
+      "hash": "0x75f13f1403ee4cdc44a76ef58ea52ba23677dfc43a1acceef1b6ee021b06bb98",
+      "number": 48164856
+     },
      "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
      "result": "opens_to_settlement",
      "seq": 0,
-     "signature": "RK2-WlYH8nlFuhv_1uIWYoCOfzVrSqeUxkve9-DBb9UYkOTSjK1PwJNzUinGbLblE3e2-8voQU2vPF4C6n_WAQ",
-     "type": "x402-receipt-private-opening/0",
+     "signature": "qJffQmC_wbbPxzOQ50RW1rZTHQjoyOiB_3_7ut2MLoGBpWuQwYFNgiqHlW2x6WKTnPuJbRxdaJ1Oyhy8ZplbBw",
+     "type": "x402-receipt-private-opening/1",
      "verifier": "o3sCRu83bGQYmewaCjZgtYlWaGDYleOEz6MMCqgqc0c"
+    },
+    {
+     "agent": "eip155:84532:erc8004:agent/11",
+     "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e",
+     "checked_at": "2026-10-17T01:00:00Z",
+     "commitment": "0x905370866d1245ddb3ef046d72b7d124b481b5444ca096d55ff54ea412101438",
+     "method": "eip3009",
+     "network": "eip155:84532",
+     "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+     "rater": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "receipt_sha256": "accf0b5e770243611242421a6f77b9a9ce530a59f3fec5a7efcfd9b9b2b2d652",
+     "result": "opens_to_settlement",
+     "seq": 0,
+     "signature": "TekbWhChz6855f7tE_BLfgGKKic0aGdljkWeuESTXC0gzpV5GQDdFMb7Ow0JZwsncgOVcyf8uxAhGW9nO80DCA",
+     "type": "x402-receipt-private-opening/0",
+     "verifier": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
     }
    ],
    "trusted": [
     "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"
    ],
-   "why": "three ratings by one rater over two agents count as 2 (rater, agent) pairs; a statement from an unnamed verifier counts as none"
+   "why": "three ratings by one rater over two agents count as 2 (rater, agent) pairs; a statement from an unnamed verifier counts as none, and neither does a /0 statement with no read_at"
   }
  ],
  "verifier_test_key": "5YdeBxZpnq8kKdX_jqXt5a29Ajm5abGUprTaUrJQM-k"

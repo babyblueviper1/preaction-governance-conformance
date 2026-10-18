@@ -1,4 +1,4 @@
-# x402 receipt private opening: `x402-receipt-private-opening/0` (draft, CC0)
+# x402 receipt private opening: `x402-receipt-private-opening/1` (draft, CC0)
 
 A verifier's signed statement about a receipt commitment that a rater opened **privately**, so grounded feedback
 doesn't have to publish the payment. This is the middle tier discussed on ethereum-magicians
@@ -24,13 +24,26 @@ settlement whose transfers it could not read). It is never reported as `no_settl
 (x402#3827 §5.6.4 as amended). Vector `assess-chain-unavailable`; mutant `unavailable_as_no_settlement`.
 
 ```
-{ type, receipt_sha256, commitment, method, network, asset, rater, agent, result, checked_at, seq, prev, verifier, signature }
+{ type, receipt_sha256, commitment, method, network, asset, rater, agent, result, checked_at, read_at, seq, prev, verifier, signature }
 ```
 Ed25519 over the canonical JSON of every other field. `receipt_sha256` is sha256 of the canonical receipt that was
-opened. `seq` and `prev` chain each statement to the one before it in the verifier's append-only log.
+opened. `read_at` is `{number, hash}` of the chain head the verifier read `AuthorizationUsed` through (the `toBlock` of
+its log query). `seq` and `prev` chain each statement to the one before it in the verifier's append-only log.
+
+## Read point (`/1`)
+`/1` adds `read_at` (requested by predge-ai on [erc-8004-contracts#99](https://github.com/erc-8004/erc-8004-contracts/issues/99),
+whose grounded-feedback method table counts a private opening only when the statement binds the block it was read at).
+A challenger who finds that block is no longer canonical reports `reorged`: the finding is re-checked, never counted as
+a wrong answer. Vector `challenge-reorged`; mutant `ignores_read_at`.
+
+It is the **head**, never the settlement block. The rater is public, so the settlement block would point at the
+settlement transaction. A reorg that removes the settlement block also removes every later block, so binding the head
+is enough to detect it. Vector `statement-no-leak` now also checks the settlement block hash; mutant
+`binds_settlement_block` fails it. A `/0` statement (no `read_at`) is not counted under `/1` (vector `pairs`, mutant
+`counts_unanchored`). `/0` is at `c267825`.
 
 ## Three properties
-- **Privacy.** The statement never carries the nonce, the settlement transaction or the salt. Vector
+- **Privacy.** The statement never carries the nonce, the settlement transaction, its block or the salt. Vector
   `statement-no-leak` checks this, and the `leaks_nonce` mutant (a verifier that records which settlement it found)
   fails it.
 - **Counted per (rater, agent) pair, not per rating.** Duplicates collapse on the public pair. A payment can't ground
@@ -53,7 +66,8 @@ opened. `seq` and `prev` chain each statement to the one before it in the verifi
 ## Data
 Settlement A is real: Base Sepolia USDC, payer `0x87f3…6ee1`, transaction `0x1345479a…`, block 48163177. Its receipt
 logs carry `AuthorizationUsed(payer, nonce A)` at logIndex 180 and `Transfer(payer → 0x2888…ec26, 1000)` at 181, in the
-same transaction. The payer's other 11 consumed nonces come from the sibling kit's `candidates_snapshot.json`, so
+same transaction. `read_at` is block 48164856 (`0x75f13f14…bb98`, timestamp 2026-10-15T21:00:00Z, the snapshot time),
+read from sepolia.base.org. The payer's other 11 consumed nonces come from the sibling kit's `candidates_snapshot.json`, so
 everything runs offline. Salts are the sibling kit's public test salts. The verifier key is a **public test key**
 derived from a fixed seed.
 
@@ -62,18 +76,21 @@ derived from a fixed seed.
 |---|---|
 | `statement.py` | `assess`, `make_statement`, `signature_ok`, `leaks`, `log_ok`, `challenge`, `grounded_pairs` |
 | `ed25519_ref.py` | Ed25519 (RFC 8032 §5.1), pure Python; not constant-time, for checking only |
-| `vectors.json` | 12 vectors: 5 assess, 1 privacy, 3 challenge, 2 log, 1 count |
+| `vectors.json` | 13 vectors: 5 assess, 1 privacy, 4 challenge, 2 log, 1 count |
 | `build_vectors.py` / `run_vectors.py` | regenerate / check |
 
 ```
 $ python3 run_vectors.py
   PASS ed25519 RFC 8032 TEST 1
-  ... 12/12 vectors
+  ... 13/13 vectors
+  caught counts_unanchored: pairs
+  caught binds_settlement_block: statement-no-leak
+  caught ignores_read_at: challenge-reorged
   caught unavailable_as_no_settlement: assess-chain-unavailable
   caught skips_rater_check: assess-rater-not-payer
   caught leaks_nonce: statement-no-leak
-  caught unbound_statement: challenge-not-bound
-  caught trusts_statement: challenge-refuted, challenge-not-bound
+  caught unbound_statement: challenge-not-bound, challenge-reorged
+  caught trusts_statement: challenge-refuted, challenge-not-bound, challenge-reorged
   caught counts_ratings: pairs
   PASS vectors.json reproduces from build_vectors.py
 ALL PASS

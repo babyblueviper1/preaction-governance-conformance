@@ -1,4 +1,4 @@
-"""Check vectors.json, then show that each of five lax verifiers fails at least one vector.
+"""Check vectors.json, then show that each of nine lax verifiers fails at least one vector.
 
     python3 run_vectors.py        # standard library only
 """
@@ -59,7 +59,27 @@ def _unavailable_as_no_settlement(receipt, opening, rater, wallets, chain):
     return "no_settlement" if r == "incomplete_check" else r
 
 
+def _binds_settlement_block(st):
+    # a verifier that binds the block holding AuthorizationUsed instead of the head it read through
+    return {**st, "read_at": {"number": 48163177, "hash": "0xbb8c63ebfad08e91405d09391a734eb2c23dc0abd047217350748de348f46016"}}
+
+
+def _reorg_as_refuted(st, receipt, opening, wallets, chain):
+    r = S.challenge(st, receipt, opening, wallets, chain)
+    if r != "reorged":
+        return r
+    return "upheld" if S.assess(receipt, opening, st["rater"], wallets, chain) == st["result"] else "refuted"
+
+
+def _counts_unanchored(statements, trusted):
+    return {(s["rater"], s["agent"]) for s in statements
+            if s.get("result") == "opens_to_settlement" and s.get("verifier") in trusted and S.signature_ok(s)}
+
+
 MUTANTS = {
+    "counts_unanchored": {**HONEST, "count": _counts_unanchored},
+    "binds_settlement_block": {**HONEST, "restate": _binds_settlement_block},
+    "ignores_read_at": {**HONEST, "challenge": _reorg_as_refuted},
     "unavailable_as_no_settlement": {**HONEST, "assess": _unavailable_as_no_settlement},
     "skips_rater_check": {**HONEST, "assess": _skips_rater},
     "leaks_nonce": {**HONEST, "restate": _nonce_of},

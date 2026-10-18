@@ -1,4 +1,4 @@
-"""x402-receipt-private-opening/0 -- a verifier's signed statement about a PRIVATELY opened receipt commitment (draft, CC0).
+"""x402-receipt-private-opening/1 -- a verifier's signed statement about a PRIVATELY opened receipt commitment (draft, CC0).
 
 The tier proposed on ethereum-magicians t/25098 (#422 predge-ai, #423): a rater opens the receipt v2
 `authorizationCommitment` to one verifier that is neither seller nor buyer, instead of publishing the salt. The verifier
@@ -15,6 +15,11 @@ tuple and would re-link the rating to its settlement).
 Privacy rule: the statement never carries the nonce, the settlement transaction or the salt.
 Challengeability: the statement binds sha256 of the exact receipt it opened and sits in an append-only, hash-chained
 log; if the rater later opens in public, anyone can recompute the result for that receipt (challenge()).
+Read point (/1, predge-ai on erc-8004-contracts#99): the statement binds `read_at` = {number, hash} of the chain head the
+verifier read AuthorizationUsed through (the toBlock of its log query), so a challenger can tell a reorg (that block is
+no longer canonical) from a wrong answer. It is the HEAD, never the settlement block: the rater is public, so the
+settlement block would point at the settlement transaction (privacy rule above). A reorg of the settlement block also
+un-canonicalises every later block, so the head is enough to detect it.
 Not covered: the seller's receipt signature (sec 5 of the receipt spec) is taken as already verified, and this kit
 does not anchor the log to an external clock (a deployment would, e.g. OpenTimestamps on the daily log head).
 """
@@ -38,7 +43,7 @@ Malformed, link = _rac.Malformed, _rac.link
 sys.path.insert(0, _HERE)
 import ed25519_ref as ed  # noqa: E402
 
-TYPE = "x402-receipt-private-opening/0"
+TYPE = "x402-receipt-private-opening/1"
 RESULTS = ("opens_to_settlement", "no_settlement", "payer_is_not_rater", "payto_not_bound_to_agent", "incomplete_check")
 ZERO = "0" * 64
 
@@ -89,13 +94,23 @@ def assess(receipt: dict, opening: dict, rater: str, agent_wallets: list[str], c
     return "opens_to_settlement"
 
 
+def _read_at_ok(r) -> bool:
+    h = r.get("hash") if isinstance(r, dict) else None
+    return (isinstance(r, dict) and set(r) == {"number", "hash"} and isinstance(r["number"], int) and r["number"] >= 0
+            and isinstance(h, str) and len(h) == 66 and h.startswith("0x") and all(c in "0123456789abcdef" for c in h[2:]))
+
+
 def make_statement(receipt: dict, result: str, rater: str, agent: str, asset: str, checked_at: str, seq: int,
-                   prev: str, secret: bytes) -> dict:
+                   prev: str, secret: bytes, read_at: dict) -> dict:
+    """read_at = {"number", "hash"} of the head the verifier read the chain through (never the settlement block)."""
     if result not in RESULTS:
         raise ValueError(result)
+    read_at = {"number": read_at["number"], "hash": str(read_at["hash"]).lower()}
+    if not _read_at_ok(read_at):
+        raise ValueError("read_at must be {number: int, hash: 0x + 64 lower-case hex}")
     st = {"type": TYPE, "receipt_sha256": receipt_sha256(receipt), "commitment": receipt["authorizationCommitment"].lower(),
           "method": receipt["authorizationMethod"], "network": receipt["network"], "asset": asset.lower(),
-          "rater": rater.lower(), "agent": agent, "result": result, "checked_at": checked_at, "seq": seq, "prev": prev,
+          "rater": rater.lower(), "agent": agent, "result": result, "checked_at": checked_at, "read_at": read_at, "seq": seq, "prev": prev,
           "verifier": _b64u(ed.public_key(secret))}
     st["signature"] = _b64u(ed.sign(secret, canon(st)))
     return st
@@ -110,7 +125,7 @@ def signature_ok(st: dict) -> bool:
 
 
 def leaks(st: dict, secrets: list[str]) -> list[str]:
-    """Which of nonce / settlement tx / salt appear anywhere in the statement (with or without 0x, any case)."""
+    """Which of nonce / settlement tx / salt / settlement block hash appear anywhere in the statement (with or without 0x, any case)."""
     blob = canon(st).decode().lower()
     return [s for s in secrets if s.lower().removeprefix("0x") in blob]
 
@@ -127,11 +142,20 @@ def log_ok(statements: list[dict]) -> bool:
 
 def challenge(st: dict, receipt: dict, public_opening: dict, agent_wallets: list[str], chain: dict) -> str:
     """After the rater opens in public: upheld | refuted | not_bound (statement is about another receipt) | bad_signature |
-    incomplete (the challenger could not read the chain; never read as upheld or refuted)."""
+    unanchored (no well-formed read_at) | reorged (the block the verifier read through is no longer canonical: the finding
+    is re-checked, not counted as wrong) | incomplete (the challenger could not read the chain; never upheld or refuted).
+    chain["canonical"] maps a block number (as a decimal string) to the challenger's canonical hash for it."""
     if not signature_ok(st):
         return "bad_signature"
     if st.get("receipt_sha256") != receipt_sha256(receipt):
         return "not_bound"
+    if st.get("type") != TYPE or not _read_at_ok(st.get("read_at")):
+        return "unanchored"
+    canonical = (chain or {}).get("canonical", {}).get(str(st["read_at"]["number"])) if isinstance(chain, dict) else None
+    if canonical is None:
+        return "incomplete"
+    if canonical.lower() != st["read_at"]["hash"]:
+        return "reorged"
     again = assess(receipt, public_opening, st["rater"], agent_wallets, chain)
     if again == "incomplete_check":                # the challenger could not read the chain: no verdict either way
         return "incomplete"
@@ -141,4 +165,5 @@ def challenge(st: dict, receipt: dict, public_opening: dict, agent_wallets: list
 def grounded_pairs(statements: list[dict], trusted_verifiers: set[str]) -> set[tuple[str, str]]:
     """Distinct (rater, agent) pairs a named verifier found opens_to_settlement for. Ratings are not the unit."""
     return {(s["rater"], s["agent"]) for s in statements
-            if s.get("result") == "opens_to_settlement" and s.get("verifier") in trusted_verifiers and signature_ok(s)}
+            if s.get("result") == "opens_to_settlement" and s.get("verifier") in trusted_verifiers and signature_ok(s)
+            and s.get("type") == TYPE and _read_at_ok(s.get("read_at"))}
