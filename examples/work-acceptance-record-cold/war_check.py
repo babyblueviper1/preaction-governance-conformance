@@ -91,7 +91,8 @@ def _find_tstinfo(b):
 
 
 def tst(token_b64):
-    """(hash_oid, imprint_hex, gen_time 'YYYYMMDDHHMMSSZ') from an RFC 3161 TimeStampResp/token, or None."""
+    """(hash_oid, imprint_hex, gen_time 'YYYYMMDDHHMMSS[.fff]Z', accuracy_seconds) from an RFC 3161 TimeStampResp/token, or None.
+    accuracy_seconds is 0.0 when the token states no accuracy (1.3: taken at its genTime)."""
     if not token_b64:
         return None
     raw = base64.b64decode(token_b64)
@@ -103,8 +104,26 @@ def tst(token_b64):
         f = _children(f[0][1])
     mi = _children(f[2][1])
     alg = _oid(_children(mi[0][1])[0][1])
-    gen = next(v.decode() for t, v in f if t == 0x18)
-    return alg, mi[1][1].hex(), gen
+    gi = next(k for k, (t, v) in enumerate(f) if t == 0x18)
+    gen = f[gi][1].decode()
+    acc = 0.0
+    # RFC 3161: Accuracy ::= SEQUENCE { seconds INTEGER OPTIONAL, millis [0] INTEGER OPTIONAL, micros [1] INTEGER OPTIONAL },
+    # the optional field right after genTime (ordering, nonce, tsa and extensions are not SEQUENCEs).
+    if gi + 1 < len(f) and f[gi + 1][0] == 0x30:
+        for t, v in _children(f[gi + 1][1]):
+            n = int.from_bytes(v, "big")
+            acc += {0x02: 1.0, 0x80: 1e-3, 0x81: 1e-6}.get(t, 0.0) * n
+    return alg, mi[1][1].hex(), gen, acc
+
+
+def _secs(t):
+    """'2026-03-01T00:00:00.5Z' or '20260301000000.5Z' -> seconds since the epoch (UTC), fractions kept."""
+    import calendar
+    d = "".join(c for c in t if c.isdigit() or c == ".")
+    whole, _, frac = d.partition(".")
+    whole = whole.replace(".", "")[:14]
+    base = calendar.timegm((int(whole[0:4]), int(whole[4:6]), int(whole[6:8]), int(whole[8:10]), int(whole[10:12]), int(whole[12:14])))
+    return base + (float("0." + frac) if frac else 0.0)
 
 
 def _iso(t):
@@ -157,26 +176,33 @@ def check(inputs):
     # step 5: criteria commitment. Token over criteria.sha256 is authoritative; a token over other bytes is
     # CRITERIA_TIMESTAMP_MISMATCH and is not evidence of time, so fall back to committed_at with the unverified warning.
     ct = tst(inputs.get("criteria_tsr_base64"))
+    # 1.3: a token's stated accuracy widens its time against "committed before": the criteria token is read at its LATEST
+    # (genTime + accuracy), the record's own token at its EARLIEST (genTime - accuracy); `ordering` is ignored.
     if ct is not None and ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"]:
         commit = _iso(ct[2])
+        commit_s = _secs(ct[2]) + ct[3]
         if commit != _iso(r["criteria"]["committed_at"]):
             P("CRITERIA_TIME_MISMATCH")
     else:
         if ct is not None:
             P("CRITERIA_TIMESTAMP_MISMATCH")
         commit = _iso(r["criteria"]["committed_at"])
+        commit_s = _secs(r["criteria"]["committed_at"])
         W("CRITERIA_COMMITMENT_UNVERIFIED")
     # Reference time. 1.2.1 says: a covering token's genTime, else issued_utc. PROPOSED (vector 22): the EARLIER of the two. A covering
     # token only bounds the check from above; issued_utc is the checker's own signed statement of when it checked, and a checker has no
     # reason to state an earlier time than the truth. Taking the later token time lets criteria committed after the signed check time
     # count as "committed first". Set REF_RULE = "1.2.1" to reproduce the profile as written.
     issued = _iso(r["issued_utc"])
+    issued_s = _secs(r["issued_utc"])
     if out["receipt_timestamp"] == "imprint_match":
         ref = _iso(rt[2]) if REF_RULE == "1.2.1" else min(issued, _iso(rt[2]))
+        ref_s = _secs(rt[2]) - rt[3] if REF_RULE == "1.2.1" else min(issued_s, _secs(rt[2]) - rt[3])
     else:
-        ref = issued
-    out["_times"] = {"commitment": commit, "reference": ref, "issued_utc": _iso(r["issued_utc"])}
-    before = commit < ref
+        ref, ref_s = issued, issued_s
+    out["_times"] = {"commitment": commit, "reference": ref, "issued_utc": _iso(r["issued_utc"]),
+                     "commitment_latest_s": commit_s, "reference_earliest_s": ref_s}
+    before = commit_s < ref_s
     out["criteria_committed_before_check"] = "yes" if before else "no"
     if not before:
         P("CRITERIA_COMMITTED_AFTER_CHECK")

@@ -6,6 +6,7 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
+python3 war_check.py upstream_vectors_1_3_30/*.json # 30/30 agree with upstream `expected` (profile 1.3, 2d8fac7)
 python3 war_check.py upstream_vectors_1_3/*.json # 28/28 agree with upstream `expected` (profile 1.3, 270e9fe)
 python3 war_check.py upstream_vectors/*.json     # 11/11 agree with upstream `expected` (profile 1.2.1, f7d8984)
 python3 war_check.py proposed_vectors/*.json     # 8/8 (06-11 now upstream; 22 and 23 are ours)
@@ -13,6 +14,14 @@ python3 lax_check.py upstream_vectors            # each lax verifier passes all 
 python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
 ```
+
+## Profile 1.3 (2d8fac7): 30/30 agree
+`upstream_vectors_1_3_30/` is an unmodified copy of upstream `vectors/` at 2d8fac7 (CC0 1.0); our run is `upstream_vectors_1_3_30_run.txt`.
+Before this update this checker gave 29/30. It missed 29: it ignored the criteria token's stated `accuracy` of 60 s, read the
+token 30 s before the check as committed first, and raised no `CRITERIA_COMMITTED_AFTER_CHECK`. `tst()` now reads the RFC 3161
+`accuracy` (seconds, millis, micros). The criteria token is taken at its latest time (genTime + accuracy) and the record's own
+token at its earliest (genTime - accuracy); `ordering` is ignored. 30 (accuracy 500 ms) passes both before and after the fix.
+The 270e9fe, 1.2.1 and proposed sets still agree.
 
 ## Profile 1.3 (270e9fe): 28/28 agree
 `upstream_vectors_1_3/` is an unmodified copy of upstream `vectors/` at 270e9fe (CC0 1.0); our run is `upstream_vectors_1_3_run.txt`.
