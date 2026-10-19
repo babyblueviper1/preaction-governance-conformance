@@ -4,7 +4,7 @@ import json
 import sys
 from pathlib import Path
 
-from commitment import Malformed, commit, link
+from commitment import Malformed, NotAttempted, commit, link
 
 HERE = Path(__file__).parent
 doc = json.loads((HERE / "vectors.json").read_text())
@@ -47,6 +47,8 @@ for v in doc["vectors"]:
             got = attack(v)
     except Malformed as e:
         got = {"malformed": e.condition}
+    except NotAttempted as e:
+        got = {"not_attempted": e.condition}
     ok = got == v["expect"]
     fails += not ok
     print(f"{'PASS' if ok else 'FAIL'}  {v['id']}" + ("" if ok else f"  got={got} expect={v['expect']}"))

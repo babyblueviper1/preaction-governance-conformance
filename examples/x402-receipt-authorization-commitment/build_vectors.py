@@ -82,7 +82,8 @@ for vid, field, val, cond in [
 ]:
     v = {"id": vid, "kind": "commit", **base, "nonce": A, "salt": SA}
     v[field] = val
-    v["expect"] = {"malformed": cond}
+    # an authorizationMethod this checker does not implement is NOT malformed (spec §5.3 / §5.6.4): the link is not attempted
+    v["expect"] = {"not_attempted": cond} if cond == "unsupported_method" else {"malformed": cond}
     V.append(v)
 
 out = {"name": "x402-receipt-authorization-commitment/0", "license": "CC0-1.0",

@@ -70,8 +70,8 @@ same construction would fit it. That still needs its own `method` value and vect
 ## Files
 | file | what |
 |---|---|
-| `commitment.py` | `commit()` and the holder-side `link()`; malformed input is refused with a named condition |
-| `vectors.json` | 20 vectors: 4 commit (incl. the x402 spec §5.4 example), 5 link (incl. swapped salt, other asset, other authorizer), 3 attack, 8 malformed |
+| `commitment.py` | `commit()` and the holder-side `link()`; malformed input is refused with a named condition; an unimplemented method is `not_attempted`, never malformed |
+| `vectors.json` | 20 vectors: 4 commit (incl. the x402 spec §5.4 example), 5 link (incl. swapped salt, other asset, other authorizer), 3 attack, 6 malformed, 2 not_attempted (a method this checker does not implement: not malformed, per §5.3 / §5.6.4) |
 | `candidates_snapshot.json` | the payer's 12 consumed nonces (Blockscout, 2026-10-15), so the vectors run offline |
 | `build_vectors.py` / `run_vectors.py` | regenerate / check (`python3 run_vectors.py` → 20/20) |
 | `check_live.py` | same check against the live chain: Blockscout logs + `authorizationState` over JSON-RPC |

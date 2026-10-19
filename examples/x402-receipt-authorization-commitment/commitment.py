@@ -27,6 +27,14 @@ class Malformed(ValueError):
         self.condition = condition
 
 
+class NotAttempted(ValueError):
+    """The input is well formed but this checker does not implement the method: the spec (§5.3, §5.6.4) says such a receipt is
+    NOT malformed and the link is not attempted. Kept apart from Malformed so the two results are never conflated."""
+    def __init__(self, condition: str):
+        super().__init__(condition)
+        self.condition = condition
+
+
 def _addr(v, name):
     if not isinstance(v, str) or not _ADDR.match(v):
         raise Malformed(f"{name}_not_address")
@@ -42,7 +50,7 @@ def _b32(v, name):
 def commit(method: str, asset: str, authorizer: str, nonce: str, salt: str) -> str:
     """The commitment as 0x-prefixed lowercase hex. Raises Malformed with a named condition."""
     if method not in METHODS:
-        raise Malformed("unsupported_method")
+        raise NotAttempted("unsupported_method")
     pre = (TAG + b"\x00" + method.encode() + b"\x00" + _addr(asset, "asset") + _addr(authorizer, "authorizer")
            + _b32(nonce, "nonce") + _b32(salt, "salt"))
     return "0x" + hashlib.sha256(pre).hexdigest()

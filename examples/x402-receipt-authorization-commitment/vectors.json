@@ -242,7 +242,7 @@
    "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
    "salt": "0x23c8d831fdb7486693098aadf31d35a2ef18da729b3e29e905b977db1a054e6a",
    "expect": {
-    "malformed": "unsupported_method"
+    "not_attempted": "unsupported_method"
    }
   },
   {
@@ -254,7 +254,7 @@
    "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
    "salt": "0x23c8d831fdb7486693098aadf31d35a2ef18da729b3e29e905b977db1a054e6a",
    "expect": {
-    "malformed": "unsupported_method"
+    "not_attempted": "unsupported_method"
    }
   }
  ]
