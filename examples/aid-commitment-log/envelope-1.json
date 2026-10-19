@@ -15,6 +15,7 @@
   }
  },
  "digest": "0x71b3cdabb45904d398ec19feef08df05fcfa431935f2dab682625cdb20c457d2",
+ "digestAlg": "sha256",
  "facetType": "aid:behavior/verification-verdict/v1",
  "finality": "final",
  "issuer": "eip155:11155111:0x4AA351E5f00eBe168E5C6f823f2940553d164991",

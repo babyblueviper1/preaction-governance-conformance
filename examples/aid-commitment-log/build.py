@@ -101,7 +101,7 @@ def start():
     ots_f1, cal1 = ots_stamp(d1)
     ots_h1, calh1 = ots_stamp(h1)
     env1 = {"facetType": FACET_TYPE, "provenance": "ATTESTED", "issuer": ISSUER, "validUntil": t0 + 30 * 86400, "observedAt": t0,
-            "subjectWindow": win, "finality": "final", "digest": d1, "access": {"mode": "PUBLIC"},
+            "subjectWindow": win, "finality": "final", "digest": d1, "digestAlg": "sha256", "access": {"mode": "PUBLIC"},
             "resolver": {"kind": "uri"}, "uri": RAW + "facet-1.json",
             "committedAt": {"anchor": "ots", "proof": {"ots": ots_f1}, "log": {"uri": LOG_URI, "position": 1}}}
     log = {"version": "invinoveritas.aid-commitment-log/v1", "issuer": ISSUER, "hash": "keccak256",
