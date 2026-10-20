@@ -105,7 +105,10 @@ Vector 01 with the criteria token's `messageImprint.hashAlgorithm` changed from 
 back to `committed_at` with `CRITERIA_COMMITMENT_UNVERIFIED`.
 
 ## What it does not check
-- **Timestamp-authority signatures.** The upstream tokens are unsigned by design, and so are ours, so only the imprint and the time are read.
+- **Timestamp-authority signatures (step 9).** The upstream tokens are unsigned by design, and so are ours, so only the imprint and
+  the time are read; the CMS `SignerInfo` and certificate chain are never parsed. Said in the outcome too, not just here
+  (x402-foundation/tsc#4, Magentix.AI): `tsa_signature` is `not-evaluated` whenever a receipt or criteria token is present,
+  `none` when neither is, so `receipt_timestamp: imprint_match` is never read as a verified time on its own.
 - **Key status and revocation.**
 - **The delivered file (step 3).** No vector supplies one, and this checker does not implement the comparison.
 - **RFC 8785 number serialization.** `jcs()` covers the value types these records use and nothing more.

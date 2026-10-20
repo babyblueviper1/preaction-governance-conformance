@@ -176,6 +176,10 @@ def check(inputs):
     # step 5: criteria commitment. Token over criteria.sha256 is authoritative; a token over other bytes is
     # CRITERIA_TIMESTAMP_MISMATCH and is not evidence of time, so fall back to committed_at with the unverified warning.
     ct = tst(inputs.get("criteria_tsr_base64"))
+    # step 9: the TSA's signature over a token and its certificate chain are a separate check from the imprint/time read
+    # above (steps 5/6). This checker never parses the CMS SignerInfo or validates a chain (the vectors' tokens are unsigned
+    # by design, per "What it does not check" below) -- said explicitly here so `imprint_match` is never read as a verified time.
+    out["tsa_signature"] = "not-evaluated" if (rt is not None or ct is not None) else "none"
     # 1.3: a token's stated accuracy widens its time against "committed before": the criteria token is read at its LATEST
     # (genTime + accuracy), the record's own token at its EARLIEST (genTime - accuracy); `ordering` is ignored.
     if ct is not None and ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"]:
