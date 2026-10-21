@@ -1,0 +1,34 @@
+{
+ "x402_payment_payload": {
+  "x402Version": 2,
+  "payload": {
+   "authorization": {
+    "from": "0x89eA40a908505aA15Ee50eE3a9Fa0399716755c2",
+    "to": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+    "value": "107250",
+    "validAfter": "0",
+    "validBefore": "1792598971",
+    "nonce": "0xc22d545f0ad374247fb544bdacf62b2bc9856eab8cce801f440c630c3acbe257"
+   },
+   "signature": "0x71f2f11a25146c4034cab2a42f33490de984decfff2fcaff7ebf588d19f804356b67285a09b2e74977b30aebec36bf1a782480208d122d6199a84ccaf9523b471b"
+  },
+  "accepted": {
+   "scheme": "exact",
+   "network": "eip155:8453",
+   "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "amount": "107250",
+   "payTo": "0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9",
+   "maxTimeoutSeconds": 60,
+   "extra": {
+    "name": "USD Coin",
+    "version": "2"
+   }
+  }
+ },
+ "x402_payment_response": {
+  "success": true,
+  "payer": "0x89eA40a908505aA15Ee50eE3a9Fa0399716755c2",
+  "transaction": "0x7c3cde41d3ead1a391ad3114f0096359c0b99f740ada9514356e7277048e87ff",
+  "network": "eip155:8453"
+ }
+}

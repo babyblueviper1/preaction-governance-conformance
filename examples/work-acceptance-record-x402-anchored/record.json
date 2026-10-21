@@ -1,0 +1,87 @@
+{
+ "receipt": {
+  "schema": "trilatic.acceptance-receipt/1.2",
+  "canonicalization": "JCS-RFC8785",
+  "suite": {
+   "digest": "sha-256",
+   "signature": "Ed25519"
+  },
+  "receipt_id": "INV-WA-9b1bae1b2e7abf7c",
+  "revision": 1,
+  "issuer": "invinoveritas",
+  "key_id": "invinoveritas-checker-a4cecab2",
+  "issued_utc": "2026-10-21T16:09:34Z",
+  "client_ref": "tsc4-payment-anchored-vector-1",
+  "criteria": {
+   "id": "f92729433b3c7fee",
+   "version": "1",
+   "sha256": "f92729433b3c7fee8e0053d9fdf6f9388cd525396573f504473d93ec36e3c344",
+   "commitment": "rfc3161",
+   "committed_at": "2026-10-21T16:08:10Z"
+  },
+  "files": {
+   "remediated": {
+    "name": "reason_response.json",
+    "bytes": 17828,
+    "sha256": "810a94e879f61ed4df9601d369617c142c91ad063d94671d13339c8a7f74c37b"
+   }
+  },
+  "parties": {
+   "checker": {
+    "name": "invinoveritas",
+    "key_id": "invinoveritas-checker-a4cecab2"
+   },
+   "producer": {
+    "name": "invinoveritas /reason (x402 seller payTo)",
+    "key_id": "eip155:8453:0x161DbdD73D025E9aEdd4918a67c28e5bf9A87Fb9"
+   }
+  },
+  "independence": "independent",
+  "results": [
+   {
+    "id": "C1",
+    "title": "Names the scheme",
+    "required": true,
+    "result": "pass",
+    "finding": "The answer explicitly states, \u201cRFC 8785 defines the JSON Canonicalization Scheme (JCS).\u201d"
+   },
+   {
+    "id": "C2",
+    "title": "States the purpose",
+    "required": true,
+    "result": "pass",
+    "finding": "The answer says JCS deterministically serializes equivalent JSON identically and is used so semantically identical JSON produces the same bytes before hashing or signing."
+   },
+   {
+    "id": "C3",
+    "title": "Short",
+    "required": false,
+    "result": "pass",
+    "finding": "The answer content contains three complete sentences, which is within the five-sentence limit."
+   }
+  ],
+  "verdict": "pass",
+  "human_review": {
+   "status": "not-performed",
+   "scope": []
+  },
+  "tools": {
+   "validator": "invinoveritas work-acceptance checker v0 (gpt-5.6-terra); extraction: utf-8 text",
+   "profile": "invinoveritas P1 v0"
+  },
+  "notice": "Independent check by invinoveritas against the committed criteria. A model judgment per criterion, not a warranty; not-evaluated is used whenever a criterion cannot be judged from the file."
+ },
+ "signature": {
+  "alg": "Ed25519",
+  "key_id": "invinoveritas-checker-a4cecab2",
+  "value": "Yues09sCV4gysB2hTc4szvOPUv+BgakkJ3MTCCgGAbUoNEQK0mXSAVfjmGjrJdGNC+47eGl+j4LNwRv3eY8UDg=="
+ },
+ "timestamp": {
+  "covers": "sha256 of the canonical receipt object",
+  "digest_sha256": "39dbf4db141ef1dc05c666ef35b08972cec96bbf8b24f1f082d703f9c005498f",
+  "gen_time": "20261021160934Z",
+  "status": "granted",
+  "tsa": "https://freetsa.org/tsr",
+  "tsr_file": "receipt.tsr"
+ }
+}
