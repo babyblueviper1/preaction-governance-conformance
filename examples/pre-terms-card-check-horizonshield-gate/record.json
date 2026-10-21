@@ -1,0 +1,87 @@
+{
+ "receipt": {
+  "schema": "trilatic.acceptance-receipt/1.2",
+  "canonicalization": "JCS-RFC8785",
+  "suite": {
+   "digest": "sha-256",
+   "signature": "Ed25519"
+  },
+  "receipt_id": "INV-WA-9010510b70e5e6b7",
+  "revision": 1,
+  "issuer": "invinoveritas",
+  "key_id": "invinoveritas-checker-a4cecab2",
+  "issued_utc": "2026-10-21T16:17:53Z",
+  "client_ref": "musubi-pre-terms-card-check-gate-1",
+  "criteria": {
+   "id": "953c574319c03a52",
+   "version": "1",
+   "sha256": "953c574319c03a52a06e5b05c550f056c3bf096b3e4072f1a810546a678887fd",
+   "commitment": "rfc3161",
+   "committed_at": "2026-10-21T16:15:38Z"
+  },
+  "files": {
+   "remediated": {
+    "name": "pre-terms-observation-gate.horizonshield.dev.json",
+    "bytes": 17854,
+    "sha256": "4baca73a0123cfb28ad6ecb864aba892724cfdb94e22b4a3a0781d8d91ea1312"
+   }
+  },
+  "parties": {
+   "checker": {
+    "name": "invinoveritas",
+    "key_id": "invinoveritas-checker-a4cecab2"
+   },
+   "producer": {
+    "name": "MCP Verification Gate (gate.horizonshield.dev), agent-card signing key",
+    "key_id": "https://gate.horizonshield.dev/.well-known/jwks.json#hs-2026-09"
+   }
+  },
+  "independence": "independent",
+  "results": [
+   {
+    "id": "S1",
+    "title": "Declared skills answer",
+    "required": true,
+    "result": "fail",
+    "finding": "Although all five named skill probes show JSON-RPC results without errors, only check and is-verified return content aligned with their declared A2A status-reading behavior; verify does not recompute a verdict hash, conditions does not provide the stated conditions, and lookup does not provide the declared record details (verdict, state, record SHA-256, and recompute URL)."
+   },
+   {
+    "id": "A1",
+    "title": "Auth behaves as declared",
+    "required": true,
+    "result": "pass",
+    "finding": "The embedded card declares an empty security requirement for skills and says /a2a is public while operator routes require the x-sweep-token header; every skill probe records credential_sent false with HTTP 200, and the tokenless POST /sweep probe received HTTP 403."
+   },
+   {
+    "id": "D1",
+    "title": "Disclosure present",
+    "required": false,
+    "result": "pass",
+    "finding": "The embedded card bytes contain a provider object identifying The HORI\u2026 Co., Ltd. and a compensation disclosure with paid_by set to buyer."
+   }
+  ],
+  "verdict": "fail",
+  "human_review": {
+   "status": "not-performed",
+   "scope": []
+  },
+  "tools": {
+   "validator": "invinoveritas work-acceptance checker v0 (gpt-5.6-terra); extraction: utf-8 text",
+   "profile": "invinoveritas P1 v0"
+  },
+  "notice": "Independent check by invinoveritas against the committed criteria. A model judgment per criterion, not a warranty; not-evaluated is used whenever a criterion cannot be judged from the file."
+ },
+ "signature": {
+  "alg": "Ed25519",
+  "key_id": "invinoveritas-checker-a4cecab2",
+  "value": "xxfbrMExiE0gN/6LIiLritGUW6+wFV7vZNqtiA6f6FzgPvNWe6stqHdpDUp4kSlRcoCP9qMOmIu4FMa4N6NsAw=="
+ },
+ "timestamp": {
+  "covers": "sha256 of the canonical receipt object",
+  "digest_sha256": "cee197f770c9e88764944a9567734ba6c751d6b9e7216d3eebfc5a349ae5b690",
+  "gen_time": "20261021161753Z",
+  "status": "granted",
+  "tsa": "https://freetsa.org/tsr",
+  "tsr_file": "receipt.tsr"
+ }
+}

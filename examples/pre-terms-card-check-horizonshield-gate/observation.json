@@ -1,0 +1,159 @@
+{
+ "kind": "invinoveritas.pre-terms-card-observation/v0",
+ "agent_card_url": "https://gate.horizonshield.dev/.well-known/agent-card.json",
+ "agent_card_sha256": "ada419468d732bdc0fbc13b692a0b36f9ee2a9560001f2375f0410fbd98dc88f",
+ "agent_card_base64": "ewogICJuYW1lIjogIk1DUCBWZXJpZmljYXRpb24gR2F0ZSIsCiAgImRlc2NyaXB0aW9uIjogIkNoZWNrcyB3aGV0aGVyIGFuIE1DUCBzZXJ2ZXIgZXhpc3RzLCBwdWJsaXNoZXMgYW4gYWdlbnQgY2FyZCwgZGlzY2xvc2VzIHdobyBwYXlzIGl0LCBhbmQgcmV0dXJucyBpZGVudGljYWwgb3V0cHV0IGZvciBpZGVudGljYWwgaW5wdXQuIEZyZWUuIENvbmZvcm1hbmNlIGFuZCBkaXNjbG9zdXJlIG9ubHk7IHRoaXMgZ2F0ZSBkb2VzIG5vdCB2ZXJpZnkgdGhhdCBhbnkgcHJpY2UgcmV0dXJuZWQgYnkgYSBjaGVja2VkIHNlcnZlciBpcyBjb3JyZWN0LiIsCiAgInN1cHBvcnRlZEludGVyZmFjZXMiOiBbCiAgICB7CiAgICAgICJ1cmwiOiAiaHR0cHM6Ly9nYXRlLmhvcml6b25zaGllbGQuZGV2L2EyYSIsCiAgICAgICJwcm90b2NvbEJpbmRpbmciOiAiSlNPTlJQQyIsCiAgICAgICJwcm90b2NvbFZlcnNpb24iOiAiMS4wIgogICAgfSwKICAgIHsKICAgICAgInVybCI6ICJodHRwczovL2dhdGUuaG9yaXpvbnNoaWVsZC5kZXYvYTJhIiwKICAgICAgInByb3RvY29sQmluZGluZyI6ICJKU09OUlBDIiwKICAgICAgInByb3RvY29sVmVyc2lvbiI6ICIwLjMiCiAgICB9CiAgXSwKICAidXJsIjogImh0dHBzOi8vZ2F0ZS5ob3Jpem9uc2hpZWxkLmRldi9hMmEiLAogICJwcm92aWRlciI6IHsKICAgICJvcmdhbml6YXRpb24iOiAiVGhlIEhPUkla6Z+zcyBDby4sIEx0ZC4iLAogICAgInVybCI6ICJodHRwczovL3NoaWVsZC50aGUtaG9yaXpvbnMtaW5ub3ZhdGlvbi5jb20iLAogICAgImxlZ2FsRW50aXR5IjogewogICAgICAicmVnaXN0cnkiOiAiSlAiLAogICAgICAic2NoZW1lIjogImhvdWppbi1iYW5nbyIsCiAgICAgICJpZCI6ICI3MDIxMDAxMDc1Mjc5IiwKICAgICAgIm5hbWUiOiAiVGhlIEhPUkla6Z+zcyBDby4sIEx0ZC4iCiAgICB9CiAgfSwKICAidmVyc2lvbiI6ICIwLjQuMjAiLAogICJwcm90b2NvbFZlcnNpb24iOiAiMS4wIiwKICAiY2FwYWJpbGl0aWVzIjogewogICAgInN0cmVhbWluZyI6IGZhbHNlLAogICAgInB1c2hOb3RpZmljYXRpb25zIjogZmFsc2UsCiAgICAiZXh0ZW5zaW9ucyI6IFsKICAgICAgewogICAgICAgICJ1cmkiOiAiaHR0cHM6Ly9nYXRlLmhvcml6b25zaGllbGQuZGV2L2V4dC9jb25kdWN0L3YxIiwKICAgICAgICAiZGVzY3JpcHRpb24iOiAiV2hvIHBheXMgdGhpcyBhZ2VudCwgd2hlcmUgaXRzIG1lYXN1cmVkIGNvbmR1Y3QgcmVjb3JkIGxpdmVzLCBhbmQgd2hlcmUgdG8gZmlsZSBhIHdpdG5lc3Mgd2Fsay4gVGhlIHNwZWNpZmljYXRpb24gaXMgc2VydmVkIGF0IHRoZSBVUkkuIiwKICAgICAgICAicmVxdWlyZWQiOiBmYWxzZSwKICAgICAgICAicGFyYW1zIjogewogICAgICAgICAgImNvbXBlbnNhdGlvbiI6IHsKICAgICAgICAgICAgInBhaWRfYnkiOiAiYnV5ZXIiLAogICAgICAgICAgICAicmVmZXJyYWxfZmVlIjogZmFsc2UsCiAgICAgICAgICAgICJsaXN0aW5nX2ZlZSI6IGZhbHNlLAogICAgICAgICAgICAic3VjY2Vzc19mZWVfcGN0IjogMCwKICAgICAgICAgICAgImRpc2Nsb3N1cmVfdXJsIjogImh0dHBzOi8vc2hpZWxkLnRoZS1ob3Jpem9ucy1pbm5vdmF0aW9uLmNvbS95YWt1bW8vcGxhbnMvIgogICAgICAgICAgfSwKICAgICAgICAgICJtZWFzdXJlZF9lbmRwb2ludHMiOiBbCiAgICAgICAgICAgICJodHRwczovL2dhdGUuaG9yaXpvbnNoaWVsZC5kZXYvbWNwIgogICAgICAgICAgXSwKICAgICAgICAgICJjb25kdWN0X3JlY29yZCI6ICJodHRwczovL2dhdGUuaG9yaXpvbnNoaWVsZC5kZXYvaGlzdG9yeT9lbmRwb2ludD1odHRwcyUzQSUyRiUyRmdhdGUuaG9yaXpvbnNoaWVsZC5kZXYlMkZtY3AiLAogICAgICAgICAgInZlcmRpY3RfcmVjaXBlIjogImh0dHBzOi8vZ2F0ZS5ob3Jpem9uc2hpZWxkLmRldi9zcGVjIiwKICAgICAgICAgICJ3aXRuZXNzX2ludGFrZSI6ICJodHRwczovL2xlZGdlci5ob3Jpem9uc2hpZWxkLmRldi93aXRuZXNzIiwKICAgICAgICAgICJyZWdpc3RlciI6ICJodHRwczovL2dhdGUuaG9yaXpvbnNoaWVsZC5kZXYvcmVnaXN0ZXIiLAogICAgICAgICAgImlkZW50aXR5IjogewogICAgICAgICAgICAia2luZCI6ICJkaWQiLAogICAgICAgICAgICAicmVmIjogImRpZDp3ZWI6Z2F0ZS5ob3Jpem9uc2hpZWxkLmRldiIKICAgICAgICAgIH0sCiAgICAgICAgICAid2l0bmVzc19wb2xpY3kiOiB7CiAgICAgICAgICAgICJyZWNpcHJvY2FsIjogdHJ1ZQogICAgICAgICAgfSwKICAgICAgICAgICJ3aXRuZXNzX3JlcGx5IjogewogICAgICAgICAgICAidHJhbnNwb3J0IjogImEyYSIsCiAgICAgICAgICAgICJhbnN3ZXJzIjogImh0dHBzOi8vZ2F0ZS5ob3Jpem9uc2hpZWxkLmRldi9hMmEiLAogICAgICAgICAgICAicmVxdWVzdF9zY2hlbWEiOiAibmVucmluLXdpdG5lc3MtcmVxdWVzdC12MSIsCiAgICAgICAgICAgICJyZXBseV9zY2hlbWEiOiAibmVucmluLXdpdG5lc3Mtb2JzZXJ2YXRpb24tdjEiLAogICAgICAgICAgICAia2V5X3VybCI6ICJodHRwczovL2dhdGUuaG9yaXpvbnNoaWVsZC5kZXYva2V5cy93aXRuZXNzLmpzb24iLAogICAgICAgICAgICAic3VyZmFjZXMiOiBbCiAgICAgICAgICAgICAgImhlYWx0aC5nYXRlX2NvbW1pdCIsCiAgICAgICAgICAgICAgImFnZW50LWNhcmQuc2lnbmF0dXJlIiwKICAgICAgICAgICAgICAid2VsbC1rbm93bi5qd2tzIiwKICAgICAgICAgICAgICAid2VsbC1rbm93bi5vcGVuYWktYXBwcy1jaGFsbGVuZ2UiLAogICAgICAgICAgICAgICJleHQuY29uZHVjdC12MS5zcGVjIiwKICAgICAgICAgICAgICAia2V5cy5hZ3JlZW1lbnQiLAogICAgICAgICAgICAgICJrZXlzLndpdG5lc3MiLAogICAgICAgICAgICAgICJrZXlzLm9wZXJhdG9yIiwKICAgICAgICAgICAgICAid2VsbC1rbm93bi5kaWQiCiAgICAgICAgICAgIF0sCiAgICAgICAgICAgICJub3RlIjogIldoZW4gZHJhd24sIHRoaXMgZ2F0ZSBtZWFzdXJlcyB0aGUgbGlzdGVkIHB1YmxpYyBzdXJmYWNlcyBvZiB0aGUgcmVxdWVzdGVkIGVuZHBvaW50IGZyb20gaXRzIG93biB2YW50YWdlIGFuZCByZXR1cm5zIG9uZSBFZDI1NTE5LXNpZ25lZCBuZW5yaW4td2l0bmVzcy1vYnNlcnZhdGlvbi12MSAodGhlIGtleSBzZXJ2ZWQgYXQga2V5X3VybCwgY29uZHVjdC12MS4xIHNlY3Rpb24gMTEuNCkuIEl0IHJlZnVzZXMgdG8gd2l0bmVzcyBpdHNlbGYgKHNlbGZfd2l0bmVzcykgYW5kIHJlZnVzZXMgbm9uLXB1YmxpYyB0YXJnZXRzLiByZWNpcHJvY2FsIGhlcmUgbWVhbnMgaXQgYW5zd2VycyBhIGRyYXc7IGl0IGRvZXMgbm90IGluaXRpYXRlIGFuIHVucHJvbXB0ZWQgY2FsbGVyX2NhcmQgd2Fsay1iYWNrLiIKICAgICAgICAgIH0sCiAgICAgICAgICAicmluZ3MiOiB7CiAgICAgICAgICAgICJzcGVjIjogImh0dHBzOi8vZ2l0aHViLmNvbS9vZ2FzdXJmcHJvamVjdC1qcGcvaG9yaXpvbi1zaGllbGQvYmxvYi9tYWluL3dvcmtlcnMvaHMtbGVkZ2VyL25lbnJpbi9ORU5SSU5fU1BFQ192MS5tZCIsCiAgICAgICAgICAgICJzcGVjX3NoYTI1NiI6ICI5Y2NiYTJlMzI1ZmQyYTU1NWZjZGIyZGVjNTE5YjhjNmJmN2E2NjkwNjQ2NzQ4NDZhZWE5OGVjZmZmODI0ZTNkIiwKICAgICAgICAgICAgImJhc2UiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL29nYXN1cmZwcm9qZWN0LWpwZy9tY3AtY29uZHVjdC1yZWdpc3Rlci9tYWluL3JpbmdzLyIsCiAgICAgICAgICAgICJwYXRoIjogIjxzbHVnPi88WVlZWS1NTT4uanNvbiIsCiAgICAgICAgICAgICJzbHVnIjogImVuZHBvaW50IFVSTCB3aXRob3V0IGh0dHBzOi8vLCBsb3dlciBjYXNlLCBldmVyeSBydW4gb2YgY2hhcmFjdGVycyBvdXRzaWRlIFthLXowLTldIHJlcGxhY2VkIGJ5IG9uZSBoeXBoZW4sIGh5cGhlbnMgdHJpbW1lZCBhdCBib3RoIGVuZHMiLAogICAgICAgICAgICAibGVkZ2VyIjogImh0dHBzOi8vbGVkZ2VyLmhvcml6b25zaGllbGQuZGV2L2xlZGdlciIKICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0sCiAgICAgIHsKICAgICAgICAidXJpIjogImh0dHBzOi8vZ2F0ZS5ob3Jpem9uc2hpZWxkLmRldi9leHQvbGVnYWwtZW50aXR5L3YxIiwKICAgICAgICAiZGVzY3JpcHRpb24iOiAiVGhlIGxlZ2FsIGVudGl0eSB0aGF0IGFuc3dlcnMgZm9yIHRoaXMgYWdlbnQsIGRlY2xhcmVkIGluc2lkZSB0aGUgc2lnbmVkIGJ5dGVzLiBUaGUgc3BlY2lmaWNhdGlvbiBpcyBzZXJ2ZWQgYXQgdGhlIFVSSS4iLAogICAgICAgICJyZXF1aXJlZCI6IGZhbHNlLAogICAgICAgICJwYXJhbXMiOiB7CiAgICAgICAgICAicmVnaXN0cnkiOiAiSlAiLAogICAgICAgICAgInNjaGVtZSI6ICJob3VqaW4tYmFuZ28iLAogICAgICAgICAgImlkIjogIjcwMjEwMDEwNzUyNzkiLAogICAgICAgICAgIm5hbWUiOiAiVGhlIEhPUkla6Z+zcyBDby4sIEx0ZC4iLAogICAgICAgICAgImxvb2t1cF91cmwiOiAiaHR0cHM6Ly93d3cuaG91amluLWJhbmdvdS5udGEuZ28uanAvaGVua29yaXJla2ktam9ob3RvLmh0bWw/c2VsSG91emluTm89NzAyMTAwMTA3NTI3OSIKICAgICAgICB9CiAgICAgIH0KICAgIF0KICB9LAogICJkZWZhdWx0SW5wdXRNb2RlcyI6IFsKICAgICJ0ZXh0L3BsYWluIgogIF0sCiAgImRlZmF1bHRPdXRwdXRNb2RlcyI6IFsKICAgICJhcHBsaWNhdGlvbi9qc29uIiwKICAgICJ0ZXh0L3BsYWluIgogIF0sCiAgInNlY3VyaXR5U2NoZW1lcyI6IHsKICAgICJvcGVyYXRvciI6IHsKICAgICAgImFwaUtleVNlY3VyaXR5U2NoZW1lIjogewogICAgICAgICJsb2NhdGlvbiI6ICJoZWFkZXIiLAogICAgICAgICJuYW1lIjogIngtc3dlZXAtdG9rZW4iLAogICAgICAgICJkZXNjcmlwdGlvbiI6ICJPcGVyYXRvci1vbmx5IHJvdXRlcyAoUE9TVCAvc3dlZXAsIFBPU1QgL3JlZ2lzdGVyL3F1YXJhbnRpbmUsIFBPU1QgL21vdWxkLCBERUxFVEUgL3dhdGNoLCB0aGUgcGFpZCB0aWVyIG9mIFBPU1QgL3dhdGNoKS4gTm8gc2tpbGwgb24gdGhpcyBjYXJkIHJlcXVpcmVzIGl0OiB0aGUgQTJBIGludGVyZmFjZSBhdCAvYTJhIGFuZCB0aGUgTUNQIGludGVyZmFjZSBhdCAvbWNwIGFyZSBwdWJsaWMgYW5kIHVuYXV0aGVudGljYXRlZC4iCiAgICAgIH0KICAgIH0KICB9LAogICJzZWN1cml0eVJlcXVpcmVtZW50cyI6IFsKICAgIHt9CiAgXSwKICAiY29tcGVuc2F0aW9uIjogewogICAgInBhaWRfYnkiOiAiYnV5ZXIiLAogICAgInJlZmVycmFsX2ZlZSI6IGZhbHNlLAogICAgImxpc3RpbmdfZmVlIjogZmFsc2UsCiAgICAic3VjY2Vzc19mZWVfcGN0IjogMCwKICAgICJkaXNjbG9zdXJlX3VybCI6ICJodHRwczovL3NoaWVsZC50aGUtaG9yaXpvbnMtaW5ub3ZhdGlvbi5jb20veWFrdW1vL3BsYW5zLyIKICB9LAogICJwcmVmZXJyZWRUcmFuc3BvcnQiOiAiSlNPTlJQQyIsCiAgInNraWxscyI6IFsKICAgIHsKICAgICAgImlkIjogImNoZWNrIiwKICAgICAgIm5hbWUiOiAiQ29uZm9ybWFuY2UgY2hlY2siLAogICAgICAiZGVzY3JpcHRpb24iOiAiUE9TVCAvY2hlY2sgd2l0aCBhbiBNQ1AgZW5kcG9pbnQgVVJMLCBvciBjYWxsIHRoZSBjaGVja19jb25mb3JtYW5jZSB0b29sIG92ZXIgTUNQIGF0IC9tY3AuIFJldHVybnMgYSB2ZXJkaWN0IHdpdGggYSByZWNvbXB1dGFibGUgU0hBLTI1Ni4gT3ZlciBBMkEgKFNlbmRNZXNzYWdlIGF0IC9hMmEpLCBhIHRleHQgcGFydCBjYXJyeWluZyBhbiBNQ1AgZW5kcG9pbnQgVVJMIHJldHVybnMgdGhpcyBnYXRlJ3MgY3VycmVudCByZWdpc3RlciByZWFkaW5nIGZvciBpdCAodGhlIHNhbWUgYnl0ZXMgYXMgR0VUIC9pcy12ZXJpZmllZCk6IHZlcmlmaWVkIHRydWUgb25seSBvbiBhIGZ1bGwgcGFzcywgbnVsbCBvdGhlcndpc2UsIG5ldmVyIGZhbHNlLiIsCiAgICAgICJ0YWdzIjogWwogICAgICAgICJtY3AiLAogICAgICAgICJ2ZXJpZmljYXRpb24iLAogICAgICAgICJjb25mb3JtYW5jZSIsCiAgICAgICAgImRpc2Nsb3N1cmUiCiAgICAgIF0sCiAgICAgICJleGFtcGxlcyI6IFsKICAgICAgICAiQ2hlY2sgaHR0cHM6Ly9leGFtcGxlLmNvbS9tY3AgZm9yIGNvbmZvcm1hbmNlIiwKICAgICAgICAiRG9lcyB0aGlzIHNlcnZlciBleGlzdCwgcHVibGlzaCBhbiBhZ2VudCBjYXJkLCBhbmQgcmV0dXJuIGlkZW50aWNhbCBvdXRwdXQgZm9yIGlkZW50aWNhbCBpbnB1dD8iCiAgICAgIF0sCiAgICAgICJpbnB1dE1vZGVzIjogWwogICAgICAgICJ0ZXh0L3BsYWluIiwKICAgICAgICAiYXBwbGljYXRpb24vanNvbiIKICAgICAgXSwKICAgICAgIm91dHB1dE1vZGVzIjogWwogICAgICAgICJhcHBsaWNhdGlvbi9qc29uIgogICAgICBdCiAgICB9LAogICAgewogICAgICAiaWQiOiAidmVyaWZ5IiwKICAgICAgIm5hbWUiOiAiVmVyZGljdCB2ZXJpZmljYXRpb24iLAogICAgICAiZGVzY3JpcHRpb24iOiAiUmVjb21wdXRlIHRoZSBTSEEtMjU2IG9mIGEgdmVyZGljdCB0aGlzIGdhdGUgaXNzdWVkLCBzbyB5b3UgZG8gbm90IGhhdmUgdG8gdHJ1c3QgdGhlIGlzc3Vlci4gQXZhaWxhYmxlIGFzIHRoZSB2ZXJpZnlfdmVyZGljdCB0b29sIG92ZXIgTUNQLiIsCiAgICAgICJ0YWdzIjogWwogICAgICAgICJ2ZXJpZmljYXRpb24iLAogICAgICAgICJ0YW1wZXItZXZpZGVudCIsCiAgICAgICAgInJlY29tcHV0YWJsZSIKICAgICAgXSwKICAgICAgImV4YW1wbGVzIjogWwogICAgICAgICJWZXJpZnkgdGhpcyB2ZXJkaWN0IGhhc2hlcyB0byBpdHMgb3duIHJlY29yZF9zaGEyNTYiLAogICAgICAgICJSZWNvbXB1dGUgdGhlIGRpZ2VzdCBvZiBhIHZlcmRpY3QgcmV0dXJuZWQgYnkgY2hlY2siCiAgICAgIF0sCiAgICAgICJpbnB1dE1vZGVzIjogWwogICAgICAgICJhcHBsaWNhdGlvbi9qc29uIgogICAgICBdLAogICAgICAib3V0cHV0TW9kZXMiOiBbCiAgICAgICAgImFwcGxpY2F0aW9uL2pzb24iCiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJjb25kaXRpb25zIiwKICAgICAgIm5hbWUiOiAiVmVyaWZpY2F0aW9uIGNvbmRpdGlvbnMiLAogICAgICAiZGVzY3JpcHRpb24iOiAiUmV0dXJuIHRoZSBleGFjdCBjb25kaXRpb25zIHRoaXMgZ2F0ZSBtZWFzdXJlcyAoTUNQIHJlYWNoYWJpbGl0eSwgYWdlbnQgY2FyZCwgY29tcGVuc2F0aW9uIGRpc2Nsb3N1cmUsIGRldGVybWluaXN0aWMgb3V0cHV0KSBhbmQgaG93IGVhY2ggdmVyZGljdCBpcyByZWNvbXB1dGVkLiBUaGUgZ2V0X2NvbmRpdGlvbnMgdG9vbCBvdmVyIE1DUCBhbmQgR0VUIC9zcGVjIHNlcnZlIHRoZSBzYW1lIG1ldGhvZG9sb2d5LiIsCiAgICAgICJ0YWdzIjogWwogICAgICAgICJtZXRob2RvbG9neSIsCiAgICAgICAgInRyYW5zcGFyZW5jeSIsCiAgICAgICAgInNwZWMiCiAgICAgIF0sCiAgICAgICJleGFtcGxlcyI6IFsKICAgICAgICAiV2hhdCBkb2VzIHRoaXMgZ2F0ZSBhY3R1YWxseSBjaGVjaz8iLAogICAgICAgICJIb3cgaXMgYSB2ZXJkaWN0IHJlY29tcHV0ZWQgaW5kZXBlbmRlbnRseT8iCiAgICAgIF0sCiAgICAgICJpbnB1dE1vZGVzIjogWwogICAgICAgICJ0ZXh0L3BsYWluIgogICAgICBdLAogICAgICAib3V0cHV0TW9kZXMiOiBbCiAgICAgICAgImFwcGxpY2F0aW9uL2pzb24iCiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJpcy12ZXJpZmllZCIsCiAgICAgICJuYW1lIjogIlZlcmlmaWNhdGlvbiBzdGF0dXMiLAogICAgICAiZGVzY3JpcHRpb24iOiAiUmVwb3J0IHdoZXRoZXIgYW4gZW5kcG9pbnQncyBsYXRlc3QgbWVhc3VyZW1lbnQgcGFzc2VkIGFsbCBtZWFzdXJlZCBjb25kaXRpb25zLiBSZXR1cm5zIHRydWUgb3IgbnVsbCAoc3RhdGU6IHZlcmlmaWVkLCBwZW5kaW5nLCBoZWxkLCB3YXRjaGVkLCBhYnNlbnQpLCBuZXZlciBmYWxzZS4gQXZhaWxhYmxlIGFzIHRoZSBpc192ZXJpZmllZCB0b29sIG92ZXIgTUNQLiIsCiAgICAgICJ0YWdzIjogWwogICAgICAgICJ2ZXJpZmljYXRpb24iLAogICAgICAgICJzdGF0dXMiLAogICAgICAgICJob25lc3QtbnVsbCIKICAgICAgXSwKICAgICAgImV4YW1wbGVzIjogWwogICAgICAgICJJcyBodHRwczovL2V4YW1wbGUuY29tL21jcCBjdXJyZW50bHkgdmVyaWZpZWQ/IiwKICAgICAgICAiV2hhdCBpcyB0aGlzIGVuZHBvaW50J3MgbGF0ZXN0IHN0YXRlIG9uIHRoZSByZWdpc3Rlcj8iCiAgICAgIF0sCiAgICAgICJpbnB1dE1vZGVzIjogWwogICAgICAgICJ0ZXh0L3BsYWluIgogICAgICBdLAogICAgICAib3V0cHV0TW9kZXMiOiBbCiAgICAgICAgImFwcGxpY2F0aW9uL2pzb24iCiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJsb29rdXAiLAogICAgICAibmFtZSI6ICJSZWdpc3RlciBsb29rdXAiLAogICAgICAiZGVzY3JpcHRpb24iOiAiTG9vayB1cCBhbiBlbmRwb2ludCdzIHJlY29yZCBvbiB0aGUgcHVibGljIHJlZ2lzdGVyOiBpdHMgbGF0ZXN0IHZlcmRpY3QsIHN0YXRlLCBhbmQgcmVjb3JkIFNIQS0yNTYsIHdpdGggYSByZWNvbXB1dGUgVVJMLiBBdmFpbGFibGUgYXMgdGhlIGxvb2t1cF9zZXJ2ZXIgdG9vbCBvdmVyIE1DUC4iLAogICAgICAidGFncyI6IFsKICAgICAgICAicmVnaXN0ZXIiLAogICAgICAgICJsb29rdXAiLAogICAgICAgICJyZWNvbXB1dGFibGUiCiAgICAgIF0sCiAgICAgICJleGFtcGxlcyI6IFsKICAgICAgICAiTG9vayB1cCB0aGUgcmVjb3JkIGZvciBodHRwczovL2V4YW1wbGUuY29tL21jcCIsCiAgICAgICAgIkZpbmQgdGhlIGxhdGVzdCB2ZXJkaWN0IGhhc2ggZm9yIHRoaXMgZW5kcG9pbnQiCiAgICAgIF0sCiAgICAgICJpbnB1dE1vZGVzIjogWwogICAgICAgICJ0ZXh0L3BsYWluIgogICAgICBdLAogICAgICAib3V0cHV0TW9kZXMiOiBbCiAgICAgICAgImFwcGxpY2F0aW9uL2pzb24iCiAgICAgIF0KICAgIH0KICBdLAogICJzaWduYXR1cmVzIjogWwogICAgewogICAgICAicHJvdGVjdGVkIjogImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BQVTBVaUxDSnJhV1FpT2lKb2N5MHlNREkyTFRBNUlpd2lhbXQxSWpvaWFIUjBjSE02THk5bllYUmxMbWh2Y21sNmIyNXphR2xsYkdRdVpHVjJMeTUzWld4c0xXdHViM2R1TDJwM2EzTXVhbk52YmlKOSIsCiAgICAgICJzaWduYXR1cmUiOiAiQ2dtTG9admdiS3VkT3NYbXpGTnBVWmdaLUJNd3NPZEI2akVfOFN6R1UzTkctRzB5bFQ4bUY4NXhnVklZSXVRTEg5T05qS1l1bWZlOGtma3pfajNvSEEiCiAgICB9LAogICAgewogICAgICAicHJvdGVjdGVkIjogImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BQVTBVaUxDSnJhV1FpT2lKb2N5MHlNREkyTFRBNUlpd2lhbXQxSWpvaWFIUjBjSE02THk5bllYUmxMbWh2Y21sNmIyNXphR2xsYkdRdVpHVjJMeTUzWld4c0xXdHViM2R1TDJwM2EzTXVhbk52YmlKOSIsCiAgICAgICJzaWduYXR1cmUiOiAiUFVNaFo3Z1lwTGh1UUFSaVZxYk5yQ3d6T243Q0VReGttTHZ6a3o1c284N3NaSXNjQXBNZEZ1OHJIZkVUWkhPRmhXcHNURUNxOEFxMlNKdXlfZHVZMnciCiAgICB9CiAgXQp9",
+ "client": "invinoveritas-pre-terms-check/0.1 (+https://invinoveritas.dev)",
+ "skill_probes": [
+  {
+   "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "message/send",
+    "params": {
+     "message": {
+      "role": "user",
+      "messageId": "inv-pre-terms-1",
+      "parts": [
+       {
+        "kind": "text",
+        "text": "Check https://api.babyblueviper.com/mcp for conformance"
+       }
+      ]
+     }
+    }
+   },
+   "http_status": 200,
+   "credential_sent": false,
+   "jsonrpc_result": true,
+   "jsonrpc_error": null,
+   "response_sha256": "39bbed9e2055735cd74e1725bc927c9cd66d6a00fd13853e3d3bd5c40b435286",
+   "response_text_excerpt": "state absent for https://api.babyblueviper.com/mcp: verified is null (not false). No measurement exists here for this endpoint. Absence is not a negative verdict.",
+   "at_utc": "2026-10-21T16:17:32Z",
+   "skill": "check"
+  },
+  {
+   "request": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "message/send",
+    "params": {
+     "message": {
+      "role": "user",
+      "messageId": "inv-pre-terms-2",
+      "parts": [
+       {
+        "kind": "text",
+        "text": "Verify this verdict hashes to its own record_sha256"
+       }
+      ]
+     }
+    }
+   },
+   "http_status": 200,
+   "credential_sent": false,
+   "jsonrpc_result": true,
+   "jsonrpc_error": null,
+   "response_sha256": "d037fe73225c20b7580d13b91ab461562c2b06044d6c990244668812be56dfe1",
+   "response_text_excerpt": "Send an MCP endpoint URL (https://...) as a text part. This gate answers with its current register reading for that endpoint, the same bytes as GET /is-verified: verified is true only when the latest scheduled measurement passed every measured condition, and null in every other case (absent, watched, pending, held). It never says false, it does not measure on this path (a fresh measurement is POST /check), and it is not a recommendation.",
+   "at_utc": "2026-10-21T16:17:32Z",
+   "skill": "verify"
+  },
+  {
+   "request": {
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "message/send",
+    "params": {
+     "message": {
+      "role": "user",
+      "messageId": "inv-pre-terms-3",
+      "parts": [
+       {
+        "kind": "text",
+        "text": "What does this gate actually check?"
+       }
+      ]
+     }
+    }
+   },
+   "http_status": 200,
+   "credential_sent": false,
+   "jsonrpc_result": true,
+   "jsonrpc_error": null,
+   "response_sha256": "1732a9f1768d27d730409630a550a7ae2c032265c3e72a8c94ad2f0f4181e9f2",
+   "response_text_excerpt": "Send an MCP endpoint URL (https://...) as a text part. This gate answers with its current register reading for that endpoint, the same bytes as GET /is-verified: verified is true only when the latest scheduled measurement passed every measured condition, and null in every other case (absent, watched, pending, held). It never says false, it does not measure on this path (a fresh measurement is POST /check), and it is not a recommendation.",
+   "at_utc": "2026-10-21T16:17:32Z",
+   "skill": "conditions"
+  },
+  {
+   "request": {
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "message/send",
+    "params": {
+     "message": {
+      "role": "user",
+      "messageId": "inv-pre-terms-4",
+      "parts": [
+       {
+        "kind": "text",
+        "text": "Is https://api.babyblueviper.com/mcp currently verified?"
+       }
+      ]
+     }
+    }
+   },
+   "http_status": 200,
+   "credential_sent": false,
+   "jsonrpc_result": true,
+   "jsonrpc_error": null,
+   "response_sha256": "5335232132407b4e72655c86dfa3bca359f7ed71d85eb48baa366c5d78b3f809",
+   "response_text_excerpt": "state absent for https://api.babyblueviper.com/mcp: verified is null (not false). No measurement exists here for this endpoint. Absence is not a negative verdict.",
+   "at_utc": "2026-10-21T16:17:33Z",
+   "skill": "is-verified"
+  },
+  {
+   "request": {
+    "jsonrpc": "2.0",
+    "id": 5,
+    "method": "message/send",
+    "params": {
+     "message": {
+      "role": "user",
+      "messageId": "inv-pre-terms-5",
+      "parts": [
+       {
+        "kind": "text",
+        "text": "Look up the record for https://api.babyblueviper.com/mcp"
+       }
+      ]
+     }
+    }
+   },
+   "http_status": 200,
+   "credential_sent": false,
+   "jsonrpc_result": true,
+   "jsonrpc_error": null,
+   "response_sha256": "7ccde50347e8c1a7f1e390b9ef8e3c856b006170c72b5c5b847059efe36347ac",
+   "response_text_excerpt": "state absent for https://api.babyblueviper.com/mcp: verified is null (not false). No measurement exists here for this endpoint. Absence is not a negative verdict.",
+   "at_utc": "2026-10-21T16:17:33Z",
+   "skill": "lookup"
+  }
+ ],
+ "auth_probes": [
+  {
+   "route": "POST https://gate.horizonshield.dev/sweep",
+   "credential_sent": false,
+   "http_status": 403,
+   "response_body": "{\n  \"error\": \"forbidden\"\n}",
+   "at_utc": "2026-10-21T16:17:33Z"
+  }
+ ],
+ "does_not_establish": [
+  "that the card is accurate beyond these probes",
+  "that any verdict the gate returns is correct",
+  "the operator's identity",
+  "behaviour at other times or from other clients"
+ ]
+}

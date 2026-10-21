@@ -1,0 +1,27 @@
+{
+ "version": "invinoveritas.work-acceptance-bindings/v0",
+ "receipt_sha256": "cee197f770c9e88764944a9567734ba6c751d6b9e7216d3eebfc5a349ae5b690",
+ "criteria_id": "953c574319c03a52a06e5b05c550f056c3bf096b3e4072f1a810546a678887fd",
+ "criteria_rfc3161": [
+  {
+   "tsa": "freetsa",
+   "gen_time": "20261021161538Z"
+  },
+  {
+   "tsa": "digicert",
+   "gen_time": "20261021161538Z"
+  }
+ ],
+ "receipt_rfc3161": [
+  {
+   "tsa": "freetsa",
+   "gen_time": "20261021161753Z"
+  },
+  {
+   "tsa": "digicert",
+   "gen_time": "20261021161753Z"
+  }
+ ],
+ "bindings": {},
+ "signature": "i82yp11iE+Y7g3N3bb9S16Ks7PXcPGWPPQwy2g7arIr7f60Tili9CI9ZPQca7aHc1ew5hpr4km5xw7AVbXvcBA=="
+}
