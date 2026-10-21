@@ -12,6 +12,9 @@ import json
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import tsa_sig as _TSA
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _spec = importlib.util.spec_from_file_location("x402_ed25519_ref", os.path.join(_HERE, "..", "x402-receipt-private-opening",
                                                                               "ed25519_ref.py"))
@@ -179,7 +182,14 @@ def check(inputs):
     # step 9: the TSA's signature over a token and its certificate chain are a separate check from the imprint/time read
     # above (steps 5/6). This checker never parses the CMS SignerInfo or validates a chain (the vectors' tokens are unsigned
     # by design, per "What it does not check" below) -- said explicitly here so `imprint_match` is never read as a verified time.
-    out["tsa_signature"] = "not-evaluated" if (rt is not None or ct is not None) else "none"
+    # step 9 (profile 1.4 / 1.4.1): the authority's CMS signature and chain, one key per token present, against the relying party's
+    # anchors (inputs.tsa_roots_base64). No anchors, or an empty list, is `not_evaluated`. Written from the README (tsa_sig.py).
+    _anchors = [base64.b64decode(a) for a in (inputs.get("tsa_roots_base64") or [])]
+    _tsa = {}
+    for _k, _tok in (("criteria", inputs.get("criteria_tsr_base64")), ("receipt", inputs.get("receipt_tsr_base64"))):
+        if _tok:
+            _tsa[_k] = _TSA.evaluate(base64.b64decode(_tok), _anchors)
+    out["tsa_signature"] = _tsa
     # 1.3: a token's stated accuracy widens its time against "committed before": the criteria token is read at its LATEST
     # (genTime + accuracy), the record's own token at its EARLIEST (genTime - accuracy); `ordering` is ignored.
     if ct is not None and ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"]:
@@ -244,6 +254,12 @@ def main(paths):
         got, exp = check(v["inputs"]), v["expected"]
         norm = lambda x: sorted(x) if isinstance(x, list) else x
         diffs = {k: (got.get(k), exp[k]) for k in exp if norm(got.get(k)) != norm(exp[k])}
+        # profile 1.4.1: a vector may list alternative conforming step-9 values (40: RSASSA-PSS is optional, `unsupported` conforms)
+        acc = v.get("tsa_signature_accepted") or {}
+        if "tsa_signature" in diffs and acc:
+            g, e = got.get("tsa_signature") or {}, exp["tsa_signature"]
+            if all(g.get(t) == e.get(t) or g.get(t) in acc.get(t, []) for t in e) and set(g) == set(e):
+                del diffs["tsa_signature"]
         agree_all &= not diffs
         print(f"{'agree' if not diffs else 'DISAGREE'} {os.path.basename(p)}" + "".join(f"\n    {k}: ours {a!r} vector {b!r}" for k, (a, b) in diffs.items()))
         if diffs and got.get("_times"):

@@ -1,0 +1,57 @@
+war_check.py + tsa_sig.py on maximusrufus/work-acceptance-record vectors at 4daf721 (profile 1.4.1), python3 -I, cryptography 41.0.7
+agree 01-valid.json
+agree 02-criteria-committed-after-issue.json
+agree 03-self-checked.json
+agree 04-required-not-evaluated.json
+agree 05-checker-key-equals-producer-key.json
+agree 06-receipt-edited-after-signing.json
+agree 07-criteria-file-swapped.json
+agree 08-receipt-token-over-another-receipt.json
+agree 09-stated-pass-recomputes-incomplete.json
+agree 10-committed-at-contradicts-token.json
+agree 11-required-criterion-fails.json
+agree 12-signer-is-not-the-checker.json
+agree 13-independent-but-same-party.json
+agree 14-results-not-in-criteria.json
+agree 15-criteria-token-over-other-bytes.json
+agree 16-no-criteria-token.json
+agree 17-committed-at-equals-reference.json
+agree 18-mismatching-record-token-later-time.json
+agree 19-result-outside-vocabulary.json
+agree 20-producer-undeclared.json
+agree 21-unknown-schema.json
+agree 22-matching-record-token-later-than-issued.json
+agree 23-criteria-token-imprint-oid-sha384.json
+agree 24-criteria-token-imprint-oid-sha3-256.json
+agree 25-criteria-token-imprint-oid-sha512-256.json
+agree 26-key-small-order.json
+agree 27-key-non-canonical-encoding.json
+agree 28-key-file-with-unrelated-bad-entry.json
+agree 29-criteria-token-accuracy-flips-commitment.json
+agree 30-criteria-token-accuracy-millis-still-before.json
+agree 31-tsa-freetsa-verified.json
+agree 32-tsa-digicert-verified.json
+agree 33-tsa-unrelated-root-untrusted.json
+agree 34-tsa-tampered-signature-failed.json
+agree 35-tsa-token-without-signer-certificate.json
+agree 36-tsa-no-anchors-not-evaluated.json
+agree 37-tsa-synthetic-control-verified.json
+agree 38-tsa-intermediate-expired-failed.json
+agree 39-tsa-content-type-mismatch-failed.json
+agree 40-tsa-rsassa-pss-verified.json
+agree 41-tsa-ecdsa-p256-verified.json
+agree 42-tsa-ecdsa-p521-unsupported.json
+agree 43-tsa-empty-anchor-list-not-evaluated.json
+agree 44-tsa-unsupported-curve-and-bad-digest-failed.json
+agree 45-tsa-no-certificates-and-bad-digest-failed.json
+agree 46-tsa-unsupported-curve-and-ess-mismatch-failed.json
+
+--- mutations (one step-9 rule removed at a time)
+baseline failing: none
+ESS binding                                   -> fails ['46']
+signature                                     -> fails ['34', '42']
+validity at genTime                           -> fails ['38']
+anchor = name + key (DER-only instead)        -> fails ['32']
+unsupported curve (treat P-521 as signable)   -> fails ['42']
+contentType check removed                     -> fails ['39']
+messageDigest check removed                   -> fails ['44', '45']
