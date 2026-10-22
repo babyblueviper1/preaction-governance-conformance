@@ -314,17 +314,17 @@ def _chain(signer, pool, anchors, t, failures):
             nxt = c
             break
         if nxt is None:
-            if issuers and _reaches_anchor(issuers, pool, anchors):
-                failures.append("chain link signature")        # the anchor is reachable by name, but the link does not verify
+            # profile 1.4.1 @ 6b2f730 (vector 53): a certificate with the issuer's NAME but another key did not issue this one --
+            # the chain reaches nothing trusted (`untrusted`), it is not a failed check.
             return False
         is_anchor = _is_anchor(nxt, anchors)
         if not is_anchor:
+            # profile 1.4.1 @ 6b2f730 (vector 54): a check that can run and fails takes precedence -- an issuer not valid at
+            # genTime or not a CA is `failed` whether or not the chain goes on to reach an anchor.
             if not _valid_at(nxt, t):
-                if _reaches_anchor([nxt], pool, anchors):
-                    failures.append("issuer not valid at genTime")
+                failures.append("issuer not valid at genTime")
             if not _is_ca(nxt):
-                if _reaches_anchor([nxt], pool, anchors):
-                    failures.append("issuer is not a CA")
+                failures.append("issuer is not a CA")
         cur = nxt
 
 
@@ -391,7 +391,7 @@ def evaluate(token_der, anchors_der):
         except x509.ExtensionNotFound:
             failures.append("id-kp-timeStamping")
         reached = _chain(signer, certs, anchors, tok.gen_time, failures)
-        if not _valid_at(signer, tok.gen_time) and (reached or _reaches_anchor([signer], certs, anchors)):
+        if not _valid_at(signer, tok.gen_time):        # 1.4.1 @ 6b2f730: a failed check counts whatever the chain reaches
             failures.append("signer not valid at genTime")
         if not reached:
             untrusted = True

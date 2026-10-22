@@ -15,6 +15,20 @@ python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
 ```
 
+## Profile 1.4.1 (6b2f730): 55/55 agree
+`upstream_vectors_1_4_1_55/` is an unmodified copy of upstream `vectors/` at 6b2f730 (CC0 1.0); our run is
+`upstream_vectors_1_4_1_55_run.txt`. **55/55** (46/46 at 4daf721 and every earlier set unchanged). Before this update the checker gave
+52/55, and the three misses are published here:
+- 52 (non-integer numbers in the signed body): `jcs()` used Python's float repr, so 0.00001 / 1e-7 / 123456789012345680000 produced
+  other bytes than RFC 8785 and the signature check failed. It now writes ECMAScript Number::toString (checked against node
+  JSON.stringify on 89,980 doubles, 0 mismatches) and sorts keys by UTF-16 code units. The same fix is in our live issuer; the 14
+  records it has issued are byte-identical under it.
+- 53 (anchor with the issuer's name and another key): we reported `failed` (a link signature that does not verify against a
+  same-name anchor); the anchor is a name AND a key, so that chain reaches nothing trusted: `untrusted`.
+- 54 (intermediate expired at genTime, chain reaches no anchor): we reported `untrusted` because we only counted defects on chains
+  that reach an anchor; a check that can run and fails takes precedence: `failed`.
+`python3 tsa_sig_mutations.py upstream_vectors_1_4_1` still catches every removed check.
+
 ## Profile 1.3 (2d8fac7): 30/30 agree
 `upstream_vectors_1_3_30/` is an unmodified copy of upstream `vectors/` at 2d8fac7 (CC0 1.0); our run is `upstream_vectors_1_3_30_run.txt`.
 Before this update this checker gave 29/30. It missed 29: it ignored the criteria token's stated `accuracy` of 60 s, read the

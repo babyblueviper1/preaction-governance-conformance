@@ -23,6 +23,20 @@ python3 ../work-acceptance-record-cold/war_check.py selftest-pass.json
 What a record attests: our check of that file against those committed criteria. It is a model judgment per criterion (the record's
 `tools` field names it), not a warranty that the work is fit for every purpose.
 
+## Reference verifier at profile 1.4.1 (2026-10-22)
+
+All three records here pass Trilatic's own reference verifier at
+[maximusrufus/work-acceptance-record @ 6b2f730](https://github.com/maximusrufus/work-acceptance-record/tree/6b2f730) (profile 1.4.1,
+55 vectors), including the profile 1.4 time-stamp-authority signature step, with the FreeTSA and DigiCert roots copied unmodified
+from upstream vectors 31 and 32 (`tsa_roots/`):
+
+```
+python3 war_verify.py --tsa-roots tsa_roots/freetsa_root.pem --tsa-roots tsa_roots/digicert_root.pem --outcome selftest-pass.json
+```
+
+Every record: `signature_valid` true, `independence` independent, `tsa_signature` {criteria: verified, receipt: verified}, verdict
+recomputed = stated, no problem or warning codes. Full output: `reference_verifier_6b2f730_run.txt`.
+
 ## horizon-shield#51 rehearsal (2026-10-18)
 
 Two real records for case A of the three-record pilot in

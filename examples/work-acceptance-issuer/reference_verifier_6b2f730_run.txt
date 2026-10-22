@@ -1,0 +1,48 @@
+== selftest-pass.json
+{
+ "criteria_committed_before_check": "yes",
+ "criteria_hash": "match",
+ "independence": "independent",
+ "problem_codes": [],
+ "receipt_timestamp": "imprint_match",
+ "signature_valid": true,
+ "tsa_signature": {
+  "criteria": "verified",
+  "receipt": "verified"
+ },
+ "verdict_recomputed": "pass",
+ "verdict_stated": "pass",
+ "warning_codes": []
+}
+== hs51-rehearsal-caseA-audit-only.json
+{
+ "criteria_committed_before_check": "yes",
+ "criteria_hash": "match",
+ "independence": "independent",
+ "problem_codes": [],
+ "receipt_timestamp": "imprint_match",
+ "signature_valid": true,
+ "tsa_signature": {
+  "criteria": "verified",
+  "receipt": "verified"
+ },
+ "verdict_recomputed": "incomplete",
+ "verdict_stated": "incomplete",
+ "warning_codes": []
+}
+== hs51-rehearsal-caseA-with-fixture.json
+{
+ "criteria_committed_before_check": "yes",
+ "criteria_hash": "match",
+ "independence": "independent",
+ "problem_codes": [],
+ "receipt_timestamp": "imprint_match",
+ "signature_valid": true,
+ "tsa_signature": {
+  "criteria": "verified",
+  "receipt": "verified"
+ },
+ "verdict_recomputed": "pass",
+ "verdict_stated": "pass",
+ "warning_codes": []
+}
