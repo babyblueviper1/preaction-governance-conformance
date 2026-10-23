@@ -1,0 +1,1137 @@
+{
+ "name": "x402-receipt-authorization-commitment/0 receipt-level vectors",
+ "license": "CC0-1.0",
+ "spec": "x402-foundation/x402#3827 at fe777a4e02f3b55e76a246f17bc3ddc616ba3a9c, specs/extensions/extension-offer-and-receipt.md sections 3, 5.2 to 5.6",
+ "candidates_snapshot": "candidates_snapshot.json",
+ "test_signer": {
+  "address": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+  "derivation": "sha256('x402-receipt-vectors/test-signer/1') as a secp256k1 private key; test only"
+ },
+ "test_salts": "sha256('x402-rac-receipt-test-salt/<label>'); not valid production salts",
+ "authorized_signers": "stands in for 4.5.1, which leaves the authorisation mechanism open",
+ "vectors": [
+  {
+   "id": "receipt-v2-linked",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "linked",
+     "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
+     "transaction": "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88"
+    }
+   },
+   "note": "signed v2 receipt, salt and asset held, candidate set obtained (12 real nonces); exactly one opens: settlement A"
+  },
+  {
+   "id": "receipt-v2-linked-transaction-agrees",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x928b41b902804dc2da2c8987f52af9c78de71200c2b1e48e6d029e0634468b5b2599489c7e3b6f439692e7c82f42f3047b0cc5bca625fdeaa0f4531f2e40d8531c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "linked",
+     "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
+     "transaction": "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88"
+    }
+   },
+   "note": "transaction is set and names the same settlement the commitment opens to"
+  },
+  {
+   "id": "receipt-v2-inconsistent",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "0x1a49341e25e864bc3fc1747d5d6ecf63b8e83fc6398b558d3081b1f91e633d43",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2740a74653317605399c7053102bf9ecb4eb24fca9b795056430416c3b3850045d3febb9a10eb3832a9dbeebee882b1875b4fd44a2d5e8598d3264d7937642ff1c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "inconsistent",
+     "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
+     "transaction": "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88"
+    }
+   },
+   "note": "the commitment opens to A while transaction names B (the next block): the signer asserts two settlements; MUST NOT link to either"
+  },
+  {
+   "id": "receipt-v2-no-match-false-commitment",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0x2bbced6960f4e2e9322d6ea2acf9964524907d85d3ff91971e44be7f20f87dc1"
+    },
+    "signature": "0x8e6156bc5c36f127c894124fe5de70bc8f953938c3b391647c6c4e0c3445e0605383fbc9d3f90b1db04a8ad81a89024c1f4f73cca98289c9dd1ddc1f624143361c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "no_match",
+     "detail": "matches=0"
+    }
+   },
+   "note": "the commitment is to a nonce the payer never consumed"
+  },
+  {
+   "id": "receipt-v2-no-match-wrong-salt",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x1f2dfe80c26d293cf7c301c6788fef897691f448f2e1b61450970c88e137bc15",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "no_match",
+     "detail": "matches=0"
+    }
+   },
+   "note": "a wrong salt is indistinguishable from a false commitment (hiding); no_match is about the salt and asset used"
+  },
+  {
+   "id": "receipt-v2-no-match-wrong-asset",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "no_match",
+     "detail": "matches=0"
+    }
+   },
+   "note": "asset held is mainnet USDC, the payment was on Base Sepolia USDC"
+  },
+  {
+   "id": "receipt-v2-no-match-other-authorizer",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xc998214f9e504f0bb69ace0587b486a9c92bebcade216c850ef5bb871b3c8395"
+    },
+    "signature": "0x720e79ca08f95be420410773eb4d387e960a42f0468ca47d6e78acf44de5a89e41c6c1af6a9f08a13de33b6331b0229a7a4f471505d709d2b2592838ba5017f31b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e",
+    "authorizer": "0x857b06519e91e3a54538791bdbb0e22373e36b66"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "no_match",
+     "detail": "matches=0"
+    }
+   },
+   "note": "commitment made with another authorizer; the held authorizer is ignored because step 1 takes it from the signed payer"
+  },
+  {
+   "id": "receipt-v2-no-match-two-candidates",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": [
+    {
+     "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
+     "tx": "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88"
+    },
+    {
+     "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
+     "tx": "0x1a49341e25e864bc3fc1747d5d6ecf63b8e83fc6398b558d3081b1f91e633d43"
+    }
+   ],
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "no_match",
+     "detail": "matches=2"
+    }
+   },
+   "note": "the identifier appears twice in the candidate set (an identifier that can repeat): more than one match is no_match, fail closed"
+  },
+  {
+   "id": "receipt-v2-no-match-empty-set",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": [],
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "no_match",
+     "detail": "matches=0"
+    }
+   },
+   "note": "the query succeeded and returned no candidates: a finished check, contrast receipt-v2-incomplete-*"
+  },
+  {
+   "id": "receipt-v2-incomplete-unobtainable",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": {
+    "status": "unobtainable",
+    "note": "log query not answered"
+   },
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "incomplete",
+     "detail": "candidate_set_unobtainable"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-incomplete-rate-limited",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": {
+    "status": "unobtainable",
+    "note": "rate-limited query that returned an empty list"
+   },
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "incomplete",
+     "detail": "candidate_set_unobtainable"
+    }
+   },
+   "note": "a failed or rate-limited query that returns [] is incomplete, never no_match; counts MUST NOT drop the receipt"
+  },
+  {
+   "id": "receipt-v2-not-attempted-no-commitment",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "",
+     "authorizationCommitment": ""
+    },
+    "signature": "0xd215716cf92fea364edd5dc8961b27f3b0f7fb4908bce6c31b7bd0ec57e9148873a6fc10a4412484caa6abb9bc45d567042ea491d7030d58ae4670ca4ce897e41b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "no_commitment"
+    }
+   },
+   "note": "version 2 with both fields empty"
+  },
+  {
+   "id": "receipt-v1-not-attempted",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 1,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": ""
+    },
+    "signature": "0xaa92e3979334f0e19532bb72ae37329a96f08c0eca05b68127149e9f7209bcb52ec21d938eb05a14040d2ee3e5f5b12e64b882d1c98cbed6396e148d88620fe61b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "no_commitment"
+    }
+   },
+   "note": "a version 1 receipt has no commitment fields"
+  },
+  {
+   "id": "receipt-v2-not-attempted-salt-not-held",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "salt_not_held"
+    }
+   }
+  },
+  {
+   "id": "receipt-v2-not-attempted-asset-not-held",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "asset_not_held"
+    }
+   },
+   "note": "the receipt does not carry asset; receipt plus salt alone do not link"
+  },
+  {
+   "id": "receipt-v2-not-attempted-unsupported-method",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "permit2",
+     "authorizationCommitment": "0x4b332ac1ed08c0223ef29c840cdc1e9667b348826660211922718a98b87f998d"
+    },
+    "signature": "0xe979a8150fb66cf0be1aaf6de1f5016d427f2d2f1feb904033fffb0f22869cef155c7b0d2eb3c1444f28af2dec137f12b4d9d888c4e98586e218152d2f801de01b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "unsupported_method"
+    }
+   },
+   "note": "an authorizationMethod this verifier does not implement is not malformed (5.3, 5.6.4); requested on x402#3827"
+  },
+  {
+   "id": "receipt-v2-malformed-method-only",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": ""
+    },
+    "signature": "0x9f4c8e01bfa34b595bf8395af467c0f7d9c33c0e84c1ae44e347a2cbecfdbe0d4b157137f3392d674572672e8b6370db02ce4f9d3258db2077073f63cbe4a2111c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "malformed",
+     "detail": "one_of_method_and_commitment"
+    }
+   },
+   "note": "MUST NOT attempt a link"
+  },
+  {
+   "id": "receipt-v2-malformed-commitment-only",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x9de76deb771fe5c4797d2bdc33623b7bc34051c6ef53d8270fd454152e4f92851d926826c3b59d9f6f60ef14162b5a165a6c7283e3bf70032f90fde3202f11d81c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "malformed",
+     "detail": "one_of_method_and_commitment"
+    }
+   },
+   "note": "the commitment would open to A if tried; a verifier MUST NOT try"
+  },
+  {
+   "id": "receipt-v2-signed-with-v1-types",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x67e40902e0912ec087bca7e513ce9d9fd8688d02862326afca252072df99eb523ceaccca40074dd70e1e5f7d023a164f30e355513231a9de4c4d9171dadb472a1c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "rejected",
+    "reason": "signer_not_authorized"
+   },
+   "note": "the signer hashed a version 2 payload with the version 1 types; a verifier selects types by payload.version, recovers a different address, and rejects. This is the compatibility property: a v2 receipt never verifies through v1 types"
+  },
+  {
+   "id": "receipt-v1-signature-relabelled-v2",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0xaa92e3979334f0e19532bb72ae37329a96f08c0eca05b68127149e9f7209bcb52ec21d938eb05a14040d2ee3e5f5b12e64b882d1c98cbed6396e148d88620fe61b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "rejected",
+    "reason": "signer_not_authorized"
+   },
+   "note": "a valid v1 signature with the payload rewritten to version 2 and a commitment added: the v2 digest differs, so the commitment cannot be smuggled under a v1 signature"
+  },
+  {
+   "id": "receipt-v2-commitment-altered-after-signing",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0x7c7e69b01d62131c5a2f784a04b8490a11362a06255b8545584562966bfbcc08"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "rejected",
+    "reason": "signer_not_authorized"
+   },
+   "note": "commitment swapped to one that opens to B; the signature no longer covers the payload"
+  },
+  {
+   "id": "receipt-v2-signer-not-authorized",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0xcb8fce3857666cb54d6ab1daed96d1f6ec907d578856ec83e3417882b8f374ae0efc132d2c22e4a8a8ca888799fbd5fd437775fc794f5ff0636ac41b62dc9b251c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "rejected",
+    "reason": "signer_not_authorized"
+   },
+   "note": "valid signature by a key not authorised for resourceUrl (4.5.1); the commitment would link if tried"
+  },
+  {
+   "id": "receipt-unknown-version",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 3,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "rejected",
+    "reason": "unsupported_version"
+   },
+   "note": "only versions 1 and 2 are defined"
+  },
+  {
+   "id": "receipt-jws-v2-linked",
+   "kind": "receipt",
+   "receipt": {
+    "format": "jws",
+    "signature": "eyJhbGciOiJFUzI1NksiLCJraWQiOiJkaWQ6d2ViOnNlbGxlci5leGFtcGxlI3JlY2VpcHQta2V5LTEifQ.eyJ2ZXJzaW9uIjoyLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMyIiwicmVzb3VyY2VVcmwiOiJodHRwczovL3NlbGxlci5leGFtcGxlL3ByZW1pdW0tZGF0YSIsInBheWVyIjoiMHg4N2YzNDRiNmVjNDhhOTM2MzczZDc3NGQzZGU4NjQ5ZGVlYjY2ZWUxIiwiaXNzdWVkQXQiOjE3OTIwMDAwMDAsInRyYW5zYWN0aW9uIjoiIiwiYXV0aG9yaXphdGlvbk1ldGhvZCI6ImVpcDMwMDkiLCJhdXRob3JpemF0aW9uQ29tbWl0bWVudCI6IjB4YjUwMzI4YjYzNTJjNTBhMGNhZDQ0MjgyMDJkZDQyZjcyNDlhY2NjZWE5YTI3ZmJhY2MxYjQ5YThjNjk5MDljMSJ9.R-45h6hUkgoPPjn9do3OftBoycltq5vRutMcRkKV-zBwgG_yUI4Io761lVrYY2qeOYDXeFTHbUOGe9ilTNpF6g"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "linked",
+     "nonce": "0xc01225fc79db19be6ea2afdbbbc195968e121184e39df0b4f62d7f8f5df40c83",
+     "transaction": "0x1345479a7c529962b1c71138d961b834547ab4e27e43a535f88e148e24f2de88"
+    }
+   },
+   "note": "JWS compact, ES256K, kid resolved by the fixture"
+  },
+  {
+   "id": "receipt-jws-v2-malformed",
+   "kind": "receipt",
+   "receipt": {
+    "format": "jws",
+    "signature": "eyJhbGciOiJFUzI1NksiLCJraWQiOiJkaWQ6d2ViOnNlbGxlci5leGFtcGxlI3JlY2VpcHQta2V5LTEifQ.eyJ2ZXJzaW9uIjoyLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMyIiwicmVzb3VyY2VVcmwiOiJodHRwczovL3NlbGxlci5leGFtcGxlL3ByZW1pdW0tZGF0YSIsInBheWVyIjoiMHg4N2YzNDRiNmVjNDhhOTM2MzczZDc3NGQzZGU4NjQ5ZGVlYjY2ZWUxIiwiaXNzdWVkQXQiOjE3OTIwMDAwMDAsInRyYW5zYWN0aW9uIjoiIiwiYXV0aG9yaXphdGlvbkNvbW1pdG1lbnQiOiIweGI1MDMyOGI2MzUyYzUwYTBjYWQ0NDI4MjAyZGQ0MmY3MjQ5YWNjY2VhOWEyN2ZiYWNjMWI0OWE4YzY5OTA5YzEifQ.QiKiMqUCdJtjXkQrRkFzry3Yqxc1CXwDvEiq_n4y9IY4ttknW3EwjTOGOWVeeDZ-gdvo72rFmcNW46Ei2aofdQ"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "malformed",
+     "detail": "one_of_method_and_commitment"
+    }
+   },
+   "note": "in JWS absent and empty are the same; the commitment is present without a method"
+  },
+  {
+   "id": "receipt-jws-payload-altered",
+   "kind": "receipt",
+   "receipt": {
+    "format": "jws",
+    "signature": "eyJhbGciOiJFUzI1NksiLCJraWQiOiJkaWQ6d2ViOnNlbGxlci5leGFtcGxlI3JlY2VpcHQta2V5LTEifQ.eyJ2ZXJzaW9uIjoyLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMyIiwicmVzb3VyY2VVcmwiOiJodHRwczovL3NlbGxlci5leGFtcGxlL3ByZW1pdW0tZGF0YSIsInBheWVyIjoiMHg4N2YzNDRiNmVjNDhhOTM2MzczZDc3NGQzZGU4NjQ5ZGVlYjY2ZWUxIiwiaXNzdWVkQXQiOjE3OTIwMDAwMDAsInRyYW5zYWN0aW9uIjoiMHgxYTQ5MzQxZTI1ZTg2NGJjM2ZjMTc0N2Q1ZDZlY2Y2M2I4ZTgzZmM2Mzk4YjU1OGQzMDgxYjFmOTFlNjMzZDQzIiwiYXV0aG9yaXphdGlvbk1ldGhvZCI6ImVpcDMwMDkiLCJhdXRob3JpemF0aW9uQ29tbWl0bWVudCI6IjB4YjUwMzI4YjYzNTJjNTBhMGNhZDQ0MjgyMDJkZDQyZjcyNDlhY2NjZWE5YTI3ZmJhY2MxYjQ5YThjNjk5MDljMSJ9.R-45h6hUkgoPPjn9do3OftBoycltq5vRutMcRkKV-zBwgG_yUI4Io761lVrYY2qeOYDXeFTHbUOGe9ilTNpF6g"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "rejected",
+    "reason": "signature_invalid"
+   },
+   "note": "transaction added after signing"
+  },
+  {
+   "id": "receipt-v1-carrying-commitment-fields",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 1,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1"
+    },
+    "signature": "0xaa92e3979334f0e19532bb72ae37329a96f08c0eca05b68127149e9f7209bcb52ec21d938eb05a14040d2ee3e5f5b12e64b882d1c98cbed6396e148d88620fe61b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "no_commitment"
+    }
+   },
+   "note": "PROPOSED. A version 1 payload carrying the two fields: the v1 types do not cover them, so the signature verifies but does not sign them. Proposed: a verifier MUST NOT use unsigned fields, so not_attempted. A verifier that links here links on unsigned data",
+   "proposed": true
+  },
+  {
+   "id": "receipt-v2-commitment-not-32-byte-hex",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909"
+    },
+    "signature": "0x271f99b21629bd9fd5826f97d9d8c407cbb56b8f68418315125014561b76806224713c23a821b8ca07c7e7284bdb60a5b76af1cc2eacebefcfda539236ebd2cb1b"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "salt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063",
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "malformed",
+     "detail": "commitment_encoding"
+    }
+   },
+   "note": "PROPOSED. Method and commitment both non-empty but the commitment is 31 bytes. 5.3 defines malformed only for one field set; proposed: an undecodable commitment is also malformed rather than no_match, because no candidate could ever match it",
+   "proposed": true
+  },
+  {
+   "id": "receipt-v2-salt-inside-payload",
+   "kind": "receipt",
+   "receipt": {
+    "format": "eip712",
+    "payload": {
+     "version": 2,
+     "network": "eip155:84532",
+     "resourceUrl": "https://seller.example/premium-data",
+     "payer": "0x87f344b6ec48a936373d774d3de8649deeb66ee1",
+     "issuedAt": 1792000000,
+     "transaction": "",
+     "authorizationMethod": "eip3009",
+     "authorizationCommitment": "0xb50328b6352c50a0cad4428202dd42f7249acccea9a27fbacc1b49a8c69909c1",
+     "authorizationSalt": "0x7255b2feaa23664aa53d20bbda28e4c2d2bdfafeb3d1aa39a2a20f52efc0d063"
+    },
+    "signature": "0x2f2c36445f7443bc55788e2ed39c059b8f9a36ca83bd61ee0ca8939d1d51c65608275f91be360a837bb3ca7fcfb2bc2f6bcc1b7956312fba2f62190a128e31611c"
+   },
+   "authorized_signers": {
+    "eip712": [
+     "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    ],
+    "jws": {
+     "did:web:seller.example#receipt-key-1": "0xac44787f761a1f9f367d43f4148cd31917e53bd9"
+    }
+   },
+   "held": {
+    "asset": "0x036cbd53842c5426634e7929541ec2318f3dcf7e"
+   },
+   "candidates": "snapshot",
+   "expect": {
+    "receipt": "valid",
+    "signer": "0xac44787f761a1f9f367d43f4148cd31917e53bd9",
+    "link": {
+     "result": "not_attempted",
+     "detail": "salt_not_held"
+    }
+   },
+   "note": "PROPOSED. The salt sits inside the payload, which 5.6.3 prohibits. EIP-712 types ignore it, so the signature still verifies. Proposed: the verifier does not take a salt from the receipt, so with no salt held otherwise the result is not_attempted",
+   "proposed": true
+  }
+ ]
+}

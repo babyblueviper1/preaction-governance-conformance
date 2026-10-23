@@ -140,3 +140,62 @@ resolves each one to the settlement he listed, from the payer's full set of 15 c
 Exit codes follow §5.6.4 as amended in x402#3827 (faa611f): `0` linked, `1` the candidate set was obtained and nothing
 matched, `2` incomplete check (the candidate set or `authorizationState` could not be obtained). A rate-limited or failed
 log query is never reported as "does not link".
+
+## Receipt-level vectors and a third checker (2026-10-23)
+
+Contributed by magentixai, as offered on [x402#3827](https://github.com/x402-foundation/x402/pull/3827). The 20 vectors above
+test commit and link on their own; these 29 start from a **signed receipt** and run it through section 5.5 (format, payload
+version selects the EIP-712 types, signature, signer) and then section 5.6.4, with the six result names at
+[`fe777a4`](https://github.com/babyblueviper1/x402/blob/fe777a4e02f3b55e76a246f17bc3ddc616ba3a9c/specs/extensions/extension-offer-and-receipt.md).
+
+`receipt_check.py` was written from the specification text alone, without reading `commitment.py`, `build_vectors.py`,
+`run_vectors.py`, `check_live.py` or holistis's verifier, so it is independent of both existing checkers. Standard library
+only: it carries its own keccak-256 and secp256k1, because `hashlib` has neither.
+
+| file | what |
+|---|---|
+| `receipt_vectors.json` | 29 vectors (CC0): 2 linked, 1 inconsistent, 6 no_match, 2 incomplete, 5 not_attempted, 2 malformed, 5 receipt rejections, 3 JWS (ES256K), 3 proposed |
+| `receipt_check.py` | the checker; `python3 receipt_check.py` gives 29/29 |
+| `build_receipt_vectors.py` | regenerates the vectors byte for byte (RFC 6979 signatures, test key from a public label) |
+| `candidates_snapshot_2026-10-23.json` | the same payer's consumed nonces, now 19; the first 12 equal `candidates_snapshot.json` |
+
+The settlement side is real: link vectors run against the 12-nonce snapshot, and the committed nonces are settlements A and B
+(blocks 48163177 and 48163178). Only the receipt signer is a test key.
+
+Covered, beyond the six results:
+
+- `receipt-v2-signed-with-v1-types` and `receipt-v1-signature-relabelled-v2`: a version 2 receipt never verifies through the
+  version 1 types, and a version 1 signature cannot carry a commitment added afterwards. The compatibility argument rests on this.
+- `receipt-v2-incomplete-rate-limited` against `receipt-v2-no-match-empty-set`: a failed query that returns `[]` is incomplete;
+  a query that succeeded and returned nothing is a finished check.
+- `receipt-v2-no-match-two-candidates`: an identifier that appears twice fails closed.
+- `receipt-v2-not-attempted-unsupported-method`: the receipt-level form of 935e3e5.
+
+**Three vectors are marked `"proposed": true`** because the text does not settle them. Each states the result I think is right;
+please accept or change it:
+
+1. `receipt-v1-carrying-commitment-fields`: a version 1 payload with the two fields present. The version 1 types do not cover
+   them, so the signature verifies without signing them. Proposed: `not_attempted`, because a verifier must not link on
+   unsigned fields.
+2. `receipt-v2-commitment-not-32-byte-hex`: both fields set, commitment not 32 bytes. Proposed: `malformed`, not `no_match`.
+3. `receipt-v2-salt-inside-payload`: the salt placed inside the payload, which 5.6.3 prohibits. EIP-712 ignores the extra key, so
+   the signature still verifies. Proposed: the verifier never takes a salt from the receipt, so with none held otherwise the
+   result is `not_attempted`.
+
+Cross-checks run before submitting (not needed to run the vectors): every signature verdict agrees with eth-account
+(EIP-712) and with `cryptography` (ES256K), 28/28; the checker reproduces the 9 commit and link vectors above whose expected
+values are commitments or link results; it reproduces the section 5.4 version 2 example commitment.
+
+Live receipts: run over holistis's three Base Sepolia receipts
+([holistis/agent-receipt-verify@5719e7a](https://github.com/holistis/agent-receipt-verify/tree/5719e7a/examples)), each one
+verifies under the same signer (`0x4e1174b7…159a`) and links to the settlement in the table above, from 19 candidates:
+
+```
+$ python3 receipt_check.py --live receipt-live-base-sepolia.json
+receipt valid, signer 0x4e1174b774643b6ad9ee966a81ea1e3665d1159a (authorisation not checked)
+link linked against 19 candidates: nonce 0x1120412c…4d5dfe, settlement tx 0xed87b09b…dfeb30
+```
+
+For readers mapping to the four verification states of wg-identity #21: `linked` is verified, `incomplete` is indeterminate,
+`not_attempted` is not evaluated. `no_match` is a determinate negative about the salt and asset used, not a judgement of the
+signer.
