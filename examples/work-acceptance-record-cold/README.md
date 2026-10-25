@@ -15,6 +15,12 @@ python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
 ```
 
+## Vectors 1-57 (bc5a138): 57/57 agree
+`upstream_vectors_bc5a138_57/` is an unmodified copy of upstream `vectors/` at maximusrufus/work-acceptance-record@bc5a138 (CC0 1.0);
+our run is `upstream_vectors_bc5a138_57_run.txt`. **57/57**, with no checker change since 55/55: vector 56 (the live receipt our
+checker issued, taken upstream as received) and vector 57 (integer-valued doubles `1.0`, `100.0`, `-0.0`, `300.0`, written by
+RFC 8785 as `1`, `100`, `0`, `300`) both agree. The ECMAScript Number::toString canonicalizer from the 52 fix already covers 57.
+
 ## Profile 1.4.1 (6b2f730): 55/55 agree
 `upstream_vectors_1_4_1_55/` is an unmodified copy of upstream `vectors/` at 6b2f730 (CC0 1.0); our run is
 `upstream_vectors_1_4_1_55_run.txt`. **55/55** (46/46 at 4daf721 and every earlier set unchanged). Before this update the checker gave
