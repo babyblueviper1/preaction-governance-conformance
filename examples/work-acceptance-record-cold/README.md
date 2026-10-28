@@ -6,6 +6,7 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
+python3 war_check.py upstream_vectors_cb7e8f1_90/*.json # 90/90 agree with upstream `expected` (profile 1.4.2, cb7e8f1)
 python3 war_check.py upstream_vectors_1_3_30/*.json # 30/30 agree with upstream `expected` (profile 1.3, 2d8fac7)
 python3 war_check.py upstream_vectors_1_3/*.json # 28/28 agree with upstream `expected` (profile 1.3, 270e9fe)
 python3 war_check.py upstream_vectors/*.json     # 11/11 agree with upstream `expected` (profile 1.2.1, f7d8984)
@@ -14,6 +15,32 @@ python3 lax_check.py upstream_vectors            # each lax verifier passes all 
 python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
 ```
+
+## Profile 1.4.2 (cb7e8f1): 90/90 agree; the checker frozen for 1.4.1 scored 68/90 with 5 crashes
+`upstream_vectors_cb7e8f1_90/` is an unmodified copy of upstream `vectors/` at maximusrufus/work-acceptance-record@cb7e8f1 (CC0 1.0).
+
+**First, the checker as it was (c63208d, written for 1.4.1), unchanged: 68 agree, 17 disagree, 5 crash**
+(`upstream_vectors_cb7e8f1_90_frozen_c63208d_run.txt`). 01-59 all agree. Every disagreement is on a rule 1.4.2 introduces:
+lax base64 accepted (60-62, 69, 89, 90), keys compared by identifier rather than decoded bytes (65, 87), repeated key identifiers
+not rejected (75, 79), genTime of another form read as a time (70, 72-74), millisecond rounding (68), and the stated-key rule on an
+independence claim (80, 81). The five crashes are defects a verifier must not have: missing base64 padding (63) and an impossible
+month (71, 76, 78) raised instead of being reported, and an object where a string belongs (77) failed instead of being refused.
+
+**Then, written from the README's step-10 rules (the reference verifier was not opened): 90/90** (`upstream_vectors_cb7e8f1_90_run.txt`).
+Every earlier set still agrees (57/57 bc5a138, 55/55 and 46/46 1.4.1, 30/30 and 28/28 1.3, 11/11 1.2.1, 8/8 proposed), and
+`lax_check.py` and `tsa_sig_mutations.py` give the same results as before. What changed in `war_check.py`:
+- `b64c()`: canonical base64 only (alphabet, padding to four, no whitespace, re-encoding gives the input). A non-canonical signature
+  value is `SIGNATURE_INVALID`; a non-canonical key `KEY_REJECTED`; a token or criteria file that is not canonical matches nothing.
+- Keys are read once, compared as decoded bytes (`KEY_COLLISION`), and a `key_id` listed twice is `KEY_REJECTED`; for the signing key no
+  signature check is run, for the producer's or checker's key independence is `self-checked`.
+- `gen_time()` / `rfc_time()`: the DER GeneralizedTime form (fraction not ending in 0) and RFC 3339 UTC, real calendar fields, else no
+  usable time; exact fractions, the criteria time rounded up and the reference time down to the millisecond, strict `<`.
+- `RECEIPT_TIME_UNREADABLE` where step 5 uses a stated time it cannot read (`criteria_committed_before_check: no`); with a usable token,
+  a malformed `committed_at` is `CRITERIA_TIME_MISMATCH` (88).
+- An `independent` claim needs each stated party `key_id` non-empty and listed once (80, 81).
+- `_types_ok()`: wrong types are refused as an unsupported schema, never a failure (77).
+Readings the README leaves open are marked ASSUMED in the code: a non-canonical token's `tsa_signature` (`not_evaluated` without
+anchors, `failed` with them), and a covering record token whose genTime is unusable (it gives no time; `issued_utc` stands).
 
 ## Vectors 1-57 (bc5a138): 57/57 agree
 `upstream_vectors_bc5a138_57/` is an unmodified copy of upstream `vectors/` at maximusrufus/work-acceptance-record@bc5a138 (CC0 1.0);

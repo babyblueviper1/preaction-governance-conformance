@@ -1,0 +1,23 @@
+FROZEN checker (pgc c63208d, written for 1.4.1) on upstream cb7e8f1 vectors 1-90: 68 agree, 17 disagree, 5 crash
+DISAGREE 60-signature-base64-invalid-character.json: problem_codes ours [] vector ['SIGNATURE_INVALID']; signature_valid ours True vector False
+DISAGREE 61-signature-base64-internal-whitespace.json: problem_codes ours [] vector ['SIGNATURE_INVALID']; signature_valid ours True vector False
+DISAGREE 62-signature-base64-noncanonical-trailing-bits.json: problem_codes ours [] vector ['SIGNATURE_INVALID']; signature_valid ours True vector False
+CRASH 63-signature-base64-missing-padding.json: Error: Incorrect padding
+DISAGREE 65-one-public-key-under-two-key-ids.json: problem_codes ours [] vector ['KEY_COLLISION']
+DISAGREE 68-criteria-time-equals-issue-time-at-millisecond.json: criteria_committed_before_check ours 'yes' vector 'no'; problem_codes ours [] vector ['CRITERIA_COMMITTED_AFTER_CHECK']
+DISAGREE 69-key-alias-noncanonical-base64-dodges-same-key.json: problem_codes ours [] vector ['KEY_REJECTED']
+DISAGREE 70-criteria-gentime-with-offset.json: problem_codes ours ['CRITERIA_TIME_MISMATCH'] vector []; warning_codes ours [] vector ['CRITERIA_COMMITMENT_UNVERIFIED']
+CRASH 71-criteria-gentime-month-13.json: ValueError: month must be in 1..12
+DISAGREE 72-criteria-gentime-feb-30.json: problem_codes ours ['CRITERIA_TIME_MISMATCH'] vector []; warning_codes ours [] vector ['CRITERIA_COMMITMENT_UNVERIFIED']
+DISAGREE 73-criteria-gentime-comma-fraction.json: warning_codes ours [] vector ['CRITERIA_COMMITMENT_UNVERIFIED']
+DISAGREE 74-criteria-gentime-trailing-zero-fraction.json: warning_codes ours [] vector ['CRITERIA_COMMITMENT_UNVERIFIED']
+DISAGREE 75-duplicate-key-id-in-keys-file.json: problem_codes ours [] vector ['KEY_REJECTED']; signature_valid ours True vector False
+CRASH 76-committed-at-malformed.json: ValueError: month must be in 1..12
+CRASH 77-result-id-is-an-object.json: TypeError: unhashable type: 'dict'
+CRASH 78-token-imprint-matches-gentime-unusable.json: ValueError: month must be in 1..12
+DISAGREE 79-unrelated-duplicate-key-id.json: problem_codes ours [] vector ['KEY_REJECTED']
+DISAGREE 80-independent-claim-producer-key-id-empty.json: problem_codes ours [] vector ['INDEPENDENCE_INCONSISTENT']
+DISAGREE 81-independent-claim-producer-key-id-unknown.json: problem_codes ours [] vector ['INDEPENDENCE_INCONSISTENT']
+DISAGREE 87-same-key-under-two-ids.json: problem_codes ours [] vector ['KEY_COLLISION']
+DISAGREE 89-criteria-file-base64-noncanonical.json: criteria_hash ours 'match' vector 'mismatch'; problem_codes ours [] vector ['CRITERIA_HASH_MISMATCH']
+DISAGREE 90-criteria-token-base64-noncanonical.json: problem_codes ours [] vector ['CRITERIA_TIMESTAMP_MISMATCH']; warning_codes ours [] vector ['CRITERIA_COMMITMENT_UNVERIFIED']
