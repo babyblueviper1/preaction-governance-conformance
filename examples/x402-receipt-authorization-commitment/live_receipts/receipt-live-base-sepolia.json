@@ -1,0 +1,21 @@
+{
+  "note": "The first of two payments with IDENTICAL terms. This file holds exactly what section 5.6.4 says a later verifier has: the receipt, its salt, and the asset that was paid. The settlement nonce and transaction hash are deliberately NOT here; finding them is what the tool has to do.",
+  "source": "A real payment to https://api.tokenizen.nl/api/paid/verify-ownership on Base Sepolia, 2026-10-16. Buyer and seller are both us, so this proves the chain closes end to end, not that anyone else uses it.",
+  "network": "eip155:84532",
+  "asset": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  "authorizationSalt": "0xea85b2473363fd8fff1ccdd7f8638be8b47c7c05023e3e2e3f81bebb085ba2ad",
+  "receipt": {
+    "format": "eip712",
+    "payload": {
+      "version": 2,
+      "network": "eip155:84532",
+      "resourceUrl": "https://api.tokenizen.nl/api/paid/verify-ownership",
+      "payer": "0x87f344b6Ec48A936373d774D3De8649DEEB66Ee1",
+      "issuedAt": 1792187030,
+      "transaction": "",
+      "authorizationMethod": "eip3009",
+      "authorizationCommitment": "0x5c35a61a09a566a9c284fad18a70ac2ddfff34d01d2a3ce776ce94e8d5b38ff8"
+    },
+    "signature": "0x78615cb22986af0aad6e08b74ca78773bb58ece21660e84e4b35b3e5c1841b0075238ca9bfdf0f969ad3f2903af8f391fafd1b3fc7ebbf1fb5c949a3948fccde1c"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "note": "The second of two payments with IDENTICAL terms: same payer, same payee, same amount, same resource, minutes apart. Without a commitment these two receipts cannot be told apart. Each one still resolves to its own settlement.",
+  "source": "A real payment to https://api.tokenizen.nl/api/paid/verify-ownership on Base Sepolia, 2026-10-16. Buyer and seller are both us.",
+  "network": "eip155:84532",
+  "asset": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  "authorizationSalt": "0x63072ea656fe922bf04c9cefc4275314d695fff01e5b57f6628c8df0252cc5dc",
+  "receipt": {
+    "format": "eip712",
+    "payload": {
+      "version": 2,
+      "network": "eip155:84532",
+      "resourceUrl": "https://api.tokenizen.nl/api/paid/verify-ownership",
+      "payer": "0x87f344b6Ec48A936373d774D3De8649DEEB66Ee1",
+      "issuedAt": 1792187518,
+      "transaction": "",
+      "authorizationMethod": "eip3009",
+      "authorizationCommitment": "0xfecee93e1aec7d6858a218bf324f23e2a4eed07925d8d4542b9662c5026e3d22"
+    },
+    "signature": "0x02f5ba0d2b7928a2dbb1d8845b664a79d38eebcd0a2c4532ed3c6b922051bf8d47c8aafb0520a875a708e3ed480d84a537962ea90d66ce2ee3811f4229aa8b401b"
+  }
+}

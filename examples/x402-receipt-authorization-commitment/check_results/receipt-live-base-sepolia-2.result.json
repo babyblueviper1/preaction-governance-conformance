@@ -1,0 +1,34 @@
+{
+ "id": "2a95d1ca9c42ee5e710baca5d9c3477c54d4a7b114d82842ff40ec136d365f9b",
+ "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+ "created_at": 1793292806,
+ "kind": 30078,
+ "tags": [
+  [
+   "t",
+   "invinoveritas"
+  ],
+  [
+   "t",
+   "x402-receipt-check-result"
+  ],
+  [
+   "commitment",
+   "0xfecee93e1aec7d6858a218bf324f23e2a4eed07925d8d4542b9662c5026e3d22"
+  ],
+  [
+   "result",
+   "linked"
+  ],
+  [
+   "d",
+   "x402-check-0xfecee93e1aec7d6858a218bf324f23e2a4eed07925d8d4542b9662c5026e3d22-51854673"
+  ],
+  [
+   "block",
+   "51854673"
+  ]
+ ],
+ "content": "{\"asset\":\"0x036cbd53842c5426634e7929541ec2318f3dcf7e\",\"authorizationCommitment\":\"0xfecee93e1aec7d6858a218bf324f23e2a4eed07925d8d4542b9662c5026e3d22\",\"authorizationState\":true,\"authorizer\":\"0x87f344b6ec48a936373d774d3de8649deeb66ee1\",\"candidates\":20,\"chain\":\"eip155:84532\",\"checked_at\":\"2026-10-29T16:53:23Z\",\"nonce\":\"0x515895dfac6f148a4cfdf5c4f8266b7859dbd6534cdf77104b1be9f484eb5005\",\"read_at\":{\"block_hash\":\"0xa2bc1fa6e50e0f374cd3085e6a279dd862089055caf0f430b76733841e9af6d3\",\"block_number\":51854673},\"receipt\":\"valid\",\"receipt_sha256\":\"838e0d66112f43c3907e94ecd41252a5af883934899ce6e4dd3f1c9fcc1297e1\",\"receipt_signer\":\"0x4e1174b774643b6ad9ee966a81ea1e3665d1159a\",\"result\":\"linked\",\"settlement_tx\":\"0x2898d0ceb97ddf60af98e19c94fc0adddbdf1e64f9032e62454085e37acfe36b\",\"type\":\"x402-receipt-check-result\",\"version\":\"0\"}",
+ "sig": "b0c49289a78bc7ddf8abeebcd28e6f87550c450bb67dde589c49aa81a2e87bb0d55cdd76609cd68456b8335e0d9e25d99d5cd58991863f12a8ba03957c09fc17"
+}

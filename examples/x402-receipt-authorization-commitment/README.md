@@ -199,3 +199,46 @@ link linked against 19 candidates: nonce 0x1120412c…4d5dfe, settlement tx 0xed
 For readers mapping to the four verification states of wg-identity #21: `linked` is verified, `incomplete` is indeterminate,
 `not_attempted` is not evaluated. `no_match` is a determinate negative about the salt and asset used, not a judgement of the
 signer.
+
+## Signed check results, pinned to a block (2026-10-29)
+
+The live check reads the chain each time it runs, so on its own it leaves no dated history. A later reader cannot tell "matched
+at block N" from "never checked". Michael Blake (Everyday AI) asked for that history for payment-measurement methodology. A
+check result is that history as a signed record:
+
+- `check_result.py RECEIPT.json [--disclose]` runs the section 5.6.4 check with every chain read pinned to **one** block. It reads
+  the chain head N and its hash first, pulls `AuthorizationUsed(payer, *)` up to N (never `latest`), and reads
+  `authorizationState` at N. It prints the record: `read_at {block_number, block_hash}`, the candidate count, and the result
+  (`linked`, `no_match`, `incomplete`, or a receipt-level `not_attempted` / `malformed` / `inconsistent`). A failed or
+  rate-limited read is `incomplete` and is never `no_match`. Without `--disclose` the record names the commitment, but not the
+  nonce or the settlement, so the link stays private until the holder chooses to show it.
+- The record is signed as a NIP-01 event (kind 30078, BIP-340) under invinoveritas's published proof key
+  `6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7`, the same key and event shape as its other signed records.
+- `verify_check_result.py RESULT.json [--issuer KEY] [--recheck HELD_RECEIPT.json]` checks the event id and signature with the
+  standard library (`bip340.py`). With `--recheck` it re-runs the check up to the stated block. Logs are immutable, so the
+  candidate set up to N is reproducible later. When a node keeps no state at N, the authorization state is read at the latest
+  block instead. Once an EIP-3009 authorization is used it stays used, so "used now" plus a consuming log at or before N
+  confirms "used at N".
+- `test_check_result.py` runs offline, 8/8. A tampered result, a flipped signature and another issuer are all rejected. An
+  unobtainable candidate set gives `incomplete` with the block named. An unobtainable chain head gives `incomplete` with no
+  block claimed. An empty candidate set gives `no_match`, a finished check. Without `--disclose`, neither the nonce nor the
+  settlement is named.
+
+holistis's three published Base Sepolia receipts, checked and signed (`check_results/`, the receipts in `live_receipts/` from
+holistis/agent-receipt-verify@5719e7a, disclosed because their salts are already public):
+
+| receipt | read at block | result | settlement |
+|---|---|---|---|
+| `receipt-live-base-sepolia.json` | 51854657 | linked (20 candidates, authorizationState true) | `0xed87b09b…dfeb30` |
+| `receipt-live-base-sepolia-2.json` | 51854673 | linked (20 candidates, authorizationState true) | `0x2898d0ce…acfe36b` |
+| `receipt-live-base-sepolia-3.json` | 51854691 | linked (20 candidates, authorizationState true) | `0x2a9e95d6…8d7199` |
+
+```
+$ python3 verify_check_result.py check_results/receipt-live-base-sepolia.result.json --recheck live_receipts/receipt-live-base-sepolia.json
+signature valid (issuer 6786e18a...fbb7); result 'linked' read at block 51854657 (0x794b7297cc...), checked_at 2026-10-29T16:53:20Z; settlement 0xed87b09b...
+recheck agrees at block 51854657: linked, 20 candidates, authorizationState True
+```
+
+What a result does not say: it dates one check against one block, by one checker. It is not a statement that the payment was
+correct, and it does not authorise the signer, which section 4.5.1 leaves to the verifier. Signing uses the server-side
+`scripts/sign_check_result.py` with invinoveritas's key. The format and the verifier need no part of it.

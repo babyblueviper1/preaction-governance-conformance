@@ -1,0 +1,21 @@
+{
+  "note": "A third payment on the same terms, so an independent implementation has more than one case to reach the same settlement on. Holds only what section 5.6.4 says a later verifier has: the receipt, its salt, and the asset that was paid.",
+  "source": "A real payment to https://api.tokenizen.nl/api/paid/verify-ownership on Base Sepolia, 2026-10-17. Buyer and seller are both us.",
+  "network": "eip155:84532",
+  "asset": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  "authorizationSalt": "0x349ddb90f38a3119817c5fc9cc253a2c20bcbe44aa845302df76889082b314d8",
+  "receipt": {
+    "format": "eip712",
+    "payload": {
+      "version": 2,
+      "network": "eip155:84532",
+      "resourceUrl": "https://api.tokenizen.nl/api/paid/verify-ownership",
+      "payer": "0x87f344b6Ec48A936373d774D3De8649DEEB66Ee1",
+      "issuedAt": 1792188211,
+      "transaction": "",
+      "authorizationMethod": "eip3009",
+      "authorizationCommitment": "0xea8dd34b8beac90f021a4e8d893a689c25249f86947770c8e6647c1cde206008"
+    },
+    "signature": "0x5b3a70cce6978ab44e51828b5ebbc55522e98b015045d94559d369420698da3b5309b28050dcb00ce14d65c8b230a273f8ff5ebff6410c6ae2a308e422ed5a611b"
+  }
+}
