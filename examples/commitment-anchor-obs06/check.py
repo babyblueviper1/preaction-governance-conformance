@@ -2,10 +2,11 @@
 
 For each vector: (1) recompute the record's digest under the declared digest_rule and require it to equal
 commitment_anchor.digest; (2) decide whether precedence is established under the declared anchor_time_rule:
-  header_time_plus_tolerance  anchor_time + anchor_time_tolerance_s strictly before outcome_time (the default when absent);
+  header_time_plus_tolerance  anchor_time + anchor_time_tolerance_s strictly before outcome_time;
   later_median                anchor_ceiling_time (median time of the 11 blocks after the anchor) strictly before outcome_time;
   height                      anchor_height strictly below outcome_height (outcome ordered by the same chain; no clock);
-a rule whose inputs are missing, or an unknown rule, establishes nothing (no commitment_anchor, an unknown digest_rule or a
+an ABSENT anchor_time_rule establishes nothing (SC-OB-01 at raknor-ai/agent-governance-standard@149eb02 requires a record
+that asserts precedence to STATE its rule; there is no default), and a rule whose inputs are missing, or an unknown rule, establishes nothing (no commitment_anchor, an unknown digest_rule or a
 digest that does not recompute is ANCHOR_DOES_NOT_COVER_RECORD); (3) check the record's own claim: it may assert precedence only if established,
 and if not established it must list "precedence_before_outcome" in does_not_assert.
 
@@ -46,7 +47,7 @@ def digest_of(record):
     return hashlib.sha256(ser.encode("utf-8")).hexdigest()
 
 def ceiling_before_outcome(a, record):
-    rule = a.get("anchor_time_rule", "header_time_plus_tolerance")
+    rule = a.get("anchor_time_rule")   # no default: an unstated rule establishes nothing (SC-OB-01 @ 149eb02)
     try:
         if rule == "header_time_plus_tolerance":
             return a["anchor_time"] + a["anchor_time_tolerance_s"] < record["outcome_time"]

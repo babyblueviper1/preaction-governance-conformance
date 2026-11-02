@@ -826,11 +826,11 @@
     "outcome_time": 1783097786,
     "asserts_precedence": true,
     "does_not_assert": [],
-    "note": "anchor-before-outcome with anchor_time_rule removed: absent means header_time_plus_tolerance."
+    "note": "anchor-before-outcome with anchor_time_rule removed. Since 2026-11-02 (SC-OB-01 at raknor-ai/agent-governance-standard@149eb02, option (b) on #2) an absent rule establishes nothing, so asserting precedence is unsupported; at e12d3e9 absent meant header_time_plus_tolerance and this vector was CONFORMING."
    },
    "expect": {
-    "result": "CONFORMING",
-    "precedence_established": true
+    "result": "NONCONFORMING_UNSUPPORTED_PRECEDENCE_CLAIM",
+    "precedence_established": false
    }
   },
   {
