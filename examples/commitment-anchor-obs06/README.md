@@ -54,10 +54,10 @@ The field is mechanism-neutral. Any externally verifiable existence proof satisf
 
 ## Vectors
 
-`vectors.json` has the requested pair, four negative controls, five vectors for the other two ceiling rules, three backdated-header vectors, two escaping vectors and five for defaults the text states but nothing exercised. `kind` is a label only; some `negative_control` vectors are expected CONFORMING. `check.py` is stdlib only:
+`vectors.json` has the requested pair, four negative controls, five vectors for the other two ceiling rules, three backdated-header vectors, two escaping vectors and seven for defaults the text states (two added 2026-11-02 for an absent `anchor_time_rule` without a precedence claim). `kind` is a label only; some `negative_control` vectors are expected CONFORMING. `check.py` is stdlib only:
 
 ```
-python3 check.py            # 21/21 agree
+python3 check.py            # 23/23 agree
 ots verify -d a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9 38.ots
 # Success! Bitcoin block 955810 attests existence as of 2026-06-28 UTC
 ```
@@ -81,6 +81,8 @@ ots verify -d a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9 3
 | `escaping-nip01-non-ascii-and-c0` | `content` with U+00E9, U+21D2, U+0007, U+0001, U+007F; digest by the NIP-01 rule (synthetic, no proof) | CONFORMING, not established |
 | `control-escaping-json-default-digest` | same event, digest by `json.dumps(ensure_ascii=False)`, which escapes the C0 controls as `\u00XX` | ANCHOR_DOES_NOT_COVER_RECORD |
 | `default-anchor-time-rule-absent` | `anchor-before-outcome` without `anchor_time_rule` | NONCONFORMING_UNSUPPORTED_PRECEDENCE_CLAIM, precedence not established (flipped 2026-11-02; CONFORMING at e12d3e9) |
+| `default-anchor-time-rule-absent-silent` | same record, no precedence claim, nothing declared | NONCONFORMING_UNDECLARED_LIMITATION |
+| `default-anchor-time-rule-absent-declared` | same record, no precedence claim, `precedence_before_outcome` declared | CONFORMING, precedence not established |
 | `default-unknown-digest-rule` | `anchor-before-outcome` with an unknown `digest_rule` | ANCHOR_DOES_NOT_COVER_RECORD |
 | `default-no-commitment-anchor` | the record with no `commitment_anchor`, limitation declared | ANCHOR_DOES_NOT_COVER_RECORD |
 | `contradiction-established-asserts-and-disclaims` | asserts precedence, lists `precedence_before_outcome`, precedence established | CONFORMING, precedence established |

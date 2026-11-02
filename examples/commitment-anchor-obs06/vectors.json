@@ -834,6 +834,106 @@
    }
   },
   {
+   "id": "default-anchor-time-rule-absent-silent",
+   "kind": "default",
+   "record": {
+    "subject": {
+     "id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "created_at": 1782653806,
+     "kind": 30078,
+     "tags": [
+      [
+       "d",
+       "invinoveritas-proof-d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960-1782653806-b3c0aff0"
+      ],
+      [
+       "t",
+       "invinoveritas"
+      ],
+      [
+       "t",
+       "proof"
+      ],
+      [
+       "schema",
+       "invinoveritas.verdict_proof.v1"
+      ]
+     ],
+     "content": "{\"artifact_hash\":\"d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960\",\"artifact_type\":\"plan\",\"confidence\":0.85,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"summary_hash\":\"1d88d680fa5fbbd9f68636546e7afe718acbd1a471561029324d67ab899d0878\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1782653806,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+     "sig": "7205cfea38ef35886ad83142ed5d08a7545c50eed39f714592ba03280dafb0ac8051fd1b87135c41d188acbc48e5e0ad16ea208eaaa00912e1439137dd493a0b"
+    },
+    "commitment_anchor": {
+     "mechanism": "opentimestamps-bitcoin",
+     "digest": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "digest_rule": "nip01-event-id",
+     "proof_ref": "38.ots (also https://api.babyblueviper.com/ledger/38/ots)",
+     "anchor_time": 1782654639,
+     "anchor_time_source": "Bitcoin block 955810 header time (hash 000000000000000000019fdeb888e25607352136ed1a3391d0521ad4b7848036)",
+     "anchor_time_tolerance_s": 7200
+    },
+    "outcome_time": 1783097786,
+    "asserts_precedence": false,
+    "does_not_assert": [],
+    "note": "Same record, no precedence claim, nothing declared. With no stated anchor_time_rule precedence is not established, so the limitation must be declared (2026-11-02, SC-OB-01 option (b))."
+   },
+   "expect": {
+    "result": "NONCONFORMING_UNDECLARED_LIMITATION",
+    "precedence_established": false
+   }
+  },
+  {
+   "id": "default-anchor-time-rule-absent-declared",
+   "kind": "default",
+   "record": {
+    "subject": {
+     "id": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+     "created_at": 1782653806,
+     "kind": 30078,
+     "tags": [
+      [
+       "d",
+       "invinoveritas-proof-d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960-1782653806-b3c0aff0"
+      ],
+      [
+       "t",
+       "invinoveritas"
+      ],
+      [
+       "t",
+       "proof"
+      ],
+      [
+       "schema",
+       "invinoveritas.verdict_proof.v1"
+      ]
+     ],
+     "content": "{\"artifact_hash\":\"d441e26e84bcdc99caa7fefbdca4714d30ecea2505b0a5cf595079ad135b0960\",\"artifact_type\":\"plan\",\"confidence\":0.85,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"summary_hash\":\"1d88d680fa5fbbd9f68636546e7afe718acbd1a471561029324d67ab899d0878\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1782653806,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \\u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \\u00b7  pip install invinoveritas-verify  \\u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+     "sig": "7205cfea38ef35886ad83142ed5d08a7545c50eed39f714592ba03280dafb0ac8051fd1b87135c41d188acbc48e5e0ad16ea208eaaa00912e1439137dd493a0b"
+    },
+    "commitment_anchor": {
+     "mechanism": "opentimestamps-bitcoin",
+     "digest": "a42205d7e39c684f0aa43f80fe7ea1aa8e180df93ff46e82b5bff95b70c663e9",
+     "digest_rule": "nip01-event-id",
+     "proof_ref": "38.ots (also https://api.babyblueviper.com/ledger/38/ots)",
+     "anchor_time": 1782654639,
+     "anchor_time_source": "Bitcoin block 955810 header time (hash 000000000000000000019fdeb888e25607352136ed1a3391d0521ad4b7848036)",
+     "anchor_time_tolerance_s": 7200
+    },
+    "outcome_time": 1783097786,
+    "asserts_precedence": false,
+    "does_not_assert": [
+     "precedence_before_outcome"
+    ],
+    "note": "Same record, no precedence claim, precedence_before_outcome declared in does_not_assert: conforming without a stated rule (2026-11-02, SC-OB-01 option (b))."
+   },
+   "expect": {
+    "result": "CONFORMING",
+    "precedence_established": false
+   }
+  },
+  {
    "id": "default-unknown-digest-rule",
    "kind": "default",
    "record": {
