@@ -105,8 +105,23 @@ def sign(secret: bytes, msg: bytes) -> bytes:
     return R + int.to_bytes((r + h * a) % L, 32, "little")
 
 
+def key_ok(public: bytes) -> bool:
+    """A public key is a canonical encoding (y < p) of a point of prime order L. RFC 8032 does not require this, and without it
+    the bare verification equation accepts R = neutral, S = 0 under the neutral-point key for ANY message (work-acceptance-record
+    vector 26). Refuses the neutral point, small-order and mixed-order points and non-canonical encodings."""
+    if len(public) != 32 or (int.from_bytes(public, "little") & ((1 << 255) - 1)) >= p:
+        return False
+    P = _decompress(public)
+    O = (0, 1, 1, 0)
+    return P is not None and not _equal(P, O) and _equal(_mul(L, P), O)
+
+
 def verify(public: bytes, msg: bytes, signature: bytes) -> bool:
+    """RFC 8032 section 5.1.7 verification, plus two refusals the RFC leaves open (2026-11-04): the public key must pass key_ok(),
+    and R must be a canonical encoding (y < p), so one signature has one byte form."""
     if len(public) != 32 or len(signature) != 64:
+        return False
+    if not key_ok(public) or (int.from_bytes(signature[:32], "little") & ((1 << 255) - 1)) >= p:
         return False
     A = _decompress(public)
     R = _decompress(signature[:32])

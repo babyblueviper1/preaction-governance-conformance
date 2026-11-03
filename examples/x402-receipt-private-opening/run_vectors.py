@@ -96,6 +96,11 @@ def main():
     rfc = (ed.public_key(sk).hex() == "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
            and ed.sign(sk, b"").hex() == "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b")
     print(f"  {'PASS' if rfc else 'FAIL'} ed25519 RFC 8032 TEST 1"); ok &= rfc
+    # 2026-11-04: the bare RFC 8032 equation accepts R = neutral, S = 0 under the neutral-point key for ANY message
+    # (work-acceptance-record vector 26); verify() now refuses non-prime-order / non-canonical keys and non-canonical R
+    neutral = (1).to_bytes(32, "little")
+    forged_refused = not ed.verify(neutral, b"any message", neutral + bytes(32)) and not ed.key_ok(bytes(32))
+    print(f"  {'PASS' if forged_refused else 'FAIL'} ed25519 refuses the neutral-key forgery and a small-order key"); ok &= forged_refused
     passed = 0
     for v in D["vectors"]:
         got = run(v, HONEST)
