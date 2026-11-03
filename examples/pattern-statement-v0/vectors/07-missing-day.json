@@ -1,0 +1,43 @@
+{
+ "expected": {
+  "problems": [],
+  "result": "CONSISTENT"
+ },
+ "log_files": {
+  "2026-11-01": "{\"cutoff\":1793577600,\"date\":\"2026-11-01\",\"merkle_root\":\"b322d189297df3d2e26b6bfbc7029472624fdfe736b407abd5244d1186ea54ec\",\"n_enrollments\":2,\"n_records\":3,\"prev_root\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"rules\":\"see SPEC.md\",\"schema\":\"invinoveritas.work-acceptance.record_log.v1\"}\n{\"enrolled_at\":1793408400,\"key\":\"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG\",\"signature\":\"sig-P5RDjVJG\",\"statement\":\"invinoveritas work-acceptance enrollment v1 did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG\",\"type\":\"enrollment\"}\n{\"enrolled_at\":1793408400,\"key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"signature\":\"sig-wWsdvktH\",\"statement\":\"invinoveritas work-acceptance enrollment v1 did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"type\":\"enrollment\"}\n{\"created_at\":1793494800,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG\",\"producer_signature\":\"absent\",\"receipt_sha256\":\"25f1c790f16f423d2f942b70378ed075972ab0affbf3f35f12e015c13f29406f\",\"type\":\"record\",\"verdict\":\"pass\"}\n{\"created_at\":1793498400,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"present\",\"receipt_sha256\":\"82f3e9c695dc6b8d1b11818d5701919e286de8d47f7c3eb3100c485f79e57828\",\"type\":\"record\",\"verdict\":\"pass\"}\n{\"created_at\":1793509200,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"absent\",\"receipt_sha256\":\"db77fd01af957221a4989b64b3770a83a3c56068405b9f0e9408feae57fd17e4\",\"type\":\"record\",\"verdict\":\"fail\"}\n",
+  "2026-11-03": "{\"cutoff\":1793750400,\"date\":\"2026-11-03\",\"merkle_root\":\"e253f09c6e49f88d475ce22d68ddacd033bea6cc6b90bab704893eca703ce582\",\"n_enrollments\":2,\"n_records\":6,\"prev_root\":\"5a3121d3890dc6f19de6c608b4929e0470f8b14b07626574ef33ae31f99661e1\",\"rules\":\"see SPEC.md\",\"schema\":\"invinoveritas.work-acceptance.record_log.v1\"}\n{\"enrolled_at\":1793408400,\"key\":\"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG\",\"signature\":\"sig-P5RDjVJG\",\"statement\":\"invinoveritas work-acceptance enrollment v1 did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG\",\"type\":\"enrollment\"}\n{\"enrolled_at\":1793408400,\"key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"signature\":\"sig-wWsdvktH\",\"statement\":\"invinoveritas work-acceptance enrollment v1 did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"type\":\"enrollment\"}\n{\"created_at\":1793494800,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG\",\"producer_signature\":\"absent\",\"receipt_sha256\":\"25f1c790f16f423d2f942b70378ed075972ab0affbf3f35f12e015c13f29406f\",\"type\":\"record\",\"verdict\":\"pass\"}\n{\"created_at\":1793498400,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"present\",\"receipt_sha256\":\"82f3e9c695dc6b8d1b11818d5701919e286de8d47f7c3eb3100c485f79e57828\",\"type\":\"record\",\"verdict\":\"pass\"}\n{\"created_at\":1793509200,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"absent\",\"receipt_sha256\":\"db77fd01af957221a4989b64b3770a83a3c56068405b9f0e9408feae57fd17e4\",\"type\":\"record\",\"verdict\":\"fail\"}\n{\"created_at\":1793581200,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"present\",\"receipt_sha256\":\"e49d63b2a8a78f048bafc4b4590029603a5a4165ee8bf98af15d62f24cd83479\",\"type\":\"record\",\"verdict\":\"pass\"}\n{\"created_at\":1793610000,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"absent\",\"receipt_sha256\":\"a2ec8adac7fd24b4b7a8edd89d06990579f6123f5724a14b47ee4bddfb2ba572\",\"type\":\"record\",\"verdict\":\"incomplete\"}\n{\"created_at\":1793678400,\"criteria_id\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"producer_key\":\"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\",\"producer_signature\":\"absent\",\"receipt_sha256\":\"5eb242aeb68552862913d602cff36deb4cafc18a46cfdea393b4bc1c6917a669\",\"type\":\"record\",\"verdict\":\"pass\"}\n"
+ },
+ "spec": "SPEC.md (pattern statement v0)",
+ "statement": {
+  "counts": {
+   "producer_signature": {
+    "absent": 3,
+    "declined": 0,
+    "present": 2
+   },
+   "records": 5,
+   "verdict": {
+    "fail": 1,
+    "incomplete": 1,
+    "pass": 3
+   }
+  },
+  "decline_rate": 0.0,
+  "enrolled_at": 1793408400,
+  "log": {
+   "first_root": "9ab7b51b998df722c3a26e9dadcdef2a241f1c6b4c0deaa8eadb1ff9f93e2539",
+   "last_root": "df26820e7ba721a41bc0faceb90387343b06863310ba492080d32a14a6ff04db"
+  },
+  "measured": "measured",
+  "not_measured_days": [
+   "2026-11-02"
+  ],
+  "period": {
+   "from": "2026-11-01",
+   "to": "2026-11-03"
+  },
+  "schema": "invinoveritas.work-acceptance.pattern_statement.v0",
+  "subject_key": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+ },
+ "vector": "07-missing-day"
+}
