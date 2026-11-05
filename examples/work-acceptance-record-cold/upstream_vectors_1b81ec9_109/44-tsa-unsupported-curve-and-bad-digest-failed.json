@@ -1,0 +1,134 @@
+{
+ "contributed_by": "Trilatic (CC0)",
+ "description": "A synthetic criteria token from a test-only PKI (root, intermediate, TSA; provenance on the spec site), with the test root as the only anchor. No record token. A P-521 token (unsupported, as 42) whose messageDigest attribute does not match the TSTInfo. A check that can run has failed, so the value is failed, not unsupported.",
+ "expected": {
+  "criteria_committed_before_check": "yes",
+  "criteria_hash": "match",
+  "independence": "independent",
+  "problem_codes": [],
+  "receipt_timestamp": "none",
+  "signature_valid": true,
+  "tsa_signature": {
+   "criteria": "failed"
+  },
+  "verdict_recomputed": "pass",
+  "verdict_stated": "pass",
+  "warning_codes": []
+ },
+ "inputs": {
+  "criteria_file_base64": "eyJjcml0ZXJpYSI6W3siaWQiOiJjMSIsInJlcXVpcmVkIjp0cnVlLCJyZXF1aXJlbWVudCI6IlRoZSBmaXJzdCByZXF1aXJlbWVudC4iLCJ0aXRsZSI6IkZpcnN0IHJlcXVpcmVkIGNyaXRlcmlvbiJ9LHsiaWQiOiJjMiIsInJlcXVpcmVkIjp0cnVlLCJyZXF1aXJlbWVudCI6IlRoZSBzZWNvbmQgcmVxdWlyZW1lbnQuIiwidGl0bGUiOiJTZWNvbmQgcmVxdWlyZWQgY3JpdGVyaW9uIn0seyJpZCI6ImMzIiwicmVxdWlyZWQiOmZhbHNlLCJyZXF1aXJlbWVudCI6IkFuIG9wdGlvbmFsIHJlcXVpcmVtZW50LiIsInRpdGxlIjoiT3B0aW9uYWwgY3JpdGVyaW9uIn1dLCJjcml0ZXJpYV9zZXQiOiJleGFtcGxlLWNyaXRlcmlhIiwicmVzdWx0X3ZvY2FidWxhcnkiOlsicGFzcyIsImZhaWwiLCJub3QtZXZhbHVhdGVkIiwiZXJyb3IiXSwidGl0bGUiOiJFeGFtcGxlIGNyaXRlcmlhIGZvciB0ZXN0IHZlY3RvcnMiLCJ2ZXJzaW9uIjoiMSJ9",
+  "criteria_tsr_base64": "MIIIETADAgEAMIIICAYJKoZIhvcNAQcCoIIH+TCCB/UCAQMxDzANBglghkgBZQMEAgEFADByBgsqhkiG9w0BCRABBKBjBGEwXwIBAQYEKgMEATAxMA0GCWCGSAFlAwQCAQUABCBEE+mdc9dD17Y6g2LPPUf/ZGybZOOXKy+2mECTyOmt1wIBAhgPMjAyNjEwMjAxNTM4MjVaMAMCAQECCEmsr2cX8EOdoIIF5TCCAqwwggGUoAMCAQICBQCRg4L3MA0GCSqGSIb3DQEBCwUAMCAxHjAcBgNVBAMMFVdBUiBUZXN0IEludGVybWVkaWF0ZTAeFw0yNTA2MDEwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMB0xGzAZBgNVBAMMEldBUiBUZXN0IFRTQSBQLTUyMTCBmzAQBgcqhkjOPQIBBgUrgQQAIwOBhgAEAJtYtyo774bFURwFc1zuGDE1DTD2lzgnQP8m9Ol2cSSDP13rNmXseFkW3dPRABf0iF5uGsZNYSART62h6tYMfzLkAaSfasZJs3GUsYThgaxfuPvzo/dxUzjsC4OM9LAiI2DRGAWVupXNsm9BVzYz0kjdUXCgGRMU0gtTrZsOWgUK1NZXo3gwdjAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8EDDAKBggrBgEFBQcDCDAdBgNVHQ4EFgQUJ4F4gfVHhmvyEOuBnPkalAe8uLQwHwYDVR0jBBgwFoAULDjJtXvGhvPHsH+7a/K8aTL3AJAwDQYJKoZIhvcNAQELBQADggEBAMCLrsHm19i35w7VyVnscZW0dDxO+RBf1aYdZ65AeZSb0ohKPFf7o4d0Pp0BGHZABPj81nJaXPMVVgE4zlevGT9I1zXWRZEYk8k+VoN2HxkuLqF876kQZeSSr/7pvWuqThSCoq9gglzPGKTWTKFpZl/nUrFu+btE0UI868pWBpgykDR2QmUGLKXiR/Ky0EOmyszS3AzzcWHu7ypVGRasu9ZAXMzFF/wzibIcGqWJRyqATm99uJPAQvHSrsw0YDqz+9TR4inPSD51RVEzrP1TmBKmCyVXBSbeA6K5PRVEp34Wo+kotQZWV2pw7Jr8XaM6H65GnMq4Ga+j0LZc9IE3fUMwggMxMIICGaADAgECAgUAyEyAFzANBgkqhkiG9w0BAQsFADAvMS0wKwYDVQQDDCRXQVIgVGVzdCBSb290IChub3QgYSByZWFsIGF1dGhvcml0eSkwHhcNMjUwMTAxMDAwMDAwWhcNMzUxMjMxMjM1OTU5WjAgMR4wHAYDVQQDDBVXQVIgVGVzdCBJbnRlcm1lZGlhdGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDX9fVAokPWd7y/eWFQ4B0O2h0gAaA24e+7Gxn8qIzBZGXK8+hd0jt46lJZ40uyXs3fpkh48q42AGpF2MmSbEuztXkY4ZmGUukHfpaym+ybbTpY3en6L1j7Q2cWzkeBEJVw0saeSrZ/DJ8jjn3hs6FRRatPopXDMekcQ0pc3Fkle8Eal85X8hyONxctxfTlvIJd1jfDQkxNqpsJmjKL8JpC5Eu6Imh7uS9LZXiYzJRwt+iu5WpXJ6ApzReOar1DX7S+Uv7XuZbWla5LbLLzqPpgKEzi9uTU/LCzmjEgKfzOBRpjRiIQlnKI4o54et4tQQ63rZpsqnaqeWgQaaXbXrZZAgMBAAGjYzBhMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgEGMB0GA1UdDgQWBBQsOMm1e8aG88ewf7tr8rxpMvcAkDAfBgNVHSMEGDAWgBTRjYCU6RKx6snb2b5vNARG4YlY0zANBgkqhkiG9w0BAQsFAAOCAQEAdhajO9oFSOifZnY1KtC6wpN47Nsz+Wk8G9MEob90fSoxUtTvUODeoSJVUPekf6ODx3tRwB0/iJyp54BbYjoZlselEpPUWW8bwxzU/gIdigzabMgFyb2YQorISlmS5zT2LkbLy/xMAogrvZ5rXpHlvLsOWgetCWxheNFZHUip95k43PNPUU/Nbh2c3+tzNzGb7CmhVDsBRkZMR0X38n0iihl+MWyOpqGUxiRedLLwhzWHwH9GPGLYMs+kf9cm0IPOBzWvAmdw2T4SMTuRBJuBHS2bmOtlnSK7Qf8ObktdtWLmsuLbm+J3GzYkCTUJ5cOw7Sm+LqSUKipVTyM9HSRFNjGCAYAwggF8AgEBMCkwIDEeMBwGA1UEAwwVV0FSIFRlc3QgSW50ZXJtZWRpYXRlAgUAkYOC9zANBglghkgBZQMEAgEFAKCBpDAaBgkqhkiG9w0BCQMxDQYLKoZIhvcNAQkQAQQwHAYJKoZIhvcNAQkFMQ8XDTI2MTAyMTE0NDYyNFowLwYJKoZIhvcNAQkEMSIEIABsefIPCiaBbIGmR7zodHxTM7WebdlL76krRYfw+69DMDcGCyqGSIb3DQEJEAIvMSgwJjAkMCIEIDHC1JU5a3L+IJ3v1KA6AJraT3LEb2/NoK7AICPvxameMAoGCCqGSM49BAMCBIGJMIGGAkEKq+7Cwv9VOTcRege9nkQMZnZS1DOX5/xpxZ8yZN/pgRpyuKxBanY3uVB8ArcN1ueoII9uxFXyqa2jHPS12+JOKQJBFMWiy3vArBbyZs0OUflPdnUaTx/iTdHtdjEelcdH1x/5+MQjKqfc4ox/iKmg3hkmRV3kUqa0eNK9mGm4/g7Wris=",
+  "keys": {
+   "issuer": "Example Checker (test vectors)",
+   "keys": [
+    {
+     "alg": "Ed25519",
+     "key_id": "spec-test-2f2dfa2f",
+     "public_key_base64": "IG8NU3Wa4RNk++CwdHYLlfOxAtwRl2hz0hJKfLgZyJk=",
+     "status": "test"
+    }
+   ]
+  },
+  "receipt": {
+   "receipt": {
+    "canonicalization": "JCS-RFC8785",
+    "client_ref": "test vector",
+    "criteria": {
+     "commitment": "rfc3161",
+     "committed_at": "2026-10-20T15:38:25Z",
+     "id": "example-criteria",
+     "sha256": "4413e99d73d743d7b63a8362cf3d47ff646c9b64e3972b2fb6984093c8e9add7",
+     "version": "1"
+    },
+    "files": {
+     "original": {
+      "bytes": 22,
+      "name": "original.pdf",
+      "pages": 1,
+      "sha256": "4cbaf696bbf09c7f9c08d2fc5cb4e93235d0d9ff94a916b7dd90b91ef057e4be"
+     },
+     "remediated": {
+      "bytes": 23,
+      "name": "delivered.pdf",
+      "pages": 1,
+      "sha256": "b520ef4eb7a0f3e0d725ea92167e4962fe43584c7747b44e0acd4d846eaa4cf8"
+     }
+    },
+    "human_review": {
+     "scope": [
+      "Example review scope"
+     ],
+     "status": "pending"
+    },
+    "independence": "independent",
+    "issued_utc": "2026-10-20T15:39:00Z",
+    "issuer": "Example Checker",
+    "key_id": "spec-test-2f2dfa2f",
+    "notice": "Test vector. Not a real check.",
+    "parties": {
+     "checker": {
+      "key_id": "spec-test-2f2dfa2f",
+      "name": "Example Checker"
+     },
+     "producer": {
+      "key_id": null,
+      "name": "Example Vendor"
+     }
+    },
+    "receipt_id": "EX-0001",
+    "results": [
+     {
+      "finding": "Met.",
+      "id": "c1",
+      "required": true,
+      "result": "pass",
+      "title": "First required criterion"
+     },
+     {
+      "finding": "Met.",
+      "id": "c2",
+      "required": true,
+      "result": "pass",
+      "title": "Second required criterion"
+     },
+     {
+      "finding": "No review recorded.",
+      "id": "c3",
+      "required": false,
+      "result": "not-evaluated",
+      "title": "Optional criterion"
+     }
+    ],
+    "revision": 1,
+    "schema": "trilatic.acceptance-receipt/1.2",
+    "suite": {
+     "digest": "sha-256",
+     "signature": "Ed25519"
+    },
+    "tools": {
+     "profile": "example profile",
+     "validator": "example 1.0"
+    },
+    "verdict": "pass"
+   },
+   "signature": {
+    "alg": "Ed25519",
+    "key_id": "spec-test-2f2dfa2f",
+    "value": "06Q3s44f9YomqHl1gcgaqb7Xy249CWzsMMYPdLc8C3WoU/15RN1HlQz/om9m2TLhu7taMNOTqS6jksixk1hyAQ=="
+   },
+   "timestamp": {
+    "reason": "not requested",
+    "status": "none"
+   }
+  },
+  "receipt_tsr_base64": null,
+  "tsa_roots_base64": [
+   "MIIDHjCCAgagAwIBAgIESBNJTjANBgkqhkiG9w0BAQsFADAvMS0wKwYDVQQDDCRXQVIgVGVzdCBSb290IChub3QgYSByZWFsIGF1dGhvcml0eSkwHhcNMjAwMTAxMDAwMDAwWhcNNDAxMjMxMjM1OTU5WjAvMS0wKwYDVQQDDCRXQVIgVGVzdCBSb290IChub3QgYSByZWFsIGF1dGhvcml0eSkwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCb9omzagz+L7T9Nw9LhoCJNFd4uhPjTcTUEupBqvW8ALrNRQkbnNxlWckfPn+aIehHFE6dMQ7xT0dEvvVyeFmaw3USIEXZz2GOSeq4qym4Xl36vhSu5GXlJ5I82IZZNyXsoTSGMnfGGV+d2TwhJvFnlN1w79TULm6VtnzQkxloikZ8mIPR5P6JG0h7jIQbvmckKsdUjfv0k+Hzk+hhoHSAZ2DR1AH9vNA6XZ/Q/M2YuSq2L7eSe5VYbz/2LCYXQeETsCvU38h1pOF6eZpJYqZM0KFb6J7IRAvLXR3BblA9DOVY1/H5tlnlkLj630tgwwcRWfd35CkfOFPsryhi9SAnAgMBAAGjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgEGMB0GA1UdDgQWBBTRjYCU6RKx6snb2b5vNARG4YlY0zANBgkqhkiG9w0BAQsFAAOCAQEAIMFM1pkqQwAGnpLQESmndFyI71LJ80fhBDNwvr6WREIiFPhuEOj4IQlQ3HRR26stP1c2WHwNgqMjGWyu/iwL2dPGvInXxk7oNOIyBaBy8iqEinw8onUkMcczD5gdjzV690sPX1AsCA2dQBPCh7SGR8JNzlvDhUO4Puf/SUqDsynbFJhAZlKI5J9Srpqx5ADv9HxpQnAAlHmkIqxlX14kzr1VMF6J5JqZlamjfEdFFmxQBw6BsKHtcj4Jjpkc8jVdLja+CDsaYwZcxcpdFtE/8KHCErcAJKi29RQdUnAlUBu3+9kFrVf2Z5OTz95plxogPI+iLTGos/hQkC5KqW4tcg=="
+  ]
+ },
+ "license": "CC0-1.0",
+ "spec": "acceptance record, schema trilatic.acceptance-receipt/1.2",
+ "title": "44-tsa-unsupported-curve-and-bad-digest-failed",
+ "vector": "44-tsa-unsupported-curve-and-bad-digest-failed",
+ "warning": "Signed with a published TEST key. Never trust a record signed by it."
+}

@@ -304,7 +304,9 @@ def check(inputs):
             P("SIGNATURE_INVALID")
     checker, producer = r["parties"]["checker"], r["parties"].get("producer") or {}
     # 1.4.2 'Checker is the signer': the checker's key_id against the SIGNED key_id, never the unsigned envelope's (64, 86)
-    if out["signature_valid"] and checker.get("key_id") != skid:
+    # 1.4.3 (104, 106): compared whether or not the signature verifies; an empty signed key_id names no key, so a checker naming a key
+    # is not the signer (104), while an empty checker key_id beside it is the same (absent) key (106)
+    if checker.get("key_id") != skid:
         P("CHECKER_NOT_SIGNER")
     # step 4: criteria document hash (1.4.2: a criteria file that is not canonical base64 matches nothing, 89), then results
     if inputs.get("criteria_file_base64"):
@@ -342,6 +344,11 @@ def check(inputs):
             # ASSUMED (1.4.2 is silent): a token that is not canonical base64 has no signature to check -> not_evaluated without
             # anchors (as every other token), `failed` with anchors
             _tsa[_k] = _TSA.evaluate(_raw, _anchors) if _raw is not None else ("failed" if _anchors else "not_evaluated")
+            # 1.4.3 (105, 107): a token whose genTime is not a usable time fails the time check, which runs before the signer is
+            # looked for ("failed if any check that can run fails; otherwise no_signer") -> `failed` with anchors
+            _t = tst(_tok) if _raw is not None else None
+            if _anchors and _t not in (None, "noncanonical") and gen_time(_t[2]) is None:
+                _tsa[_k] = "failed"
     out["tsa_signature"] = _tsa
     # step 5: criteria commitment. A USABLE token: canonical, SHA-256 imprint equal to criteria.sha256, and (1.4.2) a genTime of the
     # DER GeneralizedTime form with real calendar fields. Imprint over other bytes (or non-canonical base64) is
@@ -351,7 +358,7 @@ def check(inputs):
     usable = ct is not None and ct != "noncanonical" and ct[0] == OID_SHA256 and ct[1] == r["criteria"]["sha256"] and gen_time(ct[2]) is not None
     if usable:
         tc = gen_time(ct[2])
-        crit_ms = _ms_up(tc + ct[3])                        # 1.4.2: criteria time to the millisecond, rounded UP (66, 68)
+        crit_ms = _ms_up(tc) + ct[3] * 1000                # 1.4.3: genTime rounded UP to the millisecond first, then the accuracy (98)
         stated = rfc_time(r["criteria"].get("committed_at"))
         # 1.4.2: with a usable token, a committed_at in another form is CRITERIA_TIME_MISMATCH (88); a readable one is compared
         # to the second, as in 1.2-1.4.1 (ASSUMED: unchanged)
@@ -400,21 +407,31 @@ def check(inputs):
     collision = pk is not None and (pk == ck or (pk in dec and ck in dec and dec[pk] is not None and dec[pk] == dec[ck]))
     if collision:
         P("KEY_COLLISION")
-    self_checked = r.get("independence") == "self-checked" or collision or by_key
-    out["independence"] = "self-checked" if self_checked else "independent"
-    if self_checked:
-        W("SELF_CHECKED")
+    # 1.4.4 step 8: derive independence from the parties, report the STATED value, warn SELF_CHECKED on a stated self-checked, and a
+    # derived value that differs from the stated one is INDEPENDENCE_INCONSISTENT (13, 20, 108, 109).
+    def _name(x):
+        if x is None or x is False or (isinstance(x, (int, float)) and not isinstance(x, bool) and x == 0) or x in ("", [], {}):
+            return None
+        return x.strip().casefold() if isinstance(x, str) else repr(x)
+    stated = r.get("independence")
+    pn, cn = _name(producer.get("name")) if "producer" in r["parties"] else None, _name(checker.get("name"))
+    claim_ind = stated == "independent"
+    key_rule = by_key                                       # a key entry that cannot be read: not canonical (69) or its id listed twice (75)
+    if claim_ind and any(kid is not None and (kid == "" or ids.count(kid) != 1) for kid in (pk, ck)):
+        key_rule = True                                     # 80, 81, 103 (and 75: listed more than once), only on an independent claim
+    if pn is None or pn in ("unspecified", "unknown"):
+        derived = "undeclared"
+    elif pn == cn or collision or key_rule:
+        derived = "self-checked"
     else:
-        if producer.get("name") is not None and producer.get("name") == checker.get("name"):
-            P("INDEPENDENCE_INCONSISTENT")                  # labelled independent, same party named on both sides
-        if r.get("independence") == "independent" and any(kid is not None and (kid == "" or ids.count(kid) != 1) for kid in (pk, ck)):
-            P("INDEPENDENCE_INCONSISTENT")
-    if not producer.get("name") and not producer.get("key_id"):
+        derived = "independent"
+    out["independence"] = stated
+    if stated == "self-checked":
+        W("SELF_CHECKED")
+    if derived != stated:
+        P("INDEPENDENCE_INCONSISTENT")
+    if derived == "undeclared":
         W("PRODUCER_UNDECLARED")
-        # ASSUMED reading of 1.3 step 8 (vector 20): with no producer named, independence cannot be derived, so a record that
-        # states "independent" anyway is INDEPENDENCE_INCONSISTENT.
-        if r.get("independence") == "independent":
-            P("INDEPENDENCE_INCONSISTENT")
     # step 7: verdict (property 4). A result outside the vocabulary is RESULT_VOCABULARY and counts as not-pass.
     if any(x["result"] not in RESULTS for x in r["results"]):
         P("RESULT_VOCABULARY")

@@ -1,0 +1,134 @@
+{
+ "contributed_by": "Trilatic (CC0)",
+ "description": "A synthetic criteria token from a test-only PKI (root, intermediate, TSA; provenance on the spec site), with the test root as the only anchor. No record token. Vector 38's token (intermediate expired before genTime) with an unrelated anchor (DigiCert Trusted Root G4), so the chain reaches no supplied anchor. The intermediate's validity check can run and fails, and a check that can run and fails decides first: failed, not untrusted.",
+ "expected": {
+  "criteria_committed_before_check": "yes",
+  "criteria_hash": "match",
+  "independence": "independent",
+  "problem_codes": [],
+  "receipt_timestamp": "none",
+  "signature_valid": true,
+  "tsa_signature": {
+   "criteria": "failed"
+  },
+  "verdict_recomputed": "pass",
+  "verdict_stated": "pass",
+  "warning_codes": []
+ },
+ "inputs": {
+  "criteria_file_base64": "eyJjcml0ZXJpYSI6W3siaWQiOiJjMSIsInJlcXVpcmVkIjp0cnVlLCJyZXF1aXJlbWVudCI6IlRoZSBmaXJzdCByZXF1aXJlbWVudC4iLCJ0aXRsZSI6IkZpcnN0IHJlcXVpcmVkIGNyaXRlcmlvbiJ9LHsiaWQiOiJjMiIsInJlcXVpcmVkIjp0cnVlLCJyZXF1aXJlbWVudCI6IlRoZSBzZWNvbmQgcmVxdWlyZW1lbnQuIiwidGl0bGUiOiJTZWNvbmQgcmVxdWlyZWQgY3JpdGVyaW9uIn0seyJpZCI6ImMzIiwicmVxdWlyZWQiOmZhbHNlLCJyZXF1aXJlbWVudCI6IkFuIG9wdGlvbmFsIHJlcXVpcmVtZW50LiIsInRpdGxlIjoiT3B0aW9uYWwgY3JpdGVyaW9uIn1dLCJjcml0ZXJpYV9zZXQiOiJleGFtcGxlLWNyaXRlcmlhIiwicmVzdWx0X3ZvY2FidWxhcnkiOlsicGFzcyIsImZhaWwiLCJub3QtZXZhbHVhdGVkIiwiZXJyb3IiXSwidGl0bGUiOiJFeGFtcGxlIGNyaXRlcmlhIGZvciB0ZXN0IHZlY3RvcnMiLCJ2ZXJzaW9uIjoiMSJ9",
+  "criteria_tsr_base64": "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",
+  "keys": {
+   "issuer": "Example Checker (test vectors)",
+   "keys": [
+    {
+     "alg": "Ed25519",
+     "key_id": "spec-test-2f2dfa2f",
+     "public_key_base64": "IG8NU3Wa4RNk++CwdHYLlfOxAtwRl2hz0hJKfLgZyJk=",
+     "status": "test"
+    }
+   ]
+  },
+  "receipt": {
+   "receipt": {
+    "canonicalization": "JCS-RFC8785",
+    "client_ref": "test vector",
+    "criteria": {
+     "commitment": "rfc3161",
+     "committed_at": "2026-10-20T15:38:25Z",
+     "id": "example-criteria",
+     "sha256": "4413e99d73d743d7b63a8362cf3d47ff646c9b64e3972b2fb6984093c8e9add7",
+     "version": "1"
+    },
+    "files": {
+     "original": {
+      "bytes": 22,
+      "name": "original.pdf",
+      "pages": 1,
+      "sha256": "4cbaf696bbf09c7f9c08d2fc5cb4e93235d0d9ff94a916b7dd90b91ef057e4be"
+     },
+     "remediated": {
+      "bytes": 23,
+      "name": "delivered.pdf",
+      "pages": 1,
+      "sha256": "b520ef4eb7a0f3e0d725ea92167e4962fe43584c7747b44e0acd4d846eaa4cf8"
+     }
+    },
+    "human_review": {
+     "scope": [
+      "Example review scope"
+     ],
+     "status": "pending"
+    },
+    "independence": "independent",
+    "issued_utc": "2026-10-20T15:39:00Z",
+    "issuer": "Example Checker",
+    "key_id": "spec-test-2f2dfa2f",
+    "notice": "Test vector. Not a real check.",
+    "parties": {
+     "checker": {
+      "key_id": "spec-test-2f2dfa2f",
+      "name": "Example Checker"
+     },
+     "producer": {
+      "key_id": null,
+      "name": "Example Vendor"
+     }
+    },
+    "receipt_id": "EX-0001",
+    "results": [
+     {
+      "finding": "Met.",
+      "id": "c1",
+      "required": true,
+      "result": "pass",
+      "title": "First required criterion"
+     },
+     {
+      "finding": "Met.",
+      "id": "c2",
+      "required": true,
+      "result": "pass",
+      "title": "Second required criterion"
+     },
+     {
+      "finding": "No review recorded.",
+      "id": "c3",
+      "required": false,
+      "result": "not-evaluated",
+      "title": "Optional criterion"
+     }
+    ],
+    "revision": 1,
+    "schema": "trilatic.acceptance-receipt/1.2",
+    "suite": {
+     "digest": "sha-256",
+     "signature": "Ed25519"
+    },
+    "tools": {
+     "profile": "example profile",
+     "validator": "example 1.0"
+    },
+    "verdict": "pass"
+   },
+   "signature": {
+    "alg": "Ed25519",
+    "key_id": "spec-test-2f2dfa2f",
+    "value": "06Q3s44f9YomqHl1gcgaqb7Xy249CWzsMMYPdLc8C3WoU/15RN1HlQz/om9m2TLhu7taMNOTqS6jksixk1hyAQ=="
+   },
+   "timestamp": {
+    "reason": "not requested",
+    "status": "none"
+   }
+  },
+  "receipt_tsr_base64": null,
+  "tsa_roots_base64": [
+   "MIIFkDCCA3igAwIBAgIQBZsbV56OITLiOQe9p3d1XDANBgkqhkiG9w0BAQwFADBiMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQwHhcNMTMwODAxMTIwMDAwWhcNMzgwMTE1MTIwMDAwWjBiMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC/5pBzaN675F1KPDAiMGkz7MKnJS7JIT3yithZwuEppz1Yq3aaza57G4QNxDAf8xukOBbrVsaXbR2rsnnyyhHS5F/WBTxSD1Ifxp4VpX6+n6lXFllVcq9ok3DCsrp1mWpzMpTREEQQLt+C8weE5nQ7bXHiLQwb7iDVySAdYyktzuxeTsiT+CFhmzTrBcZe7FsavOvJz82sNEBfsXpm7nfISKhmV1efVFiODCu3T6cw2Vbuyntd463JT17lNecxy9qTXtyOj4DatpGYQJB5w3jHtrHEtWoYOAMQjdjUN6QuBX2I9YI+EJFwq1WCQTLX2wRzKm6RAXwhTNS8rhsDdV14Ztk6MUSaM0C/CNdaSaTC5qmgZ92kJ7yhTzm1EVgX9yRcRo9k98FpiHaYdj1ZXUJ2h4mXaXpI8OCiEhtmmnTK3kse5w5jrubU75KSOp493ADkRSWJtppEGSt+wJS00mFt6zPZxd9LBADMfRyVw4/3IbKyEbe7f/LVjHAsQWCqsWMYRJUadmJ+9oCw++hkpjPRiQfhvbfmQ6QYuKZ3AeEPlAwhHbJUKSWJbOUOUlFHdL4mrLZBdd56rF+NP8m800ERElvlEFDrMcXKchYiCd98THU/Y+whX8QgUWtvsauGi0/C1kVfnSD8oR7FwI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjAdBgNVHQ4EFgQU7NfjgtJxXWRM3y5nP+e6mK4cD08wDQYJKoZIhvcNAQEMBQADggIBALth2X2pbL4XxJEbw6GiAI3jZGgPVs93rnD5/ZpKmbnJeFwMDF/k5hQpVgs2SV1EY+CtnJYYZhsjDT156W1r1lT40jzBQ0CuHVD1UvyQO7uYmWlrx8GnqGikJ9yd+SeuMIW59mdNOj6PWTkiU0TryF0Dyu1Qen1iIQqAyHNm0aAFYF/opbSnr6j3bTWcfFqK1qI4mfN4i/RN0iAL3gTujJtHgXINwBQy7zBZLq7gcfJW5GqXb5JQbZaNaHqasjYUegbyJLkJEVDXCLG4iXqEI2FCKeWjzaIgQdfRnGTZ6iahixTXTBmyUEFxPT9NcCOGDErcgdLMMpSEDQgJlxxPwO5rIHQw0uA5NBCFIRUBCOhVMt5xSdkoF1BN5r5N0XWs0Mr7QbhDparTwwVETyw2m+L64kW4I1NsBm9nVX9GtUw/bihaeSbSpKhil9Ie4u1Ki7wb/UdKDd9nZn6yW0HQO+T0O/QEY+nvwlQAUaCKKsnOeMzV6ocEGLPOr0mIr/OSmbaz5mEP0oUA51Aa5BuVnRmhuZyxm7EAHu/QD09CbMkKvO5D+jpxpchNJqU1/YldvIViHTLSoCtU7ZpXwdv6EM8Zt4tKG48BtieVU+i2iW1bvGjUI+iLUaJW+fCmgKDWHrO8Dw9TdSmq6hN35N6MgSGtBxBHEa2HPQfRdbzP82Z+"
+  ]
+ },
+ "license": "CC0-1.0",
+ "spec": "acceptance record, schema trilatic.acceptance-receipt/1.2",
+ "title": "54-tsa-expired-intermediate-no-anchor-failed",
+ "vector": "54-tsa-expired-intermediate-no-anchor-failed",
+ "warning": "Signed with a published TEST key. Never trust a record signed by it."
+}

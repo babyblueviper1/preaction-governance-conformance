@@ -111,7 +111,9 @@ class Token:
             if sd[idx][0] == 0xA0:
                 self.certs_der = [b[c[3]:c[4]] for c in children(b, sd[idx][1], sd[idx][2]) if c[0] == 0x30]
             idx += 1
-        sis = children(b, sd[idx][1], sd[idx][2])
+        # 1.4.3 vectors 92/105/107: the fixture SignedData omits signerInfos entirely (earlier fixtures had an empty SET); the README
+        # says the fixtures have no SignerInfo, so an absent field reads the same as an empty one: no signer, not a parse failure
+        sis = children(b, sd[idx][1], sd[idx][2]) if idx < len(sd) else []
         self.signer = None
         if sis:
             self.signer = self._signer_info(sis[0])

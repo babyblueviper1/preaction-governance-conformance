@@ -6,7 +6,8 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
-python3 war_check.py upstream_vectors_cb7e8f1_90/*.json # 90/90 agree with upstream `expected` (profile 1.4.2, cb7e8f1)
+python3 war_check.py upstream_vectors_1b81ec9_109/*.json # 109/109 agree with upstream `expected` (profile 1.4.4, 1b81ec9)
+python3 war_check.py upstream_vectors_cb7e8f1_90/*.json  # 90/90 (profile 1.4.2, cb7e8f1)
 python3 war_check.py upstream_vectors_1_3_30/*.json # 30/30 agree with upstream `expected` (profile 1.3, 2d8fac7)
 python3 war_check.py upstream_vectors_1_3/*.json # 28/28 agree with upstream `expected` (profile 1.3, 270e9fe)
 python3 war_check.py upstream_vectors/*.json     # 11/11 agree with upstream `expected` (profile 1.2.1, f7d8984)
@@ -15,6 +16,31 @@ python3 lax_check.py upstream_vectors            # each lax verifier passes all 
 python3 lax_check.py proposed_vectors            # each lax verifier is caught
 python3 build_extra.py                           # regenerate proposed_vectors/
 ```
+
+## Profiles 1.4.3 and 1.4.4 (1b81ec9): 109/109 agree; the checker frozen for 1.4.2 scored 103/109, no crashes
+`upstream_vectors_1b81ec9_109/` is an unmodified copy of upstream `vectors/` at maximusrufus/work-acceptance-record@1b81ec9 (CC0 1.0).
+
+**The checker frozen for 1.4.2 (`c641310`), run first and unchanged: 103/109, no crashes** (`upstream_vectors_1b81ec9_109_frozen_c641310_run.txt`).
+01-90 all agree. The six disagreements:
+- 92, 105, 107: the criteria token read as `failed` where the vectors expect `no_signer`. **A defect on our side, not a reading:** these
+  fixtures omit the SignedData `signerInfos` field (earlier fixtures carried an empty SET); our parser indexed past the end and reported
+  the parse error as `failed`. The README says the fixtures have no SignerInfo, which is `no_signer` either way.
+- 98: we added the accuracy before rounding to the millisecond; 1.4.3 rounds first.
+- 104: we compared the checker with the signed `key_id` only when the signature verified; 1.4.3 compares it either way.
+- 108: we reported the derived independence; 1.4.4 reports the stated value and flags a differing derived one.
+
+**Then, written from the README's step 8, 10 and 11 text (the reference verifier was not opened): 109/109** (`upstream_vectors_1b81ec9_109_run.txt`).
+Every earlier set is unchanged: 90/90, 57/57, 55/55, 46/46, 30/30, 28/28, 11/11. The TSA-signature mutation harness
+(`tsa_sig_mutations.py upstream_vectors_1_4_1`) gives identical output before and after (all seven removed checks still caught); on
+the later sets its glob picks vectors without a `tsa_signature` member and it stops, with the old and the new code alike.
+- `signerInfos` absent reads as an empty SET: no signer (92, 105, 107).
+- A record token whose `genTime` is not a usable time is `failed` with anchors, before the signer is looked for (105, 107).
+- Criteria time: `genTime` rounded up to the millisecond, then the accuracy added (98).
+- `CHECKER_NOT_SIGNER` compares the checker's `key_id` with the signed one whether or not the signature verifies (104, 106).
+- Step 8 as 1.4.4 states it: derived independence (`undeclared`, `self-checked`, `independent`) from the normalized names, one key,
+  and the key rules (an entry that cannot be read, including an id listed twice, 69 and 75; on an `independent` claim a stated
+  `key_id` that is empty or not listed once, 80, 81, 103); the outcome reports the stated value, `SELF_CHECKED` on a stated
+  `self-checked`, `INDEPENDENCE_INCONSISTENT` when they differ, `PRODUCER_UNDECLARED` when derived is `undeclared` (13, 20, 108, 109).
 
 ## Profile 1.4.2 (cb7e8f1): 90/90 agree; the checker frozen for 1.4.1 scored 68/90 with 5 crashes
 `upstream_vectors_cb7e8f1_90/` is an unmodified copy of upstream `vectors/` at maximusrufus/work-acceptance-record@cb7e8f1 (CC0 1.0).
