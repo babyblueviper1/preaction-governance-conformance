@@ -1,4 +1,4 @@
-"""Clean-room verifier for the work-acceptance record (trilatic.acceptance-receipt/1.2, profile 1.4.2 since 2026-10-28), first written from the README of
+"""Clean-room verifier for the work-acceptance record (trilatic.acceptance-receipt/1.2, profile 1.4.2 since 2026-10-28; step 12 of profile 1.4.5 added 2026-11-06 from the README @ c4b4bd4), first written from the README of
 maximusrufus/work-acceptance-record @ d78865c alone, updated to the 1.2.1 README @ f7d8984 and to profile 1.3 @ 270e9fe (draft, CC0). Standard library only; Ed25519 from ../x402-receipt-private-opening.
 
     python3 war_check.py <vector.json>...      # prints our result next to the vector's `expected`, field by field
@@ -419,6 +419,15 @@ def check(inputs):
     key_rule = by_key                                       # a key entry that cannot be read: not canonical (69) or its id listed twice (75)
     if claim_ind and any(kid is not None and (kid == "" or ids.count(kid) != 1) for kid in (pk, ck)):
         key_rule = True                                     # 80, 81, 103 (and 75: listed more than once), only on an independent claim
+    # 1.4.5 step 12: with `relying_party_keys` supplied, an independent claim whose producer states a key_id counts the producer's
+    # key only when the relying party's own list holds the same decoded key; a key found only in the issuer's response does not
+    # establish it (110, 111). Without `relying_party_keys` the rule is not applied. ASSUMED: entries compared as decoded bytes
+    # under the same canonical-base64 rule as step 2; a relying-party entry that does not decode matches nothing.
+    rpk = inputs.get("relying_party_keys")
+    if isinstance(rpk, dict) and claim_ind and pk is not None:
+        rp_dec = {b64c(k.get("public_key_base64", "")) for k in rpk.get("keys", []) if isinstance(k, dict)} - {None}
+        if dec.get(pk) is None or dec[pk] not in rp_dec:
+            key_rule = True
     if pn is None or pn in ("unspecified", "unknown"):
         derived = "undeclared"
     elif pn == cn or collision or key_rule:
