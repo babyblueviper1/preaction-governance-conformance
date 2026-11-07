@@ -18,7 +18,7 @@ The checker evaluates three edges, each from bytes:
 | policy | the bound args declare `proceed_on`, so which verdicts permit execution was fixed before the payment | `execution_policy_not_committed` |
 
 AUTHORIZED needs all three and V's verdict in `proceed_on`. A carried verdict outside the declared policy is UNAUTHORIZED.
-Everything else is UNRESOLVED with each missing edge named. A receipt that cannot be obtained is UNRESOLVED `evidence_unavailable`,
+Everything else is UNRESOLVED. `covers` is checked first: when it fails, only `verdict_does_not_cover_payment` is named, because `carried` and `policy` would be read from a verdict and args that did not verify. When `covers` holds, each missing edge is named. A receipt that cannot be obtained is UNRESOLVED `evidence_unavailable`,
 a different kind: fetching can fix it, while nothing fetched can supply an edge the producer never committed.
 
 | case | class | outcome | reasons |
