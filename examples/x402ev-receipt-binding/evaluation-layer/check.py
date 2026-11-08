@@ -12,6 +12,20 @@ sys.path[:0] = [os.path.join(HERE, "..", "..", "x402-payment-fingerprint"), os.p
 from fingerprint import canonicalize as jcs
 from _bip340_nostr import schnorr_verify, nostr_event_id
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+
+
+def _strict_pub(raw):
+    """2026-11-08: refuse small-order / mixed-order Ed25519 keys before verify (OpenSSL accepts the identity key with R=identity,
+    S=0 for any message; tsc#4 Nous finding). Uses tools/_ed25519.py from this repo."""
+    import os as _o, sys as _s
+    d = _o.path.dirname(_o.path.abspath(__file__))
+    while d != "/" and not _o.path.exists(_o.path.join(d, "tools", "_ed25519.py")):
+        d = _o.path.dirname(d)
+    _s.path.insert(0, _o.path.join(d, "tools"))
+    import _ed25519 as _e
+    if _e.is_small_order_key(raw) or _e.is_mixed_order_key(raw):
+        raise ValueError("small-order or mixed-order Ed25519 public key")
+    return Ed25519PublicKey.from_public_bytes(raw)
 EVALUATOR_KEY = "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7"   # invinoveritas, /.well-known/verifier-keys.json
 sha = lambda b: "sha256:" + hashlib.sha256(b).hexdigest()
 ub = lambda s: base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
@@ -21,7 +35,7 @@ def check(receipt, ev):
     if receipt["evidenceRef"] != "x402ev/1:" + sha(jcs(body)):
         return "1 receipt"
     try:
-        Ed25519PublicKey.from_public_bytes(ub(receipt["signer"]["publicKey"])).verify(ub(receipt["signer"]["signature"].split(":", 1)[1]), jcs(body))
+        _strict_pub(ub(receipt["signer"]["publicKey"])).verify(ub(receipt["signer"]["signature"].split(":", 1)[1]), jcs(body))
     except Exception:
         return "1 receipt"
     rec = ev["record"]

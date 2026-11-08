@@ -30,6 +30,20 @@ import jcs
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
+
+def _strict_pub(raw):
+    """2026-11-08: refuse small-order / mixed-order Ed25519 keys before verify (OpenSSL accepts the identity key with R=identity,
+    S=0 for any message; tsc#4 Nous finding). Uses tools/_ed25519.py from this repo."""
+    import os as _o, sys as _s
+    d = _o.path.dirname(_o.path.abspath(__file__))
+    while d != "/" and not _o.path.exists(_o.path.join(d, "tools", "_ed25519.py")):
+        d = _o.path.dirname(d)
+    _s.path.insert(0, _o.path.join(d, "tools"))
+    import _ed25519 as _e
+    if _e.is_small_order_key(raw) or _e.is_mixed_order_key(raw):
+        raise ValueError("small-order or mixed-order Ed25519 public key")
+    return Ed25519PublicKey.from_public_bytes(raw)
+
 JWKS_URL = "https://getagentid.dev/.well-known/jwks.json"
 
 
@@ -88,7 +102,7 @@ def main() -> int:
         results.append(("JWKS key is OKP/Ed25519 (32 bytes)", key.get("kty") == "OKP" and key.get("crv") == "Ed25519" and len(pub_raw) == 32,
                         f"kid={key['kid']} pub_hex={pub_raw.hex()}"))
         try:
-            Ed25519PublicKey.from_public_bytes(pub_raw).verify(b64u_decode(s_b64), f"{h_b64}.{p_b64}".encode("ascii"))
+            _strict_pub(pub_raw).verify(b64u_decode(s_b64), f"{h_b64}.{p_b64}".encode("ascii"))
             sig_ok = True
         except InvalidSignature:
             sig_ok = False

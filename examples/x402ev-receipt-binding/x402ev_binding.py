@@ -23,6 +23,20 @@ from fingerprint import fingerprint, canonicalize as jcs          # noqa: E402  
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey   # noqa: E402
 from cryptography.hazmat.primitives import serialization          # noqa: E402
 
+
+def _strict_pub(raw):
+    """2026-11-08: refuse small-order / mixed-order Ed25519 keys before verify (OpenSSL accepts the identity key with R=identity,
+    S=0 for any message; tsc#4 Nous finding). Uses tools/_ed25519.py from this repo."""
+    import os as _o, sys as _s
+    d = _o.path.dirname(_o.path.abspath(__file__))
+    while d != "/" and not _o.path.exists(_o.path.join(d, "tools", "_ed25519.py")):
+        d = _o.path.dirname(d)
+    _s.path.insert(0, _o.path.join(d, "tools"))
+    import _ed25519 as _e
+    if _e.is_small_order_key(raw) or _e.is_mixed_order_key(raw):
+        raise ValueError("small-order or mixed-order Ed25519 public key")
+    return Ed25519PublicKey.from_public_bytes(raw)
+
 SK = Ed25519PrivateKey.from_private_bytes(bytes(range(32)))       # TEST key (seed 00 01 .. 1f), never use with real assets
 PK = base64.urlsafe_b64encode(SK.public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw)).decode().rstrip("=")
 USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
@@ -53,7 +67,7 @@ def check(info, response_bytes):
     if info.get("evidenceRef") != "x402ev/1:" + sha(jcs(b)):
         bad.append("evidenceRef")
     try:
-        Ed25519PublicKey.from_public_bytes(unb64u(info["signer"]["publicKey"])).verify(unb64u(info["signer"]["signature"].split(":", 1)[1]), jcs(b))
+        _strict_pub(unb64u(info["signer"]["publicKey"])).verify(unb64u(info["signer"]["signature"].split(":", 1)[1]), jcs(b))
     except Exception:
         bad.append("signature")
     if sha(response_bytes) != info["delivery"]["contentDigest"]:

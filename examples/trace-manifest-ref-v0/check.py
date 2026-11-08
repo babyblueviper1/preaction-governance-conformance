@@ -18,6 +18,20 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "..", "tools"))
 from _rfc8785 import jcs
 
+
+def _strict_pub(raw):
+    """2026-11-08: refuse small-order / mixed-order Ed25519 keys before verify (OpenSSL accepts the identity key with R=identity,
+    S=0 for any message; tsc#4 Nous finding). Uses tools/_ed25519.py from this repo."""
+    import os as _o, sys as _s
+    d = _o.path.dirname(_o.path.abspath(__file__))
+    while d != "/" and not _o.path.exists(_o.path.join(d, "tools", "_ed25519.py")):
+        d = _o.path.dirname(d)
+    _s.path.insert(0, _o.path.join(d, "tools"))
+    import _ed25519 as _e
+    if _e.is_small_order_key(raw) or _e.is_mixed_order_key(raw):
+        raise ValueError("small-order or mixed-order Ed25519 public key")
+    return Ed25519PublicKey.from_public_bytes(raw)
+
 def ub(s):
     b = base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
     if base64.urlsafe_b64encode(b).rstrip(b"=").decode() != s: raise ValueError("non-canonical base64url")
@@ -28,7 +42,7 @@ def sig_ok(rec):
         body = {k: v for k, v in rec.items() if k != "signature"}
         jwk = rec["cnf"]["jwk"]
         if jwk.get("kty") != "OKP" or jwk.get("crv") != "Ed25519": return False
-        Ed25519PublicKey.from_public_bytes(ub(jwk["x"])).verify(ub(rec["signature"]), jcs(body).encode("utf-8"))
+        _strict_pub(ub(jwk["x"])).verify(ub(rec["signature"]), jcs(body).encode("utf-8"))
         return True
     except Exception:
         return False
