@@ -6,6 +6,7 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
+python3 war_check.py upstream_vectors_8ce7f42_126/*.json # 126/126 agree with upstream `expected` (profile 1.4.11, 8ce7f42)
 python3 war_check.py upstream_vectors_1b81ec9_109/*.json # 109/109 agree with upstream `expected` (profile 1.4.4, 1b81ec9)
 python3 war_check.py upstream_vectors_cb7e8f1_90/*.json  # 90/90 (profile 1.4.2, cb7e8f1)
 python3 war_check.py upstream_vectors_1_3_30/*.json # 30/30 agree with upstream `expected` (profile 1.3, 2d8fac7)
@@ -182,3 +183,19 @@ back to `committed_at` with `CRITERIA_COMMITMENT_UNVERIFIED`.
 - **Key status and revocation.**
 - **The delivered file (step 3).** No vector supplies one, and this checker does not implement the comparison.
 - **RFC 8785 number serialization.** `jcs()` covers the value types these records use and nothing more.
+
+
+## Profile 1.4.11 (2026-11-10)
+
+Updated from the README's steps 2, 4 and 12 only, with the reference verifier not opened: step 2's prime-order rule for the
+signature's R (1.4.8, vector 116); step 4's `CRITERIA_UNREADABLE` (1.4.8 + 1.4.11: a repeated member name, a lone surrogate, a
+byte-order mark, an integer outside +-(2^53-1), a number that overflows, a value more than 64 levels below the root; vectors
+117-126); step 12's point rule for the producer's key (1.4.7, vectors 114-115). Before the update: 116/126, the ten misses all on
+those rules. After: 126/126 (`upstream_vectors_8ce7f42_126_run.txt`); every earlier set unchanged. ASSUMED where the text is
+silent: "integer" means a number literal with no fraction or exponent; RFC 7493 noncharacters are not checked (Q36 on tsc#4).
+
+`live_record_2026_11_10/`: a record issued by the live endpoint (`POST /work-acceptance/check`) and co-signed by the producer's
+did:key. war-verify 0.12.0 (`ba53b5d`) with `--tokens pkix` against the FreeTSA and DigiCert Trusted Root G4 anchors: exit 0, no
+problem codes, independence derived `independent`. This checker: no problem codes. `x402_capture/capture_gate.py` at `8c100e6` and
+`8ce7f42`: capture. Limit: the producer key is a test key that invinoveritas also holds, so independence here is a key-level fact
+only, the same limit as probityai claim P-110.

@@ -1,0 +1,19 @@
+{
+ "problem_codes": [],
+ "warning_codes": [],
+ "signature_valid": true,
+ "criteria_hash": "match",
+ "receipt_timestamp": "imprint_match",
+ "tsa_signature": {
+  "criteria": "not_evaluated",
+  "receipt": "not_evaluated"
+ },
+ "_times": {
+  "commitment_ms": "1794304967000",
+  "reference_ms": 1794304975000
+ },
+ "criteria_committed_before_check": "yes",
+ "independence": "independent",
+ "verdict_recomputed": "pass",
+ "verdict_stated": "pass"
+}

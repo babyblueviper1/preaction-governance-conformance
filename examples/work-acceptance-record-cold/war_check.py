@@ -266,6 +266,63 @@ def _iso(t):
     return "".join(c for c in t if c.isdigit())[:14]
 
 
+class _Unreadable(ValueError):
+    pass
+
+
+def criteria_doc(b):
+    """Step 4 (profiles 1.4.8 + 1.4.11, written from the README): the criteria file is UTF-8 JSON and I-JSON (RFC 7493). Unreadable
+    (-> None) when: not UTF-8, starts with a byte-order mark (121), not JSON, NaN/Infinity, a repeated member name in any object (117),
+    a lone surrogate escape (118), an integer outside +-(2^53-1) (122), a number that overflows to infinity (123), or a value more than
+    64 levels below the root, root = level 0 (124-126). ASSUMED: 'integer' = a number literal with no fraction or exponent; RFC 7493
+    noncharacters are not checked (the profile text names surrogates only; Q36 on tsc#4 asks)."""
+    if b.startswith(b"\xef\xbb\xbf"):
+        return None
+    try:
+        t = b.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
+
+    def pairs(kv):
+        ks = [k for k, _ in kv]
+        if len(set(ks)) != len(ks):
+            raise _Unreadable("repeated member name")
+        return dict(kv)
+
+    def pint(x):
+        v = int(x)
+        if abs(v) > 2 ** 53 - 1:
+            raise _Unreadable("integer outside I-JSON range")
+        return v
+
+    def pfloat(x):
+        v = float(x)
+        if v in (float("inf"), float("-inf")):
+            raise _Unreadable("number overflows")
+        return v
+
+    def pconst(x):
+        raise _Unreadable("NaN or Infinity")
+
+    try:
+        doc = json.loads(t, object_pairs_hook=pairs, parse_int=pint, parse_float=pfloat, parse_constant=pconst)
+    except (ValueError, RecursionError):
+        return None
+
+    def bad(v, depth):
+        if depth > 64:
+            return True
+        if isinstance(v, str):
+            return any(0xD800 <= ord(ch) <= 0xDFFF for ch in v)
+        if isinstance(v, dict):
+            return any(bad(k, depth + 1) or bad(x, depth + 1) for k, x in v.items())
+        if isinstance(v, list):
+            return any(bad(x, depth + 1) for x in v)
+        return False
+
+    return None if bad(doc, 0) else doc
+
+
 def check(inputs):
     """Profile 1.4.2 (README @ cb7e8f1); written for 1.2.1 (f7d8984) and kept through 1.3 / 1.4 / 1.4.1. Step numbers are the README's."""
     if not _types_ok(inputs):                               # 1.4.2 'Types' (77): refused, never a verifier failure
@@ -299,7 +356,7 @@ def check(inputs):
     else:
         pub, sig = dec.get(skid), b64c(rec["signature"]["value"])   # 1.4.2: a non-canonical signature value is SIGNATURE_INVALID (60-63)
         out["signature_valid"] = bool(pub) and sig is not None and len(sig) == 64 and \
-            rec["signature"].get("key_id") == skid and ed.verify(pub, jcs(r), sig)
+            rec["signature"].get("key_id") == skid and key_ok(sig[:32]) and ed.verify(pub, jcs(r), sig)   # 1.4.8: R canonical, prime order (116)
         if not out["signature_valid"]:
             P("SIGNATURE_INVALID")
     checker, producer = r["parties"]["checker"], r["parties"].get("producer") or {}
@@ -317,14 +374,21 @@ def check(inputs):
     if out["criteria_hash"] == "mismatch":
         P("CRITERIA_HASH_MISMATCH")
     elif out["criteria_hash"] == "match":
-        try:
-            doc = json.loads(cb)
-            crit = {c["id"]: bool(c.get("required")) for c in doc["criteria"]}
-        except (ValueError, KeyError, TypeError):
-            crit = None                                     # ASSUMED: an unreadable criteria document cannot correspond
-        got = {x["id"]: bool(x.get("required")) for x in r["results"]}
-        if got != crit:                                     # ASSUMED: same ids, same required flags, one result each
-            P("CRITERIA_RESULTS_MISMATCH")
+        doc = criteria_doc(cb)
+        crit = None
+        if doc is not None:
+            try:
+                crit = {c["id"]: bool(c.get("required")) for c in doc["criteria"]}
+                if not all(isinstance(c["id"], str) for c in doc["criteria"]):
+                    crit = None                             # step 4: a criterion id that is not a string is a wrongly typed member
+            except (KeyError, TypeError):
+                crit = None
+        if crit is None:
+            P("CRITERIA_UNREADABLE")                        # 1.4.8/1.4.11 step 4; reported instead of a results comparison
+        else:
+            got = {x["id"]: bool(x.get("required")) for x in r["results"]}
+            if got != crit:                                 # ASSUMED: same ids, same required flags, one result each
+                P("CRITERIA_RESULTS_MISMATCH")
     # step 6 (needed by step 5's reference time): the record's own token. 1.4.2: not canonical base64 -> imprint_mismatch.
     rt = tst(inputs.get("receipt_tsr_base64"))
     if rt is None:
@@ -426,8 +490,8 @@ def check(inputs):
     rpk = inputs.get("relying_party_keys")
     if isinstance(rpk, dict) and claim_ind and pk is not None:
         rp_dec = {b64c(k.get("public_key_base64", "")) for k in rpk.get("keys", []) if isinstance(k, dict)} - {None}
-        if dec.get(pk) is None or dec[pk] not in rp_dec:
-            key_rule = True
+        if dec.get(pk) is None or dec[pk] not in rp_dec or not key_ok(dec[pk]):
+            key_rule = True                                 # 1.4.7: a small-order producer key identifies no producer (114, 115)
     if pn is None or pn in ("unspecified", "unknown"):
         derived = "undeclared"
     elif pn == cn or collision or key_rule:

@@ -1,0 +1,114 @@
+{
+ "report": {
+  "accepted_as_stated": true,
+  "cannot_run": [],
+  "criteria_committed_before_check": "yes",
+  "criteria_hash": "match",
+  "details": {
+   "canonical_receipt_sha256": "ef7617e8def9ce592bb71e0a3ff1e2d94c2e8e6902322c92d030bc8cc399e774",
+   "commitment_time": "2026-11-10T10:02:47Z",
+   "commitment_time_latest": "2026-11-10T10:02:47Z",
+   "criteria_token_genTime": "20261110100247Z",
+   "criteria_token_tsa": {
+    "chain": [
+     "ST=Bayern,C=DE,L=Wuerzburg,1.2.840.113549.1.9.1=busilezas@mailbox.org,CN=www.freetsa.org,2.5.4.13=This certificate digitally signs documents and time stamp requests made using the freetsa.org online services,OU=TSA,O=Free TSA",
+     "C=DE,ST=Bayern,L=Wuerzburg,1.2.840.113549.1.9.1=busilezas@gmail.com,CN=www.freetsa.org,OU=Root CA,O=Free TSA"
+    ],
+    "classes": [],
+    "ess": "ESSCertID",
+    "reasons": [],
+    "revocation": "not checked",
+    "signer_subject": "ST=Bayern,C=DE,L=Wuerzburg,1.2.840.113549.1.9.1=busilezas@mailbox.org,CN=www.freetsa.org,2.5.4.13=This certificate digitally signs documents and time stamp requests made using the freetsa.org online services,OU=TSA,O=Free TSA",
+    "status": "valid"
+   },
+   "independence_derived": "independent",
+   "key_source": "--keys (supplied by the relying party)",
+   "ordering_provable_under_accuracy": "yes",
+   "record_token_genTime": "20261110100255Z",
+   "record_token_tsa": {
+    "chain": [
+     "ST=Bayern,C=DE,L=Wuerzburg,1.2.840.113549.1.9.1=busilezas@mailbox.org,CN=www.freetsa.org,2.5.4.13=This certificate digitally signs documents and time stamp requests made using the freetsa.org online services,OU=TSA,O=Free TSA",
+     "C=DE,ST=Bayern,L=Wuerzburg,1.2.840.113549.1.9.1=busilezas@gmail.com,CN=www.freetsa.org,OU=Root CA,O=Free TSA"
+    ],
+    "classes": [],
+    "ess": "ESSCertID",
+    "reasons": [],
+    "revocation": "not checked",
+    "signer_subject": "ST=Bayern,C=DE,L=Wuerzburg,1.2.840.113549.1.9.1=busilezas@mailbox.org,CN=www.freetsa.org,2.5.4.13=This certificate digitally signs documents and time stamp requests made using the freetsa.org online services,OU=TSA,O=Free TSA",
+    "status": "valid"
+   },
+   "reference_source": "record token genTime",
+   "reference_time": "2026-11-10T10:02:55Z",
+   "reference_time_earliest": "2026-11-10T10:02:55Z",
+   "signer_key_status": "active",
+   "token_authentication": {
+    "criteria_token": "valid",
+    "record_token": "valid"
+   },
+   "verification_key_id": "invinoveritas-checker-a4cecab2"
+  },
+  "extension_codes": [],
+  "files": {
+   "original": "not-supplied",
+   "remediated": "not-supplied"
+  },
+  "independence": "independent",
+  "local_blocks": [],
+  "notes": [
+   "inputs.keys not used: the key file was supplied with --keys",
+   "criteria document member 'criteria_set' not interpreted",
+   "criteria document member 'version' not interpreted",
+   "criteria document member criteria[0].requirement not interpreted",
+   "criteria document member criteria[1].requirement not interpreted"
+  ],
+  "options": {
+   "accuracy": "widen",
+   "correspondence": "ids-required",
+   "criteria_limits": "unreadable",
+   "criteria_noncharacters": "report",
+   "criteria_read": "matched",
+   "criteria_shape": "typed",
+   "criteria_types": "read",
+   "criteria_unreadable": "step4",
+   "digest_form": "mismatch",
+   "ed25519": "strict",
+   "empty_key_id": "signature-invalid",
+   "independence_rule": "derived",
+   "key_claim": "claim",
+   "key_id_agreement": "signature-invalid",
+   "key_id_source": "receipt",
+   "key_rule": "signer",
+   "key_scope": "used",
+   "name_compare": "trim-lower",
+   "name_type": "step8",
+   "producer_presence": "optional",
+   "reference_time": "earlier",
+   "rp_empty": "holds-nothing",
+   "rp_entry_defect": "note",
+   "rp_form": "object",
+   "rp_input": "step12",
+   "rp_lookup": "keys",
+   "rp_point": "step12",
+   "rp_repeated": "bytes",
+   "sig_r": "prime-order",
+   "stated_fraction": "1-3",
+   "time_agreement": "second",
+   "tokens": "pkix",
+   "tsa_precedence": "failed-first",
+   "undeclared": "step8",
+   "unknown_fields": "refuse"
+  },
+  "problem_codes": [],
+  "receipt_timestamp": "imprint_match",
+  "results_presented": true,
+  "signature_valid": true,
+  "tsa_signature": {
+   "criteria": "verified",
+   "receipt": "verified"
+  },
+  "verdict_recomputed": "pass",
+  "verdict_stated": "pass",
+  "warning_codes": []
+ },
+ "verifier": "war_verify 0.12.0"
+}
