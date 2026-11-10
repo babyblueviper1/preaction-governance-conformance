@@ -1,0 +1,134 @@
+{
+ "contributed_by": "Trilatic (CC0)",
+ "description": "A synthetic criteria token from a second test-only PKI (root B, war-test-root-b.crt; provenance on the spec site), with root B as the only anchor. No record token. The signer certificate has no extendedKeyUsage id-kp-timeStamping; signature, ESS binding, validity and chain all hold. openssl ts -verify reports unsuitable certificate purpose.",
+ "expected": {
+  "criteria_committed_before_check": "yes",
+  "criteria_hash": "match",
+  "independence": "independent",
+  "problem_codes": [],
+  "receipt_timestamp": "none",
+  "signature_valid": true,
+  "tsa_signature": {
+   "criteria": "failed"
+  },
+  "verdict_recomputed": "pass",
+  "verdict_stated": "pass",
+  "warning_codes": []
+ },
+ "inputs": {
+  "criteria_file_base64": "eyJjcml0ZXJpYSI6W3siaWQiOiJjMSIsInJlcXVpcmVkIjp0cnVlLCJyZXF1aXJlbWVudCI6IlRoZSBmaXJzdCByZXF1aXJlbWVudC4iLCJ0aXRsZSI6IkZpcnN0IHJlcXVpcmVkIGNyaXRlcmlvbiJ9LHsiaWQiOiJjMiIsInJlcXVpcmVkIjp0cnVlLCJyZXF1aXJlbWVudCI6IlRoZSBzZWNvbmQgcmVxdWlyZW1lbnQuIiwidGl0bGUiOiJTZWNvbmQgcmVxdWlyZWQgY3JpdGVyaW9uIn0seyJpZCI6ImMzIiwicmVxdWlyZWQiOmZhbHNlLCJyZXF1aXJlbWVudCI6IkFuIG9wdGlvbmFsIHJlcXVpcmVtZW50LiIsInRpdGxlIjoiT3B0aW9uYWwgY3JpdGVyaW9uIn1dLCJjcml0ZXJpYV9zZXQiOiJleGFtcGxlLWNyaXRlcmlhIiwicmVzdWx0X3ZvY2FidWxhcnkiOlsicGFzcyIsImZhaWwiLCJub3QtZXZhbHVhdGVkIiwiZXJyb3IiXSwidGl0bGUiOiJFeGFtcGxlIGNyaXRlcmlhIGZvciB0ZXN0IHZlY3RvcnMiLCJ2ZXJzaW9uIjoiMSJ9",
+  "criteria_tsr_base64": "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",
+  "keys": {
+   "issuer": "Example Checker (test vectors)",
+   "keys": [
+    {
+     "alg": "Ed25519",
+     "key_id": "spec-test-2f2dfa2f",
+     "public_key_base64": "IG8NU3Wa4RNk++CwdHYLlfOxAtwRl2hz0hJKfLgZyJk=",
+     "status": "test"
+    }
+   ]
+  },
+  "receipt": {
+   "receipt": {
+    "canonicalization": "JCS-RFC8785",
+    "client_ref": "test vector",
+    "criteria": {
+     "commitment": "rfc3161",
+     "committed_at": "2026-10-20T15:38:25Z",
+     "id": "example-criteria",
+     "sha256": "4413e99d73d743d7b63a8362cf3d47ff646c9b64e3972b2fb6984093c8e9add7",
+     "version": "1"
+    },
+    "files": {
+     "original": {
+      "bytes": 22,
+      "name": "original.pdf",
+      "pages": 1,
+      "sha256": "4cbaf696bbf09c7f9c08d2fc5cb4e93235d0d9ff94a916b7dd90b91ef057e4be"
+     },
+     "remediated": {
+      "bytes": 23,
+      "name": "delivered.pdf",
+      "pages": 1,
+      "sha256": "b520ef4eb7a0f3e0d725ea92167e4962fe43584c7747b44e0acd4d846eaa4cf8"
+     }
+    },
+    "human_review": {
+     "scope": [
+      "Example review scope"
+     ],
+     "status": "pending"
+    },
+    "independence": "independent",
+    "issued_utc": "2026-10-20T15:39:00Z",
+    "issuer": "Example Checker",
+    "key_id": "spec-test-2f2dfa2f",
+    "notice": "Test vector. Not a real check.",
+    "parties": {
+     "checker": {
+      "key_id": "spec-test-2f2dfa2f",
+      "name": "Example Checker"
+     },
+     "producer": {
+      "key_id": null,
+      "name": "Example Vendor"
+     }
+    },
+    "receipt_id": "EX-0001",
+    "results": [
+     {
+      "finding": "Met.",
+      "id": "c1",
+      "required": true,
+      "result": "pass",
+      "title": "First required criterion"
+     },
+     {
+      "finding": "Met.",
+      "id": "c2",
+      "required": true,
+      "result": "pass",
+      "title": "Second required criterion"
+     },
+     {
+      "finding": "No review recorded.",
+      "id": "c3",
+      "required": false,
+      "result": "not-evaluated",
+      "title": "Optional criterion"
+     }
+    ],
+    "revision": 1,
+    "schema": "trilatic.acceptance-receipt/1.2",
+    "suite": {
+     "digest": "sha-256",
+     "signature": "Ed25519"
+    },
+    "tools": {
+     "profile": "example profile",
+     "validator": "example 1.0"
+    },
+    "verdict": "pass"
+   },
+   "signature": {
+    "alg": "Ed25519",
+    "key_id": "spec-test-2f2dfa2f",
+    "value": "06Q3s44f9YomqHl1gcgaqb7Xy249CWzsMMYPdLc8C3WoU/15RN1HlQz/om9m2TLhu7taMNOTqS6jksixk1hyAQ=="
+   },
+   "timestamp": {
+    "reason": "not requested",
+    "status": "none"
+   }
+  },
+  "receipt_tsr_base64": null,
+  "tsa_roots_base64": [
+   "MIIDHjCCAgagAwIBAgIESBNJTjANBgkqhkiG9w0BAQsFADAvMS0wKwYDVQQDDCRXQVIgVGVzdCBSb290IChub3QgYSByZWFsIGF1dGhvcml0eSkwHhcNMjAwMTAxMDAwMDAwWhcNNDAxMjMxMjM1OTU5WjAvMS0wKwYDVQQDDCRXQVIgVGVzdCBSb290IChub3QgYSByZWFsIGF1dGhvcml0eSkwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCti1j4oApBeGDykzEtZlc97aTobCcTJNQJ+KoT6mLel2L0BqHG5FUOfFiK2GUlM7X4SlhxJXelktNDHazrSg2LUXGjUSKncooCj5YrmhlFXvKsyQU41+KX7XY+Ta3/VMMu/9w9SCVFaNo8WIJHVAjZr4GYosx4vkxafG8HXndTRJoRdg26DnWHp09dP/Vl5ye+dL0CSQrdTYEtso+AjoDhhMjkzaJn0PMA77BGQFTPIrWZA6vVZn5JO3QVimPEWpEF0tVmMGlvZgM+kbp3e/gzO/D+Jokwk27Vpo/hpkJXDzJs1ipNeDLLVqMKefdoaRtfAaxP4yUI5yuw4wVmI9qHAgMBAAGjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgEGMB0GA1UdDgQWBBTgNvJjKp5yuztc3kcTjHxqdz9xjTANBgkqhkiG9w0BAQsFAAOCAQEAHrAa9RcVGrcyVeArmnbMYx8RqhXx35Ol1xyrzfPAjRRM0UxjTgOKE3y8rZqPg195GBKzj3U105xQxdvF2cyqRB1KaOn7yF3R+ksew9T9Yt0y4NEt2l1/VH6g3byN4wAGORHqVAxbk2L/GP9egRsNi+2kC6BhxIj6cAoAtSzbmNV/Y4l294k+tP+eafoRLyQVXjugCoCG4CWkDB/yjCD+sjvMFWhjszWHxU0M0ep6tj/sllzg/kxQRLW5jnTuvhC6m5n042lTAtjFtUSEQofJbyMPImy0NDsjxKnR5rGXDFPvs4DYla6WJFxkH93Dw7l1c5LFjnoVsf8z+DpQ+oeTkg=="
+  ]
+ },
+ "license": "CC0-1.0",
+ "spec": "acceptance record, schema trilatic.acceptance-receipt/1.2",
+ "title": "48-tsa-signer-without-timestamping-eku-failed",
+ "vector": "48-tsa-signer-without-timestamping-eku-failed",
+ "warning": "Signed with a published TEST key. Never trust a record signed by it."
+}

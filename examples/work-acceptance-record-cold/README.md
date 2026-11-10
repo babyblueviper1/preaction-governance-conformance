@@ -6,6 +6,7 @@ reference implementation was not opened. ACP SEP #303 sec 7.4a weights this reco
 Standard library only; Ed25519 is reused from [`../x402-receipt-private-opening`](../x402-receipt-private-opening).
 
 ```
+python3 war_check.py upstream_vectors_5f7517a_128/*.json # 128/128 agree with upstream `expected` (profile 1.4.12, 5f7517a; checker unchanged from 1.4.11)
 python3 war_check.py upstream_vectors_8ce7f42_126/*.json # 126/126 agree with upstream `expected` (profile 1.4.11, 8ce7f42)
 python3 war_check.py upstream_vectors_1b81ec9_109/*.json # 109/109 agree with upstream `expected` (profile 1.4.4, 1b81ec9)
 python3 war_check.py upstream_vectors_cb7e8f1_90/*.json  # 90/90 (profile 1.4.2, cb7e8f1)
