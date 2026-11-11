@@ -1,0 +1,138 @@
+{
+ "case": "positive",
+ "approval_event": {
+  "id": "e9a629100b555f0b1ceb9efeda5dedc6679b6fd241cf166e1e2cf24900c2d4fd",
+  "pubkey": "3dbfc7807acfef1bfd647e9f285b0fa9c09bdd3e6c1de13ad6114f5a4ac4d56d",
+  "created_at": 1794373922,
+  "kind": 1,
+  "tags": [
+   [
+    "workflow",
+    "WF-release"
+   ],
+   [
+    "release_sha256",
+    "9b6e839cfe71ffb839e834f82147d98b03a77eee69da436ef29e08cbb2d6d401"
+   ]
+  ],
+  "content": "{\"approves_release_sha256\":\"9b6e839cfe71ffb839e834f82147d98b03a77eee69da436ef29e08cbb2d6d401\",\"decision\":\"ich signiere\",\"step\":\"deploy\",\"type\":\"approval\",\"workflow\":\"WF-release\"}",
+  "sig": "14106c0ed8d6099353d20454a76068d6b7f7b34be59e807a3db5f9cbf30446a0f6de0ad3b68294bdbaf19128afe31b41c59d1de3a50a13b29e766b1743503ef3"
+ },
+ "proposed_release_canonical": "{\"artifact\":\"buzz-agent\",\"artifact_sha256\":\"3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b\",\"step\":\"deploy\",\"target\":\"production\",\"version\":\"1.4.0\",\"workflow\":\"WF-release\"}",
+ "proposed_release_sha256": "9b6e839cfe71ffb839e834f82147d98b03a77eee69da436ef29e08cbb2d6d401",
+ "receipt_artifact_canonical": "{\"approval_event_id\":\"e9a629100b555f0b1ceb9efeda5dedc6679b6fd241cf166e1e2cf24900c2d4fd\",\"release_sha256\":\"9b6e839cfe71ffb839e834f82147d98b03a77eee69da436ef29e08cbb2d6d401\"}",
+ "receipt": {
+  "proof_payload": {
+   "schema": "invinoveritas.verdict_proof.v1",
+   "platform": "invinoveritas",
+   "artifact_hash": "f9fe7c16dfa6318c5ffeb905065848d9520ed946f3855b58918ebdcbeaa54739",
+   "artifact_type": "workflow_step",
+   "verdict": "approve",
+   "confidence": 0.99,
+   "epistemic_basis": null,
+   "summary_hash": "fe29677cc8d1dc46ff084c3a149cff42b578c184dcf832117a6f4962e5a6b284",
+   "verified_at": 1794373922,
+   "policy_version": "invinoveritas.review.v22",
+   "canonicalization_version": "rfc8785.v1",
+   "policy_commitment": "sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe",
+   "policy_commitment_inputs": {
+    "rubric_sha256": "bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180",
+    "conformance_suite_repo": "babyblueviper1/preaction-governance-conformance",
+    "conformance_suite_commit": "e90948ed3eb9d36eb1d0997ea4d02045e28a405a",
+    "rubric_doc_path": "docs/policy_spec/invinoveritas.review.v12.md"
+   },
+   "engine_generation": 1,
+   "review_model_hash": "deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669",
+   "review_prompt_template_hash": "13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31",
+   "context_provenance": "caller_asserted_unverified",
+   "source_class": "agent_reported",
+   "registry_as_of": null,
+   "registry_snapshot_sha256": null,
+   "decision_ref_preimage_fields": [
+    "artifact_hash",
+    "artifact_type",
+    "policy_version",
+    "verdict",
+    "source_class",
+    "vantage_limitation",
+    "related_decision_ref",
+    "intended_audience",
+    "confidentiality_tier",
+    "disclosed_summary",
+    "intended_verifier",
+    "policy_commitment",
+    "verified_at",
+    "registry_as_of",
+    "registry_snapshot_sha256",
+    "action_binding_tool_hash",
+    "action_binding_args_hash",
+    "action_binding_agent_id",
+    "action_binding_nonce",
+    "freshness_beacon_hash",
+    "epistemic_basis",
+    "external_evidence_hash",
+    "canonicalization_version",
+    "related_claims_hash",
+    "related_claims_result",
+    "related_claims_comparison_version",
+    "mediator_attestation_hash"
+   ],
+   "decision_ref_preimage_rule": "every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.",
+   "verify_url": "https://api.babyblueviper.com/verify-proof",
+   "verifier_pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+   "verify_offline": "npm i invinoveritas-verify  \u00b7  pip install invinoveritas-verify  \u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.",
+   "independent_nodes": [
+    "https://invinoveritas-castra.babyblueviper.workers.dev/verify",
+    "https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run"
+   ],
+   "verify_how": "Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \u21d2 invinoveritas issued this, untampered. No trust required.",
+   "key_id": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+   "verifier_keys": "https://api.babyblueviper.com/.well-known/verifier-keys.json",
+   "conformance_suite": "https://github.com/babyblueviper1/preaction-governance-conformance",
+   "related_claims_result": "not_supplied",
+   "freshness_beacon": {
+    "source": "bitcoin",
+    "height": 975390,
+    "hash": "0000000000000000000080bff42c4790500974af462d7546f94d1896f55c821f",
+    "block_time": 1794372090
+   },
+   "freshness_beacon_hash": "sha256:860c9adf31bfccab3d64d9916e1e130fd3c513bddce13201a9acdc65c731d8da",
+   "decision_ref": "sha256:d8e64d0b155a5c18a86014742b053aa6e3bd87dab7946543406bed46d5943191"
+  },
+  "signature_type": "nostr_event",
+  "content_sha256": "444ec23bf128185b1e6419a4b71fecd712856a87757be14e61387091083df79b",
+  "event": {
+   "id": "ef584c42e83ee5338b1e5e460ea891e4d5d27f12135c89334a650235f4e5f9e6",
+   "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+   "created_at": 1794373923,
+   "kind": 30078,
+   "tags": [
+    [
+     "d",
+     "invinoveritas-proof-f9fe7c16dfa6318c5ffeb905065848d9520ed946f3855b58918ebdcbeaa54739-1794373923-86235297"
+    ],
+    [
+     "t",
+     "invinoveritas"
+    ],
+    [
+     "t",
+     "proof"
+    ],
+    [
+     "schema",
+     "invinoveritas.verdict_proof.v1"
+    ]
+   ],
+   "content": "{\"artifact_hash\":\"f9fe7c16dfa6318c5ffeb905065848d9520ed946f3855b58918ebdcbeaa54739\",\"artifact_type\":\"workflow_step\",\"canonicalization_version\":\"rfc8785.v1\",\"confidence\":0.99,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:d8e64d0b155a5c18a86014742b053aa6e3bd87dab7946543406bed46d5943191\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\",\"epistemic_basis\",\"external_evidence_hash\",\"canonicalization_version\",\"related_claims_hash\",\"related_claims_result\",\"related_claims_comparison_version\",\"mediator_attestation_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"engine_generation\":1,\"epistemic_basis\":null,\"freshness_beacon\":{\"block_time\":1794372090,\"hash\":\"0000000000000000000080bff42c4790500974af462d7546f94d1896f55c821f\",\"height\":975390,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:860c9adf31bfccab3d64d9916e1e130fd3c513bddce13201a9acdc65c731d8da\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:ce58857dea9f9851394bd3126f9aca28b8ef7cc95cc3562ab0e4a863f8be73fe\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v22\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"related_claims_result\":\"not_supplied\",\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"fe29677cc8d1dc46ff084c3a149cff42b578c184dcf832117a6f4962e5a6b284\",\"verdict\":\"approve\",\"verified_at\":1794373922,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid \u21d2 invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  \u00b7  pip install invinoveritas-verify  \u2014 recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+   "sig": "6de4aebd6ebc6ffd5975e6e42f1a99c1589793cf95b227c9537a4ee9b0f6a0c2483bc5e507412dd4efd1def06f2e4e380253bb4650beb5bc1e17bb7cf4152d99"
+  },
+  "pq_companion_signature": {
+   "algorithm": "ML-DSA-65",
+   "signs": "event.id (hex-decoded to 32 raw bytes)",
+   "pq_pubkey": "336f2fd2cbc38f5eac4de77f1ae23cb917c95c74aab5b68e31b54fb973892872213afb844d623c9d546493ce63418969c7748772f7ca4005f49eb03cf4b6aa49f828744372a410a015170082622d6eb3ec3e585b5c8eed608c4302adfcfc80075a91dbfb73a44c59317279b974957ae4021cda18f2150530216482d2b1af791db0a79e2087c4230150bd2e2e39cbd9ce73601c7c6dcdf9a3b38360960f6e309870d4404abd57c729a6086bb963e4aa038c2dadd284c75aedb6ec170c4fd050b881079c97ee6b7016736dc5185434a7c9dd4dfaa46f13957b0aa5344b1aef2a9efa92c64dc01683e5c30a231ddd0ea49ec8a034ef25b32ae23e729ad5afcaa2a8c19b82dbbd0e78b6ffce388b5f958bed58b9ade7faaa532550a7a27113fcc931ac4907ed98bec04370872d580dd1743518d92dd7ec0843bd9c4efcf87f06f8577b86c34fec39e760685188910df1bb6bc894ec184cf4f6a651598e739a9a98e259b6b9735cccfa592d0991a75930d92de1a5e3f9c5140540d9c2d845cc96b522aa089dfcdb7c1c8af164020811fb47680e8f0b66ca77fb7dd0510a549d225456e69767ac22e8c42ed78989586946a9be44ca5a32ef563919061b5f577aa136878ebd4a6a31cf520a9b474923b9adf8978d4113839634b8df01a117974de143634214cf2d15a5d03b970576b638bc8cbe9e3c697e36d465a7be7feab8a2e0abe14b410cc50a152c8a6d550b4e302a5f9a032d33536c443661984e8f7ac017c47600b31b61f0100351ff54bfef9d2c88888a4336e6394b0e041963c9d840aa157b23268e56d72d890c889a8b081647a79658258e4d11583d54fb30f7d13fcda9dd502f0f0b2e9fc039df89b33e03170d1573375c269aab02053b8f502502b6e70469fc724b477a5dfd7b00610bcbd40e965130a91f70661bfe989d3e3381015acbd6c840254358d4d2c89a1a2b7c090d3601b6c9bb742b146ae8ecda0135639615033137281168c3647ee52e6ae77ad9fbe77fa01b6d10370b963c89f36a89f8f9193101b8ad199518a4f8f4433bc1013dbdaa31c0eedcf9e5b8f63114228955f3e7d0d9553f237c9bdc4b7b512ff644547b758809b017e8f61a62e30d2ed7d116fcf81a6cc8641c78e19c516363dc47b83dcda109fa19c7f9c20b15be214342ec0196449c55d12c8a51db1afd66f2f7e3ff315db18241b7f02e830efff2bb2a20f1dacb7284ad9f2a0abff9841961f4968b45690d1327877a991c6665f64539442e3a485529349b367945b3c0315eb0f8c7e14813172f6d34679cee5c12aadd41c3a1586d801ab3cace5154424fa923f7d92e5bd9640fafdb15b66c5726da0407d2ab0bac63d2b84ded1bf1518d69c3e590692da36f4dd9dfee83fbee8c157729d83f740bb33e98db9529e6a53e9087faf8a18d7b73f88f2eb370c0e274f0bcaeeb11660e50c3c6d60363782530b29825b0d0a5b6841f3c46ea921fd34f3b1bbbc13a0f2a79e0dd17172913b62f460485245373f147572b6a2036263af923835ba640db43072805d1509458262898182476234b686853b5ec2f91c143df64d2018185bc50409447d8d7c53549bdc2a4ca0885a90f825f8fcdf6aa09e25021331c8966e0829ae958a2ec5d35fcf747243dcee905df359970842e0fb830fb33d6f09b09e4d3efc9fb852254f6d814d3532a1e276751804dfbc49ecaf6ebd5c30b4ceac879041cd560b2c9e7e1067926a7fbee17c7fd2cb58bfb2bcfb83eb8af6187fa107f6f190d652206bb64e340d45c0268e286067b3551c705f9710ff09ce96ab1780fb0bb6d2cd98987e0a99537470f6a0c055c276e50524e63d39ba8f024b87a4ec9f8c3d3ac328f2df0ee4a3cdbc744c73c47b0e14600ea58cde14ea43f6b44cd45c5f8e94ccaa04449790e7f02c6cf957bb96f3382430fdbfb367c256be67147a00aa9a6aa4e9d5578148542617c63f6820760fe8a63dd016be6e8bba868081cfbcf39ae2a34f49a0952b4d677d79841246ffda1b64dab3f21fbb793e60712819b6a4ff863d049bcbd89b523fbb927176ea57cb3681c795e7787c5a08bce5fc478d373d320f583daf3c8ae97504d8eeb06651ee7f9de7870a72f64a90f2cc5d995925c388bf3aa447510279fb546e4666eb3a429e85df63e49daa222692b37df0847b7ff3f795bbf3c45089366c14a22c9b235fe66359d548dad162b1d3c56fb586c9139941d0e1ae206292666423c8507fe7d73b464a306dd2921ba34cebfd1ce7eda250a69685e72d8357ab341fc2713658112c875c98a9583891136f50821741daae28bd8f9ec1a23d1763d0b8b262bb609f76ab2667649fd0df841ea04134aad7015a8aaffe9f01f87d61bf117dd75b3e44c43a79b194ccf925c3d22683cb56ab416f8cc8999bfcff4e5504c2e6525a918ed24f50c32d8723e04a899a6094fd9bf3d881e8c35397f9d445878c3f8843f364d4fb1731e7b26910bd34ec2bfe375c1c73b270801716034aebfcd072af508c062651fcec60a95e652004bd05fab95ad8ac11d3023aace6f575fd2e33dfc13ee93fa3d1ed68771297cd21bcb45a5e7068ae99307e35bd04143a96bb17313908908c2ca2dafc11bf19a4c049a69d27720192635330c61223f9a08e6a4957b575be3cba96bf5961ab28ab58b0cac034991eb6dd3997cd2533ef7437c367c1643ff136bd1e7e161a93ca0efa0d32c50c1594c574d47efcaef88979af7d78335640ba7c82912a406373b089e92",
+   "signature_hex": "d243e3713c358d1b53b067a672eeef6c11bc05fa3ff983613c0be112e4f9cdb18029dc3bcf1d52592506013e524cf0eb6b408199750def7c8ea238e7d3f4ccd1b3d59072991d906f5d65dd0aff381b390e243a82a348aaff3f43b908d8b89cd77ca20ce3001420aaa3170a2f9a5fc8f8b52d49882c5595e451c8a524e4a3141e2f7ee50d8d694952cc50984c66a09f0dcbad2d3946e766dd65eecbf463b9731ba927c201aff54281a9d2f80c2368bcd4d8c5fc3e470e640f389ff60838990af602c32538e39cc64e67d878ec55873f1d53f0d432c8db7b12e9c4c9f5d172cdaab2826fe2bd5f6877c143a2f47890d5663328bfe8142583d6922ea87245b73f858973696c8bbd08e1503bf791701bb367f589004b014afae3b7b8b0b1d674743520a0720c8226ddc5ce56f3d228dc807c36190dbd761a21f4b301edefb384ba4f86283fda5aff9bb47b9f7483b2cccf9f95fe5cb432ab52cad3f98c88236f8193df5f9b95d91f9e5c675383192c0f9918576855375588cffcb7f2886ebbf098b4121560cf9abd99972d24ef1e8c5229b7964d73834ed28c1c258e2aa2ce82932821e884681302166ef738eb7d69e92e31fea0ca90eaeb2fa6ec3f5e8ab48f799c9c9f0afa1a30b3467cb3d6b795a3ea402746b7c765442cbceee29aa583218cb82ec052b823b3ed0fc75496c86864980dd3568ecc4160178a7afa56f83640d6f7d5288e85dab3a0a3a0283ce37875bbcd70899a9a2d0d2039419ce8f081236a175026adf4eaf44082130eb6134af3b3ecece0ab0721df4a3341a1b72dbadb582b3912b13622e71eb7e9f69cb4f2f9e94e2b02c0bc1f4f02fe3d9d759bf864a605a9ae86195d921638369458eb258e84820cf0e6de821ca9dcadaf0d4ff71da3d0f7321873f83a56a3e21efc687bbf6d36168d1e8ba2fde7d22b72e08234425ae3022483e3ee43f23de562cad4912c802596674a7d7f5dbbeee7c3443302c5d5be53332f6c6c7f512c3d1148a8f33dc4a8b7ecf7659739a442e97facdaf363c6afecde817e1856fcff08e230f572b0c009e45c7520b2c71577208a1804867097ffca8d17437b8463c1b17e6cd66549c0af10ebe34a12e21c9a368b7e30047ca61a685dc2bade9d91939d0f7b2f3870b0ea0a014751c861b011d0cc102219063039eb1f46b4031d6789a49036199551ac1c8b7ed4db4a8117fab553af4d7d19bc9d328165ddc4aa42e61b3466b9bb6cafef5d91dcc403e58f6407cbffd337f897fb3c85e9f26546c4e3aec970499e3e2535434899bd63d0adeb4ac64a52cba8b30dcc2c27e2be99939d6552cf07fec3982a4e0b6da332ad173e234d284bc88c2ab486607665f4796c8bf4344753529c75eaaffde13b4f0f5411555360cadbcf23d436062b4f8c8c82e786663f0a82b7bf951b6eeccbb68224cc5623b3f97a4b552138a6ace986c6146c3c85123e98ebde7c7ef006b0361b581c2927954c59da346f3b8c1996f27594258e82849559d22310a57faee101814850133250ae91e07550114d9a8c19e824b35e2a7ba6d6e7a002b57e7d1e2eb11c07acb8c8ea660d25edbdab4ded9a68bc742b8689200c8daef42475de62c9952a78878fe140cd94090e4fbe80577b3839e4c54b79f67eb1e5d6d5a88134bb4f7a68064c99d72b45943a4b206c034991081f99f9502ebb91f5bac162320df93a4a702e7a1be97b557ad2aee52666baaeb57655ee6ee378e99135bfd267ecbdf64b83f465f514a22061122fc1f72f3719c680bb982666f7b1d9c822a5f4e20f095999a81b156d518e4f04ba077dfefd3d96e855148dbdf52190fac5ead380bb71d02ece85e79b3d02cf7b25facd03982541e4bc1051ef31e489e86b33bbdecfb2190faa127fb3a486bd67095ae4e1ac545c4fb488024ca424904cd6e6b1f403386b2b834eeb547270a1e71bfe6d5cf20fa5519536501007a7f3042afb16bbae2414c107e116e31cba11eef1bfc08bb514b95dc3d0896a5ca23ac01d1360a8ccfcb0d3c708d6fcba2657db397469c82b8c6f8d826c62f5d0c279176a3df354d47f4371a7cf4f678548bd35173aa76538666884229768833ec67a7c5ad1a7f958eae33a068193ff9db998ec9348a4b6b79f1060a33030f974b0e42c0dda7ee628de4d7d1d3ea30ab2759ecca717aaf65cd27bc3f4e2d0542ad6c8ec664fa2c78579d52976154d7c6fc032775b2dc260bff6f3278e6fd81becc2159dd7123180a91d36c16e60694069cb02404e91d4946812ca82c4404d45e6b96453d1d2c4a91ecb7fe7bc8795cb6c20bd1280bae43d4301f867b814b41a39e23c9dc8328aad7c69a2624b195a3b98e962ded53336ced5ed4db124b7eba609912431d61795f816a79fdf67ab81ea344f164e3da493ec6680c86ca76dedef45890d14dd0889423f62a0b44ed47d1339a926b74309636ba572c35fd790135bee52b08315dc0be25af2a92291775d63af0dc332761fe53a57493fa714c6eda9e1bf660c62e8b94277c23d47d16ffed0b15163053440b4ebaf968a3b55e93939d4db453308c09f51e89ca5a7202658651b606f2d0b60e1625a20a5544059242bdc48bee324c939fb6e77de8154e97ed82190fce2a59dc39ffb2c49f3ca9fdecd305e32fc789c9b387f4936dcbb2bf2a2a1e5ad7c227e630dcf766001568ab088e107cdf7dd59bdc6561ce049d82263aebbe2a324774a707749b33307261436dc400d53fd56b5ade259d20b861feb4cfa11bcb99c2ef2967bc94a18f87a2d3c5a595162dbe55463805f9b2af746d346165154d5078e8f33abc45404efaaea6e2ce9c4507c9f8042a2a961da9404f5ded28a4ad241599b7f42ac7136baeea7bcc3b23ce7873636de9e05d9c6f0c5b4025645625bbc9ccb3bad4d450e361b33dcb63d8e137dc6044246755d5ab511c65e330c154e9f44f361ea7ef4088a8d486ccc4c118a1a08f990da17c2ed0aecc509e9b4f9c8a4640637044c671f4389dfb1ab0370724994ef2ca97a97846ec39057d5e343b71fda6fd225b7af87f58875e76ea139df0dc4abe2a855e99f77d6b70c12d0298e1d6138fb577cadcff065100b557e9edadd56d0fac1dce0c9640b15e1dad1f22254bb424f1c05be5427af46de5faa5b5026feb207de4506b05b260848f4f6c7bf9316fca8d8ef2848e7f940ab8c6eb136fb4070f4c755a39b1e25fc6169ddc878347bbd178764dce125185d7e416b7c7b8c54da6df0e986085f1df7772c2036936521f35ce6ee80099293a527c73dc343329232ebe6e0e068fa30d46d57135beba1369f4c01506c42465272230e1968d41066260483c9461774267ae0f7a6e810a32339803a4ea17295e52c24f9fa6b02c524e98346438ece63db383aad49031a822f965de0c9ef30018c81f53266712a2200beb72ac0edff520009b45b838069441cbc446f0fadab521d377734cf187d3c854e4876f0097cfc374d3a060c75f40c3e259d4aa3b11e5d5e63e8719b40b21e386e99f69051568ac77d79a67283f24c16287c9891d9dbce209cce48480822c35c5a8c538567ca1766e335f8aff1fd4d28fd62999934abec24a6de1b5581732aca3f660e8daaa5ec8e1d2ae916e87f124de816c301e94eb39e26a041cda7b06933e1d563d8cf616b71263f75b65ecfd9671a3efbc66c6cff6d7db2557654c36f90b77f74a2002e5bf179039d92d37177fd2901bd846ffecd07dacdb9e2b20057c5e2b9d6c2ce8caa79fc19dae280c0e7d779ff4239822ae80e4b66e65448632465f4bbb7993bc833d459c4042912770913d9466ebf833bd56324321dc3bbe46b5cf6ff94f97e023f1b0a092636b2b4e84ae6c469ed7470125e2b12abaa942f05f26a4551159b50acc5c99ab6ce4e0011a7f8fdb24ccaaaf77238d3bb2af22c4300d08ca22aa19f5936df583b8098286fc58d8439f0364619a409fdce6948abcef4556c40cb3ddc4c83d14440ed3357dcf632cd5a7f15545a8de750cfaacb7d74f7fed33dc80358a643640a03f0d7d6e3455689512f46f83a182e034757825b13a2c0b1001ff106cfde954d6075552ffca261ef771fe57dae31e03a068a1597aba99806f8e8159ee74dddb9a1059dffff57e0c6984bc3b32ad3657343a0cb7cbf596d20134fa8cb4f54f3c222870339e3fe4e4146002d431045a1ad280cbdca029d146c2171cef6c7695147380dfa8d1311b0a1586fc39d74f61bac26e04b3d63280efdeaefc9089267718a2acc15d7e87e2b09f42cb5945e26f2e64e2cfd31b1edb9fac7918b73cd383f70f5810de3e256f3d4f153c1da6d2c609477ddabad75a4a8d62c0cb0fb399f315118e90374837749c315f837b64d01f0bc3567611b7e7debeae69a7ec2494af7d8d812d8ff56e55972414e550f611d6a032a041986c3f5e1502386971ca8955d5dff402e10412b44e924131b9c8830df4e564a463268a4b1b2a07b9446fb6c4f5a4a5638e4fcf9ab6909ecf46ef355691f687a1357780b1d08f072069f158c7adb60edd44c4b52df7728296a33c96742e88e1470604be56018802906916a549ecf16d0ef97dc3f88858037ce239650982199759a93f12b596ba6adc1da040e1226313a406289c0cfd9ebf91067a7c7c8e05b6ab4e9207b7eaed732383f748fcee300000000000000000000000007151b1f242b"
+  },
+  "verify": "POST /verify-proof with the `event` object (or run NIP-01 verification yourself)."
+ }
+}
