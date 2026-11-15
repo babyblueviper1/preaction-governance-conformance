@@ -37,8 +37,9 @@ The answer is `ESTABLISHED` or `REFUSED:<STEP>`. Apply the steps in order; the f
 
 ## The cases
 
-`cases.json` lists 13 cases. Five are real verdicts from the public ledger (`https://api.babyblueviper.com/ledger/<n>`, entries 249, 252, 255,
-258, 261), with the signed fields exactly as published. Eight are refusals built by `gen.py`:
+`cases.json` lists 17 cases. Five are real verdicts from the public ledger (`https://api.babyblueviper.com/ledger/<n>`, entries 249, 252, 255,
+258, 261), with the signed fields exactly as published. Twelve are built by `gen.py`: eleven refusals and one consistent record
+whose preimage is non-ASCII:
 
 | case | built as | expected |
 |---|---|---|
@@ -50,8 +51,15 @@ The answer is `ESTABLISHED` or `REFUSED:<STEP>`. Apply the steps in order; the f
 | `n06-key-binding` | signed by a key the relying party also trusts, while the content names the issuer's key | `REFUSED:KEY_BINDING` |
 | `n07-decision-ref-mismatch` | correctly signed and bound, `decision_ref` no longer matches its preimage | `REFUSED:DECISION_REF` |
 | `n08-schema-tag-missing` | correctly signed and bound, schema tag removed | `REFUSED:SCHEMA` |
+| `n09-outsider-self-consistent` | an outside key that the content also names, `decision_ref` recomputed: only the key set refuses it | `REFUSED:KEY_NOT_IN_SET` |
+| `n10-predated` | signed one second before its freshness beacon's block | `REFUSED:NOT_PRE_ACTION` |
+| `n11-executed-at-signing` | a real verdict for an action executed at the verdict's own `created_at` (the bound is strict) | `REFUSED:NOT_PRE_ACTION` |
+| `p12-jcs-non-ascii` | consistent, with a non-ASCII preimage value: a reader that is not RFC 8785 computes a different `decision_ref` | `ESTABLISHED` |
 
-The refusals that need a signature (`n02`, `n06`, `n07`, `n08`) are signed by a TEST-ONLY key whose secret is
+The records that need a signature (`n02`, `n06` to `n10`, `p12`) are signed by a TEST-ONLY key whose secret is
 SHA-256(`preaction-governance-conformance/test-only/wrong-key`), so anyone can rebuild them. The issuer's production key signs nothing here
-except the five real verdicts. Each step has exactly one case that passes the steps before it and fails at it: a reader that skips any step
-gets one case wrong.
+except the five real verdicts. Every step has at least one case that passes the steps before it and fails at it, so a reader that
+skips any step gets at least one case wrong. That includes a reader that only answers credit or refuse (`n09` for step 3) and a reader
+that skips either half of step 8 (`n10`, `n11`). `p12` catches a step 6 that is not RFC 8785.
+
+`n09` to `p12` come from a mutation pass on these vectors by piiiico (Agent Errata), probityai/agent-evidence-vectors#352.

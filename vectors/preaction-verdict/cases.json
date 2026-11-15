@@ -135,6 +135,46 @@
     "executed_at": 1788364536
    },
    "expect": "REFUSED:SCHEMA"
+  },
+  {
+   "id": "n09-outsider-self-consistent",
+   "record": "records/n09-outsider-self-consistent.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:KEY_NOT_IN_SET"
+  },
+  {
+   "id": "n10-predated",
+   "record": "records/n10-predated.json",
+   "key_set": "issuer-plus-test",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788363568
+   },
+   "expect": "REFUSED:NOT_PRE_ACTION"
+  },
+  {
+   "id": "n11-executed-at-signing",
+   "record": "records/v01-ledger-249.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788360936
+   },
+   "expect": "REFUSED:NOT_PRE_ACTION"
+  },
+  {
+   "id": "p12-jcs-non-ascii",
+   "record": "records/n12-jcs-non-ascii.json",
+   "key_set": "issuer-plus-test",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "ESTABLISHED"
   }
  ]
 }

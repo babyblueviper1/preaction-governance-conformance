@@ -53,7 +53,20 @@ def main():
     # n08: signed by the test key, content binds that key, but the schema tag is missing (a reader must not guess the record type)
     n08 = copy.deepcopy(base); n08["tags"] = [tg for tg in n08["tags"] if tg[:1] != ["schema"]]
     n08 = resign(n08, dict(c0, verifier_pubkey=TEST_PK))
-    for name, ev in (("n08-schema-tag-missing", n08), ("n01-forged-signature", n01), ("n02-wrong-key", n02), ("n03-content-tampered", n03),
+    # n09-n12 (11-15, from a mutation pass by piiiico on #352): close the gaps a single-step mutant could slip through
+    def rebind(c):   # recompute decision_ref with the reader's own RFC 8785 rule
+        from reader import jcs
+        pre = {k: c.get(k) for k in c["decision_ref_preimage_fields"]}
+        return dict(c, decision_ref="sha256:" + hashlib.sha256(jcs(pre).encode()).hexdigest())
+    # n09: an outside key, self-consistent (content names that same key, decision_ref recomputed) -> only step 3 refuses it
+    n09 = resign(base, rebind(dict(c0, verifier_pubkey=TEST_PK)))
+    # n10: signed one second BEFORE its freshness beacon's block (pre-dated) -> only step 8's lower bound refuses it
+    n10 = resign(dict(base, created_at=c0["freshness_beacon"]["block_time"] - 1), rebind(dict(c0, verifier_pubkey=TEST_PK)))
+    # n12: a preimage value that is non-ASCII (disclosed_summary) -> a reader that is not RFC 8785 (e.g. ASCII-escaping json.dumps)
+    #      computes a different decision_ref and refuses a record that is in fact consistent
+    n12 = resign(base, rebind(dict(c0, verifier_pubkey=TEST_PK, disclosed_summary="résumé: action approuvée — €0")))
+    for name, ev in (("n09-outsider-self-consistent", n09), ("n10-predated", n10), ("n12-jcs-non-ascii", n12),
+                     ("n08-schema-tag-missing", n08), ("n01-forged-signature", n01), ("n02-wrong-key", n02), ("n03-content-tampered", n03),
                      ("n06-key-binding", n06), ("n07-decision-ref-mismatch", n07)):
         write(f"records/{name}.json", ev)
     write("keys/test-only-key-set.json", {"keys": [{"pubkey": TEST_PK, "issuer": "TEST ONLY -- never trust in production",
@@ -79,6 +92,14 @@ def main():
              relying_party=rp, expect="REFUSED:DECISION_REF"),
         dict(id="n08-schema-tag-missing", record="records/n08-schema-tag-missing.json", key_set="issuer-plus-test", relying_party=rp,
              expect="REFUSED:SCHEMA"),
+        dict(id="n09-outsider-self-consistent", record="records/n09-outsider-self-consistent.json", key_set="issuer", relying_party=rp,
+             expect="REFUSED:KEY_NOT_IN_SET"),
+        dict(id="n10-predated", record="records/n10-predated.json", key_set="issuer-plus-test",
+             relying_party=dict(rp, executed_at=c0["freshness_beacon"]["block_time"] - 1 + 3600), expect="REFUSED:NOT_PRE_ACTION"),
+        dict(id="n11-executed-at-signing", record=f"records/{POS[0]}", key_set="issuer",
+             relying_party=dict(rp, executed_at=base["created_at"]), expect="REFUSED:NOT_PRE_ACTION"),
+        dict(id="p12-jcs-non-ascii", record="records/n12-jcs-non-ascii.json", key_set="issuer-plus-test", relying_party=rp,
+             expect="ESTABLISHED"),
     ]
     write("cases.json", {"suite": "preaction-verdict", "contract": "READER-CONTRACT.md",
                          "key_sets": {"issuer": "keys/issuer-key-set.json", "issuer-plus-test": "keys/issuer-plus-test-key-set.json"},
