@@ -1,0 +1,9 @@
+{
+ "keys": [
+  {
+   "pubkey": "8427a88207ebacff817e2e538b0e95037dbe016d5f196c73c5dfea683073f0b1",
+   "issuer": "TEST ONLY -- never trust in production",
+   "recipe": "seckey = SHA-256('preaction-governance-conformance/test-only/wrong-key')"
+  }
+ ]
+}

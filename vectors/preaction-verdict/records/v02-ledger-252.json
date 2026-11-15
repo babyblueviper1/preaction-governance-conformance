@@ -1,0 +1,26 @@
+{
+ "id": "32baaa653a2c19cdeb9b12f8c0ab9f3430a1e8ba96263f766c4853e498651239",
+ "pubkey": "6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7",
+ "created_at": 1788361643,
+ "kind": 30078,
+ "tags": [
+  [
+   "d",
+   "invinoveritas-proof-e32098111bc18c953afef469c2273af61f8011154e1195e68bfff3ee473f1e0b-1788361643-8747455c"
+  ],
+  [
+   "t",
+   "invinoveritas"
+  ],
+  [
+   "t",
+   "proof"
+  ],
+  [
+   "schema",
+   "invinoveritas.verdict_proof.v1"
+  ]
+ ],
+ "content": "{\"artifact_hash\":\"e32098111bc18c953afef469c2273af61f8011154e1195e68bfff3ee473f1e0b\",\"artifact_type\":\"plan\",\"confidence\":0.91,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:0d445867d3579118ec9f52374325519b00eef20f3945760541a9f3a408b550e6\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"engine_generation\":1,\"freshness_beacon\":{\"block_time\":1788361508,\"hash\":\"00000000000000000001aa37df293121527aaaa654434b33c95857f9f0863fb0\",\"height\":965185,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:1650c96381b2691028011e63cd2526c4b1022d91615e4199494b775e469eb3a7\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:4f09fa9bd2acc638aaed6c833a863c20763fe14a092d5604c2009146415e73aa\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v17\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"de9bb9cbfc87a9776d2d96b7a160c24dd2730cb1443a61478d923aa6130fa2bf\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1788361642,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+ "sig": "970262f6db0b176352f59e6ed71e001b4322d53647efbb54b4fc450c49a34041d7f1d4778caa0e415acf80b0bbb539bef86d03c859e62bc4e5d6c25e9ed1dd2c"
+}

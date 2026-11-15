@@ -1,0 +1,140 @@
+{
+ "suite": "preaction-verdict",
+ "contract": "READER-CONTRACT.md",
+ "key_sets": {
+  "issuer": "keys/issuer-key-set.json",
+  "issuer-plus-test": "keys/issuer-plus-test-key-set.json"
+ },
+ "cases": [
+  {
+   "id": "v01-ledger-249",
+   "record": "records/v01-ledger-249.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "ESTABLISHED"
+  },
+  {
+   "id": "v02-ledger-252",
+   "record": "records/v02-ledger-252.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "e32098111bc18c953afef469c2273af61f8011154e1195e68bfff3ee473f1e0b",
+    "executed_at": 1788365243
+   },
+   "expect": "ESTABLISHED"
+  },
+  {
+   "id": "v03-ledger-255",
+   "record": "records/v03-ledger-255.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "3bb94d6039104ec8fd24bed2f6033065f3ab550db4a16978b738cb67ae9caca3",
+    "executed_at": 1788365736
+   },
+   "expect": "ESTABLISHED"
+  },
+  {
+   "id": "v04-ledger-258",
+   "record": "records/v04-ledger-258.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "d6e7edf8ce21ba6a5e16fd63e15139369f826f5684660ab4001e24dc725a6f1b",
+    "executed_at": 1788366125
+   },
+   "expect": "ESTABLISHED"
+  },
+  {
+   "id": "v05-ledger-261",
+   "record": "records/v05-ledger-261.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "0c50efab5f3f8b6edd0b4714b653faf7584dace54a1a60895d984bfdfc5a1149",
+    "executed_at": 1788451729
+   },
+   "expect": "ESTABLISHED"
+  },
+  {
+   "id": "n01-forged-signature",
+   "record": "records/n01-forged-signature.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:SIGNATURE"
+  },
+  {
+   "id": "n02-wrong-key",
+   "record": "records/n02-wrong-key.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:KEY_NOT_IN_SET"
+  },
+  {
+   "id": "n03-content-tampered",
+   "record": "records/n03-content-tampered.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:EVENT_ID"
+  },
+  {
+   "id": "n04-action-unbound",
+   "record": "records/v01-ledger-249.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "0b2e6775f97c71078347b006f89483ff418d72d6421f3e6b9a398d26d9315e79",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:ACTION_UNBOUND"
+  },
+  {
+   "id": "n05-after-the-fact",
+   "record": "records/v01-ledger-249.json",
+   "key_set": "issuer",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788360876
+   },
+   "expect": "REFUSED:NOT_PRE_ACTION"
+  },
+  {
+   "id": "n06-key-binding",
+   "record": "records/n06-key-binding.json",
+   "key_set": "issuer-plus-test",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:KEY_BINDING"
+  },
+  {
+   "id": "n07-decision-ref-mismatch",
+   "record": "records/n07-decision-ref-mismatch.json",
+   "key_set": "issuer-plus-test",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:DECISION_REF"
+  },
+  {
+   "id": "n08-schema-tag-missing",
+   "record": "records/n08-schema-tag-missing.json",
+   "key_set": "issuer-plus-test",
+   "relying_party": {
+    "action_hash": "5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df",
+    "executed_at": 1788364536
+   },
+   "expect": "REFUSED:SCHEMA"
+  }
+ ]
+}

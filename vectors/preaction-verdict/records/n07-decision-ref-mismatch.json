@@ -1,0 +1,26 @@
+{
+ "id": "18abcc644760d13d8004bbec95f3b28f48ea518fdb0cc6b30502805f264b8968",
+ "pubkey": "8427a88207ebacff817e2e538b0e95037dbe016d5f196c73c5dfea683073f0b1",
+ "created_at": 1788360936,
+ "kind": 30078,
+ "tags": [
+  [
+   "d",
+   "invinoveritas-proof-5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df-1788360936-ba288cd4"
+  ],
+  [
+   "t",
+   "invinoveritas"
+  ],
+  [
+   "t",
+   "proof"
+  ],
+  [
+   "schema",
+   "invinoveritas.verdict_proof.v1"
+  ]
+ ],
+ "content": "{\"artifact_hash\":\"5db45db0197a84a8899e4fd6b06b5026d6b77b43482d9774b07373db150ef3df\",\"artifact_type\":\"plan\",\"confidence\":0.86,\"conformance_suite\":\"https://github.com/babyblueviper1/preaction-governance-conformance\",\"context_provenance\":\"caller_asserted_unverified\",\"decision_ref\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"decision_ref_preimage_fields\":[\"artifact_hash\",\"artifact_type\",\"policy_version\",\"verdict\",\"source_class\",\"vantage_limitation\",\"related_decision_ref\",\"intended_audience\",\"confidentiality_tier\",\"disclosed_summary\",\"intended_verifier\",\"policy_commitment\",\"verified_at\",\"registry_as_of\",\"registry_snapshot_sha256\",\"action_binding_tool_hash\",\"action_binding_args_hash\",\"action_binding_agent_id\",\"action_binding_nonce\",\"freshness_beacon_hash\"],\"decision_ref_preimage_rule\":\"every name in decision_ref_preimage_fields is a key in the hashed preimage object, always -- absent fields (e.g. vantage_limitation when not applicable) are present as JSON null, never omitted from the object.\",\"engine_generation\":1,\"freshness_beacon\":{\"block_time\":1788359969,\"hash\":\"0000000000000000000093d79a7e0fef6d1c9d98219a1b9d36bf122f0ed5e739\",\"height\":965182,\"source\":\"bitcoin\"},\"freshness_beacon_hash\":\"sha256:26cd249a054d0f95ca5062469934f3f3998e729953540eadf671ea663ed1ae88\",\"independent_nodes\":[\"https://invinoveritas-castra.babyblueviper.workers.dev/verify\",\"https://babyblueviper1--2aba75da693711f185891607ee4eb77e.web.val.run\"],\"key_id\":\"6786e18a864893a900bd9858e650f67ccc3513f248fed374b591e2ff6922fbb7\",\"platform\":\"invinoveritas\",\"policy_commitment\":\"sha256:4f09fa9bd2acc638aaed6c833a863c20763fe14a092d5604c2009146415e73aa\",\"policy_commitment_inputs\":{\"conformance_suite_commit\":\"e90948ed3eb9d36eb1d0997ea4d02045e28a405a\",\"conformance_suite_repo\":\"babyblueviper1/preaction-governance-conformance\",\"rubric_doc_path\":\"docs/policy_spec/invinoveritas.review.v12.md\",\"rubric_sha256\":\"bb74afa68bd5e8b1ca1038d8f0c8cd9a0d1f83888a7ea7df7c551f579a974180\"},\"policy_version\":\"invinoveritas.review.v17\",\"registry_as_of\":null,\"registry_snapshot_sha256\":null,\"review_model_hash\":\"deda3dc02a1d1575f15d5c9f9b3e31cf0c768a55508c31e7ff0f4fc8f33fc669\",\"review_prompt_template_hash\":\"13a72a4c1e3a99b969ac46b724eceef6620716292f2b730f19915cdd469c1e31\",\"schema\":\"invinoveritas.verdict_proof.v1\",\"source_class\":\"agent_reported\",\"summary_hash\":\"d7111cc976ca1827acb5f16fb8f76022c0d487825b2ab646d49a1292d0a77738\",\"verdict\":\"approve_with_concerns\",\"verified_at\":1788360935,\"verifier_keys\":\"https://api.babyblueviper.com/.well-known/verifier-keys.json\",\"verifier_pubkey\":\"8427a88207ebacff817e2e538b0e95037dbe016d5f196c73c5dfea683073f0b1\",\"verify_how\":\"Easiest: install the offline verifier above and recompute locally. Or POST this proof's signed `event` to verify_url (or an independent_node), OR run NIP-01 yourself: recompute the Nostr event id = sha256([0,pubkey,created_at,kind,tags,content]), verify the schnorr signature against verifier_pubkey. valid ⇒ invinoveritas issued this, untampered. No trust required.\",\"verify_offline\":\"npm i invinoveritas-verify  ·  pip install invinoveritas-verify  — recompute this proof on your own machine against verifier_pubkey; you never have to call us.\",\"verify_url\":\"https://api.babyblueviper.com/verify-proof\"}",
+ "sig": "4077bc9c86d910c35d54548620e5fe377e217fc024993773530cc1c087cdda09b1a2566310febfdb1d5376b4f6af2b4d68d5671c43b6b45f94d18b7eae4a7658"
+}
