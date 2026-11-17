@@ -1,0 +1,38 @@
+{
+ "upper_time_bound": "2026-11-17T23:00:00.000000Z",
+ "policy": "policy.json",
+ "cases": [
+  {
+   "case": "p1-pass",
+   "verdict_record": "p1-pass.verdict-record.json",
+   "record_sha256": "64d39b76738c8483a85af326019a37efe0d3ba4fa2340aa4faa79fc817f6489e",
+   "evidence_item": "record.json",
+   "trust_anchors": "checker-keys.json",
+   "what": "the record verifies under the held key and its results give pass, as stated"
+  },
+  {
+   "case": "n1-stated-fail",
+   "verdict_record": "n1-stated-fail.verdict-record.json",
+   "record_sha256": "7298c251fc0b19ec0e2c4cbf573fe5c9ee9501497f6417e42e50121f840dbe0d",
+   "evidence_item": "record.json",
+   "trust_anchors": "checker-keys.json",
+   "what": "the verdict record states fail; re-running the rule on the cited results gives pass"
+  },
+  {
+   "case": "n2-tampered-item",
+   "verdict_record": "n2-tampered-item.verdict-record.json",
+   "record_sha256": "88df2ae70411465c1c4a60518998e18d1206de94c055ddddcb8392d15c696f7d",
+   "evidence_item": "record-tampered.json",
+   "trust_anchors": "checker-keys.json",
+   "what": "a result was changed after signing: the item no longer meets the format's rules"
+  },
+  {
+   "case": "n3-key-not-held",
+   "verdict_record": "n3-key-not-held.verdict-record.json",
+   "record_sha256": "4917fc9a19bc7a8cfb6cd6433b3190d8d1c4f3300f25eceb8dbd489a4d6eab01",
+   "evidence_item": "record.json",
+   "trust_anchors": "checker-keys-empty.json",
+   "what": "the checker holds no key for the record's key_id"
+  }
+ ]
+}

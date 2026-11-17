@@ -1,0 +1,58 @@
+[
+ {
+  "case": "p1-pass",
+  "state": "released",
+  "steps": {
+   "1": "PASS",
+   "2": "PASS",
+   "3": "PASS"
+  },
+  "named": null,
+  "why": {},
+  "as_expected": true
+ },
+ {
+  "case": "n1-stated-fail",
+  "state": "refused",
+  "steps": {
+   "1": "PASS",
+   "2": "PASS",
+   "3": "FAIL"
+  },
+  "named": null,
+  "why": {
+   "3": "the re-run gave \"pass\", the record states \"fail\""
+  },
+  "as_expected": true
+ },
+ {
+  "case": "n2-tampered-item",
+  "state": "held",
+  "steps": {
+   "1": "PASS",
+   "2": "NOT RUN",
+   "3": "NOT RUN"
+  },
+  "named": null,
+  "why": {
+   "2": "evidence[0]: the format's rules are not met (the signature does not verify over the JCS form of the receipt)",
+   "3": "input results is bound to evidence[0], which step 2 does not rely on"
+  },
+  "as_expected": true
+ },
+ {
+  "case": "n3-key-not-held",
+  "state": "held",
+  "steps": {
+   "1": "PASS",
+   "2": "NOT RUN",
+   "3": "NOT RUN"
+  },
+  "named": null,
+  "why": {
+   "2": "evidence[0]: the format's rules are not met (no active Ed25519 key with this key_id in the held key document)",
+   "3": "input results is bound to evidence[0], which step 2 does not rely on"
+  },
+  "as_expected": true
+ }
+]
